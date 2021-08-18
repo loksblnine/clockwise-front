@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Button} from "@material-ui/core";
 import * as constants from "../../../../constants";
 import {useLocation, Redirect} from 'react-router-dom'
 import {getMasters, getCustomers, getOrders} from "../../getData";
 import {SERVER_URL} from "../../../../constants";
-import {logDOM} from "@testing-library/react";
 
 function MasterView(props) {
     const [masters, setMasters] = useState([]);
@@ -22,8 +20,9 @@ function MasterView(props) {
     }, [])
 
     async function handleClick(e) {
+        e.preventDefault()
 
-        if (!findUser()) {
+        if (!findCustomer()) {
             const body = {customer_name: location.state.data.name, customer_email: location.state.data.email}
             console.log(JSON.stringify(body))
             await fetch(constants.SERVER_URL + `/customers`, {
@@ -36,16 +35,19 @@ function MasterView(props) {
 
         const order = location.state.data
         const T = order.date + "T" + order.time
-        const customer = findUser()
+        const customer = findCustomer()
+        const master = findMaster(e.target.value)
+        const text = `Спасибо за заказ ${customer.customer_name}, мастер ${master.master_name} будет у вас ${order.date} в ${order.time}`
+
         const body = {
+            ...master,
             ...customer,
-            master_id: e.target.value,
             city_id: order.city,
             order_time: T,
             work_id: order.type,
+            message: text
         }
-
-        console.log( JSON.stringify(body))
+        console.log(JSON.stringify(body))
         await fetch(SERVER_URL + `/orders`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
@@ -53,8 +55,14 @@ function MasterView(props) {
         });
     }
 
-    function findUser() {
+    function findCustomer() {
         return customers.find(c => c.customer_email === location.state.data.email)
+    }
+
+    function findMaster(master_id) {
+        return masters.find(m => {
+            console.log(m.master_id == master_id)
+            return m.master_id == master_id})
     }
 
     if (!location.state) {
@@ -98,11 +106,12 @@ function MasterView(props) {
                 {
                     masters?.map((master) =>
                         <form key={master.master_id} id={master.master_id} className="mt-5">
-                            <input value={master.master_name} readOnly/>
-                            <input value={master.ranking} readOnly/>
-                            <Button id={master.master_id} value={master.master_id} onClick={handleClick}
+                            <input name={`name`} value={master.master_name} readOnly/>
+                            <input name={`ranking`} value={master.ranking} readOnly/>
+                            <button id={master.master_id} value={master.master_id} onClick={e => handleClick(e)}
                                     disabled={!isMasterAvailable(master)}
-                            >Выбрать</Button>
+                            >Выбрать
+                            </button>
                         </form>
                     )
                 }
