@@ -23,6 +23,8 @@ export const WORK_TYPES = {
     },
 }
 
+export const MY_EMAIL = 'illya200457@gmail.com'
+
 export const ADMIN_LOGIN = "admin@example.com"
 export const ADMIN_PASSWORD = "passwordsecret"
 

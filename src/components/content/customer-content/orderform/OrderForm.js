@@ -44,7 +44,7 @@ const OrderForm = (props) => {
     const formik = useFormik({
         initialValues: {
             name: '',
-            email: 'illya01@ukr.net',
+            email: constants.MY_EMAIL,
             city: '1',
             date: constants.DATE_FROM,
             time: constants.TIME_FROM,

@@ -21,6 +21,13 @@ function MasterView(props) {
         }
     }, [])
 
+    const handleBack = (values) => {
+        history.push({
+            pathname: '/masters_choosing',
+            state: {data: values}
+        })
+    }
+
     async function handleClick(e) {
         e.preventDefault()
 
@@ -133,6 +140,8 @@ function MasterView(props) {
                     </tbody>
                 </table>
             </Fragment>
+            <button className={`btn bt-warning`} onClick={handleBack}>Назад
+            </button>
         </div>
     );
 }

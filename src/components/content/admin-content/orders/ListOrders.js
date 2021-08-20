@@ -20,7 +20,6 @@ const ListOrders = () => {
         }
     }
 
-
     useEffect(() => {
         getOrders(setOrders)
     }, [])
