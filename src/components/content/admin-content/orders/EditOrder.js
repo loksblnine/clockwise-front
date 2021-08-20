@@ -10,11 +10,14 @@ const EditOrder = (initialOrder) => {
         e.preventDefault()
         try {
             const body = {order}
-            await fetch(SERVER_URL+`/orders/${order.order_id}`, {
+            await fetch(SERVER_URL + `/orders/${order.order_id}`, {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body.order)
             })
+                .then(response => response.json())
+                .then(data => console.log(data));
+            window.location.reload()
 
         } catch (e) {
             console.log(e.message)
@@ -22,7 +25,7 @@ const EditOrder = (initialOrder) => {
     }
 
     const handleChange = e => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setOrder(prevState => ({
             ...prevState,
             [name]: value

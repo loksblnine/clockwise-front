@@ -10,11 +10,13 @@ const InputCustomer = () => {
 
         try {
             const body = {customer_name, customer_email}
-            await fetch(SERVER_URL+ `/customers`, {
+            await fetch(SERVER_URL + `/customers`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body)
-            });
+            })
+                .then(response => response.json())
+                .then(data => console.log(data));
 
         } catch (e) {
             console.log(e.message)

@@ -11,7 +11,9 @@ const ListCities = () => {
         try {
             await fetch(SERVER_URL + `/cities/${id}`, {
                 method: "DELETE"
-            });
+            })
+                .then(response => response.json())
+                .then(data => console.log(data));
             await getCities(setCities)
         } catch (e) {
             console.log(e.message)

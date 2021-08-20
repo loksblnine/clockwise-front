@@ -1,21 +1,25 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
+import {useLocation} from "react-router-dom";
 
 const EditCity = ({city}) => {
     const [city_name, setCityName] = useState(city.city_name)
-
     const updateCity = async (e) => {
         e.preventDefault()
         try {
             const body = {city_name}
-            await fetch(SERVER_URL+`/cities/${city.city_id}`, {
+            await fetch(SERVER_URL + `/cities/${city.city_id}`, {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body)
             })
+                .then(response => response.json())
+                .then(data => console.log(data));
+            window.location.reload()
         } catch (e) {
             console.log(e.message)
         }
+
     }
 
     return (

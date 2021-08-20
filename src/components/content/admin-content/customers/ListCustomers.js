@@ -11,7 +11,9 @@ const ListCustomers = () => {
         try {
             await fetch(SERVER_URL + `/customers/${id}`, {
                 method: "DELETE"
-            });
+            })
+                .then(response => response.json())
+                .then(data => console.log(data));
             await getCustomers(setCustomers)
         } catch (e) {
             console.log(e.message)

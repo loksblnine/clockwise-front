@@ -7,12 +7,14 @@ import {getMasters} from "../../getData";
 const ListMasters = () => {
     const [masters, setMasters] = useState([]);
 
-    const deleteMaster = async (id)=>{
+    const deleteMaster = async (id) => {
         try {
-            await fetch(SERVER_URL+`/masters/${id}`, {
+            await fetch(SERVER_URL + `/masters/${id}`, {
                 method: "DELETE"
-            });
-           await getMasters(setMasters)
+            })
+                .then(response => response.json())
+                .then(data => console.log(data));
+            await getMasters(setMasters)
         } catch (e) {
             console.log(e.message)
         }
@@ -39,15 +41,18 @@ const ListMasters = () => {
                 </thead>
 
                 <tbody>
-                {masters.map(master=>(
+                {masters.map(master => (
                     <tr key={master.master_id}>
                         <th scope="row"> {master.master_id}</th>
                         <td>{master.master_name}</td>
                         <td>{master.ranking}</td>
                         <td>{master.photo}</td>
-                        <td><EditMaster master = {master}/></td>
-                        <td><button className="btn btn-danger"
-                        onClick={()=>deleteMaster(master.master_id)}>Удалить</button></td>
+                        <td><EditMaster master={master}/></td>
+                        <td>
+                            <button className="btn btn-danger"
+                                    onClick={() => deleteMaster(master.master_id)}>Удалить
+                            </button>
+                        </td>
                     </tr>
                 ))}
 

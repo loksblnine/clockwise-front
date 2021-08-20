@@ -6,14 +6,15 @@ const InputCity = () => {
 
     const onSubmitForm = async e => {
         e.preventDefault();
-
         try {
             const body = {city_name}
-            await fetch(SERVER_URL+`/cities`, {
+            await fetch(SERVER_URL + `/cities`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body)
-            });
+            })
+                .then(response => response.json())
+                .then(data => console.log(data));
         } catch (e) {
             console.log(e.message)
         }

@@ -9,12 +9,14 @@ const EditCustomer = ({customer}) => {
         e.preventDefault()
         try {
             const body = {customer_name, customer_email}
-            await fetch(SERVER_URL+`/customers/${customer.customer_id}`, {
+            await fetch(SERVER_URL + `/customers/${customer.customer_id}`, {
                 method: "PUT",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body)
             })
-
+                .then(response => response.json())
+                .then(data => console.log(data));
+            window.location.reload()
         } catch (e) {
             console.log(e.message)
         }

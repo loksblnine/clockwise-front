@@ -12,6 +12,10 @@ import Footer from "./components/footer/Footer";
 import OrderForm from "./components/content/customer-content/orderform/OrderForm";
 import MasterView from "./components/content/customer-content/mastersview/MasterView";
 import LoginForm from "./components/content/admin-content/login-form/LoginForm";
+import ListCities from "./components/content/admin-content/cities/ListCities";
+import ListCustomers from "./components/content/admin-content/customers/ListCustomers";
+import ListMasters from "./components/content/admin-content/masters/ListMasters";
+import ListOrders from "./components/content/admin-content/orders/ListOrders";
 
 const App = () => {
     return (
@@ -24,6 +28,10 @@ const App = () => {
                     <Route exact path='/login' component={LoginForm}/>
                     <Route exact path='/access_succeed' component={AdminPanel}/>
                     <Route exact path='/masters_choosing'> <MasterView/> </Route>
+                    <Route exact path='/cities'><ListCities/></Route>
+                    <Route exact path='/orders'><ListOrders/></Route>
+                    <Route exact path='/masters'><ListMasters/></Route>
+                    <Route exact path='/customers'><ListCustomers/></Route>
                 </Switch>
                 {/*<Footer/>*/}
             </Router>

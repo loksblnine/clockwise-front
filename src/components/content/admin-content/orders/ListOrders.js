@@ -11,13 +11,14 @@ const ListOrders = () => {
         try {
             await fetch(SERVER_URL + `/orders/${id}`, {
                 method: "DELETE"
-            });
+            })
+                .then(response => response.json())
+                .then(data => console.log(data));
             getOrders(setOrders)
         } catch (e) {
             console.log(e.message)
         }
     }
-
 
 
     useEffect(() => {
@@ -52,7 +53,7 @@ const ListOrders = () => {
                             <td>{order.city_id}</td>
                             <td>{order.work_id}</td>
                             <td>{order.order_time}</td>
-                            <td><EditOrder order = {order}/></td>
+                            <td><EditOrder order={order}/></td>
                             <td>
                                 <button className="btn btn-danger"
                                         onClick={() => deleteOrder(order.order_id)}>Удалить
