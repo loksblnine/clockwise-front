@@ -30,7 +30,14 @@ export const MY_EMAIL = "illya200457@gmail.com"
 export const ADMIN_LOGIN = "admin@example.com"
 export const ADMIN_PASSWORD = "passwordsecret"
 
-export const DATE_FROM = new Date().toISOString().split('T')[0]
-export const DATE_TO = new Date(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate()).toISOString().split('T')[0]
+function nowDate(){
+    return new Date().toISOString().split('T')[0]
+}
+
+function finalDate(){
+    return new Date(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate()).toISOString().split('T')[0]
+}
+export const DATE_FROM = nowDate()
+export const DATE_TO = finalDate()
 export const TIME_FROM = new Date(2011, 0, 1, 8).toISOString().split('T')[1]
 export const TIME_TO = new Date(2011, 0, 1, 17).toISOString().split('T')[1]
