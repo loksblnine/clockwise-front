@@ -9,7 +9,7 @@ const ListMasters = () => {
 
     const deleteMaster = async (id)=>{
         try {
-            await fetch(SERVER_URL+`masters/${id}`, {
+            await fetch(SERVER_URL+`/masters/${id}`, {
                 method: "DELETE"
             });
            await getMasters(setMasters)

@@ -65,7 +65,6 @@ function MasterView(props) {
 
     function findMaster(master_id) {
         return masters.find(m => {
-            console.log(m.master_id == master_id)
             return m.master_id == master_id
         })
     }

@@ -9,7 +9,7 @@ const ListCustomers = () => {
 
     const deleteCustomer = async (id) => {
         try {
-            await fetch(SERVER_URL + `customers/${id}`, {
+            await fetch(SERVER_URL + `/customers/${id}`, {
                 method: "DELETE"
             });
             await getCustomers(setCustomers)

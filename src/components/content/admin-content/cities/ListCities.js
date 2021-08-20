@@ -9,7 +9,7 @@ const ListCities = () => {
 
     const deleteCity = async (id) => {
         try {
-            await fetch(SERVER_URL + `cities/${id}`, {
+            await fetch(SERVER_URL + `/cities/${id}`, {
                 method: "DELETE"
             });
             await getCities(setCities)
