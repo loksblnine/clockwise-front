@@ -3,6 +3,7 @@ import {useFormik} from 'formik';
 import * as constants from "../../../../constants";
 import {useHistory} from "react-router-dom";
 import {getCities} from "../../getData";
+import './OrderStyles.css'
 
 const validate = values => {
     const errors = {};
@@ -59,74 +60,76 @@ const OrderForm = (props) => {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit}>
-            <div className="form-group">
-                <label htmlFor={`name`}>Имя</label>
-                <input type={`name`} id={`name`} name={`name`}
-                       value={formik.values.name} onChange={formik.handleChange}
-                       className={"form-control"} placeholder="Имя"
-                       required/>
-                {formik.errors.name ? <div>{formik.errors.name}</div> : null}
-            </div>
-            <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <input type={`email`} id={`email`} name={`email`}
-                       value={formik.values.email} onChange={formik.handleChange}
-                       className={"form-control"} placeholder="email"
-                       required/>
-                {formik.errors.email ? <div>{formik.errors.email}</div> : null}
-            </div>
-
-            <div className="form-group">
-                <label htmlFor={`city`}>Город</label>
-                <select id={`city`} name={`city`}
-                        value={formik.values.city} onChange={formik.handleChange}
-                        className={"form-control"}
-                        placeholder="Выберите ваш город">
-                    {cities?.map(city =>
-                        <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
-                </select>
-            </div>
-
-            <div className="form-group">
-                <label htmlFor={`date`}>Введите дату заказа </label>
-                <input type={`date`} id={`date`} name={`date`}
-                       min={constants.DATE_FROM} max={constants.DATE_TO}
-                       required pattern="[0-9]{4}.[0-9]{2}.[0-9]{2}"
-                       onChange={formik.handleChange}/>
-            </div>
-
-            <div className="form-group">
-                <label htmlFor={`time`}>Время заказа (8:00 - 17:00) </label>
-                <input type={`time`} name={`time`}
-                       min={constants.TIME_FROM} max={constants.TIME_TO}
-                       required step='3600'
-                       pattern="([01]?[0-9]|2[0-3]):[0][0]" id="24h"
-                       spellCheck="true" autoComplete="true"
-                       onChange={formik.handleChange}/>
-            </div>
-            <div className="form-group">
-                <label htmlFor={`type`}> Выберите тип поломки </label>
-                <div onChange={formik.handleChange}>
-                    <label className="miro-radiobutton">
-                        <input type={`radio`} value={`1`} name={`type`}
-                               id={`radio_1`}/>
-                        <span>Маленькие часы </span>
-                    </label>
-                    <label className="miro-radiobutton">
-                        <input type={`radio`} value={`2`} name={`type`}
-                               id={`radio_2`}/>
-                        <span>Средние часы </span>
-                    </label>
-                    <label className="miro-radiobutton">
-                        <input type={`radio`} value={`3`} name={`type`}
-                               id={`radio_3`}/>
-                        <span>Большие часы </span>
-                    </label>
+        <div style={orderPageStyle}>
+            <form onSubmit={formik.handleSubmit} className={`form`}>
+                <div className="form-group">
+                    <label className={`text`} htmlFor={`name`}>Имя</label>
+                    <input type={`name`} id={`name`} name={`name`}
+                           value={formik.values.name} onChange={formik.handleChange}
+                           className={"form-control"} placeholder="Имя"
+                           required/>
+                    {formik.errors.name ? <div className={`error`}>{formik.errors.name}</div> : null}
                 </div>
-            </div>
-            <button type="submit" className="btn btn-primary">Выбрать мастера</button>
-        </form>
+                <div className="form-group">
+                    <label className={`text`} htmlFor="email">Email</label>
+                    <input type={`email`} id={`email`} name={`email`}
+                           value={formik.values.email} onChange={formik.handleChange}
+                           className={"form-control"} placeholder="email"
+                           required/>
+                    {formik.errors.email ? <div className={`error`}>{formik.errors.email}</div> : null}
+                </div>
+
+                <div className="form-group">
+                    <label className={`text`} htmlFor={`city`}>Город</label>
+                    <select id={`city`} name={`city`}
+                            value={formik.values.city} onChange={formik.handleChange}
+                            className={"form-control"}
+                            placeholder="Выберите ваш город">
+                        {cities?.map(city =>
+                            <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
+                    </select>
+                </div>
+
+                <div className="form-group">
+                    <label className={`text`} htmlFor={`date`}>Введите дату заказа </label>
+                    <input type={`date`} id={`date`} name={`date`} className={`form-control react-datetime-picker`}
+                           min={constants.DATE_FROM} max={constants.DATE_TO}
+                           required pattern="[0-9]{4}.[0-9]{2}.[0-9]{2}"
+                           onChange={formik.handleChange}/>
+                </div>
+
+                <div className="form-group">
+                    <label className={`text`} htmlFor={`time`}>Время заказа (8:00 - 17:00) </label>
+                    <input type={`time`} name={`time`} className={`form-control timepicker`}
+                           min={constants.TIME_FROM} max={constants.TIME_TO}
+                           required step='3600'
+                           pattern="([01]?[0-9]|2[0-3]):[0][0]" id="24h"
+                           spellCheck="true" autoComplete="true"
+                           onChange={formik.handleChange}/>
+                </div>
+                <div className="form-group">
+                    <label className={`text`} htmlFor={`type`}> Выберите тип поломки </label>
+                    <div onChange={formik.handleChange}>
+                        <label className="miro-radiobutton">
+                            <input type={`radio`} value={`1`} name={`type`}
+                                   id={`radio_1`}/>
+                            <span>Маленькие часы </span>
+                        </label>
+                        <label className="miro-radiobutton">
+                            <input type={`radio`} value={`2`} name={`type`}
+                                   id={`radio_2`}/>
+                            <span>Средние часы </span>
+                        </label>
+                        <label className="miro-radiobutton">
+                            <input type={`radio`} value={`3`} name={`type`}
+                                   id={`radio_3`}/>
+                            <span>Большие часы </span>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" className="btn btn-primary">Выбрать мастера</button>
+            </form>
+        </div>
     );
 }
 

@@ -1,0 +1,10 @@
+.header {
+    margin: 1% 5%;
+    text-align: center;
+    align-items: center;
+    display: flex inline;
+}
+
+.header-button {
+    display: flex inline;
+}
