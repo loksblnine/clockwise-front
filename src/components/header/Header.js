@@ -2,7 +2,7 @@ import React, {useEffect, useState, ReactElement} from 'react'
 import Button from "@material-ui/core/Button";
 import {useLocation} from "react-router-dom";
 import imageSrc from "../../images/logo.png"
-import './header.css'
+import './Header.css'
 
 function ButtonLogin() {
     return (

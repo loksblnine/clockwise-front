@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import * as constants from "../../../../constants";
-import {useLocation, Redirect} from 'react-router-dom'
+import {useLocation, Redirect, useHistory} from 'react-router-dom'
 import {getMasters, getCustomers, getOrders} from "../../getData";
 import {SERVER_URL} from "../../../../constants";
+import './MasterView.css'
 
 function MasterView(props) {
     const [masters, setMasters] = useState([]);
@@ -10,6 +11,7 @@ function MasterView(props) {
     const [customers, setCustomers] = useState([]);
 
     const location = useLocation()
+    const history = useHistory()
 
     useEffect(() => {
         if (location.state) {
@@ -53,6 +55,8 @@ function MasterView(props) {
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(body)
         });
+        alert("Письмо отправлено вам на почту")
+        history.goBack()
     }
 
     function findCustomer() {
@@ -62,7 +66,8 @@ function MasterView(props) {
     function findMaster(master_id) {
         return masters.find(m => {
             console.log(m.master_id == master_id)
-            return m.master_id == master_id})
+            return m.master_id == master_id
+        })
     }
 
     if (!location.state) {
@@ -96,26 +101,39 @@ function MasterView(props) {
         + ":00"
 
     return (
-        <div>
+        <div className={`content`}>
             <div>
                 <h3>Выберите свободного мастера</h3>
                 <p>Вы заказали
                     ремонт {constants.WORK_TYPES[location.state.data.type].message} на {location.state.data.date} в {START_TIME}-{END_TIME}</p>
             </div>
-            <div>
-                {
-                    masters?.map((master) =>
-                        <form key={master.master_id} id={master.master_id} className="mt-5">
-                            <input name={`name`} value={master.master_name} readOnly/>
-                            <input name={`ranking`} value={master.ranking} readOnly/>
-                            <button id={master.master_id} value={master.master_id} onClick={e => handleClick(e)}
-                                    disabled={!isMasterAvailable(master)}
-                            >Выбрать
-                            </button>
-                        </form>
-                    )
-                }
-            </div>
+            <Fragment>
+                <table className="table mt-5">
+                    <thead>
+                    <tr>
+                        <th scope="col">Имя</th>
+                        <th scope="col">Рейтинг</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {masters.map(master => (
+                        <tr key={master.master_id}>
+                            <td>{master.master_name}</td>
+                            <td>{master.ranking}</td>
+                            <td>
+                                <button className={`btn bt-success`} id={master.master_id} value={master.master_id}
+                                        onClick={e => handleClick(e)}
+                                        disabled={!isMasterAvailable(master)}
+                                >Выбрать
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
+
+                    </tbody>
+                </table>
+            </Fragment>
         </div>
     );
 }
