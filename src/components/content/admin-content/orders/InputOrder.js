@@ -23,6 +23,7 @@ const InputOrder = () => {
             })
                 .then(response => response.json())
                 .then(data => console.log(data));
+            window.location.reload()
         } catch (e) {
             console.log(e.message)
         }
