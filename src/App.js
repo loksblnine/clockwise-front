@@ -1,7 +1,9 @@
 //libs
-import React, {Fragment} from 'react';
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import React, {Fragment, useContext} from 'react';
+import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
+
 import * as constants from "./constants"
+
 //css
 import './App.css';
 
@@ -16,23 +18,16 @@ import ListCities from "./components/content/admin-content/cities/ListCities";
 import ListCustomers from "./components/content/admin-content/customers/ListCustomers";
 import ListMasters from "./components/content/admin-content/masters/ListMasters";
 import ListOrders from "./components/content/admin-content/orders/ListOrders";
+import {Context} from "./index";
+import AppRouter from "./components/AppRouter";
+
 
 const App = () => {
     return (
         <Fragment>
             <Router>
                 <Header/>
-                <Switch>
-                    <Route exact path='/' component={OrderForm}/>
-                    <Route exact path='/choose_master' component={MasterView}/>
-                    <Route exact path='/login' component={LoginForm}/>
-                    <Route exact path='/access_succeed' component={AdminPanel}/>
-                    <Route exact path='/masters_choosing'> <MasterView/> </Route>
-                    <Route exact path='/cities'><ListCities/></Route>
-                    <Route exact path='/orders'><ListOrders/></Route>
-                    <Route exact path='/masters'><ListMasters/></Route>
-                    <Route exact path='/customers'><ListCustomers/></Route>
-                </Switch>
+                <AppRouter/>
                 {/*<Footer/>*/}
             </Router>
 
