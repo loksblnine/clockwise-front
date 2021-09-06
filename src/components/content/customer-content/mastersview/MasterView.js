@@ -6,34 +6,32 @@ import {SERVER_URL} from "../../../../constants";
 import './MasterView.css'
 
 function MasterView(props) {
+
     const [masters, setMasters] = useState([]);
     const [orders, setOrders] = useState([]);
     const [customers, setCustomers] = useState([]);
 
     const location = useLocation()
     const history = useHistory()
-
     useEffect(() => {
         if (location.state) {
             getMasters(setMasters)
             getOrders(setOrders)
             getCustomers(setCustomers)
         }
-    }, [])
+    }, [location.state])
 
     const handleBack = (values) => {
         history.push({
-            pathname: '/masters_choosing',
-            state: {data: values}
+            pathname: '/',
+            state: location.state
         })
     }
 
     async function handleClick(e) {
         e.preventDefault()
-
         if (!findCustomer()) {
             const body = {customer_name: location.state.data.name, customer_email: location.state.data.email}
-            console.log(JSON.stringify(body))
             await fetch(constants.SERVER_URL + `/customers`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
@@ -48,22 +46,37 @@ function MasterView(props) {
         const master = findMaster(e.target.value)
         const text = `Спасибо за заказ ${customer.customer_name}, мастер ${master.master_name} будет у вас ${order.date} в ${order.time}`
 
-        const body = {
-            ...master,
-            ...customer,
+        const bodyOrder = {
+            master_id: master.master_id,
+            customer_id: customer.customer_id,
             city_id: order.city,
             order_time: T,
             work_id: order.type,
-            message: text
         }
-        console.log(JSON.stringify(body))
-        await fetch(SERVER_URL + `/orders`, {
+        console.log(JSON.stringify(bodyOrder))
+        const response = await fetch(SERVER_URL + `/orders`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(body)
+            body: JSON.stringify(bodyOrder)
         });
-        alert("Письмо отправлено вам на почту")
-        history.goBack()
+        if (response.status === 200) {
+            const bodyMessage = {
+                email: customer.customer_email,
+                message: text
+            }
+            console.log(JSON.stringify(bodyMessage))
+            const response = await fetch(SERVER_URL + `/send`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(bodyMessage)
+            });
+            if (response.status === 200) {
+                alert("Письмо отправлено вам на почту")
+                history.goBack()
+            }
+        } else {
+            alert("Возникли трудности")
+        }
     }
 
     function findCustomer() {
@@ -85,18 +98,17 @@ function MasterView(props) {
     const isMasterAvailable = (master) => {
         let flag = 0;
         orders.forEach(o => {
-            {
-                if (o.master_id === master.master_id) {
-                    if (o.order_time.split('T')[0] === location.state.data.date) {
-                        if (o.order_time.split('T')[1] > START_TIME
-                            && o.order_time.split('T')[1] < END_TIME
-                        ) {
-                            flag++
-                            return
-                        }
+            if (o.master_id === master.master_id) {
+                if (o.order_time.split('T')[0] === location.state.data.date) {
+                    if (o.order_time.split('T')[1] > START_TIME
+                        && o.order_time.split('T')[1] < END_TIME
+                    ) {
+                        flag++
+                        return
                     }
                 }
             }
+
         })
         return flag !== 1;
     }
