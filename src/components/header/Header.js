@@ -1,55 +1,65 @@
-import React, {useEffect, useState, ReactElement} from 'react'
-import Button from "@material-ui/core/Button";
-import {useLocation} from "react-router-dom";
+import React, {useContext} from 'react'
+import {Button} from "@material-ui/core";
 import imageSrc from "../../images/logo.png"
 import './Header.css'
+import {Context} from "../../index";
+import {observer} from 'mobx-react-lite'
+import {useHistory} from "react-router-dom";
+import Navbar from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
+import Container from "react-bootstrap/Container";
 
-function ButtonLogin() {
+const Logo = () => {
     return (
-        <div className={`header-button`}>
+        <div>
             <a href={'/'}>
-                <button className="btn my-2 my-sm-0">К заказам</button>
-            </a>
-        </div>
-    )
-}
-
-function ButtonAccessSucceed() {
-    return (
-        <div className={`header-button`}>
-            <a href={'/'}>
-                <button className="btn my-2 my-sm-0">Выход</button>
-            </a>
-        </div>
-    )
-}
-
-function ButtonUnauthorisedUser() {
-    return (
-        <div className={`header-button`}>
-            <a href={'/login'}>
-                <button className="btn my-2 my-sm-0">Вход</button>
-            </a>
-        </div>
-    )
-}
-
-function Header(props) {
-    const location = useLocation()
-    return (
-        <div className="header">
-            <div>
                 <img title="my-img" src={imageSrc} alt="my-img"/>
-            </div>
-            {location.pathname === '/login'
-                ? <ButtonLogin/>
-                : location.pathname !== '/access_succeed'
-                    ? <ButtonUnauthorisedUser/>
-                    : <ButtonAccessSucceed/>
-            }
-
+            </a>
         </div>
-    );
+    )
 }
+
+const Header = observer((props) => {
+    const {user} = useContext(Context)
+    const history = useHistory()
+
+    const logOut = () => {
+        user.setUser({})
+        user.setIsAuth(false)
+    }
+
+    return (
+        <Navbar variant="dark">
+            <Container>
+                <Logo/>
+                {user.isAuth ?
+                    <Nav className="ml-auto" style={{color: 'white'}}>
+                        <Button
+                            variant={"outline-light"}
+                            onClick={() => history.push('/access_succeed')}
+                            className={`header-button`}
+                        >
+                            Админ панель
+                        </Button>
+
+                        <Button
+                            variant={"outline-light"}
+                            onClick={() => logOut()}
+                            className="ml-2"
+                        >
+                            Выйти
+                        </Button>
+
+                    </Nav>
+                    :
+                    <Nav className="ml-auto" style={{color: 'white'}}>
+                        <Button variant={"outline-light"} onClick={() => history.push('/login')}>Авторизация</Button>
+                    </Nav>
+                }
+            </Container>
+        </Navbar>
+
+    );
+});
 
 export default Header
