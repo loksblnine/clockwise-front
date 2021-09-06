@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom
 import Button from "@material-ui/core/Button"
 import {LinkContainer} from 'react-router-bootstrap'
 import './AdminPanel.css'
-
+import {observer} from "mobx-react-lite";
 
 //components
 import ListMasters from "../masters/ListMasters";
@@ -12,9 +12,8 @@ import ListCustomers from "../customers/ListCustomers";
 import ListOrders from "../orders/ListOrders";
 import {Context} from "../../../../index";
 
-const AdminPanel = () => {
+const AdminPanel = observer(() => {
     const {user} = useContext(Context);
-    console.log(user)
     return (
         <Router>
             <div className="router">
@@ -33,7 +32,7 @@ const AdminPanel = () => {
                     <Button className="btn btn-xl">Заказы</Button>
                 </LinkContainer>
                 <Switch>
-                    <Route exact path='/masters' component={ListMasters} />
+                    <Route exact path='/masters' component={ListMasters}/>
                     <Route exact path='/cities' component={ListCities}/>
                     <Route exact path='/customers' component={ListCustomers}/>
                     <Route exact path='/orders' component={ListOrders}/>
@@ -41,6 +40,6 @@ const AdminPanel = () => {
             </div>
         </Router>
     );
-}
+})
 
 export default AdminPanel;
