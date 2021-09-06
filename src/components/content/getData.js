@@ -1,4 +1,3 @@
-import React from 'react';
 import {SERVER_URL} from "../../constants";
 
 export const getCities = (setCities) => {
@@ -13,7 +12,6 @@ export const getCities = (setCities) => {
             console.error(e)
         })
 }
-
 
 export const getCustomers = (setCustomers) => {
     fetch(SERVER_URL + `/customers`)
