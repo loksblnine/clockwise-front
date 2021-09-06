@@ -1,6 +1,5 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
-import {useLocation} from "react-router-dom";
 
 const EditCity = ({city}) => {
     const [city_name, setCityName] = useState(city.city_name)

@@ -1,8 +1,8 @@
 //libs
-import React, {Fragment, useContext} from 'react';
-import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
-
-import * as constants from "./constants"
+import React, {Fragment, useContext, useEffect, useState} from 'react';
+import {BrowserRouter as Router} from "react-router-dom";
+import {check} from "./http/userAPI";
+import {Spinner} from "react-bootstrap";
 
 //css
 import './App.css';
@@ -16,12 +16,24 @@ import {observer} from "mobx-react-lite";
 
 const App = observer(() => {
     const {user} = useContext(Context)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        check().then(data => {
+            user.setUser(true)
+            user.setIsAuth(true)
+        }).finally(() => setLoading(false))
+    }, [])
+
+    if (loading) {
+        return <Spinner animation={"grow"}/>
+    }
+
     return (
         <Fragment>
             <Router>
                 <Header/>
                 <AppRouter/>
-                {/*<Footer/>*/}
             </Router>
 
         </Fragment>

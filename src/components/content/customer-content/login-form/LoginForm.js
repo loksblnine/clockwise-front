@@ -2,13 +2,10 @@ import React, {useContext} from 'react';
 import {useFormik} from 'formik';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import * as constants from "../../../../constants";
 import {Context} from "../../../../index";
 import {useHistory} from "react-router-dom";
 import {observer} from "mobx-react-lite";
 import {login} from "../../../../http/userAPI";
-import jwt_decode from "jwt-decode";
-import {authRoutes} from "../../../../constants";
 
 const validate = (values) => {
     const errors = {};
@@ -34,14 +31,19 @@ const LoginForm = observer(() => {
                 password: '',
             },
             validate,
-            onSubmit: async (values) => {
+            onSubmit:  async (values) => {
                 try {
-                    await login(formik.values.email, formik.values.password)
-                    await user.setIsAuth(true)
-                    await history.push('/access_succeed')
+                    const resp = await login(formik.values.email, formik.values.password)
+                    const token = localStorage.getItem('token')
+                    if (token) {
+                        user.setUser(user)
+                        user.setIsAuth(true)
+                        history.push('/access_succeed')
+                    }
                 } catch (e) {
                     alert(e.response.data.message)
                 }
+
             }
         })
         const loginPageStyle = {
