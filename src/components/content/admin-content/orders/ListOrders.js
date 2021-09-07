@@ -2,10 +2,20 @@ import React, {Fragment, useEffect, useState} from "react";
 import EditOrder from "./EditOrder";
 import InputOrder from "./InputOrder";
 import {SERVER_URL} from "../../../../constants";
-import {getOrders} from "../../getData";
+import {getCities, getCustomers, getMasters, getOrders} from "../../getData";
+import {WORK_TYPES} from "../../../../constants";
+
+
 
 const ListOrders = () => {
     const [orders, setOrders] = useState([]);
+    const [cities, setCities] = useState([]);
+    const [customers, setCustomers] = useState([]);
+    const [masters, setMasters] = useState([]);
+
+    function findCustomer(customerEmail) {
+        return customers.find(c => c.customer_email === customerEmail).customer_email
+    }
 
     const deleteOrder = async (id) => {
         try {
@@ -22,6 +32,9 @@ const ListOrders = () => {
 
     useEffect(() => {
         getOrders(setOrders)
+        getCities(setCities)
+        getCustomers(setCustomers)
+        getMasters(setMasters)
     }, [])
 
     return (
@@ -35,7 +48,8 @@ const ListOrders = () => {
                     <th scope="col"># мастера</th>
                     <th scope="col"># покупателя</th>
                     <th scope="col"># города</th>
-                    <th scope="col"># типа работы</th>
+                    <th scope="col">Тип работы</th>
+                    <th scope="col">Дата заказа</th>
                     <th scope="col">Время заказа</th>
                     <th scope="col">Редактировать</th>
                     <th scope="col">Удалить</th>
@@ -48,10 +62,11 @@ const ListOrders = () => {
                         <tr key={order.order_id}>
                             <th scope="row"> {order.order_id}</th>
                             <td>{order.master_id}</td>
-                            <td>{order.customer_id}</td>
-                            <td>{order.city_id}</td>
-                            <td>{order.work_id}</td>
-                            <td>{order.order_time}</td>
+                            <td>{(order.customer_id)}</td>
+                            <td>{(order.city_id)}</td>
+                            <td>{WORK_TYPES[order.work_id].key}</td>
+                            <td>{order.order_time.split('T')[0]}</td>
+                            <td>{order.order_time.split('T')[1].split('.')[0]}</td>
                             <td><EditOrder order={order}/></td>
                             <td>
                                 <button className="btn btn-danger"

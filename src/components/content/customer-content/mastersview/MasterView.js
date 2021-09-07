@@ -4,6 +4,7 @@ import {useLocation, Redirect, useHistory} from 'react-router-dom'
 import {getMasters, getCustomers, getOrders} from "../../getData";
 import {SERVER_URL} from "../../../../constants";
 import './MasterView.css'
+import {toast} from "react-toastify";
 
 function MasterView(props) {
 
@@ -71,7 +72,7 @@ function MasterView(props) {
                 body: JSON.stringify(bodyMessage)
             });
             if (response.status === 200) {
-                alert("Письмо отправлено вам на почту")
+                toast("Письмо отправлено вам на почту")
                 history.goBack()
             }
         } else {

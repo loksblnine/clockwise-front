@@ -6,12 +6,13 @@ import {Spinner} from "react-bootstrap";
 
 //css
 import './App.css';
-
+import 'react-toastify/dist/ReactToastify.css';
 //components
 import Header from "./components/header/Header";
 import {Context} from "./index";
 import AppRouter from "./components/AppRouter";
 import {observer} from "mobx-react-lite";
+import {ToastContainer} from "react-toastify";
 
 
 const App = observer(() => {
@@ -35,7 +36,7 @@ const App = observer(() => {
                 <Header/>
                 <AppRouter/>
             </Router>
-
+            <ToastContainer />
         </Fragment>
     );
 })
