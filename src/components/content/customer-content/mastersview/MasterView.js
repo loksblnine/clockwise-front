@@ -141,7 +141,7 @@ function MasterView(props) {
                             <td>{master.master_name}</td>
                             <td>{master.ranking}</td>
                             <td>
-                                <button className={`btn bt-success`} id={master.master_id} value={master.master_id}
+                                <button className="btn btn-success" id={master.master_id} value={master.master_id}
                                         onClick={e => handleClick(e)}
                                         disabled={!isMasterAvailable(master)}
                                 >Выбрать
@@ -153,7 +153,7 @@ function MasterView(props) {
                     </tbody>
                 </table>
             </Fragment>
-            <button className={`btn bt-warning`} onClick={handleBack}>Назад
+            <button className="btn btn-primary" onClick={handleBack}>Назад
             </button>
         </div>
     );
