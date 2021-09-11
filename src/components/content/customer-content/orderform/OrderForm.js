@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useFormik} from 'formik';
 import * as constants from "../../../../constants";
 import {withRouter, useHistory, useLocation} from "react-router-dom";
 import {getCities} from "../../getData";
 import './OrderStyles.css'
 import {observer} from "mobx-react-lite";
+import {Context} from "../../../../index";
 
 const validate = (values) => {
     const errors = {};
@@ -35,8 +36,8 @@ const orderPageStyle = {
 };
 
 const OrderForm = observer((props) => {
+        const {user} = useContext(Context)
         const [cities, setCities] = useState([]);
-
         const history = useHistory()
         const location = useLocation()
 
@@ -50,13 +51,13 @@ const OrderForm = observer((props) => {
                 email: location.state === undefined ? '' : location.state.data.email,
                 city: location.state === undefined ? '1' : location.state.data.city,
                 date: location.state === undefined ? constants.DATE_FROM : location.state.data.date,
-                time: location.state === undefined ? "14:00": location.state.data.time,
+                time: location.state === undefined ? "14:00" : location.state.data.time,
                 type: location.state === undefined ? '1' : location.state.data.type
             },
             validate,
             onSubmit: (values) => {
                 history.push({
-                     pathname: '/masters_choosing',
+                    pathname: '/masters_choosing',
                     state: {data: values}
                 })
             },
