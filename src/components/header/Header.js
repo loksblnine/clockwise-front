@@ -4,12 +4,10 @@ import imageSrc from "../../images/logo.png"
 import './Header.css'
 import {Context} from "../../index";
 import {observer} from 'mobx-react-lite'
-import {Link, useHistory} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
-import {check} from "../../http/userAPI";
-
 
 const Logo = () => {
     const history = useHistory()
