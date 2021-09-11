@@ -3,7 +3,6 @@ import React, {Fragment, useContext, useEffect, useState} from 'react';
 import {BrowserRouter as Router} from "react-router-dom";
 import {check} from "./http/userAPI";
 import {Spinner} from "react-bootstrap";
-
 //css
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,12 +17,13 @@ import {ToastContainer} from "react-toastify";
 const App = observer(() => {
     const {user} = useContext(Context)
     const [loading, setLoading] = useState(true)
-
     useEffect(() => {
-        check().then(data => {
-            user.setUser(true)
-            user.setIsAuth(true)
-        }).finally(() => setLoading(false))
+        check()
+            .then(() => {
+                user.setUser(true)
+                user.setIsAuth(!!localStorage.getItem('token'))
+            })
+            .finally(() => setLoading(false))
     }, [])
 
     if (loading) {
@@ -36,7 +36,7 @@ const App = observer(() => {
                 <Header/>
                 <AppRouter/>
             </Router>
-            <ToastContainer />
+            <ToastContainer/>
         </Fragment>
     );
 })

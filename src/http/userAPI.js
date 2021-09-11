@@ -27,7 +27,6 @@ export const check = async () => {
         method: "GET",
         headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem('token')}`}
     })
-        .then(response => response.json())
-        .then(data => localStorage.setItem('token', data.token))
-    // return jwt_decode(data.token)
+
+
 }

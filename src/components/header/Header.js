@@ -4,17 +4,23 @@ import imageSrc from "../../images/logo.png"
 import './Header.css'
 import {Context} from "../../index";
 import {observer} from 'mobx-react-lite'
-import {useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
+import {check} from "../../http/userAPI";
+
 
 const Logo = () => {
+    const history = useHistory()
+    const handleClick = (event) => {
+       history.push('/')
+    }
     return (
         <div>
-            <a href={'/'}>
-                <img title="my-img" src={imageSrc} alt="my-img"/>
-            </a>
+            <Nav.Link>
+                <img title="Вернуться к заказам" src={imageSrc} alt="my-img" onClick={e=>handleClick(e)}/>
+            </Nav.Link>
         </div>
     )
 }
@@ -22,34 +28,32 @@ const Logo = () => {
 const Header = observer((props) => {
     const {user} = useContext(Context)
     const history = useHistory()
-
     const logOut = () => {
         user.setUser({})
         user.setIsAuth(false)
+        history.push(
+            {pathname: '/'}
+        )
     }
 
     return (
         <Navbar variant="dark">
             <Container>
                 <Logo/>
-                {user.isAuth ?
+                {(user.isAuth)?
                     <Nav className="ml-auto" style={{color: 'white'}}>
                         <Button
-                            variant={"outline-light"}
                             onClick={() => history.push('/access_succeed')}
                             className={`header-button`}
                         >
                             Админ панель
                         </Button>
-
                         <Button
-                            variant={"outline-light"}
                             onClick={() => logOut()}
                             className="ml-2"
                         >
                             Выйти
                         </Button>
-
                     </Nav>
                     :
                     <Nav className="ml-auto" style={{color: 'white'}}>

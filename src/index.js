@@ -10,9 +10,7 @@ ReactDOM.render(
     <Context.Provider value={{
         user: new UserStore()
     }}>
-        <React.StrictMode>
-            <App/>
-        </React.StrictMode>
+        <App/>
     </Context.Provider>,
     document.getElementById('root')
 );
