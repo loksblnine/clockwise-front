@@ -41,9 +41,9 @@ const EditMaster = ({master}) => {
                         </div>
                         <div className="modal-body">
                             <input className="form-control" placeholder="Иван Иванович Иванов" value={master_name}
-                                   onChange={e => setMasterName(e.target.value)}/>
+                                   onChange={e => setMasterName(e.target.value)} required/>
                             <input className="form-control" placeholder="5.0" value={ranking}
-                                   onChange={e => setRanking(e.target.value)}/>
+                                   onChange={e => setRanking(e.target.value)} required/>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть</button>

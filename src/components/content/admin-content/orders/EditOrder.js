@@ -51,19 +51,19 @@ const EditOrder = (initialOrder) => {
                         </div>
                         <div className="modal-body">
                             <input className="form-control" value={order.master_id} name={`master_id`}
-                                   onChange={handleChange}/>
+                                   onChange={handleChange} required/>
 
                             <input className="form-control" value={order.customer_id} name={`customer_id`}
-                                   onChange={handleChange}/>
+                                   onChange={handleChange} required/>
 
                             <input className="form-control" value={order.city_id} name={`city_id`}
-                                   onChange={handleChange}/>
+                                   onChange={handleChange} required/>
 
                             <input className="form-control" value={order.work_id} name={`work_id`}
-                                   onChange={handleChange}/>
+                                   onChange={handleChange} required/>
 
                             <input className="form-control" value={order.order_time} name={`order_time`}
-                                   onChange={handleChange}/>
+                                   onChange={handleChange} required/>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть</button>

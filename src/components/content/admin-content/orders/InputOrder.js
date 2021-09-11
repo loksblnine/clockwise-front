@@ -3,10 +3,10 @@ import {SERVER_URL} from "../../../../constants";
 
 const InputOrder = () => {
     const [order, setOrder] = useState({
-        customer_id:'',
-        master_id:'',
-        city_id:'',
-        work_id:'',
+        customer_id: '',
+        master_id: '',
+        city_id: '',
+        work_id: '',
         order_time: ''
     });
 
@@ -29,7 +29,7 @@ const InputOrder = () => {
         }
     }
     const handleChange = e => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setOrder(prevState => ({
             ...prevState,
             [name]: value
@@ -55,19 +55,19 @@ const InputOrder = () => {
                         </div>
                         <div className="modal-body">
                             <input className="form-control" value={order.master_id} name={`master_id`}
-                                   onChange={handleChange}/>
+                                   onChange={handleChange} required/>
 
                             <input className="form-control" value={order.customer_id} name={`customer_id`}
-                                   onChange={handleChange}/>
+                                   onChange={handleChange} required/>
 
                             <input className="form-control" value={order.city_id} name={`city_id`}
-                                   onChange={handleChange}/>
+                                   onChange={handleChange} required/>
 
                             <input className="form-control" value={order.work_id} name={`work_id`}
-                                   onChange={handleChange}/>
+                                   onChange={handleChange} required/>
 
                             <input className="form-control" value={order.order_time} name={`order_time`}
-                                   onChange={handleChange}/>
+                                   onChange={handleChange} required/>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть</button>

@@ -39,7 +39,7 @@ const EditCity = ({city}) => {
                         </div>
                         <div className="modal-body">
                             <input className="form-control" placeholder="Город" value={city_name}
-                                   onChange={e => setCityName(e.target.value)}/>
+                                   onChange={e => setCityName(e.target.value)} required/>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть</button>

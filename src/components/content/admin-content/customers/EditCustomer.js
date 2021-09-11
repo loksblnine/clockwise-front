@@ -41,9 +41,9 @@ const EditCustomer = ({customer}) => {
                         </div>
                         <div className="modal-body">
                             <input className="form-control" placeholder="Иван Иванович Иванов" value={customer_name}
-                                   onChange={e => setCustomerName(e.target.value)}/>
+                                   onChange={e => setCustomerName(e.target.value)} required/>
                             <input className="form-control" placeholder="5.0" value={customer_email}
-                                   onChange={e => setCustomerEmail(e.target.value)}/>
+                                   onChange={e => setCustomerEmail(e.target.value)} required/>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть</button>
