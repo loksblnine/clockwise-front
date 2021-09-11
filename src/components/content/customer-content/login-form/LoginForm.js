@@ -6,6 +6,7 @@ import {Context} from "../../../../index";
 import {useHistory} from "react-router-dom";
 import {observer} from "mobx-react-lite";
 import {login} from "../../../../http/userAPI";
+import {toast} from "react-toastify";
 
 const validate = (values) => {
     const errors = {};
@@ -31,7 +32,7 @@ const LoginForm = observer(() => {
                 password: '',
             },
             validate,
-            onSubmit:  async (values) => {
+            onSubmit: async (values) => {
                 try {
                     const resp = await login(formik.values.email, formik.values.password)
                     const token = localStorage.getItem('token')
@@ -41,7 +42,7 @@ const LoginForm = observer(() => {
                         history.push('/access_succeed')
                     }
                 } catch (e) {
-                    alert(e.response.data.message)
+                    toast("Неверный логин или пароль!")
                 }
 
             }
