@@ -54,7 +54,6 @@ function MasterView(props) {
             order_time: T,
             work_id: order.type,
         }
-        console.log(JSON.stringify(bodyOrder))
         const response = await fetch(SERVER_URL + `/orders`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
