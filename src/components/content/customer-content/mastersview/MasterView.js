@@ -75,7 +75,7 @@ function MasterView(props) {
                 history.goBack()
             }
         } else {
-            alert("Возникли трудности")
+            toast("Возникли трудности")
         }
     }
 

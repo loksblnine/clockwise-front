@@ -74,7 +74,6 @@ const ListOrders = () => {
                             </td>
                         </tr>
                     ))}
-
                 </tbody>
             </table>
             <InputOrder/>

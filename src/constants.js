@@ -7,24 +7,24 @@ import ListCustomers from "./components/content/admin-content/customers/ListCust
 import LoginForm from "./components/content/customer-content/login-form/LoginForm";
 import AdminPanel from "./components/content/admin-content/admin-panel/AdminPanel";
 
-export const SERVER_URL =/* process.env.NODE_ENV === "development"
-    ? "http://localhost:5000" :*/ "https://enigmatic-spire-58695.herokuapp.com"
+export const SERVER_URL = process.env.NODE_ENV === "development"
+    ? "http://localhost:5000" : "https://enigmatic-spire-58695.herokuapp.com"
 
 export const WORK_TYPES = {
     1: {
-        key: "small",
+        key: "маленькие",
         id: "1",
         message: "маленьких часов ",
         value: "1"
     },
     2: {
-        key: "average",
+        key: "средние",
         id: "2",
         message: "средних часов ",
         value: "2"
     },
     3: {
-        key: "big",
+        key: "большие",
         id: "3",
         message: "больших часов ",
         value: "3"
