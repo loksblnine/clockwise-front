@@ -27,6 +27,4 @@ export const check = async () => {
         method: "GET",
         headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem('token')}`}
     })
-
-
 }
