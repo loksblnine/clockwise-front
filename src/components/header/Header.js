@@ -32,6 +32,7 @@ const Header = observer((props) => {
         history.push(
             {pathname: '/'}
         )
+        localStorage.removeItem('token')
     }
 
     return (
