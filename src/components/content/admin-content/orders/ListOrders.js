@@ -39,7 +39,6 @@ const ListOrders = () => {
 
     return (
         <Fragment>
-            {" "}
             <h2 className="text-left mt-5">Список заказов</h2>
             <table className="table mt-5 text-justify">
                 <thead>

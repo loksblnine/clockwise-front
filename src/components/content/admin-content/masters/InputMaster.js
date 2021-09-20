@@ -40,9 +40,11 @@ const InputMaster = () => {
                             </button>
                         </div>
                         <div className="modal-body">
-                            <input className="form-control" placeholder="Иван Иванович Иванов" value={master_name}
+                            <label htmlFor={`name`}>ФИО мастера</label>
+                            <input className="form-control" placeholder="Иван Иванович Иванов" value={master_name} name={`name`}
                                    onChange={e => setMasterName(e.target.value)} required/>
-                            <input className="form-control" placeholder="5.0" value={ranking}
+                            <label htmlFor={`rating`}>Рейтинг</label>
+                            <input className="form-control" placeholder="5.0" value={ranking} name={`rating`}
                                    onChange={e => setRanking(e.target.value)} required/>
                         </div>
                         <div className="modal-footer">

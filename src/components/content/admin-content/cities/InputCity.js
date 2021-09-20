@@ -1,8 +1,11 @@
 import React, {Fragment, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
+import {useHistory} from "react-router-dom";
+import {toast} from "react-toastify";
 
 const InputCity = () => {
     const [city_name, setCityName] = useState("")
+    const history = useHistory()
 
     const onSubmitForm = async e => {
         e.preventDefault();
@@ -15,7 +18,7 @@ const InputCity = () => {
             })
                 .then(response => response.json())
                 .then(data => console.log(data));
-            window.location.reload()
+            history.go(0)
         } catch (e) {
             console.log(e.message)
         }
@@ -23,11 +26,11 @@ const InputCity = () => {
     return (
         <Fragment>
             <button type="button" className="btn btn-success" data-toggle="modal"
-                    data-target="#addTowm">
+                    data-target="#addTown">
                 Добавить
             </button>
 
-            <div className="modal fade" id="addTowm" tabIndex="-1" role="dialog"
+            <div className="modal fade" id="addTown" tabIndex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
@@ -38,18 +41,21 @@ const InputCity = () => {
                             </button>
                         </div>
                         <div className="modal-body">
-                            <input className="form-control" placeholder="Город" value={city_name}
+                            <label htmlFor={`name`}>Название города</label>
+                            <input className="form-control" placeholder="Город" value={city_name} name={`name`}
                                    onChange={e => setCityName(e.target.value)} required/>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                            <button type="button" className="btn btn-primary"
+                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть
+                            </button>
+                            <button type="submit" className="btn btn-primary"
                                     onClick={e => onSubmitForm(e)}>Сохранить изменения
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
+
         </Fragment>
     )
 }

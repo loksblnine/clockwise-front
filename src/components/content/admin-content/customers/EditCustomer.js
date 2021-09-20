@@ -1,10 +1,12 @@
 import React, {Fragment, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
+import {toast} from "react-toastify";
+import {useHistory} from "react-router-dom";
 
 const EditCustomer = ({customer}) => {
     const [customer_name, setCustomerName] = useState(customer.customer_name)
     const [customer_email, setCustomerEmail] = useState(customer.customer_email)
-
+    const history = useHistory()
     const updateCustomer = async (e) => {
         e.preventDefault()
         try {
@@ -16,10 +18,11 @@ const EditCustomer = ({customer}) => {
             })
                 .then(response => response.json())
                 .then(data => console.log(data));
-            window.location.reload()
+            history.go(0)
         } catch (e) {
             console.log(e.message)
         }
+
     }
 
     return (
@@ -40,14 +43,17 @@ const EditCustomer = ({customer}) => {
                             </button>
                         </div>
                         <div className="modal-body">
+                            <label htmlFor={`name`}>ФИО покупателя</label>
                             <input className="form-control" placeholder="Иван Иванович Иванов" value={customer_name}
+                                   name={`name`}
                                    onChange={e => setCustomerName(e.target.value)} required/>
-                            <input className="form-control" placeholder="5.0" value={customer_email}
+                            <label htmlFor={`email`}>e-mail</label>
+                            <input className="form-control" value={customer_email} name={`email`}
                                    onChange={e => setCustomerEmail(e.target.value)} required/>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                            <button type="button" className="btn btn-primary"
+                            <button type="submit" className="btn btn-primary"
                                     onClick={e => updateCustomer(e)}>Сохранить изменения
                             </button>
                         </div>

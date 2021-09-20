@@ -1,12 +1,15 @@
 import React, {Fragment, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
+import {useHistory} from "react-router-dom";
+import {toast} from "react-toastify";
 
 const EditMaster = ({master}) => {
     const [master_name, setMasterName] = useState(master.master_name)
     const [ranking, setRanking] = useState(master.ranking)
-
+    const history = useHistory()
     const updateMaster = async (e) => {
         e.preventDefault()
+
         try {
             const body = {master_name, ranking}
             await fetch(SERVER_URL + `/masters/${master.master_id}`, {
@@ -16,10 +19,11 @@ const EditMaster = ({master}) => {
             })
                 .then(response => response.json())
                 .then(data => console.log(data));
-            window.location.reload()
+            history.go(0)
         } catch (e) {
             console.log(e.message)
         }
+
     }
 
     return (
@@ -40,14 +44,17 @@ const EditMaster = ({master}) => {
                             </button>
                         </div>
                         <div className="modal-body">
+                            <label htmlFor={`name`}>ФИО мастера</label>
                             <input className="form-control" placeholder="Иван Иванович Иванов" value={master_name}
+                                   name={`name`}
                                    onChange={e => setMasterName(e.target.value)} required/>
-                            <input className="form-control" placeholder="5.0" value={ranking}
+                            <label htmlFor={`rating`}>Рейтинг</label>
+                            <input className="form-control" placeholder="5.0" value={ranking} name={`rating`}
                                    onChange={e => setRanking(e.target.value)} required/>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                            <button type="button" className="btn btn-primary"
+                            <button type="submit" className="btn btn-primary"
                                     onClick={e => updateMaster(e)}>Сохранить изменения
                             </button>
                         </div>
