@@ -13,7 +13,6 @@ import AppRouter from "./components/AppRouter";
 import {observer} from "mobx-react-lite";
 import {ToastContainer} from "react-toastify";
 
-
 const App = observer(() => {
     const {user} = useContext(Context)
     const [loading, setLoading] = useState(true)
