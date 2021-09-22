@@ -10,26 +10,29 @@ const InputOrder = () => {
     const [cities, setCities] = useState([]);
     const [masters, setMasters] = useState([]);
     const [customers, setCustomers] = useState([]);
-
-    useEffect(() => {
-        getCities(setCities)
-        getMasters(setMasters)
-        getCustomers(setCustomers)
-    }, [])
+    const [orders, setOrders] = useState([]);
 
     const [order, setOrder] = useState({
-        customer_id: '',
-        master_id: '',
-        city_id: '',
+        customer_id: "",
+        master_id: "",
+        city_id: "",
         work_id: '1',
         date: '',
         time: ''
     });
 
+    useEffect(() => {
+        getCities(setCities)
+        getMasters(setMasters)
+        getCustomers(setCustomers)
+        getOrders(setOrders)
+    }, [])
+
     const onSubmitForm = async e => {
         e.preventDefault();
         try {
             const body = {order}
+            body.order.time = (new Number(body.order.time.split(':')[0])+3)+":00"
             body.order.order_time = body.order.date + 'T' + body.order.time
             console.log(JSON.stringify(body.order))
             await fetch(constants.SERVER_URL + `/orders`, {
@@ -44,6 +47,7 @@ const InputOrder = () => {
             toast(e.message)
         }
     }
+
     const handleChange = e => {
         const {name, value} = e.target;
         setOrder(prevState => ({
@@ -71,8 +75,9 @@ const InputOrder = () => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <label>Индекс мастера</label>
-                                <select className="form-control" value={order.master_id} name={`master_id`} id={`master_id`}
+                                <label>Имя мастера</label>
+                                <select className="form-control" name={`master_id`}
+                                        id={`master_id`} defaultValue={`-1`}
                                         onChange={handleChange} required>
                                     <option value={`-1`} disabled={true}>---Выбрать мастера---</option>
                                     {masters?.map(master =>
@@ -80,8 +85,9 @@ const InputOrder = () => {
                                                 value={master.master_id}>{master.master_name} </option>)}
                                 </select>
 
-                                <label>Индекс покупателя</label>
-                                <select className="form-control" value={order.customer_id} name={`customer_id`}
+                                <label>Имя покупателя</label>
+                                <select className="form-control" name={`customer_id`}
+                                        defaultValue={`-1`}
                                         onChange={handleChange} required>
                                     <option value={`-1`} disabled={true}>---Выбрать покупателя---</option>
                                     {customers?.map(customer =>
@@ -90,7 +96,7 @@ const InputOrder = () => {
                                 </select>
 
                                 <label>Город</label>
-                                <select className="form-control" value={cities[0]?.city_id} name={`city_id`}
+                                <select className="form-control" name={`city_id`} defaultValue={`-1`}
                                         onChange={handleChange} required>
                                     <option value={`-1`} disabled={true}>---Выбрать город---</option>
                                     {cities?.map(city =>

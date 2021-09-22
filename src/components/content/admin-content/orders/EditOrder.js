@@ -1,6 +1,6 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
-import {getCities, getCustomers, getMasters} from "../../getData";
+import {getCities, getCustomers, getMasters, getOrders} from "../../getData";
 import {useHistory} from "react-router-dom";
 import * as constants from "../../../../constants";
 
@@ -15,16 +15,19 @@ const EditOrder = (initialOrder) => {
     const [cities, setCities] = useState([]);
     const [masters, setMasters] = useState([]);
     const [customers, setCustomers] = useState([]);
+    const [orders, setOrders] = useState([]);
     useEffect(() => {
         getCities(setCities)
         getMasters(setMasters)
         getCustomers(setCustomers)
+        getOrders(setOrders)
     }, [])
 
     const updateOrder = async (e) => {
         e.preventDefault()
         try {
             const body = {order}
+            body.order.time = (new Number(body.order.time.split(':')[0]) + 3) + ":00"
             body.order.order_time = body.order.date + 'T' + body.order.time
             await fetch(SERVER_URL + `/orders/${order.order_id}`, {
                 method: "PUT",
@@ -46,7 +49,6 @@ const EditOrder = (initialOrder) => {
             [name]: value
         }));
     };
-
     return (
         <Fragment>
             <button type="button" className="btn btn-warning" data-toggle="modal"
@@ -66,7 +68,7 @@ const EditOrder = (initialOrder) => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <label>Индекс мастера</label>
+                                <label>Имя мастера</label>
                                 <select className="form-control" value={order.master_id} name={`master_id`}
                                         onChange={handleChange} required>
                                     <option value={`-1`} disabled={true}>---Выбрать мастера---</option>
@@ -75,7 +77,7 @@ const EditOrder = (initialOrder) => {
                                                 value={master.master_id}>{master.master_name} </option>)}
                                 </select>
 
-                                <label>Индекс покупателя</label>
+                                <label>Имя покупателя</label>
                                 <select className="form-control" value={order.customer_id} name={`customer_id`}
                                         onChange={handleChange} required>
                                     <option value={`-1`} disabled={true}>---Выбрать покупателя---</option>
@@ -130,5 +132,5 @@ const EditOrder = (initialOrder) => {
         </Fragment>
     )
 }
-//-3 часа из-за часовых поясов
+
 export default EditOrder;
