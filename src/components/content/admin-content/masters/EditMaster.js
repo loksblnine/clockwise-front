@@ -53,7 +53,7 @@ const EditMaster = ({master}) => {
                                 <label htmlFor={`rating`}>Рейтинг</label>
                                 <input className="form-control" placeholder="5.0" value={ranking} name={`rating`}
                                        onChange={e => setRanking(e.target.value)}
-                                       required pattern="([1-4])|([1-4].[05])|(5.0)"
+                                       required pattern="([1-5])|([1-4].[05])|(5.0)"
                                 />
                             </div>
                             <div className="modal-footer">

@@ -7,7 +7,6 @@ const InputMaster = () => {
 
     const onSubmitForm = async e => {
         e.preventDefault();
-
         try {
             const body = {master_name, ranking}
             await fetch(SERVER_URL + `/masters`, {
@@ -35,7 +34,7 @@ const InputMaster = () => {
                     <div className="modal-content">
                         <form onSubmit={event => onSubmitForm(event)}>
                             <div className="modal-header">
-                                <h1 className="modal-title" id="exampleModalLabel">Добавить мастера</h1>
+                                <h2 className="modal-title" id="exampleModalLabel">Добавить мастера</h2>
                                 <button type="button" className="close" data-dismiss="modal">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -49,13 +48,13 @@ const InputMaster = () => {
                                 <label htmlFor={`rating`}>Рейтинг</label>
                                 <input className="form-control" placeholder="5.0" value={ranking} name={`rating`}
                                        onChange={e => setRanking(e.target.value)}
-                                       required pattern="([1-4])|([1-4].[05])|(5.0)"
+                                       required pattern="([1-5])|([1-4].[05])|(5.0)"
                                 />
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть
                                 </button>
-                                <button type="button" className="btn btn-primary">
+                                <button type="submit" className="btn btn-primary">
                                     Сохранить изменения
                                 </button>
                             </div>
