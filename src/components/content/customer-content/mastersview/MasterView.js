@@ -41,12 +41,13 @@ function MasterView(props) {
             getCustomers(setCustomers)
         }
 
-        const order = location.state.data
-        order.time = (new Number(order.time.split(':')[0])+3)+":00"
-        const T = order.date + "T" + order.time
         const customer = findCustomer()
         const master = findMaster(e.target.value)
+        const order = location.state.data
         const text = `Спасибо за заказ ${customer.customer_name}, мастер ${master.master_name} будет у вас ${order.date} в ${order.time}`
+        order.time = (new Number(order.time.split(':')[0])+3)+":00"
+        const T = order.date + "T" + order.time
+
 
         const bodyOrder = {
             master_id: master.master_id,
