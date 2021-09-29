@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Button from "@material-ui/core/Button"
 import {LinkContainer} from 'react-router-bootstrap'
@@ -10,10 +10,8 @@ import ListMasters from "../masters/ListMasters";
 import ListCities from "../cities/ListCities";
 import ListCustomers from "../customers/ListCustomers";
 import ListOrders from "../orders/ListOrders";
-import {Context} from "../../../../index";
 
 const AdminPanel = observer(() => {
-    const {user} = useContext(Context);
     return (
         <Router>
             <div className="router">

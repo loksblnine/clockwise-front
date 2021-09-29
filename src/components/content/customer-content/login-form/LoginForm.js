@@ -37,7 +37,7 @@ const LoginForm = observer(() => {
                     const resp = await login(formik.values.email, formik.values.password)
                     const token = localStorage.getItem('token')
                     if (token) {
-                        user.setUser(user)
+                        user.setUser(resp)
                         user.setIsAuth(true)
                         history.push('/access_succeed')
                     }

@@ -45,7 +45,7 @@ const MasterView = (props) => {
         const master = findMaster(e.target.value)
         const order = location.state.data
         const text = `Спасибо за заказ ${customer.customer_name}, мастер ${master.master_name} будет у вас ${order.date} в ${order.time}`
-        order.time = (new Number(order.time.split(':')[0]) + 3) + ":00"
+        order.time = `${Number(order.time.split(':')[0]) + 3}:00`
         const T = order.date + "T" + order.time
 
 
@@ -87,7 +87,7 @@ const MasterView = (props) => {
 
     function findMaster(master_id) {
         return masters.find(m => {
-            return m.master_id == master_id
+            return m.master_id === master_id
         })
     }
 

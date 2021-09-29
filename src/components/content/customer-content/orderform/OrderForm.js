@@ -1,11 +1,10 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useFormik} from 'formik';
 import * as constants from "../../../../constants";
 import {withRouter, useHistory, useLocation} from "react-router-dom";
 import {getCities} from "../../getData";
 import './OrderStyles.css'
 import {observer} from "mobx-react-lite";
-import {Context} from "../../../../index";
 import {toast} from "react-toastify";
 
 const validate = (values) => {

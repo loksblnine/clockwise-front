@@ -1,6 +1,6 @@
 import React, {Fragment, useEffect, useState} from "react";
 import * as constants from "../../../../constants";
-import {getCities, getCustomers, getMasters, getOrders} from "../../getData";
+import {getCities, getCustomers, getMasters} from "../../getData";
 import {useHistory} from "react-router-dom";
 import {toast} from "react-toastify";
 
@@ -10,7 +10,6 @@ const InputOrder = () => {
     const [cities, setCities] = useState([]);
     const [masters, setMasters] = useState([]);
     const [customers, setCustomers] = useState([]);
-    const [orders, setOrders] = useState([]);
 
     const [order, setOrder] = useState({
         customer_id: "",
@@ -25,14 +24,13 @@ const InputOrder = () => {
         getCities(setCities)
         getMasters(setMasters)
         getCustomers(setCustomers)
-        getOrders(setOrders)
     }, [])
 
     const onSubmitForm = async e => {
         e.preventDefault();
         try {
             const body = {order}
-            body.order.time = (new Number(body.order.time.split(':')[0])+3)+":00"
+            body.order.time = `${Number(body.order.time.split(':')[0]) + 3}:00`
             body.order.order_time = body.order.date + 'T' + body.order.time
             console.log(JSON.stringify(body.order))
             await fetch(constants.SERVER_URL + `/orders`, {

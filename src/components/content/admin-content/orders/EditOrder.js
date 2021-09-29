@@ -1,6 +1,6 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
-import {getCities, getCustomers, getMasters, getOrders} from "../../getData";
+import {getCities, getCustomers, getMasters} from "../../getData";
 import {useHistory} from "react-router-dom";
 import * as constants from "../../../../constants";
 import {toast} from "react-toastify";
@@ -16,12 +16,11 @@ const EditOrder = (initialOrder) => {
     const [cities, setCities] = useState([]);
     const [masters, setMasters] = useState([]);
     const [customers, setCustomers] = useState([]);
-    const [orders, setOrders] = useState([]);
+
     useEffect(() => {
         getCities(setCities)
         getMasters(setMasters)
         getCustomers(setCustomers)
-        getOrders(setOrders)
     }, [])
 
     const updateOrder = async (e) => {

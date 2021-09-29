@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext} from 'react'
 import {Button} from "@material-ui/core";
 import imageSrc from "../../images/logo.png"
 import './Header.css'
@@ -8,7 +8,6 @@ import {useHistory} from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
-import {check} from "../../http/userAPI";
 
 const Logo = () => {
     const history = useHistory()
