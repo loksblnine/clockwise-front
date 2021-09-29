@@ -1,7 +1,7 @@
 //libs
 import React, {Fragment, useContext, useEffect, useState} from 'react';
 import {BrowserRouter as Router} from "react-router-dom";
-import {check} from "./http/userAPI";
+import {checkAuth} from "./http/userAPI";
 import {Spinner} from "react-bootstrap";
 //css
 import './App.css';
@@ -17,12 +17,16 @@ const App = observer(() => {
     const {user} = useContext(Context)
     const [loading, setLoading] = useState(true)
     useEffect(() => {
-        check()
-            .then(() => {
-                user.setUser(true)
-                user.setIsAuth(!!localStorage.getItem('token'))
-            })
-            .finally(() => setLoading(false))
+        checkAuth()
+            .then(data => {
+                if (data.status === 200) {
+                    user.setUser(data)
+                    user.setIsAuth(true)
+                } else {
+                    user.setUser(data)
+                    user.setIsAuth(false)
+                }
+            }).finally(() => setLoading(false))
     }, [])
 
     if (loading) {
