@@ -3,6 +3,7 @@ import {SERVER_URL} from "../../../../constants";
 import {getCities, getCustomers, getMasters, getOrders} from "../../getData";
 import {useHistory} from "react-router-dom";
 import * as constants from "../../../../constants";
+import {toast} from "react-toastify";
 
 
 const EditOrder = (initialOrder) => {
@@ -27,7 +28,7 @@ const EditOrder = (initialOrder) => {
         e.preventDefault()
         try {
             const body = {order}
-            body.order.time = (new Number(body.order.time.split(':')[0]) + 3) + ":00"
+            body.order.time = `${Number(body.order.time.split(':')[0]) + 3}:00`
             body.order.order_time = body.order.date + 'T' + body.order.time
             await fetch(SERVER_URL + `/orders/${order.order_id}`, {
                 method: "PUT",
@@ -35,10 +36,10 @@ const EditOrder = (initialOrder) => {
                 body: JSON.stringify(body.order)
             })
                 .then(response => response.json())
-                .then(data => console.log(data));
+                .then(data => toast(data));
             history.go(0)
         } catch (e) {
-            console.log(e.message)
+            toast.info("🦄 Ахахха сервер упал")
         }
     }
 
@@ -51,12 +52,18 @@ const EditOrder = (initialOrder) => {
     };
     return (
         <Fragment>
-            <button type="button" className="btn btn-warning" data-toggle="modal"
-                    data-target={`#id${order.order_id}`}>
-                Редактировать
-            </button>
 
-            <div className="modal fade" id={`id${order.order_id}`} tabIndex="-1" role="dialog"
+            {order.date > constants.DATE_FROM ?
+                <button type="button" className="btn btn-warning" data-toggle="modal"
+                        data-target={`#id_edit${order.order_id}`}>
+                    Редактировать
+                </button>
+                : <button type="button" className="btn btn-info" data-toggle="modal"
+                          data-target={`#id_see${order.order_id}`}>
+                    Посмотреть
+                </button>}
+
+            <div className="modal fade" id={`id_edit${order.order_id}`} tabIndex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
@@ -126,6 +133,65 @@ const EditOrder = (initialOrder) => {
                                 </button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            </div>
+            <div className="modal fade" id={`id_see${order.order_id}`} tabIndex="-1" role="dialog"
+                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h2 className="modal-title" id="exampleModalLabel">Редактировать заказ</h2>
+                            <button type="button" className="close" data-dismiss="modal">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <label>Имя мастера</label>
+                            <select className="form-control" value={order.master_id} name={`master_id`}
+                                    disabled>
+                                {masters?.map(master =>
+                                    <option key={master.master_id}
+                                            value={master.master_id}>{master.master_name} </option>)}
+                            </select>
+                            <label>Имя покупателя</label>
+                            <select className="form-control" value={order.customer_id} name={`customer_id`}
+                                    disabled>
+                                {customers?.map(customer =>
+                                    <option key={customer.customer_id}
+                                            value={customer.customer_id}>{customer.customer_name} </option>)}
+                            </select>
+
+                            <label>Город</label>
+                            <select className="form-control" value={cities[0]?.city_id} name={`city_id`}
+                                    disabled>
+                                {cities?.map(city =>
+                                    <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
+                            </select>
+
+                            <label>Тип работы</label>
+                            <select className="form-control" value={order.work_id} name={`work_id`}
+                                    disabled>
+                                <option key={`1`} value={`1`}>Маленькие часы</option>
+                                <option key={`2`} value={`2`}>Средние часы</option>
+                                <option key={`3`} value={`3`}>Большие часы</option>
+                            </select>
+
+                            <label className={`text`} htmlFor={`date`}>Введите дату заказа </label>
+                            <input type={`date`} name={`date`} value={order.date}
+                                   className={`form-control react-datetime-picker`}
+                                   readOnly/>
+
+                            <label className={`text`} htmlFor={`time`}>Время заказа (8:00 - 17:00) </label>
+                            <input type={`time`} name={`time`} className={`form-control timepicker`}
+                                   min={constants.TIME_FROM} max={constants.TIME_TO}
+                                   value={order.time}
+                                   readOnly/>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

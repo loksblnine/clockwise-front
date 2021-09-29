@@ -3,27 +3,33 @@ import EditCustomer from "./EditCustomer";
 import InputCustomer from "./InputCustomer";
 import {SERVER_URL} from "../../../../constants";
 import {getCustomers} from "../../getData";
+import {Spinner} from "react-bootstrap";
+import {toast} from "react-toastify";
 
 const ListCustomers = () => {
     const [customers, setCustomers] = useState([]);
-
+    const [loading, setLoading] = useState(true)
     const deleteCustomer = async (id) => {
         try {
             await fetch(SERVER_URL + `/customers/${id}`, {
                 method: "DELETE"
             })
                 .then(response => response.json())
-                .then(data => console.log(data));
+                .then(data => toast(data));
             await getCustomers(setCustomers)
         } catch (e) {
-            console.log(e.message)
+            toast.info("🦄 Ахахха сервер упал")
         }
     }
 
     useEffect(() => {
         getCustomers(setCustomers)
+        setLoading(false)
     }, [])
 
+    if (loading) {
+        return <Spinner animation={"grow"}/>
+    }
     return (
         <Fragment>
             {" "}

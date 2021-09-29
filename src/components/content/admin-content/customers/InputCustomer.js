@@ -21,7 +21,7 @@ const InputCustomer = () => {
                 .then(data => console.log(data));
             history.go(0)
         } catch (e) {
-            console.log(e.message)
+            toast.info("🦄 Ахахха сервер упал")
         }
 
 

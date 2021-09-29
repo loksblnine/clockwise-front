@@ -1,6 +1,7 @@
 import React, {Fragment, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
 import {useHistory} from "react-router-dom";
+import {toast} from "react-toastify";
 
 const EditCity = ({city}) => {
     const [city_name, setCityName] = useState(city.city_name)
@@ -16,10 +17,10 @@ const EditCity = ({city}) => {
                 body: JSON.stringify(body)
             })
                 .then(response => response.json())
-                .then(data => console.log(data));
+                .then(data => toast(data));
             history.go(0)
         } catch (e) {
-            console.log(e.message)
+            toast.info("🦄 Ахахха сервер упал")
         }
     }
     return (

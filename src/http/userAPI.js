@@ -22,7 +22,7 @@ export const login = async (email, password) => {
 }
 
 
-export const check = async () => {
+export const checkAuth = async () => {
     return await fetch(constants.SERVER_URL + `/login`, {
         method: "GET",
         headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem('token')}`}

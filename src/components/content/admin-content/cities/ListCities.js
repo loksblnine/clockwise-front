@@ -3,27 +3,33 @@ import EditCity from "./EditCity";
 import InputCity from "./InputCity";
 import {SERVER_URL} from "../../../../constants";
 import {getCities} from "../../getData";
+import {Spinner} from "react-bootstrap";
+import {toast} from "react-toastify";
 
 const ListCities = () => {
     const [cities, setCities] = useState([]);
-
+    const [loading, setLoading] = useState(true)
     const deleteCity = async (id) => {
         try {
             await fetch(SERVER_URL + `/cities/${id}`, {
                 method: "DELETE"
             })
                 .then(response => response.json())
-                .then(data => console.log(data));
+                .then(data => toast(data));
             await getCities(setCities)
         } catch (e) {
-            console.log(e.message)
+            toast.info("🦄 Ахахха сервер упал")
         }
     }
 
     useEffect(() => {
         getCities(setCities)
+        setLoading(false)
     }, [])
 
+    if (loading) {
+        return <Spinner animation={"grow"}/>
+    }
     return (
         <Fragment>
             {" "}

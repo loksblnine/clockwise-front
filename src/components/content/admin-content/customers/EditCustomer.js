@@ -17,10 +17,10 @@ const EditCustomer = ({customer}) => {
                 body: JSON.stringify(body)
             })
                 .then(response => response.json())
-                .then(data => console.log(data));
+                .then(data => toast(data));
             history.go(0)
         } catch (e) {
-            console.log(e.message)
+            toast.info("🦄 Ахахха сервер упал")
         }
 
     }

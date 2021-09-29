@@ -2,28 +2,22 @@ import React, {Fragment, useEffect, useState} from "react";
 import EditOrder from "./EditOrder";
 import InputOrder from "./InputOrder";
 import {SERVER_URL} from "../../../../constants";
-import {getCities, getCustomers, getMasters, getOrders} from "../../getData";
+import {getOrders} from "../../getData";
 import {WORK_TYPES} from "../../../../constants";
-
+import {Spinner} from "react-bootstrap";
+import {toast} from "react-toastify";
 
 
 const ListOrders = () => {
     const [orders, setOrders] = useState([]);
-    const [cities, setCities] = useState([]);
-    const [customers, setCustomers] = useState([]);
-    const [masters, setMasters] = useState([]);
-
-    function findCustomer(customerEmail) {
-        return customers.find(c => c.customer_email === customerEmail).customer_email
-    }
-
+    const [loading, setLoading] = useState(true)
     const deleteOrder = async (id) => {
         try {
             await fetch(SERVER_URL + `/orders/${id}`, {
                 method: "DELETE"
             })
                 .then(response => response.json())
-                .then(data => console.log(data));
+                .then(data => toast(data));
             getOrders(setOrders)
         } catch (e) {
             console.log(e.message)
@@ -32,11 +26,12 @@ const ListOrders = () => {
 
     useEffect(() => {
         getOrders(setOrders)
-        getCities(setCities)
-        getCustomers(setCustomers)
-        getMasters(setMasters)
+        setLoading(false)
     }, [])
 
+    if (loading) {
+        return <Spinner animation={"grow"}/>
+    }
     return (
         <Fragment>
             <h2 className="text-left mt-5">Список заказов</h2>

@@ -3,10 +3,12 @@ import EditMaster from "./EditMaster";
 import InputMaster from "./InputMaster";
 import {SERVER_URL} from "../../../../constants";
 import {getMasters} from "../../getData";
+import {Spinner} from "react-bootstrap";
+import {toast} from "react-toastify";
 
 const ListMasters = () => {
     const [masters, setMasters] = useState([]);
-
+    const [loading, setLoading] = useState(true)
     const deleteMaster = async (id) => {
         try {
             await fetch(SERVER_URL + `/masters/${id}`, {
@@ -16,14 +18,18 @@ const ListMasters = () => {
                 .then(data => console.log(data));
             await getMasters(setMasters)
         } catch (e) {
-            console.log(e.message)
+            toast("Ахахха сервер упал")
         }
     }
 
     useEffect(() => {
         getMasters(setMasters)
+        setLoading(false)
     }, [])
 
+    if (loading) {
+        return <Spinner animation={"grow"}/>
+    }
     return (
         <Fragment>
             {" "}

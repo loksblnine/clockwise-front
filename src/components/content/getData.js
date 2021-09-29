@@ -1,4 +1,5 @@
 import {SERVER_URL} from "../../constants";
+import {toast} from "react-toastify";
 
 export const getCities = (setCities) => {
     fetch(SERVER_URL + `/cities`)
@@ -9,7 +10,7 @@ export const getCities = (setCities) => {
             setCities(data)
         })
         .catch((e) => {
-            console.error(e)
+            toast.error("🦄 Сервер решил полежать)")
         })
 }
 
@@ -22,7 +23,7 @@ export const getCustomers = (setCustomers) => {
             setCustomers(data)
         })
         .catch((e) => {
-            console.error(e)
+            toast.error("🦄 Сервер решил полежать)")
         })
 }
 
@@ -35,7 +36,7 @@ export const getMasters = (setMasters) => {
             setMasters(data)
         })
         .catch((e) => {
-            console.error(e)
+            toast.error("🦄 Сервер решил полежать)")
         })
 }
 
@@ -48,6 +49,6 @@ export  const getOrders = (setOrders) => {
             setOrders(data)
         })
         .catch((e) => {
-            console.error(e)
+            toast.error("🦄 Сервер решил полежать)")
         })
 }

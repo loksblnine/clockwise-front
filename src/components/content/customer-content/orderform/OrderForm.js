@@ -6,6 +6,7 @@ import {getCities} from "../../getData";
 import './OrderStyles.css'
 import {observer} from "mobx-react-lite";
 import {Context} from "../../../../index";
+import {toast} from "react-toastify";
 
 const validate = (values) => {
     const errors = {};
@@ -23,6 +24,9 @@ const validate = (values) => {
     } else if (!/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i.test(values.email)) {
         errors.email = 'Невалидный адрес электронной почты';
     }
+    if (!values.city) {
+        toast.info("сервергудбай")
+    }
     return errors;
 };
 
@@ -36,7 +40,6 @@ const orderPageStyle = {
 };
 
 const OrderForm = observer((props) => {
-        const {user} = useContext(Context)
         const history = useHistory()
         const location = useLocation()
 
@@ -88,7 +91,8 @@ const OrderForm = observer((props) => {
                         <select id={`city`} name={`city`} key={`city`}
                                 value={formik.values.city} onChange={formik.handleChange}
                                 className={"form-control"}
-                                placeholder="Выберите ваш город">
+                                placeholder="Выберите ваш город"
+                                required>
                             {cities?.map(city =>
                                 <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
                         </select>

@@ -1,5 +1,6 @@
 import React, {Fragment, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
+import {toast} from "react-toastify";
 
 const InputMaster = () => {
     const [master_name, setMasterName] = useState("")
@@ -18,7 +19,7 @@ const InputMaster = () => {
                 .then(data => console.log(data));
             window.location.reload()
         } catch (e) {
-            console.log(e.message)
+            toast("Ахахха сервер упал")
         }
     }
     return (

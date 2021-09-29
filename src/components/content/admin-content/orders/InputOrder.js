@@ -44,7 +44,7 @@ const InputOrder = () => {
                 .then(data => console.log(data));
             history.go(0)
         } catch (e) {
-            toast(e.message)
+            toast.info("🦄 Ахахха сервер упал")
         }
     }
 
