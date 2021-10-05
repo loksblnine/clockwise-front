@@ -30,7 +30,7 @@ const InputOrder = () => {
         e.preventDefault();
         try {
             const body = {order}
-            body.order.time = `${Number(body.order.time.split(':')[0]) + 3}:00`
+            body.order.time = `${Number(body.order.time.split(':')[0])}:00`
             body.order.order_time = body.order.date + 'T' + body.order.time
             console.log(JSON.stringify(body.order))
             await fetch(constants.SERVER_URL + `/orders`, {
