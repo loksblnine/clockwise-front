@@ -45,7 +45,7 @@ const ListOrders = () => {
                     <th scope="col">Тип работы</th>
                     <th scope="col">Дата заказа</th>
                     <th scope="col">Время заказа</th>
-                    <th scope="col">Редактировать</th>
+                    <th scope="col"> </th>
                     <th scope="col">Удалить</th>
                 </tr>
                 </thead>
