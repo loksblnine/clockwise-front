@@ -29,8 +29,8 @@ const MasterView = (props) => {
         })
     }
 
-    async function handleClick(e) {
-        e.preventDefault()
+    async function handleClick(master) {
+
         if (!findCustomer()) {
             const body = {customer_name: location.state.data.name, customer_email: location.state.data.email}
             await fetch(constants.SERVER_URL + `/customers`, {
@@ -40,9 +40,7 @@ const MasterView = (props) => {
             })
             getCustomers(setCustomers)
         }
-
         const customer = findCustomer()
-        const master = findMaster(e.target.value)
         const order = location.state.data
         const text = `Спасибо за заказ ${customer.customer_name}, мастер ${master.master_name} будет у вас ${order.date} в ${order.time}`
         order.time = `${Number(order.time.split(':')[0]) + 3}:00`
@@ -83,12 +81,6 @@ const MasterView = (props) => {
 
     function findCustomer() {
         return customers.find(c => c.customer_email === location.state.data.email)
-    }
-
-    function findMaster(master_id) {
-        return masters.find(m => {
-            return m.master_id === master_id
-        })
     }
 
     if (!location.state) {
@@ -143,7 +135,7 @@ const MasterView = (props) => {
                             <td>{master.ranking}</td>
                             <td>
                                 <button className="btn btn-success" id={master.master_id} value={master.master_id}
-                                        onClick={e => handleClick(e)}
+                                        onClick={e => handleClick(master)}
                                         disabled={!isMasterAvailable(master)}
                                 >Выбрать
                                 </button>
