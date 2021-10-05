@@ -17,16 +17,21 @@ const App = observer(() => {
     const {user} = useContext(Context)
     const [loading, setLoading] = useState(true)
     useEffect(() => {
-        checkAuth()
-            .then(data => {
-                if (data.status === 200) {
-                    user.setUser(data)
-                    user.setIsAuth(true)
-                } else {
-                    user.setUser(data)
-                    user.setIsAuth(false)
-                }
-            }).finally(() => setLoading(false))
+        if (!!localStorage.getItem('token')) {
+            checkAuth()
+                .then(data => {
+                    if (data.status === 200) {
+                        user.setUser(data)
+                        user.setIsAuth(true)
+                    } else {
+                        user.setUser(data)
+                        user.setIsAuth(false)
+                    }
+                }).finally(() => setLoading(false))
+        }
+        else {
+        setLoading(false)
+        }
     }, [])
 
     if (loading) {
