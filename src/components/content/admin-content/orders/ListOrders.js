@@ -7,7 +7,6 @@ import {WORK_TYPES} from "../../../../constants";
 import {toast} from "react-toastify";
 import * as constants from "../../../../constants";
 
-
 const ListOrders = () => {
     const [orders, setOrders] = useState([]);
 
@@ -28,7 +27,6 @@ const ListOrders = () => {
         getOrders(setOrders)
     }, [])
 
-
     return (
         <Fragment>
             <h2 className="text-left mt-5">Список заказов</h2>
@@ -43,7 +41,7 @@ const ListOrders = () => {
                     <th scope="col">Дата заказа</th>
                     <th scope="col">Время заказа</th>
                     <th scope="col"> </th>
-                    <th scope="col">Удалить</th>
+                    <th scope="col"> </th>
                 </tr>
                 </thead>
 
