@@ -1,7 +1,7 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import * as constants from "../../../../constants";
 import {useLocation, Redirect, useHistory} from 'react-router-dom'
-import {getMasters, getCustomers, getOrders} from "../../getData";
+import {getMasters, getOrders} from "../../getData";
 import {SERVER_URL} from "../../../../constants";
 import './MasterView.css'
 import {toast} from "react-toastify";
@@ -10,7 +10,6 @@ const MasterView = (props) => {
 
     const [masters, setMasters] = useState([]);
     const [orders, setOrders] = useState([]);
-    const [customers, setCustomers] = useState([]);
 
     const location = useLocation()
     const history = useHistory()
@@ -18,7 +17,6 @@ const MasterView = (props) => {
         if (location.state) {
             getMasters(setMasters)
             getOrders(setOrders)
-            getCustomers(setCustomers)
         }
     }, [location.state])
 
@@ -30,17 +28,20 @@ const MasterView = (props) => {
     }
 
     async function handleClick(master) {
-
-        if (!findCustomer()) {
-            const body = {customer_name: location.state.data.name, customer_email: location.state.data.email}
-            await fetch(constants.SERVER_URL + `/customers`, {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(body)
+        let customer = {customer_name: location.state.data.name, customer_email: location.state.data.email}
+        const resp = await fetch(constants.SERVER_URL + `/customers/email/` + customer.customer_email)
+            .then(resp => resp.json())
+            .then(data => customer = data)
+            .catch(async e => {
+                await fetch(SERVER_URL + `/customers`, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(customer)
+                })
+                    .then(resp => resp.json())
+                    .then(data => customer = data);
             })
-            getCustomers(setCustomers)
-        }
-        const customer = findCustomer()
+
         const order = location.state.data
         const text = `Спасибо за заказ ${customer.customer_name}, мастер ${master.master_name} будет у вас ${order.date} в ${order.time}`
         order.time = `${Number(order.time.split(':')[0])}:00`
@@ -53,6 +54,7 @@ const MasterView = (props) => {
             order_time: T,
             work_id: order.type,
         }
+        console.log(JSON.stringify(bodyOrder))
         const response = await fetch(SERVER_URL + `/orders`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
@@ -76,10 +78,6 @@ const MasterView = (props) => {
         } else {
             toast("Возникли трудности")
         }
-    }
-
-    function findCustomer() {
-        return customers.find(c => c.customer_email === location.state.data.email)
     }
 
     if (!location.state) {
