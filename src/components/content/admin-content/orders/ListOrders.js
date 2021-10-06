@@ -4,13 +4,13 @@ import InputOrder from "./InputOrder";
 import {SERVER_URL} from "../../../../constants";
 import {getOrders} from "../../getData";
 import {WORK_TYPES} from "../../../../constants";
-import {Spinner} from "react-bootstrap";
 import {toast} from "react-toastify";
+import * as constants from "../../../../constants";
 
 
 const ListOrders = () => {
     const [orders, setOrders] = useState([]);
-    const [loading, setLoading] = useState(true)
+
     const deleteOrder = async (id) => {
         try {
             await fetch(SERVER_URL + `/orders/${id}`, {
@@ -20,18 +20,15 @@ const ListOrders = () => {
                 .then(data => toast(data));
             getOrders(setOrders)
         } catch (e) {
-            console.log(e.message)
+            toast(e.message)
         }
     }
 
     useEffect(() => {
         getOrders(setOrders)
-        setLoading(false)
     }, [])
 
-    if (loading) {
-        return <Spinner animation={"grow"}/>
-    }
+
     return (
         <Fragment>
             <h2 className="text-left mt-5">Список заказов</h2>
@@ -64,7 +61,8 @@ const ListOrders = () => {
                             <td><EditOrder order={order}/></td>
                             <td>
                                 <button className="btn btn-danger"
-                                        onClick={() => deleteOrder(order.order_id)}>Удалить
+                                        onClick={() => deleteOrder(order.order_id)}
+                                disabled={order.order_time.split('T')[0] <= constants.DATE_FROM}>Удалить
                                 </button>
                             </td>
                         </tr>
