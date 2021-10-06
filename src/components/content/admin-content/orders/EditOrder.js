@@ -27,7 +27,7 @@ const EditOrder = (initialOrder) => {
         e.preventDefault()
         try {
             const body = {order}
-            body.order.time = `${Number(body.order.time.split(':')[0]) + 3}:00`
+            body.order.time = `${Number(body.order.time.split(':')[0])}:00`
             body.order.order_time = body.order.date + 'T' + body.order.time
             await fetch(SERVER_URL + `/orders/${order.order_id}`, {
                 method: "PUT",
@@ -51,7 +51,6 @@ const EditOrder = (initialOrder) => {
     };
     return (
         <Fragment>
-
             {order.date > constants.DATE_FROM ?
                 <button type="button" className="btn btn-warning" data-toggle="modal"
                         data-target={`#id_edit${order.order_id}`}>
@@ -93,7 +92,7 @@ const EditOrder = (initialOrder) => {
                                 </select>
 
                                 <label>Город</label>
-                                <select className="form-control" value={cities[0]?.city_id} name={`city_id`}
+                                <select className="form-control" value={order.city_id} name={`city_id`}
                                         onChange={handleChange} required>
                                     <option value={`-1`} disabled={true}>---Выбрать город---</option>
                                     {cities?.map(city =>
@@ -127,7 +126,7 @@ const EditOrder = (initialOrder) => {
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть
                                 </button>
-                                <button type="submit" className="btn btn-primary">
+                                <button type="submit" className="btn btn-primary" id={`btnSave`}>
                                     Сохранить изменения
                                 </button>
                             </div>
@@ -140,7 +139,7 @@ const EditOrder = (initialOrder) => {
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h2 className="modal-title" id="exampleModalLabel">Посмотреть заказ</h2>
+                            <h2 className="modal-title" id="exampleModalLabel">Просмотр заказа</h2>
                             <button type="button" className="close" data-dismiss="modal">
                                 <span aria-hidden="true">&times;</span>
                             </button>
