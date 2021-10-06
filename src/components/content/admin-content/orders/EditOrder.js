@@ -140,7 +140,7 @@ const EditOrder = (initialOrder) => {
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h2 className="modal-title" id="exampleModalLabel">Редактировать заказ</h2>
+                            <h2 className="modal-title" id="exampleModalLabel">Посмотреть заказ</h2>
                             <button type="button" className="close" data-dismiss="modal">
                                 <span aria-hidden="true">&times;</span>
                             </button>
