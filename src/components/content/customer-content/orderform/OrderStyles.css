@@ -7,3 +7,19 @@
 .text{
     margin-right: 15px;
 }
+.radio-toolbar input[type="radio"] {
+    display: none;
+}
+
+.radio-toolbar label {
+    display: inline-block;
+    background-color: #ffffff;
+    padding: 4px 11px 5px;
+    font-family: Arial, serif;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.radio-toolbar input[type="radio"]:checked ~ * {
+    background: #c0edff !important;
+}

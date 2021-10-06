@@ -6,6 +6,7 @@ import {getCities} from "../../getData";
 import './OrderStyles.css'
 import {observer} from "mobx-react-lite";
 import {toast} from "react-toastify";
+import {Label} from "reactstrap";
 
 const validate = (values) => {
     const errors = {};
@@ -116,27 +117,27 @@ const OrderForm = observer((props) => {
                     </div>
                     <div className="form-group">
                         <label className={`text`} htmlFor={`type`}> Выберите тип поломки </label>
-                        <div role="group" aria-labelledby="my-radio-group">
+                        <div role="group" aria-labelledby="my-radio-group" className={"radio-toolbar"}>
                             <label className="miro-radiobutton">
                                 <input type={`radio`} value={`1`} name={`type`}
-                                       id={`radio_1`}
-                                       key={`radio_1`}
+                                       id={`radio1`}
+                                       key={`radio1`}
                                        checked={formik.values.type === '1'}
                                        onChange={formik.handleChange}/>
                                 <span>Маленькие часы </span>
                             </label>
                             <label className="miro-radiobutton">
                                 <input type={`radio`} value={`2`} name={`type`}
-                                       id={`radio_2`}
-                                       key={`radio_2`}
+                                       id={`radio2`}
+                                       key={`radio2`}
                                        checked={formik.values.type === '2'}
                                        onChange={formik.handleChange}/>
-                                <span>Средние часы </span>
+                                <span >Средние часы </span>
                             </label>
                             <label className="miro-radiobutton">
                                 <input type={`radio`} value={`3`} name={`type`}
-                                       id={`radio_3`}
-                                       key={`radio_3`}
+                                       id={`radio3`}
+                                       key={`radio3`}
                                        checked={formik.values.type === '3'}
                                        onChange={formik.handleChange}/>
                                 <span>Большие часы </span>
