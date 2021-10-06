@@ -62,7 +62,7 @@ const Header = observer((props) => {
                     </Nav>
                     :
                     <Nav className="ml-auto" style={{color: 'white'}}>
-                        <Button variant={"outline-light"} onClick={() => history.push('/login')}>Авторизация</Button>
+                        <Button onClick={() => history.push('/login')}>Авторизация</Button>
                     </Nav>
                 }
             </Container>
