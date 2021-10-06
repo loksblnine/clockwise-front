@@ -132,7 +132,7 @@ const OrderForm = observer((props) => {
                                        key={`radio2`}
                                        checked={formik.values.type === '2'}
                                        onChange={formik.handleChange}/>
-                                <span >Средние часы </span>
+                                <span>Средние часы </span>
                             </label>
                             <label className="miro-radiobutton">
                                 <input type={`radio`} value={`3`} name={`type`}
