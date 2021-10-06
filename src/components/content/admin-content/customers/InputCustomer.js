@@ -28,7 +28,7 @@ const InputCustomer = () => {
     }
     return (
         <Fragment>
-            <button type="button" className="btn btn-success" data-toggle="modal"
+            <button type="button" className="btn btn-success mb-5" data-toggle="modal"
                     data-target="#addCustomer">
                 Добавить
             </button>

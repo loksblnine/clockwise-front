@@ -24,7 +24,7 @@ const InputMaster = () => {
     }
     return (
         <Fragment>
-            <button type="button" className="btn btn-success" data-toggle="modal"
+            <button type="button" className="btn btn-success mb-5" data-toggle="modal"
                     data-target="#addMaster">
                 Добавить
             </button>
