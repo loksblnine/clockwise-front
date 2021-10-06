@@ -44,7 +44,6 @@ const ListOrders = () => {
                     <th scope="col"> </th>
                 </tr>
                 </thead>
-
                 <tbody>
                 {
                     orders.map(order => (

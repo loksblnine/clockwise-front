@@ -19,13 +19,10 @@ const EditMaster = ({master}) => {
             })
                 .then(response => response.json())
                 .then(data =>toast(data));
-            history.go(0)
         } catch (e) {
             toast.info("🦄 Ахахха сервер упал")
         }
-
     }
-
     return (
         <Fragment>
             <button type="button" className="btn btn-warning" data-toggle="modal"
