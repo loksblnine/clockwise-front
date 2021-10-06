@@ -15,7 +15,7 @@ const AppRouter = observer((props) => {
             {customerRoutes.map(({path, Component}) =>
                 <Route path={path} component={Component} key={path} exact/>
             )}
-            <Route path="*" component={NotFound} />
+            <Route path="*" component={NotFound}/>
         </Switch>
     );
 })
