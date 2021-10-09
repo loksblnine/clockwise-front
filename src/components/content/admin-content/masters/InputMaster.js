@@ -1,11 +1,13 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useContext, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
+import axios from "axios";
+import {Context} from "../../../../index";
 
 const InputMaster = () => {
     const [master_name, setMasterName] = useState("")
     const [ranking, setRanking] = useState("")
-
+    const {DB} = useContext(Context);
     const onSubmitForm = async e => {
         e.preventDefault();
         try {
@@ -16,8 +18,9 @@ const InputMaster = () => {
                 body: JSON.stringify(body)
             })
                 .then(response => response.json())
-                .then(data => console.log(data));
-            window.location.reload()
+                .then(data => toast("Мастер добавлен"));
+            axios.get(SERVER_URL + `/masters`)
+                .then(resp => DB.setMasters(resp.data))
         } catch (e) {
             toast("Ахахха сервер упал")
         }
@@ -28,7 +31,6 @@ const InputMaster = () => {
                     data-target="#addMaster">
                 Добавить
             </button>
-
             <div className="modal fade" id="addMaster" tabIndex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">

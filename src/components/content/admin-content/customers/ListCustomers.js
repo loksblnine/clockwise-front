@@ -1,13 +1,15 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useContext, useState} from "react";
 import EditCustomer from "./EditCustomer";
 import InputCustomer from "./InputCustomer";
 import {SERVER_URL} from "../../../../constants";
-import {getCustomers} from "../../getData";
-import {Spinner} from "react-bootstrap";
 import {toast} from "react-toastify";
+import axios from "axios";
+import {Context} from "../../../../index";
+import {Spinner} from "react-bootstrap";
+import {observer} from "mobx-react-lite";
 
-const ListCustomers = () => {
-    const [customers, setCustomers] = useState([]);
+const ListCustomers = observer(() => {
+    const {DB} = useContext(Context)
     const [loading, setLoading] = useState(true)
     const deleteCustomer = async (id) => {
         try {
@@ -16,23 +18,29 @@ const ListCustomers = () => {
             })
                 .then(response => response.json())
                 .then(data => toast(data));
-            await getCustomers(setCustomers)
+            axios.get(SERVER_URL + `/customers`)
+                .then(resp => DB.setCustomers(resp.data))
         } catch (e) {
             toast.info("🦄 Ахахха сервер упал")
         }
     }
 
     useEffect(() => {
-        getCustomers(setCustomers)
-        setLoading(false)
+        axios.get(SERVER_URL + `/customers`)
+            .then(resp => DB.setCustomers(resp.data))
+            .finally(() => setLoading(false))
     }, [])
 
     if (loading) {
-        return <Spinner animation={"grow"}/>
+        return (
+            <div>
+                <Spinner animation={`grow`}/>
+            </div>
+        )
     }
+
     return (
         <Fragment>
-            {" "}
             <h2 className="text-left mt-5">Список покупателей</h2>
             <table className="table mt-5 text-justify">
                 <thead>
@@ -46,7 +54,7 @@ const ListCustomers = () => {
                 </thead>
 
                 <tbody>
-                {customers.map(customer => (
+                {DB.customers.map(customer => (
                     <tr key={customer.customer_id}>
                         <th scope="row"> {customer.customer_id}</th>
                         <td>{customer.customer_name}</td>
@@ -65,5 +73,5 @@ const ListCustomers = () => {
             <InputCustomer/>
         </Fragment>
     )
-}
+})
 export default ListCustomers

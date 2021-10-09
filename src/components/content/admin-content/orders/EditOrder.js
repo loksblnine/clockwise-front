@@ -1,27 +1,18 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useContext, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
-import {getCities, getCustomers, getMasters} from "../../getData";
-import {useHistory} from "react-router-dom";
 import * as constants from "../../../../constants";
 import {toast} from "react-toastify";
+import {Context} from "../../../../index";
+import {observer} from "mobx-react-lite";
+import axios from "axios";
 
-
-const EditOrder = (initialOrder) => {
-    const history = useHistory()
+const EditOrder = observer((initialOrder) => {
+    const {DB} = useContext(Context)
     const [order, setOrder] = useState({
         ...initialOrder.order,
         date: initialOrder.order?.order_time?.split('T')[0],
         time: initialOrder.order?.order_time?.split('T')[1]?.split('.')[0]
     });
-    const [cities, setCities] = useState([]);
-    const [masters, setMasters] = useState([]);
-    const [customers, setCustomers] = useState([]);
-
-    useEffect(() => {
-        getCities(setCities)
-        getMasters(setMasters)
-        getCustomers(setCustomers)
-    }, [])
 
     const updateOrder = async (e) => {
         e.preventDefault()
@@ -36,7 +27,8 @@ const EditOrder = (initialOrder) => {
             })
                 .then(response => response.json())
                 .then(data => toast(data));
-            history.go(0)
+            axios.get(SERVER_URL + `/orders`)
+                .then(resp => DB.setOrders(resp.data))
         } catch (e) {
             toast.info("🦄 Ахахха сервер упал")
         }
@@ -77,7 +69,7 @@ const EditOrder = (initialOrder) => {
                                 <select className="form-control" value={order.master_id} name={`master_id`}
                                         onChange={handleChange} required>
                                     <option value={`-1`} disabled={true}>---Выбрать мастера---</option>
-                                    {masters?.map(master =>
+                                    {DB.masters?.map(master =>
                                         <option key={master.master_id}
                                                 value={master.master_id}>{master.master_name} </option>)}
                                 </select>
@@ -86,7 +78,7 @@ const EditOrder = (initialOrder) => {
                                 <select className="form-control" value={order.customer_id} name={`customer_id`}
                                         onChange={handleChange} required>
                                     <option value={`-1`} disabled={true}>---Выбрать покупателя---</option>
-                                    {customers?.map(customer =>
+                                    {DB.customers?.map(customer =>
                                         <option key={customer.customer_id}
                                                 value={customer.customer_id}>{customer.customer_name} </option>)}
                                 </select>
@@ -95,7 +87,7 @@ const EditOrder = (initialOrder) => {
                                 <select className="form-control" value={order.city_id} name={`city_id`}
                                         onChange={handleChange} required>
                                     <option value={`-1`} disabled={true}>---Выбрать город---</option>
-                                    {cities?.map(city =>
+                                    {DB.cities?.map(city =>
                                         <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
                                 </select>
 
@@ -148,22 +140,22 @@ const EditOrder = (initialOrder) => {
                             <label>Имя мастера</label>
                             <select className="form-control" value={order.master_id} name={`master_id`}
                                     disabled>
-                                {masters?.map(master =>
+                                {DB.masters?.map(master =>
                                     <option key={master.master_id}
                                             value={master.master_id}>{master.master_name} </option>)}
                             </select>
                             <label>Имя покупателя</label>
                             <select className="form-control" value={order.customer_id} name={`customer_id`}
                                     disabled>
-                                {customers?.map(customer =>
+                                {DB.customers?.map(customer =>
                                     <option key={customer.customer_id}
                                             value={customer.customer_id}>{customer.customer_name} </option>)}
                             </select>
 
                             <label>Город</label>
-                            <select className="form-control" value={cities[0]?.city_id} name={`city_id`}
+                            <select className="form-control" value={order.city_id} name={`city_id`}
                                     disabled>
-                                {cities?.map(city =>
+                                {DB.cities?.map(city =>
                                     <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
                             </select>
 
@@ -195,6 +187,6 @@ const EditOrder = (initialOrder) => {
             </div>
         </Fragment>
     )
-}
+})
 
 export default EditOrder;

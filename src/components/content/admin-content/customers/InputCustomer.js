@@ -1,12 +1,14 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useContext, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
-import {useHistory} from "react-router-dom";
 import {toast} from "react-toastify";
+import {Context} from "../../../../index";
+import axios from "axios";
 
 const InputCustomer = () => {
     const [customer_name, setCustomerName] = useState("")
     const [customer_email, setCustomerEmail] = useState("")
-    const history = useHistory()
+
+    const {DB} = useContext(Context);
 
     const onSubmitForm = async e => {
         e.preventDefault();
@@ -18,13 +20,12 @@ const InputCustomer = () => {
                 body: JSON.stringify(body)
             })
                 .then(response => response.json())
-                .then(data => console.log(data));
-            history.go(0)
+                .then(data => toast("Покупатель добавлен"));
+            axios.get(SERVER_URL + `/customers`)
+                .then(resp => DB.setCustomers(resp.data))
         } catch (e) {
             toast.info("🦄 Ахахха сервер упал")
         }
-
-
     }
     return (
         <Fragment>

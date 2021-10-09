@@ -1,12 +1,12 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useContext, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
-import {useHistory} from "react-router-dom";
 import {toast} from "react-toastify";
+import axios from "axios";
+import {Context} from "../../../../index";
 
 const InputCity = () => {
     const [city_name, setCityName] = useState("")
-    const history = useHistory()
-
+    const {DB} = useContext(Context);
     const onSubmitForm = async e => {
         e.preventDefault();
         try {
@@ -17,8 +17,9 @@ const InputCity = () => {
                 body: JSON.stringify(body)
             })
                 .then(response => response.json())
-                .then(data => console.log(data));
-            history.go(0)
+                .then(data => toast("Город добавлен"));
+            axios.get(SERVER_URL + `/cities`)
+                .then(resp => DB.setCities(resp.data))
         } catch (e) {
             toast.info("🦄 Ахахха сервер упал")
         }
@@ -61,4 +62,5 @@ const InputCity = () => {
         </Fragment>
     )
 }
+
 export default InputCity;

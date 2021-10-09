@@ -1,12 +1,12 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useContext, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
-import {useHistory} from "react-router-dom";
 import {toast} from "react-toastify";
+import axios from "axios";
+import {Context} from "../../../../index";
 
 const EditCity = ({city}) => {
+    const {DB} = useContext(Context);
     const [city_name, setCityName] = useState(city.city_name)
-    const history = useHistory()
-
     const updateCity = async (e) => {
         e.preventDefault()
         try {
@@ -18,7 +18,8 @@ const EditCity = ({city}) => {
             })
                 .then(response => response.json())
                 .then(data => toast(data));
-            history.go(0)
+            axios.get(SERVER_URL + `/cities`)
+                .then(resp => DB.setCities(resp.data))
         } catch (e) {
             toast.info("🦄 Ахахха сервер упал")
         }
@@ -62,9 +63,4 @@ const EditCity = ({city}) => {
         </Fragment>
     )
 }
-//modal content w form
-//required
-//button type submit
-//
-
 export default EditCity;

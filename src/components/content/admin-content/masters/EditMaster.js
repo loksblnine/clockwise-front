@@ -1,15 +1,15 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useContext, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
-import {useHistory} from "react-router-dom";
 import {toast} from "react-toastify";
+import {Context} from "../../../../index";
+import axios from "axios";
 
 const EditMaster = ({master}) => {
     const [master_name, setMasterName] = useState(master.master_name)
     const [ranking, setRanking] = useState(master.ranking)
-    const history = useHistory()
+    const {DB} = useContext(Context);
     const updateMaster = async (e) => {
         e.preventDefault()
-
         try {
             const body = {master_name, ranking}
             await fetch(SERVER_URL + `/masters/${master.master_id}`, {
@@ -18,7 +18,9 @@ const EditMaster = ({master}) => {
                 body: JSON.stringify(body)
             })
                 .then(response => response.json())
-                .then(data =>toast(data));
+                .then(data => toast(data));
+            axios.get(SERVER_URL + `/masters`)
+                .then(resp => DB.setMasters(resp.data))
         } catch (e) {
             toast.info("🦄 Ахахха сервер упал")
         }
@@ -29,7 +31,6 @@ const EditMaster = ({master}) => {
                     data-target={`#id${master.master_id}`}>
                 Редактировать
             </button>
-
             <div className="modal fade" id={`id${master.master_id}`} tabIndex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">

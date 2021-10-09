@@ -1,13 +1,15 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import EditMaster from "./EditMaster";
 import InputMaster from "./InputMaster";
 import {SERVER_URL} from "../../../../constants";
-import {getMasters} from "../../getData";
-import {Spinner} from "react-bootstrap";
 import {toast} from "react-toastify";
+import axios from "axios";
+import {Context} from "../../../../index";
+import {Spinner} from "react-bootstrap";
+import {observer} from "mobx-react-lite";
 
-const ListMasters = () => {
-    const [masters, setMasters] = useState([]);
+const ListMasters = observer(() => {
+    const {DB} = useContext(Context)
     const [loading, setLoading] = useState(true)
     const deleteMaster = async (id) => {
         try {
@@ -15,24 +17,29 @@ const ListMasters = () => {
                 method: "DELETE"
             })
                 .then(response => response.json())
-                .then(data => console.log(data));
-            await getMasters(setMasters)
+                .then(data => toast(data));
+            axios.get(SERVER_URL + `/masters`)
+                .then(resp => DB.setMasters(resp.data))
         } catch (e) {
             toast("Ахахха сервер упал")
         }
     }
 
     useEffect(() => {
-        getMasters(setMasters)
-        setLoading(false)
+        axios.get(SERVER_URL + `/masters`)
+            .then(resp => DB.setMasters(resp.data))
+            .finally(() => setLoading(false))
     }, [])
 
     if (loading) {
-        return <Spinner animation={"grow"}/>
+        return (
+            <div>
+                <Spinner animation={`grow`}/>
+            </div>
+        )
     }
     return (
         <Fragment>
-            {" "}
             <h2 className="text-left mt-5">Список мастеров</h2>
             <table className="table mt-5 text-justify">
                 <thead>
@@ -45,27 +52,28 @@ const ListMasters = () => {
                     <th scope="col">Удалить</th>
                 </tr>
                 </thead>
-
                 <tbody>
-                {masters.map(master => (
-                    <tr key={master.master_id}>
-                        <th scope="row"> {master.master_id}</th>
-                        <td>{master.master_name}</td>
-                        <td>{master.ranking}</td>
-                        <td>{master.photo}</td>
-                        <td><EditMaster master={master}/></td>
-                        <td>
-                            <button className="btn btn-danger"
-                                    onClick={() => deleteMaster(master.master_id)}>Удалить
-                            </button>
-                        </td>
-                    </tr>
-                ))}
+                {
+                    DB.masters.map(master => (
+                        <tr key={master.master_id}>
+                            <th scope="row"> {master.master_id}</th>
+                            <td>{master.master_name}</td>
+                            <td>{master.ranking}</td>
+                            <td>{master.photo}</td>
+                            <td><EditMaster master={master}/></td>
+                            <td>
+                                <button className="btn btn-danger"
+                                        onClick={() => deleteMaster(master.master_id)}>Удалить
+                                </button>
+                            </td>
+                        </tr>
+                    ))
+                }
 
                 </tbody>
             </table>
             <InputMaster/>
         </Fragment>
     )
-}
+})
 export default ListMasters

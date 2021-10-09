@@ -1,14 +1,16 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useEffect, useContext, useState} from "react";
 import EditCity from "./EditCity";
 import InputCity from "./InputCity";
 import {SERVER_URL} from "../../../../constants";
-import {getCities} from "../../getData";
-import {Spinner} from "react-bootstrap";
 import {toast} from "react-toastify";
+import axios from "axios";
+import {Context} from "../../../../index";
+import {observer} from "mobx-react-lite";
+import {Spinner} from "react-bootstrap";
 
-const ListCities = () => {
-    const [cities, setCities] = useState([]);
+const ListCities = observer(() => {
     const [loading, setLoading] = useState(true)
+    const {DB} = useContext(Context)
     const deleteCity = async (id) => {
         try {
             await fetch(SERVER_URL + `/cities/${id}`, {
@@ -16,19 +18,25 @@ const ListCities = () => {
             })
                 .then(response => response.json())
                 .then(data => toast(data));
-            await getCities(setCities)
+            axios.get(SERVER_URL + `/cities`)
+                .then(resp => DB.setCities(resp.data))
         } catch (e) {
             toast.info("🦄 Ахахха сервер упал")
         }
     }
 
     useEffect(() => {
-        getCities(setCities)
-        setLoading(false)
+        axios.get(SERVER_URL + `/cities`)
+            .then(resp => DB.setCities(resp.data))
+            .finally(() => setLoading(false))
     }, [])
 
     if (loading) {
-        return <Spinner animation={"grow"}/>
+        return (
+            <div>
+                <Spinner animation={`grow`}/>
+            </div>
+        )
     }
     return (
         <Fragment>
@@ -45,7 +53,7 @@ const ListCities = () => {
                 </thead>
 
                 <tbody>
-                {cities?.map(city => (
+                {DB.cities?.map(city => (
                     <tr key={city.city_id}>
                         <th scope="row"> {city.city_id}</th>
                         <td>{city.city_name}</td>
@@ -63,5 +71,5 @@ const ListCities = () => {
             <InputCity/>
         </Fragment>
     )
-}
+})
 export default ListCities

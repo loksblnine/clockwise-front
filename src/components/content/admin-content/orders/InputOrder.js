@@ -1,16 +1,12 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useContext, useState} from "react";
 import * as constants from "../../../../constants";
-import {getCities, getCustomers, getMasters} from "../../getData";
-import {useHistory} from "react-router-dom";
 import {toast} from "react-toastify";
+import axios from "axios";
+import {SERVER_URL} from "../../../../constants";
+import {Context} from "../../../../index";
 
 const InputOrder = () => {
-    const history = useHistory()
-
-    const [cities, setCities] = useState([]);
-    const [masters, setMasters] = useState([]);
-    const [customers, setCustomers] = useState([]);
-
+    const {DB} = useContext(Context)
     const [order, setOrder] = useState({
         customer_id: "",
         master_id: "",
@@ -19,12 +15,6 @@ const InputOrder = () => {
         date: '',
         time: ''
     });
-
-    useEffect(() => {
-        getCities(setCities)
-        getMasters(setMasters)
-        getCustomers(setCustomers)
-    }, [])
 
     const onSubmitForm = async e => {
         e.preventDefault();
@@ -39,8 +29,9 @@ const InputOrder = () => {
                 body: JSON.stringify(body.order)
             })
                 .then(response => response.json())
-                .then(data => console.log(data));
-            history.go(0)
+                .then(data => toast("Заказ добавлен"));
+            axios.get(SERVER_URL + `/orders`)
+                .then(resp => DB.setOrders(resp.data))
         } catch (e) {
             toast.info("🦄 Ахахха сервер упал")
         }
@@ -62,7 +53,7 @@ const InputOrder = () => {
             </button>
 
             <div className="modal fade" id="addOrder" tabIndex="-1" role="dialog"
-                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                 aria-labelledby="exampleModalLabel" aria-hidden={`true`}>
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <form onSubmit={event => onSubmitForm(event)}>
@@ -78,7 +69,7 @@ const InputOrder = () => {
                                         id={`master_id`} defaultValue={`-1`}
                                         onChange={handleChange} required>
                                     <option value={`-1`} disabled={true}>---Выбрать мастера---</option>
-                                    {masters?.map(master =>
+                                    {DB.masters?.map(master =>
                                         <option key={master.master_id}
                                                 value={master.master_id}>{master.master_name} </option>)}
                                 </select>
@@ -88,7 +79,7 @@ const InputOrder = () => {
                                         defaultValue={`-1`}
                                         onChange={handleChange} required>
                                     <option value={`-1`} disabled={true}>---Выбрать покупателя---</option>
-                                    {customers?.map(customer =>
+                                    {DB.customers?.map(customer =>
                                         <option key={customer.customer_id}
                                                 value={customer.customer_id}>{customer.customer_name} </option>)}
                                 </select>
@@ -97,7 +88,7 @@ const InputOrder = () => {
                                 <select className="form-control" name={`city_id`} defaultValue={`-1`}
                                         onChange={handleChange} required>
                                     <option value={`-1`} disabled={true}>---Выбрать город---</option>
-                                    {cities?.map(city =>
+                                    {DB.cities?.map(city =>
                                         <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
                                 </select>
 
