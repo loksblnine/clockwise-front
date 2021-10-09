@@ -7,7 +7,7 @@ import ListCustomers from "./components/content/admin-content/customers/ListCust
 import LoginForm from "./components/content/customer-content/login-form/LoginForm";
 import AdminPanel from "./components/content/admin-content/admin-panel/AdminPanel";
 
-export const SERVER_URL = process.env.NODE_ENV !== "development" ? "https://enigmatic-spire-58695.herokuapp.com" : "http://localhost:5000"
+export const SERVER_URL = process.env.NODE_ENV === "development" ? "https://enigmatic-spire-58695.herokuapp.com" : "http://localhost:5000"
 
 export const WORK_TYPES = {
     1: {
