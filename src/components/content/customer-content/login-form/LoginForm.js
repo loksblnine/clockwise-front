@@ -49,12 +49,11 @@ const LoginForm = observer(() => {
         })
         const loginPageStyle = {
             margin: "32px auto 37px",
-            maxWidth: "40%",
+            maxWidth: "50%",
             background: "#fff",
-            padding: "30px",
+            padding: "50px",
             borderRadius: "10px",
             boxShadow: "0px 0px 10px 10px rgba(0,0,0,0.15)",
-            fontWeight: 500
         };
 
         return (
@@ -69,6 +68,9 @@ const LoginForm = observer(() => {
                         onChange={formik.handleChange}
                         error={formik.touched.email && Boolean(formik.errors.email)}
                         helperText={formik.touched.email && formik.errors.email}
+                        inputProps={{
+                            style: {fontSize: 19}
+                        }}
                     />
                     <TextField
                         fullWidth
@@ -80,8 +82,11 @@ const LoginForm = observer(() => {
                         onChange={formik.handleChange}
                         error={formik.touched.password && Boolean(formik.errors.password)}
                         helperText={formik.touched.password && formik.errors.password}
+                        inputProps={{
+                            style: {fontSize: 19}
+                        }}
                     />
-                    <Button color="primary" variant="contained" fullWidth type="submit" className={"mt-5"}>
+                    <Button color="primary" variant="contained" fullWidth type="submit" className={"mt-5"} size={`large`}>
                         Войти
                     </Button>
                 </form>
