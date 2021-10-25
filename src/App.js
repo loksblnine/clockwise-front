@@ -19,6 +19,7 @@ import {SERVER_URL} from "./constants";
 const App = observer(() => {
     const {user} = useContext(Context)
     const [loading, setLoading] = useState(true)
+    console.log(process.env.NODE_ENV)
     useEffect(() => {
         if (!!localStorage.getItem('token')) {
             checkAuth()
