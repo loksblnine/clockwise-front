@@ -2,7 +2,6 @@ import React, {Fragment, useContext, useEffect, useState} from "react";
 import EditOrder from "./EditOrder";
 import InputOrder from "./InputOrder";
 import {SERVER_URL} from "../../../../constants";
-import {getCities, getCustomers, getMasters, getOrders} from "../../getData";
 import {WORK_TYPES} from "../../../../constants";
 import {toast} from "react-toastify";
 import * as constants from "../../../../constants";

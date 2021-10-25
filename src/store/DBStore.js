@@ -1,6 +1,4 @@
 import {makeAutoObservable} from "mobx";
-import {SERVER_URL} from "../constants";
-import axios from "axios";
 
 export default class DBStore {
     constructor() {

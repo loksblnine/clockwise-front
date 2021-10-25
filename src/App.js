@@ -13,8 +13,6 @@ import AppRouter from "./components/AppRouter";
 import {observer} from "mobx-react-lite";
 import {ToastContainer} from "react-toastify";
 import jwt_decode from "jwt-decode";
-import axios from "axios";
-import {SERVER_URL} from "./constants";
 
 const App = observer(() => {
     const {user} = useContext(Context)
@@ -27,7 +25,6 @@ const App = observer(() => {
                     if (data.status === 200) {
                         user.setUser(jwt_decode(localStorage.getItem('token')).role)
                         user.setIsAuth(true)
-                        // cities.setCities(axios.get(SERVER_URL+`/cities`))
                     } else {
                         user.setUser({})
                         user.setIsAuth(false)
