@@ -69,7 +69,7 @@ const LoginForm = observer(() => {
                         error={formik.touched.email && Boolean(formik.errors.email)}
                         helperText={formik.touched.email && formik.errors.email}
                         inputProps={{
-                            style: {fontSize: 19}
+                            style: {fontSize: 16}
                         }}
                     />
                     <TextField
@@ -83,7 +83,7 @@ const LoginForm = observer(() => {
                         error={formik.touched.password && Boolean(formik.errors.password)}
                         helperText={formik.touched.password && formik.errors.password}
                         inputProps={{
-                            style: {fontSize: 19}
+                            style: {fontSize: 16}
                         }}
                     />
                     <Button color="primary" variant="contained" fullWidth type="submit" className={"mt-5"} size={`large`}>
