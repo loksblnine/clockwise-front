@@ -1,7 +1,7 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import * as constants from "../../../../constants";
 import {useLocation, Redirect, useHistory} from 'react-router-dom'
-import {getMasters, getOrders} from "../../getData";
+import {getDepsCityMaster, getMasters, getOrders} from "../../getData";
 import {SERVER_URL} from "../../../../constants";
 import './MasterView.css'
 import {toast} from "react-toastify";
@@ -10,12 +10,14 @@ const MasterView = (props) => {
 
     const [masters, setMasters] = useState([]);
     const [orders, setOrders] = useState([]);
+    const [deps, setDeps] = useState([]);
 
     const location = useLocation()
     const history = useHistory()
     useEffect(() => {
         if (location.state) {
             getMasters(setMasters)
+            getDepsCityMaster(setDeps, location.state.data.city)
             getOrders(setOrders)
         }
     }, [location.state])
@@ -126,19 +128,20 @@ const MasterView = (props) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {masters.map(master => (
-                        <tr key={master.master_id}>
-                            <td>{master.master_name}</td>
-                            <td>{master.ranking}</td>
-                            <td>
-                                <button className="btn btn-success" id={master.master_id} value={master.master_id}
-                                        onClick={e => handleClick(master)}
-                                        disabled={!isMasterAvailable(master)}
-                                >Выбрать
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
+                    {masters.filter(m => deps.find(d => d === m.master_id))
+                        .map(master => (
+                            <tr key={master.master_id}>
+                                <td>{master.master_name}</td>
+                                <td>{master.ranking}</td>
+                                <td>
+                                    <button className="btn btn-success" id={master.master_id} value={master.master_id}
+                                            onClick={e => handleClick(master)}
+                                            disabled={!isMasterAvailable(master)}
+                                    >Выбрать
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
 
                     </tbody>
                 </table>
