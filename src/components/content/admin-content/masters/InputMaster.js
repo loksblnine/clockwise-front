@@ -7,23 +7,24 @@ import {Context} from "../../../../index";
 const InputMaster = () => {
     const [master_name, setMasterName] = useState("")
     const [ranking, setRanking] = useState("")
+
     const {DB} = useContext(Context);
+
     const onSubmitForm = async e => {
         e.preventDefault();
         try {
             const body = {master_name, ranking}
             await fetch(SERVER_URL + `/masters`, {
-                mode: 'no-cors',
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(body)
             })
                 .then(response => response.json())
-                .then(data => toast("Мастер добавлен"));
+                .then(data => toast(`Мастер ${master_name} добавлен`));
             axios.get(SERVER_URL + `/masters`)
                 .then(resp => DB.setMasters(resp.data))
         } catch (e) {
-            toast("Ахахха сервер упал")
+            toast.info("🦄 Ахахха сервер упал")
         }
     }
     return (
@@ -50,7 +51,7 @@ const InputMaster = () => {
                                        required
                                 />
                                 <label htmlFor={`rating`}>Рейтинг</label>
-                                <input className="form-control" placeholder="5.0" value={ranking} name={`rating`}
+                                <input className="form-control" placeholder="5.0" value={ranking} name={`ranking`}
                                        onChange={e => setRanking(e.target.value)}
                                        required pattern="([1-5])|([1-4].[05])|(5.0)"
                                 />

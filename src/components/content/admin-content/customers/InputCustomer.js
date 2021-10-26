@@ -20,7 +20,7 @@ const InputCustomer = () => {
                 body: JSON.stringify(body)
             })
                 .then(response => response.json())
-                .then(data => toast("Покупатель добавлен"));
+                .then(data => toast(`Покупатель ${customer_name} добавлен`));
             axios.get(SERVER_URL + `/customers`)
                 .then(resp => DB.setCustomers(resp.data))
         } catch (e) {
