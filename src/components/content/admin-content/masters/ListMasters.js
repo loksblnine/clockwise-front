@@ -7,6 +7,22 @@ import axios from "axios";
 import {Context} from "../../../../index";
 import {Spinner} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
+import AddCityDependency from "./AddCityDependency";
+import {getDepsMasterIdCities} from "../../getData";
+
+function WorkIn({master}) {
+    const [masterId, setMasterId] = useState(master.master_id);
+    const [deps, setDeps] = useState([])
+    useEffect(() => {
+        getDepsMasterIdCities(setDeps, masterId)
+    }, [])
+    console.log(deps)
+    return (
+        <ul>
+            {deps.map(d => <li>{d.city_id}</li>)}
+        </ul>
+    )
+}
 
 const ListMasters = observer(() => {
     const {DB} = useContext(Context)
@@ -48,6 +64,8 @@ const ListMasters = observer(() => {
                     <th scope="col">Имя</th>
                     <th scope="col">Рейтинг</th>
                     <th scope="col">Фото</th>
+                    <th scope="col">Работает в</th>
+                    <th scope="col">Добавить город</th>
                     <th scope="col">Изменить</th>
                     <th scope="col">Удалить</th>
                 </tr>
@@ -60,6 +78,8 @@ const ListMasters = observer(() => {
                             <td>{master.master_name}</td>
                             <td>{master.ranking}</td>
                             <td>{master.photo}</td>
+                            <td><WorkIn master={master}/></td>
+                            <td><AddCityDependency master={master}/></td>
                             <td><EditMaster master={master}/></td>
                             <td>
                                 <button className="btn btn-danger"
