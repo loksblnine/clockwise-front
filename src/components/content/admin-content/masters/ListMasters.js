@@ -10,19 +10,25 @@ import {observer} from "mobx-react-lite";
 import AddCityDependency from "./AddCityDependency";
 import {getDepsMasterIdCities} from "../../getData";
 
-function WorkIn({master}) {
+const WorkIn = observer(({master}) => {
+    const {DB} = useContext(Context)
     const [masterId, setMasterId] = useState(master.master_id);
     const [deps, setDeps] = useState([])
     useEffect(() => {
         getDepsMasterIdCities(setDeps, masterId)
-    }, [])
-    console.log(deps)
+        axios.get(SERVER_URL + `/cities`)
+            .then(resp => DB.setCities(resp.data))
+    }, [DB])
     return (
         <ul>
-            {deps.map(d => <li>{d.city_id}</li>)}
+            {DB.cities.map(c => {
+                if(deps.find(d => d === c.city_id)){
+                    return <li key={c.city_id}>{c.city_name}</li>
+                }
+            })}
         </ul>
     )
-}
+})
 
 const ListMasters = observer(() => {
     const {DB} = useContext(Context)
@@ -72,7 +78,7 @@ const ListMasters = observer(() => {
                 </thead>
                 <tbody>
                 {
-                    DB.masters.map(master => (
+                    DB?.masters?.map(master => (
                         <tr key={master.master_id}>
                             <th scope="row"> {master.master_id}</th>
                             <td>{master.master_name}</td>
