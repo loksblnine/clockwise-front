@@ -47,9 +47,9 @@ const AddCityDependency = ({master}) => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <label htmlFor={`name`}>Выберете город</label>
-                                <select className="form-control" value={cityId} name={`city_id`} required
-                                        onChange={e => setCityId(e.target.value)}>
+                                <label>Город</label>
+                                <select className="form-control" name={`city_id`} defaultValue={`-1`}
+                                        onChange={e => setCityId(e.target.value)} required>
                                     <option value={`-1`} disabled={true}>---Выбрать город---</option>
                                     {DB.cities?.map(city =>
                                         <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
