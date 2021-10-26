@@ -40,7 +40,7 @@ export const getMasters = (setMasters) => {
         })
 }
 
-export const getDepsCityMaster = (setDeps, city_id) => {
+export const getDepsCityIdMasters = (setDeps, city_id) => {
     fetch(SERVER_URL + `/deps/` + city_id)
         .then((res) => {
             return res.json()
@@ -48,7 +48,20 @@ export const getDepsCityMaster = (setDeps, city_id) => {
         .then((data) => {
             data = data.map(d => d.master_id)
             setDeps(data)
-            console.log(data)
+        })
+        .catch((e) => {
+            toast.error("🦄 Сервер решил полежать)")
+        })
+}
+
+export const getDepsMasterIdCities = (setDeps, master_id) => {
+    fetch(SERVER_URL + `/deps/master/` + master_id)
+        .then((res) => {
+            return res.json()
+        })
+        .then((data) => {
+            data = data.map(d => d.city_id)
+            setDeps(data)
         })
         .catch((e) => {
             toast.error("🦄 Сервер решил полежать)")
