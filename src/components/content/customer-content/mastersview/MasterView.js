@@ -1,13 +1,12 @@
 import React, {Fragment, useEffect, useState} from 'react';
 import * as constants from "../../../../constants";
 import {useLocation, Redirect, useHistory} from 'react-router-dom'
-import {getDepsCityMaster, getMasters, getOrders} from "../../getData";
+import {getDepsCityIdMasters, getMasters, getOrders} from "../../getData";
 import {SERVER_URL} from "../../../../constants";
 import './MasterView.css'
 import {toast} from "react-toastify";
 
 const MasterView = (props) => {
-
     const [masters, setMasters] = useState([]);
     const [orders, setOrders] = useState([]);
     const [deps, setDeps] = useState([]);
@@ -17,7 +16,7 @@ const MasterView = (props) => {
     useEffect(() => {
         if (location.state) {
             getMasters(setMasters)
-            getDepsCityMaster(setDeps, location.state.data.city)
+            getDepsCityIdMasters(setDeps, location.state.data.city)
             getOrders(setOrders)
         }
     }, [location.state])
