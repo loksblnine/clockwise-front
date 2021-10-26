@@ -31,7 +31,7 @@ const ListOrders = observer(() => {
         axios.get(SERVER_URL + `/orders`)
             .then(resp => DB.setOrders(resp.data))
             .finally(() => setLoading(false))
-    }, [])
+    }, [DB])
     if (loading) {
         return (
             <div>

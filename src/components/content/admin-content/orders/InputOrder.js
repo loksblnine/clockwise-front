@@ -53,7 +53,7 @@ const InputOrder = () => {
             </button>
 
             <div className="modal fade" id="addOrder" tabIndex="-1" role="dialog"
-                 aria-labelledby="exampleModalLabel" aria-hidden={`true`}>
+                 aria-labelledby="exampleModalLabel" aria-hidden={true}>
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <form onSubmit={event => onSubmitForm(event)}>

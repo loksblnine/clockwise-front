@@ -29,7 +29,7 @@ const ListCustomers = observer(() => {
         axios.get(SERVER_URL + `/customers`)
             .then(resp => DB.setCustomers(resp.data))
             .finally(() => setLoading(false))
-    }, [])
+    }, [DB])
 
     if (loading) {
         return (

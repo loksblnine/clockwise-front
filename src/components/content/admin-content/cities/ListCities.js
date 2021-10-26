@@ -29,7 +29,7 @@ const ListCities = observer(() => {
         axios.get(SERVER_URL + `/cities`)
             .then(resp => DB.setCities(resp.data))
             .finally(() => setLoading(false))
-    }, [])
+    }, [DB])
 
     if (loading) {
         return (

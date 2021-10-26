@@ -25,6 +25,7 @@ const WorkIn = observer(({master}) => {
                 if(deps.find(d => d === c.city_id)){
                     return <li key={c.city_id}>{c.city_name}</li>
                 }
+                return null
             })}
         </ul>
     )
@@ -51,7 +52,7 @@ const ListMasters = observer(() => {
         axios.get(SERVER_URL + `/masters`)
             .then(resp => DB.setMasters(resp.data))
             .finally(() => setLoading(false))
-    }, [])
+    }, [DB])
 
     if (loading) {
         return (
