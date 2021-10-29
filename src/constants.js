@@ -32,7 +32,7 @@ export const WORK_TYPES = {
 }
 
 function nowDate() {
-    return new Date().toISOString().split('T')[0]
+    return new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()+2).toISOString().split('T')[0]
 }
 
 function finalDate() {
