@@ -28,6 +28,12 @@ const ListOrders = observer(() => {
         }
     }
     useEffect(() => {
+        axios.get(SERVER_URL + `/cities`)
+            .then(resp => DB.setCities(resp.data))
+        axios.get(SERVER_URL + `/customers`)
+            .then(resp => DB.setCustomers(resp.data))
+        axios.get(SERVER_URL + `/masters`)
+            .then(resp => DB.setMasters(resp.data))
         axios.get(SERVER_URL + `/orders`)
             .then(resp => DB.setOrders(resp.data))
             .finally(() => setLoading(false))
@@ -52,8 +58,8 @@ const ListOrders = observer(() => {
                     <th scope="col">Тип работы</th>
                     <th scope="col">Дата заказа</th>
                     <th scope="col">Время заказа</th>
-                    <th scope="col"> </th>
-                    <th scope="col"> </th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -61,9 +67,9 @@ const ListOrders = observer(() => {
                     DB.orders?.map(order => (
                         <tr key={order.order_id}>
                             <th scope="row"> {order.order_id}</th>
-                            <td>{order.master_id}</td>
-                            <td>{(order.customer_id)}</td>
-                            <td>{(order.city_id)}</td>
+                            <td>{DB.masters.find(m=>m.master_id===order.master_id)?.master_name.length ? DB.masters.find(m=>m.master_id===order.master_id)?.master_name : order.master_id }</td>
+                            <td>{DB.customers.find(c=>c.customer_id===order.customer_id)?.customer_name.length ? DB.customers.find(c=>c.customer_id===order.customer_id)?.customer_name : order.customer_id}</td>
+                            <td>{DB.cities.find(c => c.city_id === order.city_id)?.city_name.length ? DB.cities.find(c => c.city_id === order.city_id)?.city_name : order.city_id}</td>
                             <td>{WORK_TYPES[order.work_id].key}</td>
                             <td>{order.order_time.split('T')[0]}</td>
                             <td>{order.order_time.split('T')[1].split('.')[0]}</td>
