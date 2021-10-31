@@ -8,24 +8,42 @@ import {Context} from "../../../../index";
 import {Spinner} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
 import AddCityDependency from "./AddCityDependency";
-import {getDepsMasterIdCities} from "../../getData";
 
 const WorkIn = observer(({master}) => {
     const {DB} = useContext(Context)
-    const [masterId, setMasterId] = useState(master.master_id);
-    const [deps, setDeps] = useState([])
-    useEffect(() => {
-        getDepsMasterIdCities(setDeps, masterId)
-    }, [DB])
+    const deleteCity = async (city_id, master_id) => {
+        const body = {city_id, master_id}
+        console.log(JSON.stringify(body))
+        try {
+            await fetch(SERVER_URL + `/deps`, {
+                method: "DELETE",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(body)
+            })
+                .then(response => response.json())
+                .then(data => toast(data));
+            axios.get(SERVER_URL + `/deps`)
+                .then(resp => DB.setDeps(resp.data))
+        } catch (e) {
+            toast("Ахахха сервер упал")
+        }
+    }
     return (
-        <ul>
+        <div>
             {DB.cities?.map(c => {
-                if (deps.find(d => d === c.city_id)) {
-                    return <li key={c.city_id}>{c.city_name}</li>
+                if (DB.deps?.find(d => (d.city_id === c.city_id && d.master_id === master.master_id))) {
+                    return (
+                        <div key={c.city_id}>
+                            {c.city_name}
+                            <button className={`btn`} onClick={() => deleteCity(c.city_id, master.master_id)}>
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                    )
                 }
                 return null
             })}
-        </ul>
+        </div>
     )
 })
 
@@ -47,9 +65,12 @@ const ListMasters = observer(() => {
     }
 
     useEffect(() => {
-        if (!DB.cities)
+        if (DB.cities?.length <= 0)
             axios.get(SERVER_URL + `/cities`)
                 .then(resp => DB.setCities(resp.data))
+        if (DB.deps?.length <= 0)
+            axios.get(SERVER_URL + `/deps`)
+                .then(resp => DB.setDeps(resp.data))
         axios.get(SERVER_URL + `/masters`)
             .then(resp => DB.setMasters(resp.data))
             .finally(() => setLoading(false))

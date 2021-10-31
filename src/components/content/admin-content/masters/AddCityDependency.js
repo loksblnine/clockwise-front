@@ -5,6 +5,7 @@ import axios from "axios";
 import {Context} from "../../../../index";
 
 const AddCityDependency = ({master}) => {
+    const inputRef = React.useRef(null)
     const [masterId, setMasterId] = useState(master.master_id)
     const [masterName, setMasterName] = useState(master.master_name)
     const [cityId, setCityId] = useState("")
@@ -21,8 +22,10 @@ const AddCityDependency = ({master}) => {
             })
                 .then(response => response.json())
                 .then(data => toast("Город добавлен "+master.master_name));
-            axios.get(SERVER_URL + `/masters`)
-                .then(resp => DB.setMasters(resp.data))
+            axios.get(SERVER_URL + `/deps`)
+                .then(resp => DB.setDeps(resp.data))
+            inputRef.current.click()
+
         } catch (e) {
             toast("Ахахха сервер упал")
         }
@@ -55,9 +58,9 @@ const AddCityDependency = ({master}) => {
                                 </select>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal" ref={inputRef}>Закрыть
                                 </button>
-                                <button type="submit" className="btn btn-primary">
+                                <button type="submit" className="btn btn-primary" >
                                     Сохранить изменения
                                 </button>
                             </div>

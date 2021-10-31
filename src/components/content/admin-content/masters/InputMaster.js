@@ -14,7 +14,6 @@ const InputMaster = () => {
         e.preventDefault();
         try {
             const body = {master_name, ranking}
-            console.log(JSON.stringify(body))
             await fetch(SERVER_URL + `/masters`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
