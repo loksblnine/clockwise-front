@@ -9,7 +9,7 @@ const InputMaster = () => {
     const [ranking, setRanking] = useState("")
 
     const {DB} = useContext(Context);
-
+    const inputRef = React.useRef(null)
     const onSubmitForm = async e => {
         e.preventDefault();
         try {
@@ -24,6 +24,7 @@ const InputMaster = () => {
                 .then(data => toast(`Мастер ${master_name} добавлен`));
             axios.get(SERVER_URL + `/masters`)
                 .then(resp => DB.setMasters(resp.data))
+            inputRef.current.click()
         } catch (e) {
             toast.info("🦄 Ахахха сервер упал")
         }
@@ -58,7 +59,7 @@ const InputMaster = () => {
                                 />
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal" ref={inputRef}>Закрыть
                                 </button>
                                 <button type="submit" className="btn btn-primary">
                                     Сохранить изменения

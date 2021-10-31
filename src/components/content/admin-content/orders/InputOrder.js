@@ -1,12 +1,15 @@
-import React, {Fragment, useContext, useState} from "react";
+import React, {Fragment, useContext, useEffect, useState} from "react";
 import * as constants from "../../../../constants";
 import {toast} from "react-toastify";
 import axios from "axios";
 import {SERVER_URL} from "../../../../constants";
 import {Context} from "../../../../index";
+import {getDepsMasterIdCities} from "../../getData";
 
 const InputOrder = () => {
     const {DB} = useContext(Context)
+    const inputRef = React.useRef(null)
+    const [deps, setDeps] = useState([])
     const [order, setOrder] = useState({
         customer_id: "",
         master_id: "",
@@ -15,6 +18,10 @@ const InputOrder = () => {
         date: '',
         time: ''
     });
+    
+    useEffect(() => {
+        getDepsMasterIdCities(setDeps, order.master_id)
+    }, [order.master_id])
 
     const onSubmitForm = async e => {
         e.preventDefault();
@@ -32,9 +39,13 @@ const InputOrder = () => {
                 .then(data => toast("Заказ добавлен"));
             axios.get(SERVER_URL + `/orders`)
                 .then(resp => DB.setOrders(resp.data))
+            inputRef.current.click()
         } catch (e) {
             toast.info("🦄 Ахахха сервер упал")
         }
+    }
+    const isMasterSelected = () => {
+        return order.master_id.length <= 0
     }
 
     const handleChange = e => {
@@ -86,9 +97,9 @@ const InputOrder = () => {
 
                                 <label>Город</label>
                                 <select className="form-control" name={`city_id`} defaultValue={`-1`}
-                                        onChange={handleChange} required>
+                                        onChange={handleChange} required disabled={isMasterSelected()}>
                                     <option value={`-1`} disabled={true}>---Выбрать город---</option>
-                                    {DB.cities?.map(city =>
+                                    {DB.cities.filter(c => deps.includes(c.city_id))?.map(city =>
                                         <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
                                 </select>
 
@@ -117,7 +128,7 @@ const InputOrder = () => {
                                        onChange={handleChange}/>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal" ref={inputRef}>Закрыть
                                 </button>
                                 <button type="submit" className="btn btn-primary">
                                     Сохранить изменения

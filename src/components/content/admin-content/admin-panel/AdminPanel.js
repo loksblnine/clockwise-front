@@ -25,6 +25,7 @@ const AdminPanel = observer(() => {
             .then(resp => DB.setMasters(resp.data))
         axios.get(SERVER_URL + `/orders`)
             .then(resp => DB.setOrders(resp.data))
+
     }, []);
 
     return (

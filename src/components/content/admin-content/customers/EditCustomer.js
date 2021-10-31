@@ -8,6 +8,7 @@ const EditCustomer = ({customer}) => {
     const [customer_name, setCustomerName] = useState(customer.customer_name)
     const [customer_email, setCustomerEmail] = useState(customer.customer_email)
     const {DB} = useContext(Context);
+    const inputRef = React.useRef(null)
     const updateCustomer = async (e) => {
         e.preventDefault()
         try {
@@ -21,6 +22,7 @@ const EditCustomer = ({customer}) => {
                 .then(data => toast(data));
             axios.get(SERVER_URL + `/customers`)
                 .then(resp => DB.setCustomers(resp.data))
+            inputRef.current.click()
         } catch (e) {
             toast.info("🦄 Ахахха сервер упал")
         }
@@ -57,7 +59,7 @@ const EditCustomer = ({customer}) => {
                                 />
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal" ref={inputRef}>Закрыть
                                 </button>
                                 <button type="submit" className="btn btn-primary">
                                     Сохранить изменения

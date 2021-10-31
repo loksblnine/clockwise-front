@@ -16,13 +16,11 @@ const WorkIn = observer(({master}) => {
     const [deps, setDeps] = useState([])
     useEffect(() => {
         getDepsMasterIdCities(setDeps, masterId)
-        axios.get(SERVER_URL + `/cities`)
-            .then(resp => DB.setCities(resp.data))
     }, [DB])
     return (
         <ul>
-            {DB.cities.map(c => {
-                if(deps.find(d => d === c.city_id)){
+            {DB.cities?.map(c => {
+                if (deps.find(d => d === c.city_id)) {
                     return <li key={c.city_id}>{c.city_name}</li>
                 }
                 return null
@@ -49,6 +47,9 @@ const ListMasters = observer(() => {
     }
 
     useEffect(() => {
+        if (!DB.cities)
+            axios.get(SERVER_URL + `/cities`)
+                .then(resp => DB.setCities(resp.data))
         axios.get(SERVER_URL + `/masters`)
             .then(resp => DB.setMasters(resp.data))
             .finally(() => setLoading(false))

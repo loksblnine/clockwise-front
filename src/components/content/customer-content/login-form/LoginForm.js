@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import {useFormik} from 'formik';
-import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import {Context} from "../../../../index";
 import {useHistory} from "react-router-dom";
@@ -86,9 +85,9 @@ const LoginForm = observer(() => {
                             style: {fontSize: 16}
                         }}
                     />
-                    <Button color="primary" variant="contained" fullWidth type="submit" className={"mt-5"} size={`large`}>
+                    <button type="submit" className={"mt-5 btn btn-primary"}>
                         Войти
-                    </Button>
+                    </button>
                 </form>
             </div>
         );

@@ -8,6 +8,7 @@ import axios from "axios";
 
 const EditOrder = observer((initialOrder) => {
     const {DB} = useContext(Context)
+    const inputRef = React.useRef(null)
     const [order, setOrder] = useState({
         ...initialOrder.order,
         date: initialOrder.order?.order_time?.split('T')[0],
@@ -29,6 +30,7 @@ const EditOrder = observer((initialOrder) => {
                 .then(data => toast(data));
             axios.get(SERVER_URL + `/orders`)
                 .then(resp => DB.setOrders(resp.data))
+            inputRef.current.click()
         } catch (e) {
             toast.info("🦄 Ахахха сервер упал")
         }
@@ -118,7 +120,7 @@ const EditOrder = observer((initialOrder) => {
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть
                                 </button>
-                                <button type="submit" className="btn btn-primary" id={`btnSave`}>
+                                <button type="submit" className="btn btn-primary" id={`btnSave`} ref={inputRef}>
                                     Сохранить изменения
                                 </button>
                             </div>

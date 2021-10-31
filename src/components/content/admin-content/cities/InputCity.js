@@ -7,6 +7,7 @@ import {Context} from "../../../../index";
 const InputCity = () => {
     const [city_name, setCityName] = useState("")
     const {DB} = useContext(Context);
+    const inputRef = React.useRef(null)
     const onSubmitForm = async e => {
         e.preventDefault();
         try {
@@ -20,6 +21,7 @@ const InputCity = () => {
                 .then(data => toast("Город добавлен"));
             axios.get(SERVER_URL + `/cities`)
                 .then(resp => DB.setCities(resp.data))
+            inputRef.current.click()
         } catch (e) {
             toast.info("🦄 Ахахха сервер упал")
         }
@@ -48,7 +50,7 @@ const InputCity = () => {
                                        onChange={e => setCityName(e.target.value)} required/>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal" ref={inputRef}>Закрыть
                                 </button>
                                 <button type="submit" className="btn btn-primary">
                                     Сохранить изменения

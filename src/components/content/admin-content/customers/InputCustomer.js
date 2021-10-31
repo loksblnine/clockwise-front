@@ -9,7 +9,7 @@ const InputCustomer = () => {
     const [customer_email, setCustomerEmail] = useState("")
 
     const {DB} = useContext(Context);
-
+    const inputRef = React.useRef(null)
     const onSubmitForm = async e => {
         e.preventDefault();
         try {
@@ -23,6 +23,7 @@ const InputCustomer = () => {
                 .then(data => toast(`Покупатель ${customer_name} добавлен`));
             axios.get(SERVER_URL + `/customers`)
                 .then(resp => DB.setCustomers(resp.data))
+            inputRef.current.click()
         } catch (e) {
             toast.info("🦄 Ахахха сервер упал")
         }
@@ -58,7 +59,7 @@ const InputCustomer = () => {
                                        />
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal" ref={inputRef}>Закрыть
                                 </button>
                                 <button type="submit" className="btn btn-primary">
                                     Сохранить изменения

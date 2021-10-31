@@ -3,11 +3,10 @@ import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
 import axios from "axios";
 import {Context} from "../../../../index";
-import {makePickerWithState} from "@material-ui/pickers";
 
 const AddCityDependency = ({master}) => {
     const [masterId, setMasterId] = useState(master.master_id)
-    const [masterName, setMasterNmae] = useState(master.master_name)
+    const [masterName, setMasterName] = useState(master.master_name)
     const [cityId, setCityId] = useState("")
     const {DB} = useContext(Context);
 
