@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Button from "@material-ui/core/Button"
 import {LinkContainer} from 'react-router-bootstrap'
@@ -10,12 +10,8 @@ import ListMasters from "../masters/ListMasters";
 import ListCities from "../cities/ListCities";
 import ListCustomers from "../customers/ListCustomers";
 import ListOrders from "../orders/ListOrders";
-import {Context} from "../../../../index";
-import axios from "axios";
-import {SERVER_URL} from "../../../../constants";
 
 const AdminPanel = observer(() => {
-    const {DB} = useContext(Context)
     const inputRef = React.useRef(null)
     useEffect(() => {
         inputRef.current.click()
@@ -25,7 +21,6 @@ const AdminPanel = observer(() => {
         <Router>
             <div className="router">
                 <h2>Администрирование</h2>
-
                 <LinkContainer to='/masters'>
                     <Button className="btn btn-xl">Мастера</Button>
                 </LinkContainer>
