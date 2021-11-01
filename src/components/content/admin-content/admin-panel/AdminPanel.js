@@ -16,16 +16,9 @@ import {SERVER_URL} from "../../../../constants";
 
 const AdminPanel = observer(() => {
     const {DB} = useContext(Context)
+    const inputRef = React.useRef(null)
     useEffect(() => {
-        axios.get(SERVER_URL + `/cities`)
-            .then(resp => DB.setCities(resp.data))
-        axios.get(SERVER_URL + `/customers`)
-            .then(resp => DB.setCustomers(resp.data))
-        axios.get(SERVER_URL + `/masters`)
-            .then(resp => DB.setMasters(resp.data))
-        axios.get(SERVER_URL + `/orders`)
-            .then(resp => DB.setOrders(resp.data))
-
+        inputRef.current.click()
     }, []);
 
     return (
@@ -43,7 +36,7 @@ const AdminPanel = observer(() => {
                     <Button className="btn btn-xl">Покупатели</Button>
                 </LinkContainer>
                 <LinkContainer to='/orders'>
-                    <Button className="btn btn-xl" id={`btn-orders`}>Заказы</Button>
+                    <Button className="btn btn-xl" id={`btn-orders`} ref={inputRef}>Заказы</Button>
                 </LinkContainer>
                 <Switch>
                     <Route exact path='/masters' component={ListMasters}/>

@@ -28,13 +28,13 @@ const ListOrders = observer(() => {
         }
     }
     useEffect(() => {
-        if (!DB.cities)
+        if (DB.cities.length <= 0)
             axios.get(SERVER_URL + `/cities`)
                 .then(resp => DB.setCities(resp.data))
-        if (!DB.customers)
+        if (DB.customers.length <= 0)
             axios.get(SERVER_URL + `/customers`)
                 .then(resp => DB.setCustomers(resp.data))
-        if (!DB.masters)
+        if (DB.masters.length <= 0)
             axios.get(SERVER_URL + `/masters`)
                 .then(resp => DB.setMasters(resp.data))
         axios.get(SERVER_URL + `/orders`)
