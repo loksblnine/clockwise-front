@@ -18,9 +18,10 @@ const InputOrder = () => {
         date: '',
         time: ''
     });
-    
+
     useEffect(() => {
-        getDepsMasterIdCities(setDeps, order.master_id)
+        if (!!order.master_id)
+            getDepsMasterIdCities(setDeps, order.master_id)
     }, [order.master_id])
 
     const onSubmitForm = async e => {
@@ -128,7 +129,8 @@ const InputOrder = () => {
                                        onChange={handleChange}/>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal" ref={inputRef}>Закрыть
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal"
+                                        ref={inputRef}>Закрыть
                                 </button>
                                 <button type="submit" className="btn btn-primary">
                                     Сохранить изменения

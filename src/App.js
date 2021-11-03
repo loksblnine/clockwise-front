@@ -26,6 +26,7 @@ const App = observer(() => {
                         user.setUser(jwt_decode(localStorage.getItem('token')).role)
                         user.setIsAuth(true)
                     } else {
+                        localStorage.removeItem('token')
                         user.setUser({})
                         user.setIsAuth(false)
                     }
