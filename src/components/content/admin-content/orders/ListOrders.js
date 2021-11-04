@@ -10,7 +10,6 @@ import {observer} from "mobx-react-lite";
 import axios from "axios";
 import {Spinner} from "react-bootstrap";
 
-
 const ListOrders = observer(() => {
     const [loading, setLoading] = useState(true)
     const {DB} = useContext(Context)
@@ -27,6 +26,12 @@ const ListOrders = observer(() => {
             toast(e.message)
         }
     }
+    const handleNextOrders = () => {
+        DB.setOrders(DB.orders.concat(DB.ordersNext))
+        sessionStorage.setItem('pageOrderList', Number(sessionStorage.getItem('pageOrderList'))+1)
+        axios.get(SERVER_URL + `/orders/offset/` + sessionStorage.getItem('pageOrderList'))
+            .then(resp => DB.setOrdersNext(resp.data))
+    }
     useEffect(() => {
         if (DB.cities.length <= 0)
             axios.get(SERVER_URL + `/cities`)
@@ -37,8 +42,14 @@ const ListOrders = observer(() => {
         if (DB.masters.length <= 0)
             axios.get(SERVER_URL + `/masters`)
                 .then(resp => DB.setMasters(resp.data))
-        axios.get(SERVER_URL + `/orders`)
+        sessionStorage.setItem('pageOrderList', 0)
+        axios.get(SERVER_URL + `/orders/offset/` + sessionStorage.getItem('pageOrderList'))
             .then(resp => DB.setOrders(resp.data))
+            .then(
+                axios.get(SERVER_URL + `/orders/offset/1`)
+                    .then(resp => DB.setOrdersNext(resp.data))
+                    .then(() => sessionStorage.setItem('pageOrderList', Number(sessionStorage.getItem('pageOrderList'))+1))
+            )
             .finally(() => setLoading(false))
     }, [DB])
     if (loading) {
@@ -85,8 +96,16 @@ const ListOrders = observer(() => {
                             </td>
                         </tr>
                     ))}
+
                 </tbody>
             </table>
+            {
+                DB.ordersNext.length >= 1 ?
+                    <div className="col text-center">
+                        <button className="btn btn-primary" onClick={() => handleNextOrders()} > Еще заказы...</button>
+                    </div>
+                    : null
+            }
             <InputOrder/>
         </Fragment>
     )

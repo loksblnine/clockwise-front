@@ -19,6 +19,7 @@ const App = observer(() => {
     const [loading, setLoading] = useState(true)
     console.log(process.env.NODE_ENV)
     useEffect(() => {
+        sessionStorage.setItem('pageOrderList', 0)
         if (!!localStorage.getItem('token')) {
             checkAuth()
                 .then(data => {
