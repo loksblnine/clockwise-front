@@ -48,6 +48,7 @@ const EditMaster = ({master}) => {
                                 <label htmlFor={`name`}>ФИО мастера</label>
                                 <input className="form-control" placeholder="Иван Иванович Иванов" value={master_name}
                                        name={`name`} onChange={e => setMasterName(e.target.value)}
+                                       pattern="/^[A-ZА-Яa-zа-я -]+$/i"
                                        required
                                 />
                                 <label htmlFor={`rating`}>Рейтинг</label>
