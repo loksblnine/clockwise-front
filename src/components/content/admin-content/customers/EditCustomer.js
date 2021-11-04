@@ -50,12 +50,13 @@ const EditCustomer = ({customer}) => {
                                 <input className="form-control" placeholder="Иван Иванович Иванов" value={customer_name}
                                        name={`name`}
                                        onChange={e => setCustomerName(e.target.value)} required
+                                       pattern="/^[A-ZА-Яa-zа-я -]+$/i"
                                 />
                                 <label htmlFor={`email`}>e-mail</label>
                                 <input className="form-control" value={customer_email} name={`email`} type={`email`}
                                        onChange={e => setCustomerEmail(e.target.value)}
                                        required
-                                       pattern="/^[A-ZА-Яa-zа-я -]+$/i"
+                                       pattern="/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i"
                                 />
                             </div>
                             <div className="modal-footer">

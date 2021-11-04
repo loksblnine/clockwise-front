@@ -54,12 +54,11 @@ const InputCustomer = () => {
                                 <label htmlFor={`email`}>e-mail</label>
                                 <input className="form-control" value={customer_email} name={`email`} type={`email`}
                                        onChange={e => setCustomerEmail(e.target.value)}
-                                       required
-                                       pattern="/[a-z0-9!#$%&'*+/=?^_\`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_\`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/"
-                                       />
+                                       required pattern="/^[A-ZА-Яa-zа-я -]+$/i"/>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal" ref={inputRef}>Закрыть
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal"
+                                        ref={inputRef}>Закрыть
                                 </button>
                                 <button type="submit" className="btn btn-primary">
                                     Сохранить изменения
