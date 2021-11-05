@@ -49,7 +49,7 @@ const EditCity = ({city}) => {
                                 <input className="form-control" placeholder="Город" value={city_name}
                                        name={`city_name`}
                                        required onChange={e => setCityName(e.target.value)}
-                                       pattern="/^[A-ZА-Яa-zа-я -]+$/i"/>
+                                       pattern="[A-ZА-Яa-zа-я -]+"/>
                             </div>
 
                             <div className="modal-footer">

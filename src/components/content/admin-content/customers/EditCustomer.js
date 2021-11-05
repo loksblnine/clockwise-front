@@ -50,7 +50,7 @@ const EditCustomer = ({customer}) => {
                                 <input className="form-control" placeholder="Иван Иванович Иванов" value={customer_name}
                                        name={`name`}
                                        onChange={e => setCustomerName(e.target.value)} required
-                                       pattern="/^[A-ZА-Яa-zа-я -]+$/i"
+                                       pattern="[A-ZА-Яa-zа-я -]+"
                                 />
                                 <label htmlFor={`email`}>e-mail</label>
                                 <input className="form-control" value={customer_email} name={`email`} type={`email`}

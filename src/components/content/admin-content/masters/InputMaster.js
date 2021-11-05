@@ -49,7 +49,7 @@ const InputMaster = () => {
                                 <label htmlFor={`name`}>ФИО мастера</label>
                                 <input className="form-control" placeholder="Иван Иванович Иванов" value={master_name}
                                        name={`name`} onChange={e => setMasterName(e.target.value)}
-                                       required pattern="/^[A-ZА-Яa-zа-я -]+$/i"
+                                       required pattern="[A-ZА-Яa-zа-я -]+"
                                 />
                                 <label htmlFor={`rating`}>Рейтинг</label>
                                 <input className="form-control" placeholder="5.0" value={ranking} name={`ranking`}

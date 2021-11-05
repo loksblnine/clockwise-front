@@ -48,7 +48,7 @@ const InputCity = () => {
                                 <label htmlFor={`name`}>Название города</label>
                                 <input className="form-control" placeholder="Город" value={city_name} name={`name`}
                                        onChange={e => setCityName(e.target.value)} required
-                                       pattern="/^[A-ZА-Яa-zа-я -]+$/i"/>
+                                       pattern="[A-ZА-Яa-zа-я -]+"/>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal" ref={inputRef}>Закрыть
