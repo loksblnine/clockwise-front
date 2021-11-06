@@ -77,54 +77,54 @@ const InputOrder = () => {
                             </div>
                             <div className="modal-body">
                                 <label>Имя мастера</label>
-                                <select className="form-control" name={`master_id`}
-                                        id={`master_id`} defaultValue={`-1`}
+                                <select className="form-control" name="master_id"
+                                        id="master_id" defaultValue="-1"
                                         onChange={handleChange} required>
-                                    <option value={`-1`} disabled={true}>---Выбрать мастера---</option>
+                                    <option value="-1" disabled={true}>---Выбрать мастера---</option>
                                     {DB.masters?.map(master =>
                                         <option key={master.master_id}
                                                 value={master.master_id}>{master.master_name} </option>)}
                                 </select>
 
                                 <label>Имя покупателя</label>
-                                <select className="form-control" name={`customer_id`}
-                                        defaultValue={`-1`}
+                                <select className="form-control" name="customer_id"
+                                        defaultValue="-1"
                                         onChange={handleChange} required>
-                                    <option value={`-1`} disabled={true}>---Выбрать покупателя---</option>
+                                    <option value="-1" disabled={true}>---Выбрать покупателя---</option>
                                     {DB.customers?.map(customer =>
                                         <option key={customer.customer_id}
                                                 value={customer.customer_id}>{customer.customer_name} </option>)}
                                 </select>
 
                                 <label>Город</label>
-                                <select className="form-control" name={`city_id`} defaultValue={`-1`}
+                                <select className="form-control" name="city_id" defaultValue="-1"
                                         onChange={handleChange} required disabled={isMasterSelected()}>
-                                    <option value={`-1`} disabled={true}>---Выбрать город---</option>
+                                    <option value="-1" disabled={true}>---Выбрать город---</option>
                                     {DB.cities.filter(c => deps.includes(c.city_id))?.map(city =>
                                         <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
                                 </select>
 
                                 <label>Тип работы</label>
-                                <select className="form-control" value={order.work_id} name={`work_id`}
+                                <select className="form-control" value={order.work_id} name="work_id"
                                         onChange={handleChange} required>
-                                    <option value={`-1`} disabled={true}>---Выбрать тип работы---</option>
-                                    <option key={`1`} value={`1`}>Маленькие часы</option>
-                                    <option key={`2`} value={`2`}>Средние часы</option>
-                                    <option key={`3`} value={`3`}>Большие часы</option>
+                                    <option value="-1" disabled={true}>---Выбрать тип работы---</option>
+                                    <option key="1" value="1">Маленькие часы</option>
+                                    <option key="2" value="2">Средние часы</option>
+                                    <option key="3" value="3">Большие часы</option>
                                 </select>
 
-                                <label className={`text`} htmlFor={`date`}>Введите дату заказа </label>
-                                <input type={`date`} name={`date`} value={order?.order_time?.split('T')[0]}
-                                       className={`form-control react-datetime-picker`}
+                                <label className="text" htmlFor="date">Введите дату заказа </label>
+                                <input type="date" name="date" value={order?.order_time?.split('T')[0]}
+                                       className="form-control react-datetime-picker"
                                        min={constants.DATE_FROM} max={constants.DATE_TO}
                                        required pattern="[0-9]{4}.[0-9]{2}.[0-9]{2}"
                                        onChange={handleChange}/>
 
-                                <label className={`text`} htmlFor={`time`}>Время заказа (8:00 - 17:00) </label>
-                                <input type={`time`} name={`time`} className={`form-control timepicker`}
+                                <label className="text" htmlFor="time">Время заказа (8:00 - 17:00) </label>
+                                <input type="time" name="time" className="form-control timepicker"
                                        min={constants.TIME_FROM} max={constants.TIME_TO}
                                        value={order?.order_time?.split('T')[1]?.split('.')[0]}
-                                       required step='3600'
+                                       required step="3600"
                                        pattern="([01]?[0-9]|2[0-3]):[0][0]" id="24h"
                                        onChange={handleChange}/>
                             </div>
