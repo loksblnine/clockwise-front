@@ -1,5 +1,4 @@
 import React, {useContext} from 'react'
-import {Button} from "@material-ui/core";
 import imageSrc from "../../images/logo.png"
 import './Header.css'
 import {Context} from "../../index";
@@ -47,22 +46,22 @@ const Header = observer((props) => {
                 <Logo/>
                 {(user.isAuth) ?
                     <Nav className="ml-auto" style={{color: 'white'}}>
-                        <Button
+                        <button
                             onClick={handleAdminAccess}
-                            className={`header-button`}
+                            className="btn btn-xl"
                         >
                             Админ панель
-                        </Button>
-                        <Button
+                        </button>
+                        <button
                             onClick={() => logOut()}
-                            className="ml-2"
+                            className="btn btn-xl"
                         >
                             Выйти
-                        </Button>
+                        </button>
                     </Nav>
                     :
                     <Nav className="ml-auto" style={{color: 'white'}}>
-                        <Button onClick={() => history.push('/login')}>Авторизация</Button>
+                        <button className="btn btn-xl" onClick={() => history.push('/login')}>Авторизация</button>
                     </Nav>
                 }
             </Container>

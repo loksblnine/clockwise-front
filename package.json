@@ -12,7 +12,6 @@
     ]
   },
   "dependencies": {
-    "@material-ui/core": "^4.12.3",
     "axios": "^0.22.0",
     "formik": "^2.2.9",
     "jwt-decode": "^3.1.2",

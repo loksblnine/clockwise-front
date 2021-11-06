@@ -1,8 +1,7 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {useFormik} from 'formik';
 import * as constants from "../../../../constants";
 import {withRouter, useHistory, useLocation} from "react-router-dom";
-import {getCities} from "../../getData";
 import './OrderStyles.css'
 import {observer} from "mobx-react-lite";
 import {toast} from "react-toastify";
@@ -75,9 +74,9 @@ const OrderForm = observer((props) => {
                         <label className="text" htmlFor="email">Email</label>
                         <input type="email" id="email" name="email" key="email"
                                value={formik.values.email} onChange={formik.handleChange}
-                               className="form-control" placeholder="email"
+                               className="form-control" placeholder="Email"
                                required/>
-                        {formik.errors.email ? <div className={`error`}>{formik.errors.email}</div> : null}
+                        {formik.errors.email ? <div className="error">{formik.errors.email}</div> : null}
                     </div>
                     <div className="form-group">
                         <label className="text" htmlFor="name">Имя</label>
@@ -85,7 +84,7 @@ const OrderForm = observer((props) => {
                                value={formik.values.name} onChange={formik.handleChange}
                                className="form-control" placeholder="Имя"
                                required/>
-                        {formik.errors.name ? <div className={`error`}>{formik.errors.name}</div> : null}
+                        {formik.errors.name ? <div className="error">{formik.errors.name}</div> : null}
                     </div>
                     <div className="form-group">
                         <label className="text" htmlFor="city">Город</label>

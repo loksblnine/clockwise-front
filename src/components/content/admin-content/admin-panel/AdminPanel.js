@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import Button from "@material-ui/core/Button"
 import {LinkContainer} from 'react-router-bootstrap'
 import './AdminPanel.css'
 import {observer} from "mobx-react-lite";
@@ -22,16 +21,16 @@ const AdminPanel = observer(() => {
             <div className="router">
                 <h2>Администрирование</h2>
                 <LinkContainer to='/masters'>
-                    <Button className="btn btn-xl">Мастера</Button>
+                    <button className="btn btn-xl">Мастера</button>
                 </LinkContainer>
                 <LinkContainer to='/cities'>
-                    <Button className="btn btn-xl ">Города</Button>
+                    <button className="btn btn-xl ">Города</button>
                 </LinkContainer>
                 <LinkContainer to='/customers'>
-                    <Button className="btn btn-xl">Покупатели</Button>
+                    <button className="btn btn-xl">Покупатели</button>
                 </LinkContainer>
                 <LinkContainer to='/orders'>
-                    <Button className="btn btn-xl" id={`btn-orders`} ref={inputRef}>Заказы</Button>
+                    <button className="btn btn-xl" id={`btn-orders`} ref={inputRef}>Заказы</button>
                 </LinkContainer>
                 <Switch>
                     <Route exact path='/masters' component={ListMasters}/>

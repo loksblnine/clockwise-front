@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import {useFormik} from 'formik';
-import TextField from '@material-ui/core/TextField';
 import {Context} from "../../../../index";
 import {useHistory} from "react-router-dom";
 import {observer} from "mobx-react-lite";
@@ -57,37 +56,35 @@ const LoginForm = observer(() => {
 
         return (
             <div style={loginPageStyle}>
-                <form onSubmit={formik.handleSubmit}>
-                    <TextField
-                        fullWidth
-                        id="email"
-                        name="email"
-                        label="Email"
-                        value={formik.values.email}
-                        onChange={formik.handleChange}
-                        error={formik.touched.email && Boolean(formik.errors.email)}
-                        helperText={formik.touched.email && formik.errors.email}
-                        inputProps={{
-                            style: {fontSize: 16}
-                        }}
-                    />
-                    <TextField
-                        fullWidth
-                        id="password"
-                        name="password"
-                        label="Пароль"
-                        type="password"
-                        value={formik.values.password}
-                        onChange={formik.handleChange}
-                        error={formik.touched.password && Boolean(formik.errors.password)}
-                        helperText={formik.touched.password && formik.errors.password}
-                        inputProps={{
-                            style: {fontSize: 16}
-                        }}
-                    />
-                    <button type="submit" className={"mt-5 btn btn-primary"}>
-                        Войти
-                    </button>
+                <form onSubmit={formik.handleSubmit} className={`form`}>
+                    <div className="form-group">
+                        <label className="text" htmlFor="email">Email</label>
+                        <input
+                            id="email"
+                            name="email"
+                            className="form-control"
+                            value={formik.values.email}
+                            onChange={formik.handleChange}
+                        />
+                        {formik.errors.email ? <div className="error">{formik.errors.email}</div> : null}
+                    </div>
+                    <div className="form-group">
+                        <label className="text" htmlFor="password">Пароль</label>
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            className="form-control"
+                            value={formik.values.password}
+                            onChange={formik.handleChange}
+                        />
+                        {formik.errors.password ? <div className="error">{formik.errors.password}</div> : null}
+                    </div>
+                    <div className="form-group">
+                        <button type="submit" className={"mt-5 btn btn-primary"}>
+                            Войти
+                        </button>
+                    </div>
                 </form>
             </div>
         );
