@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useFormik} from 'formik';
 import * as constants from "../../../../constants";
 import {withRouter, useHistory, useLocation} from "react-router-dom";
@@ -6,6 +6,9 @@ import {getCities} from "../../getData";
 import './OrderStyles.css'
 import {observer} from "mobx-react-lite";
 import {toast} from "react-toastify";
+import {Context} from "../../../../index";
+import axios from "axios";
+import {SERVER_URL} from "../../../../constants";
 
 const validate = (values) => {
     const errors = {};
@@ -24,7 +27,7 @@ const validate = (values) => {
         errors.email = 'Невалидный адрес электронной почты';
     }
     if (!values.city) {
-        toast.info("сервергудбай")
+        toast.info("На данный момент сервер недоступен, попробуйте перезагрузить страницу, если это не помогло обратитесь к нам на прямую admin@example.com")
     }
     return errors;
 };
@@ -41,17 +44,18 @@ const orderPageStyle = {
 const OrderForm = observer((props) => {
         const history = useHistory()
         const location = useLocation()
-
-        const [cities, setCities] = useState([]);
+        const {DB} = useContext(Context);
         useEffect(() => {
-            getCities(setCities)
-        }, [])
-
+            if (DB.cities.length <= 0) {
+                axios.get(SERVER_URL + `/cities`)
+                    .then(resp => DB.setCities(resp.data))
+            }
+        }, [DB.cities])
         const formik = useFormik({
             initialValues: {
                 name: location.state === undefined ? '' : location.state.data.name,
                 email: location.state === undefined ? '' : location.state.data.email,
-                city: location.state === undefined ? '1' : location.state.data.city,
+                city: location.state === undefined ? "-1" : location.state.data.city,
                 date: location.state === undefined ? constants.DATE_FROM : location.state.data.date,
                 time: location.state === undefined ? "14:00" : location.state.data.time,
                 type: location.state === undefined ? '1' : location.state.data.type
@@ -90,7 +94,9 @@ const OrderForm = observer((props) => {
                                 className="form-control"
                                 placeholder="Выберите ваш город"
                                 required>
-                            {cities?.map(city =>
+                            <option key="choose-city" value="-1">---Выберете город---</option>
+                            )
+                            {DB.cities?.map(city =>
                                 <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
                         </select>
                     </div>
