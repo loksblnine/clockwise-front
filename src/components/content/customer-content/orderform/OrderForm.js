@@ -52,12 +52,12 @@ const OrderForm = observer((props) => {
         }, [DB.cities])
         const formik = useFormik({
             initialValues: {
-                name: location.state === undefined ? '' : location.state.data.name,
-                email: location.state === undefined ? '' : location.state.data.email,
-                city: location.state === undefined ? "-1" : location.state.data.city,
-                date: location.state === undefined ? constants.DATE_FROM : location.state.data.date,
-                time: location.state === undefined ? "14:00" : location.state.data.time,
-                type: location.state === undefined ? '1' : location.state.data.type
+                name: location?.state?.data?.name || '',
+                email: location?.state?.data?.email || '',
+                city: location?.state?.data?.city || '-1',
+                date: location?.state?.data?.date || constants.DATE_FROM,
+                time: location?.state?.data?.time || "14:00",
+                type: location?.state?.data?.type || '1'
             },
             validate,
             onSubmit: (values) => {
@@ -69,7 +69,7 @@ const OrderForm = observer((props) => {
         });
         return (
             <div style={orderPageStyle}>
-                <form onSubmit={formik.handleSubmit} className={`form`}>
+                <form onSubmit={formik.handleSubmit} className="form">
                     <div className="form-group">
                         <label className="text" htmlFor="email">Email</label>
                         <input type="email" id="email" name="email" key="email"
@@ -81,7 +81,8 @@ const OrderForm = observer((props) => {
                     <div className="form-group">
                         <label className="text" htmlFor="name">Имя</label>
                         <input type="name" id="name" name="name" key="name"
-                               value={formik.values.name} onChange={formik.handleChange}
+                               value={formik.values.name}
+                               onChange={formik.handleChange}
                                className="form-control" placeholder="Имя"
                                required/>
                         {formik.errors.name ? <div className="error">{formik.errors.name}</div> : null}
@@ -93,7 +94,7 @@ const OrderForm = observer((props) => {
                                 className="form-control"
                                 placeholder="Выберите ваш город"
                                 required>
-                            <option key="choose-city" value="-1">---Выберете город---</option>
+                            <option key="choose-city" value="-1" disabled>---Выберете город---</option>
                             )
                             {DB.cities?.map(city =>
                                 <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
