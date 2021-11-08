@@ -23,7 +23,7 @@ const AddCityDependency = ({master}) => {
                 .then(response => response.json())
                 .then(data => toast("Город добавлен "+master.master_name));
             axios.get(SERVER_URL + `/deps`)
-                .then(resp => DB.setDeps(resp.data))
+                .then(resp => DB.setDepsMasterCity(resp.data))
             inputRef.current.click()
 
         } catch (e) {
