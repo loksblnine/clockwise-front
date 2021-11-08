@@ -23,7 +23,7 @@ const WorkIn = observer(({master}) => {
                 .then(response => response.json())
                 .then(data => toast(data));
             axios.get(SERVER_URL + `/deps`)
-                .then(resp => DB.setDeps(resp.data))
+                .then(resp => DB.setDepsMasterCity(resp.data))
         } catch (e) {
             toast("Ахахха сервер упал")
         }
@@ -31,7 +31,7 @@ const WorkIn = observer(({master}) => {
     return (
         <div>
             {DB.cities?.map(c => {
-                if (DB.deps?.find(d => (d.city_id === c.city_id && d.master_id === master.master_id))) {
+                if (DB.depsMasterCity?.find(d => (d.city_id === c.city_id && d.master_id === master.master_id))) {
                     return (
                         <div key={c.city_id}>
                             {c.city_name}
@@ -68,9 +68,9 @@ const ListMasters = observer(() => {
         if (DB.cities?.length <= 0)
             axios.get(SERVER_URL + `/cities`)
                 .then(resp => DB.setCities(resp.data))
-        if (DB.deps?.length <= 0)
+        if (DB.depsMasterCity?.length <= 0)
             axios.get(SERVER_URL + `/deps`)
-                .then(resp => DB.setDeps(resp.data))
+                .then(resp => DB.setDepsMasterCity(resp.data))
         axios.get(SERVER_URL + `/masters`)
             .then(resp => DB.setMasters(resp.data))
             .finally(() => setLoading(false))
