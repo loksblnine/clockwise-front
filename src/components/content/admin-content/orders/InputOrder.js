@@ -38,8 +38,14 @@ const InputOrder = () => {
             })
                 .then(response => response.json())
                 .then(data => toast("Заказ добавлен"));
-            axios.get(SERVER_URL + `/orders`)
+            sessionStorage.setItem('pageOrderList', 0)
+            axios.get(SERVER_URL + `/orders/offset/` + sessionStorage.getItem('pageOrderList'))
                 .then(resp => DB.setOrders(resp.data))
+                .then(
+                    axios.get(SERVER_URL + `/orders/offset/1`)
+                        .then(resp => DB.setOrdersNext(resp.data))
+                        .then(() => sessionStorage.setItem('pageOrderList', Number(sessionStorage.getItem('pageOrderList'))+1))
+                )
             inputRef.current.click()
         } catch (e) {
             toast.info("🦄 Ахахха сервер упал")
@@ -100,7 +106,7 @@ const InputOrder = () => {
                                 <select className="form-control" name="city_id" defaultValue="-1"
                                         onChange={handleChange} required disabled={isMasterSelected()}>
                                     <option value="-1" disabled={true}>---Выбрать город---</option>
-                                    {DB.cities.filter(c => deps.includes(c.city_id))?.map(city =>
+                                    {DB.cities.filter(c=> deps.includes(c.city_id)).map(city =>
                                         <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
                                 </select>
 

@@ -28,8 +28,14 @@ const EditOrder = observer((initialOrder) => {
             })
                 .then(response => response.json())
                 .then(data => toast(data));
-            axios.get(SERVER_URL + `/orders`)
+            sessionStorage.setItem('pageOrderList', 0)
+            axios.get(SERVER_URL + `/orders/offset/` + sessionStorage.getItem('pageOrderList'))
                 .then(resp => DB.setOrders(resp.data))
+                .then(
+                    axios.get(SERVER_URL + `/orders/offset/1`)
+                        .then(resp => DB.setOrdersNext(resp.data))
+                        .then(() => sessionStorage.setItem('pageOrderList', Number(sessionStorage.getItem('pageOrderList'))+1))
+                )
             inputRef.current.click()
         } catch (e) {
             toast.info("🦄 Ахахха сервер упал")
@@ -118,9 +124,9 @@ const EditOrder = observer((initialOrder) => {
                                        onChange={handleChange}/>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal" ref={inputRef}>Закрыть
                                 </button>
-                                <button type="submit" className="btn btn-primary" id={`btnSave`} ref={inputRef}>
+                                <button type="submit" className="btn btn-primary" id={`btnSave`}>
                                     Сохранить изменения
                                 </button>
                             </div>
