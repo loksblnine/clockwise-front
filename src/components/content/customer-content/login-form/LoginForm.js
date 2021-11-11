@@ -56,7 +56,7 @@ const LoginForm = observer(() => {
 
         return (
             <div style={loginPageStyle}>
-                <form onSubmit={formik.handleSubmit} className={`form`}>
+                <form onSubmit={formik.handleSubmit} className="form">
                     <div className="form-group">
                         <label className="text" htmlFor="email">Email</label>
                         <input
@@ -81,7 +81,7 @@ const LoginForm = observer(() => {
                         {formik.errors.password ? <div className="error">{formik.errors.password}</div> : null}
                     </div>
                     <div className="form-group">
-                        <button type="submit" className={"mt-5 btn btn-primary"}>
+                        <button type="submit" className="mt-5 btn btn-primary">
                             Войти
                         </button>
                     </div>
