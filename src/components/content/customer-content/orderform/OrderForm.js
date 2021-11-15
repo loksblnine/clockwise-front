@@ -19,7 +19,6 @@ const validate = (values) => {
     if (values.name === "Ян") {
         errors.name = 'Извините, станьте Яной)';
     }
-
     if (!values.email) {
         errors.email = 'Адрес электронный почты обязателен';
     } else if (!/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i.test(values.email)) {
@@ -49,7 +48,9 @@ const OrderForm = observer((props) => {
                 axios.get(SERVER_URL + `/cities`)
                     .then(resp => DB.setCities(resp.data))
             }
-        }, [DB.cities])
+        }, [DB])
+
+
         const formik = useFormik({
             initialValues: {
                 name: location?.state?.data?.name || '',
@@ -67,6 +68,14 @@ const OrderForm = observer((props) => {
                 })
             },
         });
+        useEffect(async () => {
+            if (formik.values.email.length) {
+                let customer = {customer_email: formik.values.email}
+                await fetch(constants.SERVER_URL + `/customers/email/` + customer.customer_email)
+                    .then(resp => resp.json())
+                    .then(data => customer = data)
+            }
+        }, [formik.values.email])
         return (
             <div style={orderPageStyle}>
                 <form onSubmit={formik.handleSubmit} className="form">
@@ -145,7 +154,7 @@ const OrderForm = observer((props) => {
                             </label>
                         </div>
                     </div>
-                    <button type="submit" className="btn btn-primary">Выбрать мастера</button>
+                    <button type="submit" className="btn btn-primary" disabled={formik.values.city==="-1"}>Выбрать мастера</button>
                 </form>
             </div>
         );
