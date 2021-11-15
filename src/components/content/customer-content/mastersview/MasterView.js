@@ -1,33 +1,46 @@
 import React, {Fragment, useContext, useEffect, useState} from 'react';
 import * as constants from "../../../../constants";
-import {useLocation, Redirect, useHistory} from 'react-router-dom'
-import {getDepsCityIdMasters, getMasters, getOrders} from "../../getData";
 import {SERVER_URL} from "../../../../constants";
+import {Redirect, useHistory, useLocation} from 'react-router-dom'
+import {getDepsCityIdMasters} from "../../getData";
 import './MasterView.css'
 import {toast} from "react-toastify";
 import axios from "axios";
 import {Context} from "../../../../index";
 import {Spinner} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
-import {login} from "../../../../http/userAPI";
 
-
-const MasterView = observer((props) => {
+const MasterView = observer(() => {
         const [listMastersInCityAvailable, setLMICA] = useState([]);
+        const [ids, setIdsUnavailableMasters] = useState([])
         const [loading, setLoading] = useState(true)
         const {DB} = useContext(Context)
         const location = useLocation()
         const history = useHistory()
+        const order = location.state.data
 
-        useEffect(() => {
+        useEffect(async () => {
+            await fetch(constants.SERVER_URL + "/masters/free",
+                {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({
+                        work_id: order.type,
+                        order_time: order.date + "T" + order.time
+                    })
+                })
+                .then(resp => resp.json())
+                .then(data => setIdsUnavailableMasters(data))
+                .catch(err => {
+                    return err
+                });
             if (location.state) {
                 axios.get(SERVER_URL + `/masters`)
                     .then(resp => DB.setMasters(resp.data))
                     .finally(() => setLoading(false))
                 getDepsCityIdMasters(setLMICA, location.state.data.city)
             }
-        }, [location.state])
-
+        }, [DB, location.state])
         const handleBack = () => {
             history.push({
                 pathname: '/',
@@ -50,8 +63,6 @@ const MasterView = observer((props) => {
                         .then(resp => resp.json())
                         .then(data => customer = data);
                 })
-
-            const order = location.state.data
             const text = `Спасибо за заказ ${customer.customer_name}, мастер ${master.master_name} будет у вас ${order.date} в ${order.time}`
             const T = order.date + "T" + order.time
 
@@ -92,25 +103,16 @@ const MasterView = observer((props) => {
             )
         }
 
-        const isMasterOpenToWork = async (master) => {
-            const order = location.state.data
-            console.log(await fetch(constants.SERVER_URL + "/masters/free/" + master.master_id,
-                {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({
-                        work_id: order.type,
-                        order_time: order.date + "T" + order.time
-                    })
-                })
-                .then(resp => resp.json())
-            )
-        }
-
         const START_TIME = location.state.data.time
         const END_TIME = (Number(START_TIME.split(':')[0])
             + Number(constants.WORK_TYPES[location.state.data.type].value))
             + ":00"
+
+        const mastersToShow =
+            DB.masters
+                .filter(m =>
+                    listMastersInCityAvailable
+                        .find(d => d === m.master_id))
 
         if (loading) {
             return (
@@ -119,6 +121,7 @@ const MasterView = observer((props) => {
                 </div>
             )
         }
+        console.log(ids)
 
         return (
             <div className={`content`}>
@@ -137,7 +140,7 @@ const MasterView = observer((props) => {
                         </tr>
                         </thead>
                         <tbody>
-                        {DB.masters.filter(m => listMastersInCityAvailable.find(d => d === m.master_id))
+                        {mastersToShow
                             .map(master => (
                                 <tr key={master.master_id}>
                                     <td>{master.master_name}</td>
@@ -146,12 +149,15 @@ const MasterView = observer((props) => {
                                         <button className="btn btn-success" id={master.master_id}
                                                 value={master.master_id}
                                                 onClick={e => handleClick(master)}
-                                                disabled={!isMasterOpenToWork(master)}
+                                                disabled={false}
                                         >Выбрать
                                         </button>
                                     </td>
                                 </tr>
                             ))}
+                        {ids.map((id) =>
+                            <p>{id}</p>
+                        )}
                         </tbody>
                     </table>
                 </Fragment>
