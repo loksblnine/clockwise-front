@@ -20,23 +20,31 @@ const MasterView = observer(() => {
         const order = location.state.data
 
         useEffect(async () => {
-            await fetch(constants.SERVER_URL + "/masters/free",
-                {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({
-                        work_id: order.type,
-                        order_time: order.date + "T" + order.time
-                    })
-                })
-                .then(resp => resp.json())
-                .then(data => setIdsUnavailableMasters(data))
-                .catch(err => {
-                    return err
-                });
             if (location.state) {
-                axios.get(SERVER_URL + `/masters`)
-                    .then(resp => DB.setMasters(resp.data))
+                {
+                    axios.get(SERVER_URL + `/masters`)
+                        .then(resp => DB.setMasters(resp.data))
+                }
+                console.log(JSON.stringify({
+                    city_id: order.city,
+                    work_id: order.type,
+                    order_time: order.date + "T" + order.time
+                }))
+                await fetch(constants.SERVER_URL + "/masters/free",
+                    {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({
+                            city_id: order.city,
+                            work_id: order.type,
+                            order_time: order.date + "T" + order.time
+                        })
+                    })
+                    .then(resp => resp.json())
+                    .then(data => setIdsUnavailableMasters(data))
+                    .catch(err => {
+                        return err
+                    })
                     .finally(() => setLoading(false))
                 getDepsCityIdMasters(setLMICA, location.state.data.city)
             }
@@ -121,7 +129,6 @@ const MasterView = observer(() => {
                 </div>
             )
         }
-        console.log(ids)
 
         return (
             <div className={`content`}>
@@ -149,17 +156,15 @@ const MasterView = observer(() => {
                                         <button className="btn btn-success" id={master.master_id}
                                                 value={master.master_id}
                                                 onClick={e => handleClick(master)}
-                                                disabled={false}
+                                                disabled={ids.includes(master.master_id)}
                                         >Выбрать
                                         </button>
                                     </td>
                                 </tr>
                             ))}
-                        {ids.map((id) =>
-                            <p>{id}</p>
-                        )}
                         </tbody>
                     </table>
+                    {}
                 </Fragment>
                 <button className="btn btn-primary" onClick={handleBack}>Назад
                 </button>
