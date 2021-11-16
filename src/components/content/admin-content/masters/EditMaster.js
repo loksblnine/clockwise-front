@@ -15,8 +15,10 @@ const EditMaster = ({master}) => {
             const body = {master_name, ranking}
             await fetch(SERVER_URL + `/masters/${master.master_id}`, {
                 method: "PUT",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(body)
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                }, body: JSON.stringify(body)
             })
                 .then(response => response.json())
                 .then(data => toast(data));
@@ -24,7 +26,7 @@ const EditMaster = ({master}) => {
                 .then(resp => DB.setMasters(resp.data))
             inputRef.current.click()
         } catch (e) {
-            toast.info("🦄 Ахахха сервер упал")
+            toast.info("Server is busy at this moment")
         }
     }
     return (
@@ -58,7 +60,8 @@ const EditMaster = ({master}) => {
                                 />
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal" ref={inputRef}>Закрыть
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal"
+                                        ref={inputRef}>Закрыть
                                 </button>
                                 <button type="submit" className="btn btn-primary">
                                     Сохранить изменения

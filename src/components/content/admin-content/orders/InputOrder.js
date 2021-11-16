@@ -33,8 +33,10 @@ const InputOrder = () => {
             console.log(JSON.stringify(body.order))
             await fetch(constants.SERVER_URL + `/orders`, {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(body.order)
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                }, body: JSON.stringify(body.order)
             })
                 .then(response => response.json())
                 .then(data => toast("Заказ добавлен"));
@@ -44,11 +46,11 @@ const InputOrder = () => {
                 .then(
                     axios.get(SERVER_URL + `/orders/offset/1`)
                         .then(resp => DB.setOrdersNext(resp.data))
-                        .then(() => sessionStorage.setItem('pageOrderList', Number(sessionStorage.getItem('pageOrderList'))+1))
+                        .then(() => sessionStorage.setItem('pageOrderList', Number(sessionStorage.getItem('pageOrderList')) + 1))
                 )
             inputRef.current.click()
         } catch (e) {
-            toast.info("🦄 Ахахха сервер упал")
+            toast.info("Server is busy at this moment")
         }
     }
     const isMasterSelected = () => {
@@ -106,7 +108,7 @@ const InputOrder = () => {
                                 <select className="form-control" name="city_id" defaultValue="-1"
                                         onChange={handleChange} required disabled={isMasterSelected()}>
                                     <option value="-1" disabled={true}>---Выбрать город---</option>
-                                    {DB.cities.filter(c=> deps.includes(c.city_id)).map(city =>
+                                    {DB.cities.filter(c => deps.includes(c.city_id)).map(city =>
                                         <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
                                 </select>
 

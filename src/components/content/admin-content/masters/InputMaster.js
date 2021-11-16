@@ -16,16 +16,18 @@ const InputMaster = () => {
             const body = {master_name, ranking}
             await fetch(SERVER_URL + `/masters`, {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(body)
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                }, body: JSON.stringify(body)
             })
                 .then(response => response.json())
-                .then(data => toast(`Мастер ${master_name} добавлен`));
+                .then(() => toast(`Мастер ${master_name} добавлен`));
             axios.get(SERVER_URL + `/masters`)
                 .then(resp => DB.setMasters(resp.data))
             inputRef.current.click()
         } catch (e) {
-            toast.info("🦄 Ахахха сервер упал")
+            toast.info("Server is busy at this moment")
         }
     }
     return (
@@ -58,7 +60,8 @@ const InputMaster = () => {
                                 />
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal" ref={inputRef}>Закрыть
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal"
+                                        ref={inputRef}>Закрыть
                                 </button>
                                 <button type="submit" className="btn btn-primary">
                                     Сохранить изменения

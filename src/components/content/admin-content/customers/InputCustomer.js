@@ -16,16 +16,18 @@ const InputCustomer = () => {
             const body = {customer_name, customer_email}
             await fetch(SERVER_URL + `/customers`, {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(body)
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                }, body: JSON.stringify(body)
             })
                 .then(response => response.json())
-                .then(data => toast(`Покупатель ${customer_name} добавлен`));
+                .then(() => toast(`Покупатель ${customer_name} добавлен`));
             axios.get(SERVER_URL + `/customers`)
                 .then(resp => DB.setCustomers(resp.data))
             inputRef.current.click()
         } catch (e) {
-            toast.info("🦄 Ахахха сервер упал")
+            toast.info("Server is busy at this moment")
         }
     }
     return (

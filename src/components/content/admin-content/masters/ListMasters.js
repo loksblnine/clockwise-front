@@ -17,15 +17,16 @@ const WorkIn = observer(({master}) => {
         try {
             await fetch(SERVER_URL + `/deps`, {
                 method: "DELETE",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(body)
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                }, body: JSON.stringify(body)
             })
                 .then(response => response.json())
                 .then(data => toast(data));
             axios.get(SERVER_URL + `/deps`)
                 .then(resp => DB.setDepsMasterCity(resp.data))
         } catch (e) {
-            toast("Ахахха сервер упал")
+            toast.info("Server is busy at this moment")
         }
     }
     return (

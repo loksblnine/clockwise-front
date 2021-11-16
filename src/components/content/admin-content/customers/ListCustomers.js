@@ -14,19 +14,24 @@ const ListCustomers = observer(() => {
     const deleteCustomer = async (id) => {
         try {
             await fetch(SERVER_URL + `/customers/${id}`, {
-                method: "DELETE"
+                method: "DELETE",
+                headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`}
             })
                 .then(response => response.json())
                 .then(data => toast(data));
             axios.get(SERVER_URL + `/customers`)
                 .then(resp => DB.setCustomers(resp.data))
         } catch (e) {
-            toast.info("🦄 Ахахха сервер упал")
+            toast.info("Server is busy at this moment")
         }
     }
 
     useEffect(() => {
-        axios.get(SERVER_URL + `/customers`)
+        axios.get(SERVER_URL + `/customers`, {
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
+        })
             .then(resp => DB.setCustomers(resp.data))
             .finally(() => setLoading(false))
     }, [DB])

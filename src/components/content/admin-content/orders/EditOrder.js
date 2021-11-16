@@ -23,8 +23,10 @@ const EditOrder = observer((initialOrder) => {
             body.order.order_time = body.order.date + 'T' + body.order.time
             await fetch(SERVER_URL + `/orders/${order.order_id}`, {
                 method: "PUT",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(body.order)
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                }, body: JSON.stringify(body.order)
             })
                 .then(response => response.json())
                 .then(data => toast(data));
@@ -34,11 +36,11 @@ const EditOrder = observer((initialOrder) => {
                 .then(
                     axios.get(SERVER_URL + `/orders/offset/1`)
                         .then(resp => DB.setOrdersNext(resp.data))
-                        .then(() => sessionStorage.setItem('pageOrderList', Number(sessionStorage.getItem('pageOrderList'))+1))
+                        .then(() => sessionStorage.setItem('pageOrderList', Number(sessionStorage.getItem('pageOrderList')) + 1))
                 )
             inputRef.current.click()
         } catch (e) {
-            toast.info("🦄 Ахахха сервер упал")
+            toast.info("Server is busy at this moment")
         }
     }
 
@@ -124,7 +126,8 @@ const EditOrder = observer((initialOrder) => {
                                        onChange={handleChange}/>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal" ref={inputRef}>Закрыть
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal"
+                                        ref={inputRef}>Закрыть
                                 </button>
                                 <button type="submit" className="btn btn-primary" id={`btnSave`}>
                                     Сохранить изменения

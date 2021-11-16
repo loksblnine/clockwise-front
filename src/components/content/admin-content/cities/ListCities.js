@@ -3,10 +3,10 @@ import EditCity from "./EditCity";
 import InputCity from "./InputCity";
 import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
-import axios from "axios";
 import {Context} from "../../../../index";
 import {observer} from "mobx-react-lite";
 import {Spinner} from "react-bootstrap";
+import {getCitiesIntoStore} from "../../getData";
 
 const ListCities = observer(() => {
     const [loading, setLoading] = useState(true)
@@ -15,20 +15,18 @@ const ListCities = observer(() => {
         try {
             await fetch(SERVER_URL + `/cities/${id}`, {
                 method: "DELETE",
-                headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem('token')}`},
+                headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`}
             })
                 .then(response => response.json())
                 .then(data => toast(data));
-            axios.get(SERVER_URL + `/cities`)
-                .then(resp => DB.setCities(resp.data))
+            await getCitiesIntoStore(DB)
         } catch (e) {
-            toast.info("🦄 Ахахха сервер упал")
+            toast.info("Server is busy at this moment")
         }
     }
 
     useEffect(() => {
-        axios.get(SERVER_URL + `/cities`)
-            .then(resp => DB.setCities(resp.data))
+        getCitiesIntoStore(DB)
             .finally(() => setLoading(false))
     }, [DB])
 

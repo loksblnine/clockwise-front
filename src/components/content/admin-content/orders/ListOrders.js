@@ -16,19 +16,22 @@ const ListOrders = observer(() => {
     const deleteOrder = async (id) => {
         try {
             await fetch(SERVER_URL + `/orders/${id}`, {
-                method: "DELETE"
+                method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                }
             })
                 .then(response => response.json())
                 .then(data => toast(data));
             axios.get(SERVER_URL + `/orders`)
                 .then(resp => DB.setOrders(resp.data))
         } catch (e) {
-            toast(e.message)
+            toast.info("Server is busy at this moment")
         }
     }
     const handleNextOrders = () => {
         DB.setOrders(DB.orders.concat(DB.ordersNext))
-        sessionStorage.setItem('pageOrderList', Number(sessionStorage.getItem('pageOrderList'))+1)
+        sessionStorage.setItem('pageOrderList', Number(sessionStorage.getItem('pageOrderList')) + 1)
         axios.get(SERVER_URL + `/orders/offset/` + sessionStorage.getItem('pageOrderList'))
             .then(resp => DB.setOrdersNext(resp.data))
     }
@@ -48,7 +51,7 @@ const ListOrders = observer(() => {
             .then(
                 axios.get(SERVER_URL + `/orders/offset/1`)
                     .then(resp => DB.setOrdersNext(resp.data))
-                    .then(() => sessionStorage.setItem('pageOrderList', Number(sessionStorage.getItem('pageOrderList'))+1))
+                    .then(() => sessionStorage.setItem('pageOrderList', Number(sessionStorage.getItem('pageOrderList')) + 1))
             )
             .finally(() => setLoading(false))
     }, [DB])
@@ -102,7 +105,7 @@ const ListOrders = observer(() => {
             {
                 DB.ordersNext.length >= 1 ?
                     <div className="col text-center">
-                        <button className="btn btn-primary" onClick={() => handleNextOrders()} > Еще заказы...</button>
+                        <button className="btn btn-primary" onClick={() => handleNextOrders()}> Еще заказы...</button>
                     </div>
                     : null
             }

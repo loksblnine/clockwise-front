@@ -15,8 +15,10 @@ const EditCustomer = ({customer}) => {
             const body = {customer_name, customer_email}
             await fetch(SERVER_URL + `/customers/${customer.customer_id}`, {
                 method: "PUT",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(body)
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem('token')}`
+                }, body: JSON.stringify(body)
             })
                 .then(response => response.json())
                 .then(data => toast(data));
@@ -24,7 +26,7 @@ const EditCustomer = ({customer}) => {
                 .then(resp => DB.setCustomers(resp.data))
             inputRef.current.click()
         } catch (e) {
-            toast.info("🦄 Ахахха сервер упал")
+            toast.info("Server is busy at this moment")
         }
     }
     return (
@@ -59,7 +61,8 @@ const EditCustomer = ({customer}) => {
                                 />
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal" ref={inputRef}>Закрыть
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal"
+                                        ref={inputRef}>Закрыть
                                 </button>
                                 <button type="submit" className="btn btn-primary">
                                     Сохранить изменения
