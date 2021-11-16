@@ -14,7 +14,7 @@ const InputCity = () => {
             const body = {city_name}
             await fetch(SERVER_URL + `/cities`, {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
+                headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem('token')}`},
                 body: JSON.stringify(body)
             })
                 .then(response => response.json())
@@ -23,7 +23,7 @@ const InputCity = () => {
                 .then(resp => DB.setCities(resp.data))
             inputRef.current.click()
         } catch (e) {
-            toast.info("🦄 Ахахха сервер упал")
+            toast.info("Server is busy at this moment")
         }
     }
     return (

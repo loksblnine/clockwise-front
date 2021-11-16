@@ -14,7 +14,8 @@ const ListCities = observer(() => {
     const deleteCity = async (id) => {
         try {
             await fetch(SERVER_URL + `/cities/${id}`, {
-                method: "DELETE"
+                method: "DELETE",
+                headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem('token')}`},
             })
                 .then(response => response.json())
                 .then(data => toast(data));

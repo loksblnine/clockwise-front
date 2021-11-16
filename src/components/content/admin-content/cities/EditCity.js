@@ -14,7 +14,7 @@ const EditCity = ({city}) => {
             const body = {city_name}
             await fetch(SERVER_URL + `/cities/${city.city_id}`, {
                 method: "PUT",
-                headers: {"Content-Type": "application/json"},
+                headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem('token')}`},
                 body: JSON.stringify(body)
             })
                 .then(response => response.json())
