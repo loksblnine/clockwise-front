@@ -1,8 +1,8 @@
 import React, {Fragment, useContext, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
-import axios from "axios";
 import {Context} from "../../../../index";
+import {getCustomersIntoStore} from "../../getData";
 
 const EditCustomer = ({customer}) => {
     const [customer_name, setCustomerName] = useState(customer.customer_name)
@@ -22,8 +22,7 @@ const EditCustomer = ({customer}) => {
             })
                 .then(response => response.json())
                 .then(data => toast(data));
-            axios.get(SERVER_URL + `/customers`)
-                .then(resp => DB.setCustomers(resp.data))
+            await getCustomersIntoStore(DB)
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")

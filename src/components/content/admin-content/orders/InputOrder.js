@@ -1,10 +1,8 @@
 import React, {Fragment, useContext, useEffect, useState} from "react";
 import * as constants from "../../../../constants";
 import {toast} from "react-toastify";
-import axios from "axios";
-import {SERVER_URL} from "../../../../constants";
 import {Context} from "../../../../index";
-import {getDepsMasterIdCities} from "../../getData";
+import {getDepsMasterIdCities, getOrdersIntoStore} from "../../getData";
 
 const InputOrder = () => {
     const {DB} = useContext(Context)
@@ -18,7 +16,6 @@ const InputOrder = () => {
         date: '',
         time: ''
     });
-
     useEffect(() => {
         if (!!order.master_id)
             getDepsMasterIdCities(setDeps, order.master_id)
@@ -30,7 +27,6 @@ const InputOrder = () => {
             const body = {order}
             body.order.time = `${Number(body.order.time.split(':')[0])}:00`
             body.order.order_time = body.order.date + 'T' + body.order.time
-            console.log(JSON.stringify(body.order))
             await fetch(constants.SERVER_URL + `/orders`, {
                 method: "POST",
                 headers: {
@@ -39,15 +35,8 @@ const InputOrder = () => {
                 }, body: JSON.stringify(body.order)
             })
                 .then(response => response.json())
-                .then(data => toast("Заказ добавлен"));
-            sessionStorage.setItem('pageOrderList', 0)
-            axios.get(SERVER_URL + `/orders/offset/` + sessionStorage.getItem('pageOrderList'))
-                .then(resp => DB.setOrders(resp.data))
-                .then(
-                    axios.get(SERVER_URL + `/orders/offset/1`)
-                        .then(resp => DB.setOrdersNext(resp.data))
-                        .then(() => sessionStorage.setItem('pageOrderList', Number(sessionStorage.getItem('pageOrderList')) + 1))
-                )
+                .then(() => toast("Заказ добавлен"));
+            await getOrdersIntoStore(DB)
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")

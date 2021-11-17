@@ -9,6 +9,7 @@ import {Context} from "../../../../index";
 import {observer} from "mobx-react-lite";
 import axios from "axios";
 import {Spinner} from "react-bootstrap";
+import {getCitiesIntoStore, getCustomersIntoStore, getMastersIntoStore, getOrdersIntoStore} from "../../getData";
 
 const ListOrders = observer(() => {
     const [loading, setLoading] = useState(true)
@@ -23,36 +24,29 @@ const ListOrders = observer(() => {
             })
                 .then(response => response.json())
                 .then(data => toast(data));
-            axios.get(SERVER_URL + `/orders`)
-                .then(resp => DB.setOrders(resp.data))
+            await getOrdersIntoStore(DB)
         } catch (e) {
             toast.info("Server is busy at this moment")
         }
     }
     const handleNextOrders = () => {
         DB.setOrders(DB.orders.concat(DB.ordersNext))
-        sessionStorage.setItem('pageOrderList', Number(sessionStorage.getItem('pageOrderList')) + 1)
-        axios.get(SERVER_URL + `/orders/offset/` + sessionStorage.getItem('pageOrderList'))
+        sessionStorage.setItem('pageOrderList', (Number(sessionStorage.getItem('pageOrderList')) + 1).toString())
+        axios.get(SERVER_URL + `/orders/offset/` + sessionStorage.getItem('pageOrderList'), {
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
+        })
             .then(resp => DB.setOrdersNext(resp.data))
     }
-    useEffect(() => {
+    useEffect(async () => {
         if (DB.cities.length <= 0)
-            axios.get(SERVER_URL + `/cities`)
-                .then(resp => DB.setCities(resp.data))
+            await getCitiesIntoStore(DB)
         if (DB.customers.length <= 0)
-            axios.get(SERVER_URL + `/customers`)
-                .then(resp => DB.setCustomers(resp.data))
+            await getCustomersIntoStore(DB)
         if (DB.masters.length <= 0)
-            axios.get(SERVER_URL + `/masters`)
-                .then(resp => DB.setMasters(resp.data))
-        sessionStorage.setItem('pageOrderList', 0)
-        axios.get(SERVER_URL + `/orders/offset/` + sessionStorage.getItem('pageOrderList'))
-            .then(resp => DB.setOrders(resp.data))
-            .then(
-                axios.get(SERVER_URL + `/orders/offset/1`)
-                    .then(resp => DB.setOrdersNext(resp.data))
-                    .then(() => sessionStorage.setItem('pageOrderList', Number(sessionStorage.getItem('pageOrderList')) + 1))
-            )
+            await getMastersIntoStore(DB)
+        getOrdersIntoStore(DB)
             .finally(() => setLoading(false))
     }, [DB])
     if (loading) {
@@ -69,9 +63,9 @@ const ListOrders = observer(() => {
                 <thead>
                 <tr>
                     <th scope="col"># заказа</th>
-                    <th scope="col"># мастера</th>
-                    <th scope="col"># покупателя</th>
-                    <th scope="col"># города</th>
+                    <th scope="col">Мастер</th>
+                    <th scope="col">Покупатель</th>
+                    <th scope="col">Город</th>
                     <th scope="col">Тип работы</th>
                     <th scope="col">Дата заказа</th>
                     <th scope="col">Время заказа</th>

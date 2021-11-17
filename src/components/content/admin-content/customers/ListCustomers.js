@@ -3,10 +3,10 @@ import EditCustomer from "./EditCustomer";
 import InputCustomer from "./InputCustomer";
 import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
-import axios from "axios";
 import {Context} from "../../../../index";
 import {Spinner} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
+import {getCustomersIntoStore} from "../../getData";
 
 const ListCustomers = observer(() => {
     const {DB} = useContext(Context)
@@ -19,20 +19,14 @@ const ListCustomers = observer(() => {
             })
                 .then(response => response.json())
                 .then(data => toast(data));
-            axios.get(SERVER_URL + `/customers`)
-                .then(resp => DB.setCustomers(resp.data))
+            await getCustomersIntoStore(DB)
         } catch (e) {
             toast.info("Server is busy at this moment")
         }
     }
 
     useEffect(() => {
-        axios.get(SERVER_URL + `/customers`, {
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-            .then(resp => DB.setCustomers(resp.data))
+        getCustomersIntoStore(DB)
             .finally(() => setLoading(false))
     }, [DB])
 

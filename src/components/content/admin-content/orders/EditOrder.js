@@ -5,6 +5,7 @@ import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {observer} from "mobx-react-lite";
 import axios from "axios";
+import {getOrdersIntoStore} from "../../getData";
 
 const EditOrder = observer((initialOrder) => {
     const {DB} = useContext(Context)
@@ -30,14 +31,7 @@ const EditOrder = observer((initialOrder) => {
             })
                 .then(response => response.json())
                 .then(data => toast(data));
-            sessionStorage.setItem('pageOrderList', 0)
-            axios.get(SERVER_URL + `/orders/offset/` + sessionStorage.getItem('pageOrderList'))
-                .then(resp => DB.setOrders(resp.data))
-                .then(
-                    axios.get(SERVER_URL + `/orders/offset/1`)
-                        .then(resp => DB.setOrdersNext(resp.data))
-                        .then(() => sessionStorage.setItem('pageOrderList', Number(sessionStorage.getItem('pageOrderList')) + 1))
-                )
+            await getOrdersIntoStore()
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")

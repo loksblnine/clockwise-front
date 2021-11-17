@@ -23,8 +23,7 @@ const AddCityDependency = observer(({master}) => {
             })
                 .then(response => response.json())
                 .then(() => toast("Город добавлен " + master.master_name));
-            axios.get(SERVER_URL + `/deps`)
-                .then(resp => DB.setDepsMasterCity(resp.data))
+            await getAllDepsIntoStore(DB)
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")

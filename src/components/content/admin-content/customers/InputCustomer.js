@@ -2,7 +2,7 @@ import React, {Fragment, useContext, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
 import {Context} from "../../../../index";
-import axios from "axios";
+import {getCustomersIntoStore} from "../../getData";
 
 const InputCustomer = () => {
     const [customer_name, setCustomerName] = useState("")
@@ -23,8 +23,7 @@ const InputCustomer = () => {
             })
                 .then(response => response.json())
                 .then(() => toast(`Покупатель ${customer_name} добавлен`));
-            axios.get(SERVER_URL + `/customers`)
-                .then(resp => DB.setCustomers(resp.data))
+            await getCustomersIntoStore(DB)
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")

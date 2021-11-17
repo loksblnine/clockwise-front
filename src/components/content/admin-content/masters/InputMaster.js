@@ -3,6 +3,7 @@ import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
 import axios from "axios";
 import {Context} from "../../../../index";
+import {getMastersIntoStore} from "../../getData";
 
 const InputMaster = () => {
     const [master_name, setMasterName] = useState("")
@@ -23,8 +24,7 @@ const InputMaster = () => {
             })
                 .then(response => response.json())
                 .then(() => toast(`Мастер ${master_name} добавлен`));
-            axios.get(SERVER_URL + `/masters`)
-                .then(resp => DB.setMasters(resp.data))
+            await getMastersIntoStore(DB)
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")
