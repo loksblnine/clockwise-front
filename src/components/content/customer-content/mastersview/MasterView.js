@@ -2,10 +2,9 @@ import React, {Fragment, useContext, useEffect, useState} from 'react';
 import * as constants from "../../../../constants";
 import {SERVER_URL} from "../../../../constants";
 import {Redirect, useHistory, useLocation} from 'react-router-dom'
-import {getDepsCityIdMasters} from "../../getData";
+import {getDepsCityIdMasters, getMastersIntoStore} from "../../getData";
 import './MasterView.css'
 import {toast} from "react-toastify";
-import axios from "axios";
 import {Context} from "../../../../index";
 import {Spinner} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
@@ -22,14 +21,8 @@ const MasterView = observer(() => {
         useEffect(async () => {
             if (location.state) {
                 {
-                    axios.get(SERVER_URL + `/masters`)
-                        .then(resp => DB.setMasters(resp.data))
+                    await getMastersIntoStore(DB)
                 }
-                console.log(JSON.stringify({
-                    city_id: order.city,
-                    work_id: order.type,
-                    order_time: order.date + "T" + order.time
-                }))
                 await fetch(constants.SERVER_URL + "/masters/free",
                     {
                         method: "POST",
