@@ -54,10 +54,10 @@ export const getAllDepsIntoStore = async (DB) => {
 export const getOrdersIntoStore = async (DB) => {
     sessionStorage.setItem('pageOrderList', "0")
     axios.get(SERVER_URL + `/orders/offset/` + sessionStorage.getItem('pageOrderList'))
-        .then(resp => DB.setOrders(resp.data))
+        .then(resp => DB?.setOrders(resp.data))
         .then(()=>
             axios.get(SERVER_URL + "/orders/offset/1")
-                .then(resp => DB.setOrdersNext(resp.data))
+                .then(resp => DB?.setOrdersNext(resp.data))
                 .then(() => sessionStorage.setItem('pageOrderList',
                     (Number(sessionStorage.getItem('pageOrderList')) + 1).toString()))
         )

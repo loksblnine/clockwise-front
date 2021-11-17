@@ -24,9 +24,10 @@ const EditOrder = observer((initialOrder) => {
             await fetch(SERVER_URL + `/orders/${order.order_id}`, {
                 method: "PUT",
                 headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                }, body: JSON.stringify(body.order)
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem('token')}`
+                    },
+                body: JSON.stringify(body.order)
             })
                 .then(response => response.json())
                 .then(data => toast(data))

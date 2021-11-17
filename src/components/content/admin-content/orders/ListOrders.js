@@ -23,14 +23,14 @@ const ListOrders = observer(() => {
                 }
             })
                 .then(response => response.json())
-                .then(data => toast(data));
-            await getOrdersIntoStore(DB)
+                .then(data => toast(data))
+                .then(() => getOrdersIntoStore(DB))
         } catch (e) {
             toast.info("Server is busy at this moment")
         }
     }
     const handleNextOrders = () => {
-        DB.setOrders(DB.orders.concat(DB.ordersNext))
+        DB?.setOrders(DB.orders.concat(DB.ordersNext))
         sessionStorage.setItem('pageOrderList', (Number(sessionStorage.getItem('pageOrderList')) + 1).toString())
         axios.get(SERVER_URL + `/orders/offset/` + sessionStorage.getItem('pageOrderList'), {
             headers: {
