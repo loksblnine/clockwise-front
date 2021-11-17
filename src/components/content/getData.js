@@ -5,6 +5,7 @@ import axios from "axios";
 axios.interceptors.request.use(
     {
         headers: {
+            "Content-Type": "application/json",
             "Authorization": `Bearer ${localStorage.getItem('token')}`
         }
     })
@@ -54,7 +55,7 @@ export const getOrdersIntoStore = async (DB) => {
     sessionStorage.setItem('pageOrderList', "0")
     axios.get(SERVER_URL + `/orders/offset/` + sessionStorage.getItem('pageOrderList'))
         .then(resp => DB.setOrders(resp.data))
-        .then(
+        .then(()=>
             axios.get(SERVER_URL + "/orders/offset/1")
                 .then(resp => DB.setOrdersNext(resp.data))
                 .then(() => sessionStorage.setItem('pageOrderList',

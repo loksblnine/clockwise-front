@@ -3,6 +3,7 @@ import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {getCitiesIntoStore} from "../../getData";
+import axios from "axios";
 
 const EditCity = ({city}) => {
     const {DB} = useContext(Context);
@@ -12,17 +13,12 @@ const EditCity = ({city}) => {
         e.preventDefault()
         try {
             const body = {city_name}
-            await fetch(SERVER_URL + `/cities/${city.city_id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify(body)
+            axios.put(SERVER_URL + `/cities/${city.city_id}`, {
+                ...body
             })
-                .then(response => response.json())
-                .then(data => toast(data));
-            await getCitiesIntoStore(DB)
+                .then((resp) => toast(resp.data))
+                .then(() => getCitiesIntoStore(DB))
+                .catch(() => toast.error("Данные не обновлены"))
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")

@@ -3,6 +3,7 @@ import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {getCustomersIntoStore} from "../../getData";
+import axios from "axios";
 
 const EditCustomer = ({customer}) => {
     const [customer_name, setCustomerName] = useState(customer.customer_name)
@@ -13,16 +14,12 @@ const EditCustomer = ({customer}) => {
         e.preventDefault()
         try {
             const body = {customer_name, customer_email}
-            await fetch(SERVER_URL + `/customers/${customer.customer_id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                }, body: JSON.stringify(body)
+            axios.put(SERVER_URL + `/customers/${customer.customer_id}`, {
+                ...body
             })
-                .then(response => response.json())
-                .then(data => toast(data));
-            await getCustomersIntoStore(DB)
+                .then((resp) => toast(resp.data))
+                .then(() => getCustomersIntoStore(DB))
+                .catch(() => toast.error("Данные не обновлены"))
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")

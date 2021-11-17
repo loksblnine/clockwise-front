@@ -4,7 +4,6 @@ import * as constants from "../../../../constants";
 import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {observer} from "mobx-react-lite";
-import axios from "axios";
 import {getOrdersIntoStore} from "../../getData";
 
 const EditOrder = observer((initialOrder) => {
@@ -30,8 +29,8 @@ const EditOrder = observer((initialOrder) => {
                 }, body: JSON.stringify(body.order)
             })
                 .then(response => response.json())
-                .then(data => toast(data));
-            await getOrdersIntoStore()
+                .then(data => toast(data))
+                .then(() => getOrdersIntoStore())
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")

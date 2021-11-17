@@ -3,6 +3,7 @@ import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {getMastersIntoStore} from "../../getData";
+import axios from "axios";
 
 const EditMaster = ({master}) => {
     const [master_name, setMasterName] = useState(master.master_name)
@@ -13,16 +14,12 @@ const EditMaster = ({master}) => {
         e.preventDefault()
         try {
             const body = {master_name, ranking}
-            await fetch(SERVER_URL + `/masters/${master.master_id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                }, body: JSON.stringify(body)
+            axios.put(SERVER_URL + `/masters/${master.master_id}`, {
+                ...body
             })
-                .then(response => response.json())
-                .then(data => toast(data));
-            await getMastersIntoStore(DB)
+                .then((resp) => toast(resp.data))
+                .then(() => getMastersIntoStore(DB))
+                .catch(()=> toast.error("Данные не обновлены"))
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")
