@@ -18,7 +18,6 @@ import jwt_decode from "jwt-decode";
 const App = observer(() => {
     const {user} = useContext(Context)
     const [loading, setLoading] = useState(true)
-    console.log(process.env.NODE_ENV)
     axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
     useEffect(() => {
         sessionStorage.setItem('pageOrderList', 0)
