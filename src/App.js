@@ -3,6 +3,7 @@ import React, {Fragment, useContext, useEffect, useState} from 'react';
 import {BrowserRouter as Router} from "react-router-dom";
 import {checkAuth} from "./http/userAPI";
 import {Spinner} from "react-bootstrap";
+import axios from "axios";
 //css
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -18,6 +19,7 @@ const App = observer(() => {
     const {user} = useContext(Context)
     const [loading, setLoading] = useState(true)
     console.log(process.env.NODE_ENV)
+    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
     useEffect(() => {
         sessionStorage.setItem('pageOrderList', 0)
         if (!!localStorage.getItem('token')) {
