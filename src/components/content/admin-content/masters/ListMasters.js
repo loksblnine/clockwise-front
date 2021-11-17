@@ -109,7 +109,9 @@ const ListMasters = observer(() => {
                             <td>{master.ranking}</td>
                             <td>{master.photo}</td>
                             <td><WorkIn master={master}/></td>
-                            <td><AddCityDependency master={master}/></td>
+                            <td>{
+                                DB.cities?.length !== DB.depsMasterCity?.filter(d => d.master_id === master.master_id).length &&
+                                <AddCityDependency master={master}/>}</td>
                             <td><EditMaster master={master}/></td>
                             <td>
                                 <button className="btn btn-danger"
