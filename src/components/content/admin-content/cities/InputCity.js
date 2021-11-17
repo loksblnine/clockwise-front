@@ -3,6 +3,7 @@ import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {getCitiesIntoStore} from "../../getData";
+import axios from "axios";
 
 const InputCity = () => {
     const [city_name, setCityName] = useState("")
@@ -12,16 +13,11 @@ const InputCity = () => {
         e.preventDefault();
         try {
             const body = {city_name}
-            await fetch(SERVER_URL + `/cities`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                }, body: JSON.stringify(body)
+            axios.post(SERVER_URL + `/cities`, {
+                ...body
             })
-                .then(response => response.json())
-                .then(() => toast("Город добавлен"));
-            await getCitiesIntoStore(DB)
+                .then(() => toast("Город добавлен"))
+                .then(() => getCitiesIntoStore(DB))
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")

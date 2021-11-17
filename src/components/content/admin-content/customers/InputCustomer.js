@@ -3,6 +3,7 @@ import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {getCustomersIntoStore} from "../../getData";
+import axios from "axios";
 
 const InputCustomer = () => {
     const [customer_name, setCustomerName] = useState("")
@@ -14,16 +15,11 @@ const InputCustomer = () => {
         e.preventDefault();
         try {
             const body = {customer_name, customer_email}
-            await fetch(SERVER_URL + `/customers`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                }, body: JSON.stringify(body)
+            axios.post(SERVER_URL + `/customers`, {
+                ...body
             })
-                .then(response => response.json())
-                .then(() => toast(`Покупатель ${customer_name} добавлен`));
-            await getCustomersIntoStore(DB)
+                .then(() => toast(`Покупатель ${customer_name} добавлен`))
+                .then(() => getCustomersIntoStore(DB))
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")
@@ -55,7 +51,8 @@ const InputCustomer = () => {
                                 <label htmlFor={`email`}>e-mail</label>
                                 <input className="form-control" value={customer_email} name={`email`} type={`email`}
                                        onChange={e => setCustomerEmail(e.target.value)}
-                                       required pattern="[A-ZА-Яa-zа-я -]+"/>
+                                       required //pattern="[A-ZА-Яa-zа-я -]+"
+                                />
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal"

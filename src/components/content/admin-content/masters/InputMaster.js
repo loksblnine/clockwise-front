@@ -15,16 +15,11 @@ const InputMaster = () => {
         e.preventDefault();
         try {
             const body = {master_name, ranking}
-            await fetch(SERVER_URL + `/masters`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                }, body: JSON.stringify(body)
+            axios.post(SERVER_URL + `/masters`, {
+                ...body
             })
-                .then(response => response.json())
-                .then(() => toast(`Мастер ${master_name} добавлен`));
-            await getMastersIntoStore(DB)
+                .then(() => toast(`Мастер ${master_name} добавлен`))
+                .then(() => getMastersIntoStore(DB))
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")
