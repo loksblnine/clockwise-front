@@ -1,30 +1,35 @@
 import jwt_decode from "jwt-decode";
-import * as constants from "../constants";
+import {instance} from "./headerPlaceholder.instance";
 
-export const registration = async (email, password) => {
-    const {data} = await fetch(constants.SERVER_URL + `/register`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({email, password, role: "ADMIN"})
+export const registrationMaster = async (email, password) => {
+    //probably works bad
+    const {data} = instance({
+        method: "post",
+        data: {email, password, role: "MASTER"},
+        url: '/register'
     })
+        .then((resp) => {
+            localStorage.setItem('token', resp.data.token)
+        })
     localStorage.setItem('token', data.token)
     return jwt_decode(data.token)
 }
 
 export const login = async (email, password) => {
-    return await fetch(constants.SERVER_URL + `/login`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({email, password})
+    return instance({
+        method: "post",
+        data: {email, password},
+        url: '/login'
     })
-        .then(response => response.json())
-        .then(data => localStorage.setItem('token', data.token))
+        .then((resp) => {
+            localStorage.setItem('token', resp.data.token)
+        })
 }
 
 export const checkAuth = async () => {
     if (!!localStorage.getItem('token'))
-        return await fetch(constants.SERVER_URL + `/login`, {
-            method: "GET",
-            headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.getItem('token')}`}
+        return instance({
+            method: "get",
+            url: `/login`
         })
 }
