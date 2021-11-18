@@ -1,25 +1,26 @@
 import React, {Fragment, useEffect, useContext, useState} from "react";
 import EditCity from "./EditCity";
 import InputCity from "./InputCity";
-import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {observer} from "mobx-react-lite";
 import {Spinner} from "react-bootstrap";
 import {getCitiesIntoStore} from "../../getData";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const ListCities = observer(() => {
     const [loading, setLoading] = useState(true)
     const {DB} = useContext(Context)
     const deleteCity = async (id) => {
         try {
-            await fetch(SERVER_URL + `/cities/${id}`, {
+            instance({
                 method: "DELETE",
-                headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`}
+                url: `/cities/${id}`
             })
-                .then(response => response.json())
-                .then(data => toast(data));
-            await getCitiesIntoStore(DB)
+                .then(resp => toast(resp.data))
+                .then(() =>
+                    getCitiesIntoStore(DB)
+                )
         } catch (e) {
             toast.info("Server is busy at this moment")
         }

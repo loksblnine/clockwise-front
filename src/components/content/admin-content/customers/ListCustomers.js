@@ -1,25 +1,26 @@
 import React, {Fragment, useEffect, useContext, useState} from "react";
 import EditCustomer from "./EditCustomer";
 import InputCustomer from "./InputCustomer";
-import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {Spinner} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
 import {getCustomersIntoStore} from "../../getData";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const ListCustomers = observer(() => {
     const {DB} = useContext(Context)
     const [loading, setLoading] = useState(true)
     const deleteCustomer = async (id) => {
         try {
-            await fetch(SERVER_URL + `/customers/${id}`, {
+            instance({
                 method: "DELETE",
-                headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`}
+                url: `/customers/${id}`
             })
-                .then(response => response.json())
-                .then(data => toast(data));
-            await getCustomersIntoStore(DB)
+                .then(resp => toast(resp.data))
+                .then(() =>
+                    getCustomersIntoStore(DB)
+                )
         } catch (e) {
             toast.info("Server is busy at this moment")
         }

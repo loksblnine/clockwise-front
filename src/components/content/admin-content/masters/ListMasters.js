@@ -8,6 +8,7 @@ import {Spinner} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
 import AddCityDependency from "./AddCityDependency";
 import {getAllDepsIntoStore, getCitiesIntoStore, getMastersIntoStore} from "../../getData";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const WorkIn = observer(({master}) => {
     const {DB} = useContext(Context)
@@ -53,15 +54,14 @@ const ListMasters = observer(() => {
     const [loading, setLoading] = useState(true)
     const deleteMaster = async (id) => {
         try {
-            await fetch(SERVER_URL + `/masters/${id}`, {
+            instance({
                 method: "DELETE",
-                headers: {
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                }
+                url: `/masters/${id}`
             })
-                .then(response => response.json())
-                .then(data => toast(data));
-            await getMastersIntoStore(DB)
+                .then(resp => toast(resp.data))
+                .then(() =>
+                    getMastersIntoStore(DB)
+                )
         } catch (e) {
             toast.info("Server is busy at this moment")
         }

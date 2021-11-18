@@ -10,21 +10,21 @@ import {observer} from "mobx-react-lite";
 import axios from "axios";
 import {Spinner} from "react-bootstrap";
 import {getCitiesIntoStore, getCustomersIntoStore, getMastersIntoStore, getOrdersIntoStore} from "../../getData";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const ListOrders = observer(() => {
     const [loading, setLoading] = useState(true)
     const {DB} = useContext(Context)
     const deleteOrder = async (id) => {
         try {
-            await fetch(SERVER_URL + `/orders/${id}`, {
+            instance({
                 method: "DELETE",
-                headers: {
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                }
+                url: `/orders/${id}`
             })
-                .then(response => response.json())
-                .then(data => toast(data))
-                .then(() => getOrdersIntoStore(DB))
+                .then(resp => toast(resp.data))
+                .then(() =>
+                    getOrdersIntoStore(DB)
+                )
         } catch (e) {
             toast.info("Server is busy at this moment")
         }
@@ -32,10 +32,9 @@ const ListOrders = observer(() => {
     const handleNextOrders = () => {
         DB?.setOrders(DB.orders.concat(DB.ordersNext))
         sessionStorage.setItem('pageOrderList', (Number(sessionStorage.getItem('pageOrderList')) + 1).toString())
-        axios.get(SERVER_URL + `/orders/offset/` + sessionStorage.getItem('pageOrderList'), {
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem('token')}`
-            }
+        instance({
+            method: "get",
+            url: `/orders/offset/${sessionStorage.getItem('pageOrderList')}`
         })
             .then(resp => DB.setOrdersNext(resp.data))
     }
