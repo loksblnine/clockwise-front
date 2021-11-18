@@ -4,6 +4,7 @@ import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {getMastersIntoStore} from "../../getData";
 import axios from "axios";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const EditMaster = ({master}) => {
     const [master_name, setMasterName] = useState(master.master_name)
@@ -14,12 +15,14 @@ const EditMaster = ({master}) => {
         e.preventDefault()
         try {
             const body = {master_name, ranking}
-            axios.put(SERVER_URL + `/masters/${master.master_id}`, {
-                ...body
+            instance({
+                method: "PUT",
+                data: body,
+                url: `/masters/${master.master_id}`
             })
                 .then((resp) => toast(resp.data))
                 .then(() => getMastersIntoStore(DB))
-                .catch(()=> toast.error("Данные не обновлены"))
+                .catch(() => toast.error("Данные не обновлены"))
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")

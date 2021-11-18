@@ -4,6 +4,7 @@ import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {getCustomersIntoStore} from "../../getData";
 import axios from "axios";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const EditCustomer = ({customer}) => {
     const [customer_name, setCustomerName] = useState(customer.customer_name)
@@ -14,8 +15,10 @@ const EditCustomer = ({customer}) => {
         e.preventDefault()
         try {
             const body = {customer_name, customer_email}
-            axios.put(SERVER_URL + `/customers/${customer.customer_id}`, {
-                ...body
+            instance({
+                method: "PUT",
+                data: body,
+                url: `/customers/${customer.customer_id}`
             })
                 .then((resp) => toast(resp.data))
                 .then(() => getCustomersIntoStore(DB))

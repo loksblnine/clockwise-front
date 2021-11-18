@@ -3,7 +3,7 @@ import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {getCitiesIntoStore} from "../../getData";
-import axios from "axios";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const EditCity = ({city}) => {
     const {DB} = useContext(Context);
@@ -13,8 +13,10 @@ const EditCity = ({city}) => {
         e.preventDefault()
         try {
             const body = {city_name}
-            axios.put(SERVER_URL + `/cities/${city.city_id}`, {
-                ...body
+            instance({
+                method: "PUT",
+                data: body,
+                url: `/cities/${city.city_id}`
             })
                 .then((resp) => toast(resp.data))
                 .then(() => getCitiesIntoStore(DB))

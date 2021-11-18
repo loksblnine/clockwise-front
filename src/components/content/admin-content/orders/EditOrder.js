@@ -5,6 +5,7 @@ import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {observer} from "mobx-react-lite";
 import {getOrdersIntoStore} from "../../getData";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const EditOrder = observer((initialOrder) => {
     const {DB} = useContext(Context)
@@ -21,17 +22,15 @@ const EditOrder = observer((initialOrder) => {
             const body = {order}
             body.order.time = `${Number(body.order.time.split(':')[0])}:00`
             body.order.order_time = body.order.date + 'T' + body.order.time
-            await fetch(SERVER_URL + `/orders/${order.order_id}`, {
+            instance({
                 method: "PUT",
-                headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem('token')}`
-                    },
-                body: JSON.stringify(body.order)
+                data: body.order,
+                url: `/orders/${order.order_id}`
             })
-                .then(response => response.json())
-                .then(data => toast(data))
-                .then(() => getOrdersIntoStore())
+                .then((resp) => toast("Заказ добавлен"))
+                .then(() =>
+                    getOrdersIntoStore(DB)
+                )
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")
