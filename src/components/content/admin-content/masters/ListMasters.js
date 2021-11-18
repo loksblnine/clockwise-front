@@ -7,7 +7,7 @@ import {Context} from "../../../../index";
 import {Spinner} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
 import AddCityDependency from "./AddCityDependency";
-import {getAllDepsIntoStore, getCitiesIntoStore, getDepsMasterIdCities, getMastersIntoStore} from "../../getData";
+import {getAllDepsIntoStore, getCitiesIntoStore, getMastersIntoStore} from "../../getData";
 
 const WorkIn = observer(({master}) => {
     const {DB} = useContext(Context)
@@ -108,7 +108,7 @@ const ListMasters = observer(() => {
                             <td>{master.photo}</td>
                             <td><WorkIn master={master}/></td>
                             <td>{
-                                DB.cities?.length !== DB.depsMasterCity?.filter(d => d.master_id === master.master_id).length &&
+                                DB.cities?.length > DB.depsMasterCity?.filter(d => d.master_id === master.master_id).length &&
                                 <AddCityDependency master={master}/>}</td>
                             <td><EditMaster master={master}/></td>
                             <td>
