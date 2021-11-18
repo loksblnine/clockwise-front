@@ -68,14 +68,6 @@ const OrderForm = observer(() => {
                 })
             },
         });
-        useEffect(async () => {
-            if (formik.values.email.length) {
-                let customer = {customer_email: formik.values.email}
-                await fetch(constants.SERVER_URL + `/customers/email/` + customer.customer_email)
-                    .then(resp => resp.json())
-                    .then(data => customer = data)
-            }
-        }, [formik.values.email])
         return (
             <div style={orderPageStyle}>
                 <form onSubmit={formik.handleSubmit} className="form">
