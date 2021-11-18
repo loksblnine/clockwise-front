@@ -1,13 +1,11 @@
 import React, {Fragment, useContext, useEffect, useState} from "react";
 import EditOrder from "./EditOrder";
 import InputOrder from "./InputOrder";
-import {SERVER_URL} from "../../../../constants";
 import {WORK_TYPES} from "../../../../constants";
 import {toast} from "react-toastify";
 import * as constants from "../../../../constants";
 import {Context} from "../../../../index";
 import {observer} from "mobx-react-lite";
-import axios from "axios";
 import {Spinner} from "react-bootstrap";
 import {getCitiesIntoStore, getCustomersIntoStore, getMastersIntoStore, getOrdersIntoStore} from "../../getData";
 import {instance} from "../../../../http/headerPlaceholder.instance";
