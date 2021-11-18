@@ -34,53 +34,78 @@ const MasterView = observer(() => {
             })
         }
 
-    const handleClick = async (master) => {
-        let customer = {customer_name: location.state.data.name, customer_email: location.state.data.email}
-        await fetch(constants.SERVER_URL + `/customers/email/${customer.customer_email}`)
-            .then(resp => resp.json())
-            .then(data => customer = data)
-            .catch(async e => {
-                await fetch(SERVER_URL + `/customers`, {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(customer)
+        const handleClick = async (master) => {
+            let customer = {customer_name: order.name, customer_email: order.email}
+            //TODO change to instance (impossible level) =)
+            await fetch(constants.SERVER_URL + `/customers/email/${customer.customer_email}`)
+                .then(resp => resp.json())
+                .then(data => customer = data)
+                .catch(async e => {
+                    await fetch(SERVER_URL + `/customers`, {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify(customer)
+                    })
+                        .then(resp => resp.json())
+                        .then(data => customer = data);
                 })
-                    .then(resp => resp.json())
-                    .then(data => customer = data);
-            })
-        const text = `Спасибо за заказ ${customer.customer_name}, мастер ${master.master_name} будет у вас ${order.date} в ${order.time}`
-        const T = order.date + "T" + order.time
 
-        const bodyOrder = {
-            master_id: master.master_id,
-            customer_id: customer.customer_id,
-            city_id: order.city,
-            order_time: T,
-            work_id: order.type,
-        }
-        const response = await fetch(SERVER_URL + `/orders`, {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(bodyOrder)
-        });
-        if (response.status === 200) {
-            const bodyMessage = {
-                email: customer.customer_email,
-                message: text
+            const text = `Спасибо за заказ ${customer.customer_name}, мастер ${master.master_name} будет у вас ${order.date} в ${order.time}`
+            const T = order.date + "T" + order.time
+            const orderBody = {
+                master_id: master.master_id,
+                customer_id: customer.customer_id,
+                city_id: order.city,
+                order_time: T,
+                work_id: order.type,
             }
-            const response = await fetch(SERVER_URL + `/send`, {
+
+            await instance({
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(bodyMessage)
-            });
-            if (response.status === 200) {
-                toast("Письмо отправлено вам на почту")
-                history.goBack()
-            }
-        } else {
-            toast.info("Возникли трудности c сервером")
+                data: orderBody,
+                url: "/orders"
+            })
+                .then(() => {
+                    const messageBody = {
+                        email: customer.customer_email,
+                        message: text
+                    }
+                    instance({
+                        method: "POST",
+                        data: messageBody,
+                        url: "/send"
+                    })
+                        .then(() => {
+                            toast("Письмо отправлено вам на почту")
+                            history.goBack()
+                        })
+                })
+                .catch(() => {
+                    toast.info("Возникли трудности c сервером")
+                })
+
+            // const response = await fetch(SERVER_URL + `/orders`, {
+            //     method: "POST",
+            //     headers: {"Content-Type": "application/json"},
+            //     body: JSON.stringify(orderBody)
+            // });
+            // if (response.status === 200) {
+            //     const bodyMessage = {
+            //         email: customer.customer_email,
+            //         message: text
+            //     }
+            //     const response = await fetch(SERVER_URL + `/send`, {
+            //         method: "POST",
+            //         headers: {"Content-Type": "application/json"},
+            //         body: JSON.stringify(bodyMessage)
+            //     });
+            //     if (response.status === 200) {
+            //
+            //     }
+            // } else {
+            //
+            // }
         }
-    }
 
         if (!location.state) {
             return (
