@@ -4,6 +4,7 @@ import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {getAllDepsIntoStore} from "../../getData";
 import {observer} from "mobx-react-lite";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const AddCityDependency = observer(({master}) => {
     const inputRef = React.useRef(null)
@@ -12,18 +13,16 @@ const AddCityDependency = observer(({master}) => {
 
     const onSubmitForm = async e => {
         e.preventDefault();
+        //TODO
         try {
             const body = {city_id: cityId, master_id: master.master_id}
-            await fetch(SERVER_URL + `/deps`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                }, body: JSON.stringify(body)
+            instance({
+                method: "post",
+                data: body,
+                url: '/deps'
             })
-                .then(response => response.json())
-                .then(() => toast("Город добавлен " + master.master_name));
-            await getAllDepsIntoStore(DB)
+                .then(response => toast("Город добавлен " + master.master_name))
+                .then(() => getAllDepsIntoStore(DB))
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")
@@ -50,7 +49,7 @@ const AddCityDependency = observer(({master}) => {
                             <div className="modal-body">
                                 <label>Город</label>
                                 <select className="form-control" name="city_id" defaultValue="-1"
-                                        onBlur={e=>setCityId(e.target.value)}
+                                        onBlur={e => setCityId(e.target.value)}
                                         onChange={e => setCityId(e.target.value)} required>
                                     <option key="default" value="-1" disabled={true}>---Выбрать город---</option>
                                     {DB.cities?.filter(c => !DB.depsMasterCity.find(d => d.master_id === master.master_id && c.city_id === d.city_id)).map(city =>
