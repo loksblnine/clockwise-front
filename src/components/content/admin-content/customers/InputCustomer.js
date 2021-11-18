@@ -1,9 +1,8 @@
 import React, {Fragment, useContext, useState} from "react";
-import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {getCustomersIntoStore} from "../../getData";
-import axios from "axios";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const InputCustomer = () => {
     const [customer_name, setCustomerName] = useState("")
@@ -15,8 +14,10 @@ const InputCustomer = () => {
         e.preventDefault();
         try {
             const body = {customer_name, customer_email}
-            axios.post(SERVER_URL + `/customers`, {
-                ...body
+            instance({
+                method: "POST",
+                data: body,
+                url: "/customers"
             })
                 .then(() => toast(`Покупатель ${customer_name} добавлен`))
                 .then(() => getCustomersIntoStore(DB))

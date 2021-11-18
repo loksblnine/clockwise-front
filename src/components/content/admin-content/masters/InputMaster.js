@@ -1,9 +1,8 @@
 import React, {Fragment, useContext, useState} from "react";
-import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
-import axios from "axios";
 import {Context} from "../../../../index";
 import {getMastersIntoStore} from "../../getData";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const InputMaster = () => {
     const [master_name, setMasterName] = useState("")
@@ -15,8 +14,10 @@ const InputMaster = () => {
         e.preventDefault();
         try {
             const body = {master_name, ranking}
-            axios.post(SERVER_URL + `/masters`, {
-                ...body
+            instance({
+                method: "POST",
+                data: body,
+                url: "/masters"
             })
                 .then(() => toast(`Мастер ${master_name} добавлен`))
                 .then(() => getMastersIntoStore(DB))

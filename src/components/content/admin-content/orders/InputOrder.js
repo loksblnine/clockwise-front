@@ -3,6 +3,7 @@ import * as constants from "../../../../constants";
 import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {getDepsMasterIdCities, getOrdersIntoStore} from "../../getData";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const InputOrder = () => {
     const {DB} = useContext(Context)
@@ -27,16 +28,15 @@ const InputOrder = () => {
             const body = {order}
             body.order.time = `${Number(body.order.time.split(':')[0])}:00`
             body.order.order_time = body.order.date + 'T' + body.order.time
-            await fetch(constants.SERVER_URL + `/orders`, {
+            instance({
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem('token')}`
-                }, body: JSON.stringify(body.order)
+                data: body.order,
+                url: "/orders"
             })
-                .then(response => response.json())
-                .then(() => toast("Заказ добавлен"));
-            await getOrdersIntoStore(DB)
+                .then(response => toast("Заказ добавлен"))
+                .then(() =>
+                    getOrdersIntoStore(DB)
+                )
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")
@@ -129,7 +129,9 @@ const InputOrder = () => {
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal"
                                         ref={inputRef}>Закрыть
                                 </button>
-                                <button type="submit" className="btn btn-primary">
+                                <button type="submit" className="btn btn-primary"
+                                        disabled={order.master_id === -1 || order.city_id === -1 || order.customer_id === -1 || !order.work_id}
+                                >
                                     Сохранить изменения
                                 </button>
                             </div>

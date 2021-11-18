@@ -1,9 +1,8 @@
 import React, {Fragment, useContext, useState} from "react";
-import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {getCitiesIntoStore} from "../../getData";
-import axios from "axios";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const InputCity = () => {
     const [city_name, setCityName] = useState("")
@@ -13,8 +12,10 @@ const InputCity = () => {
         e.preventDefault();
         try {
             const body = {city_name}
-            axios.post(SERVER_URL + `/cities`, {
-                ...body
+            instance({
+                method: "POST",
+                data: body,
+                url: "/cities"
             })
                 .then(() => toast("Город добавлен"))
                 .then(() => getCitiesIntoStore(DB))
