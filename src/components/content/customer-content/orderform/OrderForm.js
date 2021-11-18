@@ -39,7 +39,7 @@ const orderPageStyle = {
     boxShadow: "0px 0px 10px 10px rgba(0,0,0,0.15)"
 };
 
-const OrderForm = observer((props) => {
+const OrderForm = observer(() => {
         const history = useHistory()
         const location = useLocation()
         const {DB} = useContext(Context);
