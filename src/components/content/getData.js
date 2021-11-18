@@ -66,13 +66,21 @@ export const getOrdersIntoStore = async (DB) => {
                 .then(() => sessionStorage.setItem('pageOrderList',
                     (Number(sessionStorage.getItem('pageOrderList')) + 1).toString()))
         )
+}
 
-    // axios.get(SERVER_URL + `/orders/offset/` + sessionStorage.getItem('pageOrderList'))
-    //     .then(resp => DB?.setOrders(resp.data))
-    //     .then(() =>
-    //         axios.get(SERVER_URL + "/orders/offset/1")
-    //             .then(resp => DB?.setOrdersNext(resp.data))
-    //             .then(() => sessionStorage.setItem('pageOrderList',
-    //                 (Number(sessionStorage.getItem('pageOrderList')) + 1).toString()))
-    //     )
+export const getFreeMastersInCity = async (setIdsUnavailableMasters, order) => {
+    const body = {
+        "city_id": order.city + "",
+        "work_id": order.type + "",
+        "order_time": order.date + "T" + order.time
+    }
+    instance({
+        method: "post",
+        data: body,
+        url: "/masters/free",
+    })
+        .then(resp => setIdsUnavailableMasters(resp.data))
+        .catch(err => {
+            return err
+        })
 }
