@@ -1,5 +1,4 @@
 import React, {Fragment, useContext, useState} from "react";
-import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {getAllDepsIntoStore} from "../../getData";
@@ -13,7 +12,6 @@ const AddCityDependency = observer(({master}) => {
 
     const onSubmitForm = async e => {
         e.preventDefault();
-        //TODO
         try {
             const body = {city_id: cityId, master_id: master.master_id}
             instance({
