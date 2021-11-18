@@ -82,6 +82,15 @@ const ListMasters = observer(() => {
             </div>
         )
     }
+    const handleNextMasters = () => {
+        DB?.setMasters(DB.masters.concat(DB.mastersNext))
+        sessionStorage.setItem('pageMasterList', (Number(sessionStorage.getItem('pageMasterList')) + 1).toString())
+        instance({
+            method: "get",
+            url: `/masters/offset/${sessionStorage.getItem('pageMasterList')}`
+        })
+            .then(resp => DB.setMastersNext(resp.data))
+    }
     return (
         <Fragment>
             <h2 className="text-left mt-5">Список мастеров</h2>
@@ -122,6 +131,13 @@ const ListMasters = observer(() => {
 
                 </tbody>
             </table>
+            {
+                DB.mastersNext.length >= 1 ?
+                    <div className="col text-center">
+                        <button className="btn btn-primary" onClick={() => handleNextMasters()}> Еще мастера...</button>
+                    </div>
+                    : null
+            }
             <InputMaster/>
         </Fragment>
     )

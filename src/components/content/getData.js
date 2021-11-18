@@ -30,11 +30,26 @@ export const getCitiesIntoStore = async (DB) => {
         .then(resp => DB.setCities(resp.data))
 }
 export const getMastersIntoStore = async (DB) => {
+    // instance({
+    //     method: "get",
+    //     url: "/masters"
+    // })
+    //     .then(resp => DB.setMasters(resp.data))
+    sessionStorage.setItem('pageMasterList', "0")
     instance({
         method: "get",
-        url: "/masters"
+        url: `/masters/offset/${sessionStorage.getItem('pageMasterList')}`
     })
-        .then(resp => DB.setMasters(resp.data))
+        .then(resp => DB?.setMasters(resp.data))
+        .then(() =>
+            instance({
+                method: "get",
+                url: `/masters/offset/1`
+            })
+                .then(resp => DB?.setMastersNext(resp.data))
+                .then(() => sessionStorage.setItem('pageMasterList',
+                    (Number(sessionStorage.getItem('pageMasterList')) + 1).toString()))
+        )
 }
 export const getCustomersIntoStore = async (DB) => {
     instance({
