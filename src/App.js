@@ -19,6 +19,7 @@ const App = observer(() => {
     const [loading, setLoading] = useState(true)
     useEffect(() => {
         sessionStorage.setItem('pageOrderList', "0")
+        sessionStorage.setItem('pageCustomerList', "0")
         sessionStorage.setItem('pageMasterList', "0")
         checkAuth()
             .then(data => {

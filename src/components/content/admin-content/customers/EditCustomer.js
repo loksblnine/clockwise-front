@@ -57,6 +57,7 @@ const EditCustomer = ({customer}) => {
                                 <input className="form-control" value={customer_email} name="email" type="email"
                                        onChange={e => setCustomerEmail(e.target.value)}
                                        required
+                                       pattern="[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]+"
                                 />
                             </div>
                             <div className="modal-footer">

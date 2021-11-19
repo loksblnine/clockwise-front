@@ -30,11 +30,6 @@ export const getCitiesIntoStore = async (DB) => {
         .then(resp => DB.setCities(resp.data))
 }
 export const getMastersIntoStore = async (DB) => {
-    // instance({
-    //     method: "get",
-    //     url: "/masters"
-    // })
-    //     .then(resp => DB.setMasters(resp.data))
     sessionStorage.setItem('pageMasterList', "0")
     instance({
         method: "get",
@@ -52,11 +47,21 @@ export const getMastersIntoStore = async (DB) => {
         )
 }
 export const getCustomersIntoStore = async (DB) => {
+    sessionStorage.setItem('pageCustomerList', "0")
     instance({
         method: "get",
-        url: "/customers"
+        url: `/customers/offset/${sessionStorage.getItem('pageCustomerList')}`
     })
-        .then(resp => DB.setCustomers(resp.data))
+        .then(resp => DB?.setCustomers(resp.data))
+        .then(() =>
+            instance({
+                method: "get",
+                url: `/customers/offset/1`
+            })
+                .then(resp => DB?.setCustomersNext(resp.data))
+                .then(() => sessionStorage.setItem('pageCustomerList',
+                    (Number(sessionStorage.getItem('pageCustomerList')) + 1).toString()))
+        )
 }
 export const getAllDepsIntoStore = async (DB) => {
     instance({

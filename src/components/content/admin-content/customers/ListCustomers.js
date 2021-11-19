@@ -38,7 +38,15 @@ const ListCustomers = observer(() => {
             </div>
         )
     }
-
+    const handleNextCustomers = () => {
+        DB?.setCustomers(DB.customers.concat(DB.customersNext))
+        sessionStorage.setItem('pageMasterList', (Number(sessionStorage.getItem('pageMasterList')) + 1).toString())
+        instance({
+            method: "get",
+            url: `/masters/offset/${sessionStorage.getItem('pageMasterList')}`
+        })
+            .then(resp => DB.setMastersNext(resp.data))
+    }
     return (
         <Fragment>
             <h2 className="text-left mt-5">Список покупателей</h2>
@@ -52,7 +60,6 @@ const ListCustomers = observer(() => {
                     <th scope="col">Удалить</th>
                 </tr>
                 </thead>
-
                 <tbody>
                 {DB.customers.map(customer => (
                     <tr key={customer.customer_id}>
@@ -67,9 +74,16 @@ const ListCustomers = observer(() => {
                         </td>
                     </tr>
                 ))}
-
                 </tbody>
             </table>
+            {
+                DB.customersNext.length >= 1 ?
+                    <div className="col text-center">
+                        <button className="btn btn-primary" onClick={() => handleNextCustomers()}> Еще покупатели...
+                        </button>
+                    </div>
+                    : null
+            }
             <InputCustomer/>
         </Fragment>
     )
