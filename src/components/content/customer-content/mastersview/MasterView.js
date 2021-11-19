@@ -60,7 +60,7 @@ const MasterView = observer(() => {
                 work_id: order.type,
             }
 
-            await instance({
+            instance({
                 method: "POST",
                 data: orderBody,
                 url: "/orders"
@@ -83,28 +83,6 @@ const MasterView = observer(() => {
                 .catch(() => {
                     toast.info("Возникли трудности c сервером")
                 })
-
-            // const response = await fetch(SERVER_URL + `/orders`, {
-            //     method: "POST",
-            //     headers: {"Content-Type": "application/json"},
-            //     body: JSON.stringify(orderBody)
-            // });
-            // if (response.status === 200) {
-            //     const bodyMessage = {
-            //         email: customer.customer_email,
-            //         message: text
-            //     }
-            //     const response = await fetch(SERVER_URL + `/send`, {
-            //         method: "POST",
-            //         headers: {"Content-Type": "application/json"},
-            //         body: JSON.stringify(bodyMessage)
-            //     });
-            //     if (response.status === 200) {
-            //
-            //     }
-            // } else {
-            //
-            // }
         }
 
         if (!location.state) {
