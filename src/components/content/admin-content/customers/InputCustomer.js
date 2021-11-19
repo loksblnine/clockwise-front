@@ -45,14 +45,17 @@ const InputCustomer = () => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <label htmlFor={`name`}>ФИО покупателя</label>
+                                <label htmlFor="name">ФИО покупателя</label>
                                 <input className="form-control" placeholder="Иван Иванович Иванов" value={customer_name}
-                                       name={`name`}
-                                       onChange={e => setCustomerName(e.target.value)} required/>
-                                <label htmlFor={`email`}>e-mail</label>
-                                <input className="form-control" value={customer_email} name={`email`} type={`email`}
+                                       name="name"
+                                       onChange={e => setCustomerName(e.target.value)} required
+                                       pattern="[A-ZА-Яa-zа-я -]+"
+                                />
+                                <label htmlFor="email">e-mail</label>
+                                <input className="form-control" value={customer_email} name="email" type="email"
                                        onChange={e => setCustomerEmail(e.target.value)}
-                                       required //pattern="[A-ZА-Яa-zа-я -]+"
+                                       required
+                                       pattern="[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]+"
                                 />
                             </div>
                             <div className="modal-footer">
