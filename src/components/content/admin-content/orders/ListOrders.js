@@ -37,12 +37,6 @@ const ListOrders = observer(() => {
             .then(resp => DB.setOrdersNext(resp.data))
     }
     useEffect(async () => {
-        if (DB.cities.length <= 0)
-            await getCitiesIntoStore(DB)
-        if (DB.customers.length <= 0)
-            await getCustomersIntoStore(DB)
-        if (DB.masters.length <= 0)
-            await getMastersIntoStore(DB)
         getOrdersIntoStore(DB)
             .finally(() => setLoading(false))
     }, [DB])
