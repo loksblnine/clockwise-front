@@ -1,8 +1,8 @@
 import React, {Fragment, useContext, useState} from "react";
-import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
-import axios from "axios";
 import {Context} from "../../../../index";
+import {getMastersIntoStore} from "../../getData";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const InputMaster = () => {
     const [master_name, setMasterName] = useState("")
@@ -14,18 +14,16 @@ const InputMaster = () => {
         e.preventDefault();
         try {
             const body = {master_name, ranking}
-            await fetch(SERVER_URL + `/masters`, {
+            instance({
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(body)
+                data: body,
+                url: "/masters"
             })
-                .then(response => response.json())
-                .then(data => toast(`Мастер ${master_name} добавлен`));
-            axios.get(SERVER_URL + `/masters`)
-                .then(resp => DB.setMasters(resp.data))
+                .then(() => toast(`Мастер ${master_name} добавлен`))
+                .then(() => getMastersIntoStore(DB))
             inputRef.current.click()
         } catch (e) {
-            toast.info("🦄 Ахахха сервер упал")
+            toast.info("Server is busy at this moment")
         }
     }
     return (
@@ -58,7 +56,8 @@ const InputMaster = () => {
                                 />
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal" ref={inputRef}>Закрыть
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal"
+                                        ref={inputRef}>Закрыть
                                 </button>
                                 <button type="submit" className="btn btn-primary">
                                     Сохранить изменения

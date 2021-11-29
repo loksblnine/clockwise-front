@@ -1,10 +1,9 @@
 import React, {Fragment, useContext, useEffect, useState} from "react";
 import * as constants from "../../../../constants";
 import {toast} from "react-toastify";
-import axios from "axios";
-import {SERVER_URL} from "../../../../constants";
 import {Context} from "../../../../index";
-import {getDepsMasterIdCities} from "../../getData";
+import {getDepsMasterIdCities, getOrdersIntoStore} from "../../getData";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const InputOrder = () => {
     const {DB} = useContext(Context)
@@ -18,7 +17,6 @@ const InputOrder = () => {
         date: '',
         time: ''
     });
-
     useEffect(() => {
         if (!!order.master_id)
             getDepsMasterIdCities(setDeps, order.master_id)
@@ -30,25 +28,18 @@ const InputOrder = () => {
             const body = {order}
             body.order.time = `${Number(body.order.time.split(':')[0])}:00`
             body.order.order_time = body.order.date + 'T' + body.order.time
-            console.log(JSON.stringify(body.order))
-            await fetch(constants.SERVER_URL + `/orders`, {
+            instance({
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(body.order)
+                data: body.order,
+                url: "/orders"
             })
-                .then(response => response.json())
-                .then(data => toast("Заказ добавлен"));
-            sessionStorage.setItem('pageOrderList', 0)
-            axios.get(SERVER_URL + `/orders/offset/` + sessionStorage.getItem('pageOrderList'))
-                .then(resp => DB.setOrders(resp.data))
-                .then(
-                    axios.get(SERVER_URL + `/orders/offset/1`)
-                        .then(resp => DB.setOrdersNext(resp.data))
-                        .then(() => sessionStorage.setItem('pageOrderList', Number(sessionStorage.getItem('pageOrderList'))+1))
+                .then(response => toast("Заказ добавлен"))
+                .then(() =>
+                    getOrdersIntoStore(DB)
                 )
             inputRef.current.click()
         } catch (e) {
-            toast.info("🦄 Ахахха сервер упал")
+            toast.info("Server is busy at this moment")
         }
     }
     const isMasterSelected = () => {
@@ -106,7 +97,7 @@ const InputOrder = () => {
                                 <select className="form-control" name="city_id" defaultValue="-1"
                                         onChange={handleChange} required disabled={isMasterSelected()}>
                                     <option value="-1" disabled={true}>---Выбрать город---</option>
-                                    {DB.cities.filter(c=> deps.includes(c.city_id)).map(city =>
+                                    {DB.cities.filter(c => deps.includes(c.city_id)).map(city =>
                                         <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
                                 </select>
 
@@ -138,7 +129,9 @@ const InputOrder = () => {
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal"
                                         ref={inputRef}>Закрыть
                                 </button>
-                                <button type="submit" className="btn btn-primary">
+                                <button type="submit" className="btn btn-primary"
+                                        disabled={order.master_id === -1 || order.city_id === -1 || order.customer_id === -1 || !order.work_id}
+                                >
                                     Сохранить изменения
                                 </button>
                             </div>

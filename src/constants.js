@@ -8,7 +8,6 @@ import LoginForm from "./components/content/customer-content/login-form/LoginFor
 import AdminPanel from "./components/content/admin-content/admin-panel/AdminPanel";
 
 export const SERVER_URL = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "https://enigmatic-spire-58695.herokuapp.com"
-// export const SERVER_URL =
 
 export const WORK_TYPES = {
     1: {

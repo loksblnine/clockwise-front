@@ -1,8 +1,10 @@
 import React, {Fragment, useContext, useState} from "react";
 import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
-import axios from "axios";
 import {Context} from "../../../../index";
+import {getCustomersIntoStore} from "../../getData";
+import axios from "axios";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const EditCustomer = ({customer}) => {
     const [customer_name, setCustomerName] = useState(customer.customer_name)
@@ -13,18 +15,17 @@ const EditCustomer = ({customer}) => {
         e.preventDefault()
         try {
             const body = {customer_name, customer_email}
-            await fetch(SERVER_URL + `/customers/${customer.customer_id}`, {
+            instance({
                 method: "PUT",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(body)
+                data: body,
+                url: `/customers/${customer.customer_id}`
             })
-                .then(response => response.json())
-                .then(data => toast(data));
-            axios.get(SERVER_URL + `/customers`)
-                .then(resp => DB.setCustomers(resp.data))
+                .then((resp) => toast(resp.data))
+                .then(() => getCustomersIntoStore(DB))
+                .catch(() => toast.error("Данные не обновлены"))
             inputRef.current.click()
         } catch (e) {
-            toast.info("🦄 Ахахха сервер упал")
+            toast.info("Server is busy at this moment")
         }
     }
     return (
@@ -56,10 +57,12 @@ const EditCustomer = ({customer}) => {
                                 <input className="form-control" value={customer_email} name="email" type="email"
                                        onChange={e => setCustomerEmail(e.target.value)}
                                        required
+                                       pattern="[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]+"
                                 />
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-dismiss="modal" ref={inputRef}>Закрыть
+                                <button type="button" className="btn btn-secondary" data-dismiss="modal"
+                                        ref={inputRef}>Закрыть
                                 </button>
                                 <button type="submit" className="btn btn-primary">
                                     Сохранить изменения

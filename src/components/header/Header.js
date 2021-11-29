@@ -10,7 +10,7 @@ import Container from "react-bootstrap/Container";
 
 const Logo = () => {
     const history = useHistory()
-    const handleClick = (event) => {
+    const handleClick = () => {
         history.push('/')
     }
     return (

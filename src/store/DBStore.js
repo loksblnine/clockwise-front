@@ -8,6 +8,8 @@ export default class DBStore {
         this._customers = []
         this._depsMasterCity = []
         this._ordersNext = []
+        this._mastersNext = []
+        this._customersNext = []
        makeAutoObservable(this)
     }
 
@@ -19,6 +21,12 @@ export default class DBStore {
     }
     setOrdersNext(orders) {
         this._ordersNext = orders
+    }
+    setMastersNext(mastersNext) {
+        this._mastersNext = mastersNext
+    }
+    setCustomersNext(mastersNext) {
+        this._mastersNext = mastersNext
     }
     setCities(cities) {
         this._cities = cities
@@ -38,6 +46,12 @@ export default class DBStore {
     }
     get ordersNext() {
         return this._ordersNext
+    }
+    get mastersNext() {
+        return this._mastersNext
+    }
+    get customersNext() {
+        return this._mastersNext
     }
     get cities() {
         return this._cities

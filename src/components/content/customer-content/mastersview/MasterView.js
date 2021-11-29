@@ -2,13 +2,13 @@ import React, {Fragment, useContext, useEffect, useState} from 'react';
 import * as constants from "../../../../constants";
 import {SERVER_URL} from "../../../../constants";
 import {Redirect, useHistory, useLocation} from 'react-router-dom'
-import {getDepsCityIdMasters} from "../../getData";
+import {getDepsCityIdMasters, getFreeMastersInCity, getMastersIntoStore, isCustomerInBase} from "../../getData";
 import './MasterView.css'
 import {toast} from "react-toastify";
-import axios from "axios";
 import {Context} from "../../../../index";
 import {Spinner} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const MasterView = observer(() => {
         const [listMastersInCityAvailable, setLMICA] = useState([]);
@@ -20,33 +20,11 @@ const MasterView = observer(() => {
         const order = location.state.data
 
         useEffect(async () => {
-            if (location.state) {
-                {
-                    axios.get(SERVER_URL + `/masters`)
-                        .then(resp => DB.setMasters(resp.data))
-                }
-                console.log(JSON.stringify({
-                    city_id: order.city,
-                    work_id: order.type,
-                    order_time: order.date + "T" + order.time
-                }))
-                await fetch(constants.SERVER_URL + "/masters/free",
-                    {
-                        method: "POST",
-                        headers: {"Content-Type": "application/json"},
-                        body: JSON.stringify({
-                            city_id: order.city,
-                            work_id: order.type,
-                            order_time: order.date + "T" + order.time
-                        })
-                    })
-                    .then(resp => resp.json())
-                    .then(data => setIdsUnavailableMasters(data))
-                    .catch(err => {
-                        return err
-                    })
+            if (location.state || DB.masters.length <= 0 || !listMastersInCityAvailable || !ids) {
+                await getMastersIntoStore(DB)
+                getDepsCityIdMasters(setLMICA, order.city)
+                getFreeMastersInCity(setIdsUnavailableMasters, order)
                     .finally(() => setLoading(false))
-                getDepsCityIdMasters(setLMICA, location.state.data.city)
             }
         }, [DB, location.state])
         const handleBack = () => {
@@ -57,9 +35,9 @@ const MasterView = observer(() => {
         }
 
         const handleClick = async (master) => {
-            let customer = {customer_name: location.state.data.name, customer_email: location.state.data.email}
-
-            await fetch(constants.SERVER_URL + `/customers/email/` + customer.customer_email)
+            let customer = {customer_name: order.name, customer_email: order.email}
+            //TODO change to instance (impossible level) =)
+            await fetch(constants.SERVER_URL + `/customers/email/${customer.customer_email}`)
                 .then(resp => resp.json())
                 .then(data => customer = data)
                 .catch(async e => {
@@ -71,38 +49,40 @@ const MasterView = observer(() => {
                         .then(resp => resp.json())
                         .then(data => customer = data);
                 })
+
             const text = `Спасибо за заказ ${customer.customer_name}, мастер ${master.master_name} будет у вас ${order.date} в ${order.time}`
             const T = order.date + "T" + order.time
-
-            const bodyOrder = {
+            const orderBody = {
                 master_id: master.master_id,
                 customer_id: customer.customer_id,
                 city_id: order.city,
                 order_time: T,
                 work_id: order.type,
             }
-            const response = await fetch(SERVER_URL + `/orders`, {
+
+            instance({
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(bodyOrder)
-            });
-            if (response.status === 200) {
-                const bodyMessage = {
-                    email: customer.customer_email,
-                    message: text
-                }
-                const response = await fetch(SERVER_URL + `/send`, {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(bodyMessage)
-                });
-                if (response.status === 200) {
-                    toast("Письмо отправлено вам на почту")
-                    history.goBack()
-                }
-            } else {
-                toast.info("Возникли трудности c сервером")
-            }
+                data: orderBody,
+                url: "/orders"
+            })
+                .then(() => {
+                    const messageBody = {
+                        email: customer.customer_email,
+                        message: text
+                    }
+                    instance({
+                        method: "POST",
+                        data: messageBody,
+                        url: "/send"
+                    })
+                        .then(() => {
+                            toast("Письмо отправлено вам на почту")
+                            history.goBack()
+                        })
+                })
+                .catch(() => {
+                    toast.info("Возникли трудности c сервером")
+                })
         }
 
         if (!location.state) {
@@ -113,7 +93,7 @@ const MasterView = observer(() => {
 
         const START_TIME = location.state.data.time
         const END_TIME = (Number(START_TIME.split(':')[0])
-            + Number(constants.WORK_TYPES[location.state.data.type].value))
+                + Number(constants.WORK_TYPES[location.state.data.type].value))
             + ":00"
 
         const mastersToShow =
@@ -156,7 +136,7 @@ const MasterView = observer(() => {
                                         <button className="btn btn-success" id={master.master_id}
                                                 value={master.master_id}
                                                 onClick={e => handleClick(master)}
-                                                disabled={ids.includes(master.master_id)}
+                                                disabled={ids?.includes(master.master_id)}
                                         >Выбрать
                                         </button>
                                     </td>

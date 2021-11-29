@@ -30,7 +30,7 @@ const LoginForm = observer(() => {
                 password: '',
             },
             validate,
-            onSubmit: async (values) => {
+            onSubmit: async () => {
                 try {
                     const resp = await login(formik.values.email, formik.values.password)
                     const token = localStorage.getItem('token')

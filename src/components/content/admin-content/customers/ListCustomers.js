@@ -1,33 +1,33 @@
 import React, {Fragment, useEffect, useContext, useState} from "react";
 import EditCustomer from "./EditCustomer";
 import InputCustomer from "./InputCustomer";
-import {SERVER_URL} from "../../../../constants";
 import {toast} from "react-toastify";
-import axios from "axios";
 import {Context} from "../../../../index";
 import {Spinner} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
+import {getCustomersIntoStore} from "../../getData";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const ListCustomers = observer(() => {
     const {DB} = useContext(Context)
     const [loading, setLoading] = useState(true)
     const deleteCustomer = async (id) => {
         try {
-            await fetch(SERVER_URL + `/customers/${id}`, {
-                method: "DELETE"
+            instance({
+                method: "DELETE",
+                url: `/customers/${id}`
             })
-                .then(response => response.json())
-                .then(data => toast(data));
-            axios.get(SERVER_URL + `/customers`)
-                .then(resp => DB.setCustomers(resp.data))
+                .then(resp => toast(resp.data))
+                .then(() =>
+                    getCustomersIntoStore(DB)
+                )
         } catch (e) {
-            toast.info("🦄 Ахахха сервер упал")
+            toast.info("Server is busy at this moment")
         }
     }
 
     useEffect(() => {
-        axios.get(SERVER_URL + `/customers`)
-            .then(resp => DB.setCustomers(resp.data))
+        getCustomersIntoStore(DB)
             .finally(() => setLoading(false))
     }, [DB])
 
@@ -38,7 +38,15 @@ const ListCustomers = observer(() => {
             </div>
         )
     }
-
+    const handleNextCustomers = () => {
+        DB?.setCustomers(DB.customers.concat(DB.customersNext))
+        sessionStorage.setItem('pageMasterList', (Number(sessionStorage.getItem('pageMasterList')) + 1).toString())
+        instance({
+            method: "get",
+            url: `/masters/offset/${sessionStorage.getItem('pageMasterList')}`
+        })
+            .then(resp => DB.setMastersNext(resp.data))
+    }
     return (
         <Fragment>
             <h2 className="text-left mt-5">Список покупателей</h2>
@@ -52,7 +60,6 @@ const ListCustomers = observer(() => {
                     <th scope="col">Удалить</th>
                 </tr>
                 </thead>
-
                 <tbody>
                 {DB.customers.map(customer => (
                     <tr key={customer.customer_id}>
@@ -67,9 +74,16 @@ const ListCustomers = observer(() => {
                         </td>
                     </tr>
                 ))}
-
                 </tbody>
             </table>
+            {
+                DB.customersNext.length >= 1 ?
+                    <div className="col text-center">
+                        <button className="btn btn-primary" onClick={() => handleNextCustomers()}> Еще покупатели...
+                        </button>
+                    </div>
+                    : null
+            }
             <InputCustomer/>
         </Fragment>
     )
