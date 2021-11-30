@@ -1,12 +1,12 @@
-import React, {Fragment, useContext, useState} from "react";
+import React, {Fragment, useState} from "react";
 import {toast} from "react-toastify";
-import {Context} from "../../../../index";
 import {getCitiesIntoStore} from "../../getData";
 import {instance} from "../../../../http/headerPlaceholder.instance";
+import {useStore} from "react-redux";
 
 const InputCity = () => {
     const [city_name, setCityName] = useState("")
-    const {DB} = useContext(Context);
+    const store = useStore()
     const inputRef = React.useRef(null)
     const onSubmitForm = async e => {
         e.preventDefault();
@@ -18,7 +18,9 @@ const InputCity = () => {
                 url: "/cities"
             })
                 .then(() => toast("Город добавлен"))
-                .then(() => getCitiesIntoStore(DB))
+                .then(() => getCitiesIntoStore(store)
+                )
+                .catch(() => toast.error("Город не добавлен"))
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")

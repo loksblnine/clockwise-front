@@ -1,16 +1,16 @@
-import React, {Fragment, useEffect, useContext, useState} from "react";
+import React, {useEffect, useState} from "react";
 import EditCity from "./EditCity";
 import InputCity from "./InputCity";
 import {toast} from "react-toastify";
-import {Context} from "../../../../index";
-import {observer} from "mobx-react-lite";
 import {Spinner} from "react-bootstrap";
-import {getCitiesIntoStore} from "../../getData";
 import {instance} from "../../../../http/headerPlaceholder.instance";
+import {useStore} from "react-redux";
+import {getCitiesIntoStore} from "../../getData";
 
-const ListCities = observer(() => {
-    const [loading, setLoading] = useState(true)
-    const {DB} = useContext(Context)
+const ListCities = () => {
+    const store = useStore()
+    const {cities} = store.getState()
+    console.log(store.getState())
     const deleteCity = async (id) => {
         try {
             instance({
@@ -18,28 +18,23 @@ const ListCities = observer(() => {
                 url: `/cities/${id}`
             })
                 .then(resp => toast(resp.data))
-                .then(() =>
-                    getCitiesIntoStore(DB)
+                .then(async () => {
+                        await getCitiesIntoStore(store)
+                    }
                 )
         } catch (e) {
             toast.info("Server is busy at this moment")
         }
     }
 
-    useEffect(() => {
-        getCitiesIntoStore(DB)
-            .finally(() => setLoading(false))
-    }, [DB])
+    useEffect(async () => {
+        if (!cities.items.length) {
+            await getCitiesIntoStore(store)
+        }
+    }, [store.getState()])
 
-    if (loading) {
-        return (
-            <div>
-                <Spinner animation={`grow`}/>
-            </div>
-        )
-    }
     return (
-        <Fragment>
+        <div className="router">
             <h2 className="text-left mt-5">Список городов</h2>
             <table className="table mt-5 text-justify">
                 <thead>
@@ -52,23 +47,25 @@ const ListCities = observer(() => {
                 </thead>
 
                 <tbody>
-                {DB.cities?.map(city => (
-                    <tr key={city.city_id}>
-                        <th scope="row"> {city.city_id}</th>
-                        <td>{city.city_name}</td>
-                        <td><EditCity city={city}/></td>
-                        <td>
-                            <button className="btn btn-danger"
-                                    onClick={() => deleteCity(city.city_id)}>Удалить
-                            </button>
-                        </td>
-                    </tr>
-                ))}
-
+                {cities.isReady ?
+                    cities.items?.map(city => (
+                        <tr key={city.city_id}>
+                            <th scope="row"> {city.city_id}</th>
+                            <td>{city.city_name}</td>
+                            <td><EditCity city={city}/></td>
+                            <td>
+                                <button className="btn btn-danger"
+                                        onClick={() => deleteCity(city.city_id)}>Удалить
+                                </button>
+                            </td>
+                        </tr>
+                    ))
+                    : <Spinner animation="grow"/>
+                }
                 </tbody>
             </table>
             <InputCity/>
-        </Fragment>
+        </div>
     )
-})
+}
 export default ListCities

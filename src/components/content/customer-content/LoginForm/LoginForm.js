@@ -37,7 +37,7 @@ const LoginForm = observer(() => {
                     if (token) {
                         user.setUser(resp)
                         user.setIsAuth(true)
-                        history.push('/access_succeed')
+                        history.push('/access_succeed_admin')
                     }
                 } catch (e) {
                     toast("Неверный логин или пароль!")

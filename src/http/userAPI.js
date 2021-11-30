@@ -6,7 +6,7 @@ export const registrationMaster = async (email, password) => {
     const {data} = instance({
         method: "post",
         data: {email, password, role: "MASTER"},
-        url: '/register'
+        url: '/auth/register'
     })
         .then((resp) => {
             localStorage.setItem('token', resp.data.token)
@@ -19,7 +19,7 @@ export const login = async (email, password) => {
     return instance({
         method: "post",
         data: {email, password},
-        url: '/login'
+        url: '/auth/login'
     })
         .then((resp) => {
             localStorage.setItem('token', resp.data.token)
@@ -30,6 +30,6 @@ export const checkAuth = async () => {
     if (!!localStorage.getItem('token'))
         return instance({
             method: "get",
-            url: `/login`
+            url: `/auth/login`
         })
 }

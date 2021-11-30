@@ -1,6 +1,6 @@
 import OrderForm from "./containers/content/client/OrderForm";
 import MasterView from "./components/content/customer-content/MasterView/MasterView";
-import ListCities from "./components/content/admin-content/cities/ListCities";
+import ListCities from "./containers/content/admin/ListCities";
 import ListOrders from "./components/content/admin-content/orders/ListOrders";
 import ListMasters from "./components/content/admin-content/masters/ListMasters";
 import ListCustomers from "./components/content/admin-content/customers/ListCustomers";
@@ -60,7 +60,7 @@ export const customerRoutes = [
 
 export const authRoutes = [
     {
-        path: '/access_succeed',
+        path: '/access_succeed_admin',
         Component: AdminPanel
     },
     {

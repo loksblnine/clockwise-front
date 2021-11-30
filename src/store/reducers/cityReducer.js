@@ -7,7 +7,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case "SET_CITIES": {
+        case constants.ACTIONS.CITIES.SET_CITIES: {
             return {
                 ...state,
                 items: action.payload,

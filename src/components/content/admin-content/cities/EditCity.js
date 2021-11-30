@@ -1,12 +1,11 @@
-import React, {Fragment, useContext, useState} from "react";
-import {SERVER_URL} from "../../../../constants";
+import React, {Fragment, useState} from "react";
 import {toast} from "react-toastify";
-import {Context} from "../../../../index";
 import {getCitiesIntoStore} from "../../getData";
 import {instance} from "../../../../http/headerPlaceholder.instance";
+import {useStore} from "react-redux";
 
 const EditCity = ({city}) => {
-    const {DB} = useContext(Context);
+    const store = useStore()
     const [city_name, setCityName] = useState(city.city_name)
     const inputRef = React.useRef(null)
     const updateCity = async (e) => {
@@ -19,7 +18,7 @@ const EditCity = ({city}) => {
                 url: `/cities/${city.city_id}`
             })
                 .then((resp) => toast(resp.data))
-                .then(() => getCitiesIntoStore(DB))
+                .then(() => getCitiesIntoStore(store))
                 .catch(() => toast.error("Данные не обновлены"))
             inputRef.current.click()
         } catch (e) {

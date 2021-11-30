@@ -1,16 +1,6 @@
 import {toast} from "react-toastify";
 import {instance} from "../../http/headerPlaceholder.instance";
-
-export const getDepsCityIdMasters = (setDeps, city_id) => {
-    instance({
-        method: "get",
-        url: `/deps/city/${city_id}`
-    })
-        .then(resp => setDeps(resp.data))
-        .catch((e) => {
-            toast.error("🦄 Сервер решил полежать)")
-        })
-}
+import * as constants from "../../constants";
 
 export const getDepsMasterIdCities = (setDeps, master_id) => {
     instance({
@@ -18,16 +8,21 @@ export const getDepsMasterIdCities = (setDeps, master_id) => {
         url: `/deps/master/${master_id}`
     })
         .then(resp => setDeps(resp.data))
-        .catch((e) => {
+        .catch(() => {
             toast.error("🦄 Сервер решил полежать)")
         })
 }
-export const getCitiesIntoStore = async (DB) => {
+export const getCitiesIntoStore = async (store) => {
     instance({
         method: "get",
         url: "/cities"
     })
-        .then(resp => DB.setCities(resp.data))
+        .then(({data}) => {
+            store.dispatch({
+                type: constants.ACTIONS.CITIES.SET_CITIES,
+                payload: data
+            })
+        })
 }
 export const getMastersIntoStore = async (DB) => {
     sessionStorage.setItem('pageMasterList', "0")
@@ -86,21 +81,4 @@ export const getOrdersIntoStore = async (DB) => {
                 .then(() => sessionStorage.setItem('pageOrderList',
                     (Number(sessionStorage.getItem('pageOrderList')) + 1).toString()))
         )
-}
-
-export const getFreeMastersInCity = async (setIdsUnavailableMasters, order) => {
-    const body = {
-        "city_id": order.city + "",
-        "work_id": order.type + "",
-        "order_time": order.date + "T" + order.time
-    }
-    instance({
-        method: "post",
-        data: body,
-        url: "/masters/free",
-    })
-        .then(resp => setIdsUnavailableMasters(resp.data))
-        .catch(err => {
-            return err
-        })
 }

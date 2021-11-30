@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import EditOrder from "./EditOrder";
 import InputOrder from "./InputOrder";
 import {WORK_TYPES} from "../../../../constants";
@@ -7,7 +7,7 @@ import * as constants from "../../../../constants";
 import {Context} from "../../../../index";
 import {observer} from "mobx-react-lite";
 import {Spinner} from "react-bootstrap";
-import {getCitiesIntoStore, getCustomersIntoStore, getMastersIntoStore, getOrdersIntoStore} from "../../getData";
+import {getOrdersIntoStore} from "../../getData";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const ListOrders = observer(() => {
@@ -48,7 +48,7 @@ const ListOrders = observer(() => {
         )
     }
     return (
-        <Fragment>
+        <div className="router">
             <h2 className="text-left mt-5">Список заказов</h2>
             <table className="table mt-5 text-justify">
                 <thead>
@@ -69,9 +69,9 @@ const ListOrders = observer(() => {
                     DB.orders?.map(order => (
                         <tr key={order.order_id}>
                             <th scope="row"> {order.order_id}</th>
-                            <td>{order.master_name}</td>
-                            <td>{order.customer_name}</td>
-                            <td>{order.city_name}</td>
+                            <td>{order.master.master_name}</td>
+                            <td>{order.customer.customer_name}</td>
+                            <td>{order.city.city_name}</td>
                             <td>{WORK_TYPES[order.work_id].key}</td>
                             <td>{order.order_time.split('T')[0]}</td>
                             <td>{order.order_time.split('T')[1].split('.')[0]}</td>
@@ -95,7 +95,7 @@ const ListOrders = observer(() => {
                     : null
             }
             <InputOrder/>
-        </Fragment>
+        </div>
     )
 })
 export default ListOrders

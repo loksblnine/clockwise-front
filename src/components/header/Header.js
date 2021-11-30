@@ -36,37 +36,38 @@ const Header = observer((props) => {
     }
     const handleAdminAccess = () => {
         history.push(
-            {pathname: '/access_succeed'}
+            {pathname: '/access_succeed_admin'}
         )
     }
 
     return (
-        <Navbar variant="dark">
-            <Container>
-                <Logo/>
-                {(user.isAuth) ?
-                    <Nav className="ml-auto" style={{color: 'white'}}>
-                        <button
-                            onClick={handleAdminAccess}
-                            className="btn btn-xl"
-                        >
-                            Админ панель
-                        </button>
-                        <button
-                            onClick={() => logOut()}
-                            className="btn btn-xl"
-                        >
-                            Выйти
-                        </button>
-                    </Nav>
-                    :
-                    <Nav className="ml-auto" style={{color: 'white'}}>
-                        <button className="btn btn-xl" onClick={() => history.push('/login')}>Авторизация</button>
-                    </Nav>
-                }
-            </Container>
-        </Navbar>
-
+        <div className="router">
+            <Navbar>
+                <Container>
+                    <Logo/>
+                    {(user.isAuth) ?
+                        <Nav className="ml-auto" style={{color: 'white'}}>
+                            <button
+                                onClick={handleAdminAccess}
+                                className="btn btn-xl"
+                            >
+                                Админ панель
+                            </button>
+                            <button
+                                onClick={() => logOut()}
+                                className="btn btn-xl"
+                            >
+                                Выйти
+                            </button>
+                        </Nav>
+                        :
+                        <Nav className="ml-auto" style={{color: 'white'}}>
+                            <button className="btn btn-xl" onClick={() => history.push('/login')}>Авторизация</button>
+                        </Nav>
+                    }
+                </Container>
+            </Navbar>
+        </div>
     );
 });
 

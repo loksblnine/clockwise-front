@@ -18,6 +18,7 @@ const AdminPanel = observer(() => {
 
     return (
         <Router>
+            <div>
             <div className="router">
                 <h2>Администрирование</h2>
                 <LinkContainer to='/masters'>
@@ -30,8 +31,9 @@ const AdminPanel = observer(() => {
                     <button className="btn btn-xl">Покупатели</button>
                 </LinkContainer>
                 <LinkContainer to='/orders'>
-                    <button className="btn btn-xl" id={`btn-orders`} ref={inputRef}>Заказы</button>
+                    <button className="btn btn-xl" id="btn-orders" ref={inputRef}>Заказы</button>
                 </LinkContainer>
+                </div>
                 <Switch>
                     <Route exact path='/masters' component={ListMasters}/>
                     <Route exact path='/cities' component={ListCities}/>

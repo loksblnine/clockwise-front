@@ -7,7 +7,7 @@ import {observer} from "mobx-react-lite";
 import {toast} from "react-toastify";
 import {Context} from "../../../../index";
 import {instance} from "../../../../http/headerPlaceholder.instance";
-import {useSelector, useStore} from "react-redux";
+import {useStore} from "react-redux";
 import {Spinner} from "react-bootstrap";
 
 const validate = (values) => {
@@ -57,7 +57,6 @@ const OrderForm = observer(({props}) => {
                         type: constants.ACTIONS.CITIES.SET_CITIES,
                         payload: data
                     })
-
                 })
         }
     }, [store])
