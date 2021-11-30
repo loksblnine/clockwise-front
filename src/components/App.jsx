@@ -1,23 +1,25 @@
 //libs
 import React, {Fragment, useContext, useEffect, useState} from 'react';
 import {BrowserRouter as Router} from "react-router-dom";
-import {checkAuth} from "./http/userAPI";
+import {checkAuth} from "../http/userAPI";
 import {Spinner} from "react-bootstrap";
 //css
-import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
 //components
-import Header from "./components/header/Header";
-import {Context} from "./index";
-import AppRouter from "./components/AppRouter";
+import Header from "./header/Header";
+import {Context} from "../index";
+import AppRouter from "./AppRouter";
 import {observer} from "mobx-react-lite";
 import {ToastContainer} from "react-toastify";
 import jwt_decode from "jwt-decode";
+import {useSelector, useStore} from "react-redux";
+import * as constants from "../constants";
 
-const App = observer(() => {
+const App = observer((props) => {
     const {user} = useContext(Context)
     const [loading, setLoading] = useState(true)
     useEffect(() => {
+        console.log()
         sessionStorage.setItem('pageOrderList', "0")
         sessionStorage.setItem('pageCustomerList', "0")
         sessionStorage.setItem('pageMasterList', "0")

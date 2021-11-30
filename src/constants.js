@@ -1,10 +1,10 @@
-import OrderForm from "./components/content/customer-content/orderform/OrderForm";
-import MasterView from "./components/content/customer-content/mastersview/MasterView";
+import OrderForm from "./containers/content/client/OrderForm";
+import MasterView from "./components/content/customer-content/MasterView/MasterView";
 import ListCities from "./components/content/admin-content/cities/ListCities";
 import ListOrders from "./components/content/admin-content/orders/ListOrders";
 import ListMasters from "./components/content/admin-content/masters/ListMasters";
 import ListCustomers from "./components/content/admin-content/customers/ListCustomers";
-import LoginForm from "./components/content/customer-content/login-form/LoginForm";
+import LoginForm from "./components/content/customer-content/LoginForm/LoginForm";
 import AdminPanel from "./components/content/admin-content/admin-panel/AdminPanel";
 
 export const SERVER_URL = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "https://enigmatic-spire-58695.herokuapp.com"
@@ -31,7 +31,7 @@ export const WORK_TYPES = {
 }
 
 function nowDate() {
-    return new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()+2).toISOString().split('T')[0]
+    return new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 2).toISOString().split('T')[0]
 }
 
 function finalDate() {
@@ -80,3 +80,14 @@ export const authRoutes = [
         Component: ListCustomers
     }
 ]
+
+export const ACTIONS = {
+    CITIES: {
+        SET_CITIES: "SET_CITIES",
+        SET_READY_CITY: "SET_CITIES"
+    },
+    USER: {
+        SET_USER: "SET_USER",
+        SET_READY_USER: "SET_READY_USER"
+    }
+}
