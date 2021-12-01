@@ -3,7 +3,7 @@ import MasterView from "./components/content/customer-content/MasterView/MasterV
 import ListCities from "./containers/content/admin/ListCities";
 import ListOrders from "./components/content/admin-content/orders/ListOrders";
 import ListMasters from "./components/content/admin-content/masters/ListMasters";
-import ListCustomers from "./components/content/admin-content/customers/ListCustomers";
+import ListCustomers from "./containers/content/admin/ListCustomers";
 import LoginForm from "./components/content/customer-content/LoginForm/LoginForm";
 import AdminPanel from "./components/content/admin-content/admin-panel/AdminPanel";
 
@@ -89,12 +89,29 @@ export const ACTIONS = {
         UPDATE_CITY: "UPDATE_CITY",
         ADD_CITY: "ADD_CITY"
     },
+    CUSTOMERS: {
+        SET_CUSTOMERS: "SET_CUSTOMERS",
+        SET_CUSTOMERS_NEXT: "SET_CUSTOMERS_NEXT",
+        SET_READY_CUSTOMERS: "SET_READY_CUSTOMERS",
+        DELETE_CUSTOMER: "DELETE_CUSTOMER",
+        UPDATE_CUSTOMER: "UPDATE_CUSTOMER",
+        ADD_CUSTOMER: "ADD_CUSTOMER"
+    },
     MASTERS: {
         SET_MASTERS: "SET_MASTERS",
+        SET_MASTERS_NEXT: "SET_MASTERS_NEXT",
         SET_READY_MASTERS: "SET_READY_MASTERS",
         DELETE_MASTER: "DELETE_MASTER",
         UPDATE_MASTER: "UPDATE_MASTER",
         ADD_MASTER: "ADD_MASTER"
+    },
+    ORDERS: {
+        SET_ORDERS: "SET_ORDERS",
+        SET_ORDERS_NEXT: "SET_ORDERS_NEXT",
+        SET_READY_ORDERS: "SET_READY_ORDERS",
+        DELETE_ORDER: "DELETE_ORDER",
+        UPDATE_ORDER: "UPDATE_ORDER",
+        ADD_ORDER: "ADD_ORDER"
     },
     USER: {
         SET_USER: "SET_USER",
