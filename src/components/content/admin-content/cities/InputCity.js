@@ -1,8 +1,8 @@
 import React, {Fragment, useState} from "react";
 import {toast} from "react-toastify";
-import {getCitiesIntoStore} from "../../getData";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {useStore} from "react-redux";
+import * as constants from "../../../../constants";
 
 const InputCity = () => {
     const [city_name, setCityName] = useState("")
@@ -18,8 +18,10 @@ const InputCity = () => {
                 url: "/cities"
             })
                 .then(() => toast("Город добавлен"))
-                .then(() => getCitiesIntoStore(store)
-                )
+                .then(({data}) => store.dispatch({
+                    type: constants.ACTIONS.CITIES.ADD_CITY,
+                    payload: data
+                }))
                 .catch(() => toast.error("Город не добавлен"))
             inputRef.current.click()
         } catch (e) {

@@ -84,7 +84,17 @@ export const authRoutes = [
 export const ACTIONS = {
     CITIES: {
         SET_CITIES: "SET_CITIES",
-        SET_READY_CITY: "SET_CITIES"
+        SET_READY_CITIES: "SET_READY_CITIES",
+        DELETE_CITY: "DELETE_CITY",
+        UPDATE_CITY: "UPDATE_CITY",
+        ADD_CITY: "ADD_CITY"
+    },
+    MASTERS: {
+        SET_MASTERS: "SET_MASTERS",
+        SET_READY_MASTERS: "SET_READY_MASTERS",
+        DELETE_MASTER: "DELETE_MASTER",
+        UPDATE_MASTER: "UPDATE_MASTER",
+        ADD_MASTER: "ADD_MASTER"
     },
     USER: {
         SET_USER: "SET_USER",

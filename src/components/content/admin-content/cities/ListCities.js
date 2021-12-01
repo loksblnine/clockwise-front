@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import EditCity from "./EditCity";
 import InputCity from "./InputCity";
 import {toast} from "react-toastify";
@@ -6,11 +6,11 @@ import {Spinner} from "react-bootstrap";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {useStore} from "react-redux";
 import {getCitiesIntoStore} from "../../getData";
+import * as constants from "../../../../constants";
 
 const ListCities = () => {
     const store = useStore()
     const {cities} = store.getState()
-    console.log(store.getState())
     const deleteCity = async (id) => {
         try {
             instance({
@@ -19,7 +19,10 @@ const ListCities = () => {
             })
                 .then(resp => toast(resp.data))
                 .then(async () => {
-                        await getCitiesIntoStore(store)
+                        store.dispatch({
+                            type: constants.ACTIONS.CITIES.DELETE_CITY,
+                            payload: id
+                        })
                     }
                 )
         } catch (e) {

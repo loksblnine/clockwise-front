@@ -1,8 +1,8 @@
 import React, {Fragment, useState} from "react";
 import {toast} from "react-toastify";
-import {getCitiesIntoStore} from "../../getData";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {useStore} from "react-redux";
+import * as constants from "../../../../constants";
 
 const EditCity = ({city}) => {
     const store = useStore()
@@ -17,8 +17,11 @@ const EditCity = ({city}) => {
                 data: body,
                 url: `/cities/${city.city_id}`
             })
-                .then((resp) => toast(resp.data))
-                .then(() => getCitiesIntoStore(store))
+                .then(() => toast("Изменения сохранены"))
+                .then(({data}) => store.dispatch({
+                    type: constants.ACTIONS.CITIES.UPDATE_CITY,
+                    payload: data
+                }))
                 .catch(() => toast.error("Данные не обновлены"))
             inputRef.current.click()
         } catch (e) {
@@ -42,15 +45,13 @@ const EditCity = ({city}) => {
                                 <button type="button" className="btn-close" data-dismiss="modal"
                                         aria-label="Close"/>
                             </div>
-
                             <div className="modal-body">
                                 <label htmlFor={`city_name`}>Название города</label>
                                 <input className="form-control" placeholder="Город" value={city_name}
-                                       name={`city_name`}
+                                       name="city_name"
                                        required onChange={e => setCityName(e.target.value)}
                                        pattern="[A-ZА-Яa-zа-я -]+"/>
                             </div>
-
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal"
                                         ref={inputRef}>Закрыть
