@@ -15,7 +15,6 @@ export default (state: { isReady: boolean, items: any [] } = initialState, actio
             };
         }
         case constants.ACTIONS.CITIES.UPDATE_CITY: {
-            console.log(action.payload)
             const array = state.items.filter((item: any) => item.city_id !== action.payload.city_id).concat(action.payload)
             return {
                 ...state,
@@ -30,7 +29,6 @@ export default (state: { isReady: boolean, items: any [] } = initialState, actio
             };
         }
         case constants.ACTIONS.CITIES.ADD_CITY: {
-            console.log(action.payload)
             return {
                 items: state.items.concat(action.payload),
                 isReady: true
