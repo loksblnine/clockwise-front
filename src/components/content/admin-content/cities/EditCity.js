@@ -17,11 +17,11 @@ const EditCity = ({city}) => {
                 data: body,
                 url: `/cities/${city.city_id}`
             })
-                .then(() => toast("Изменения сохранены"))
                 .then(({data}) => store.dispatch({
                     type: constants.ACTIONS.CITIES.UPDATE_CITY,
-                    payload: data
+                    payload: data[0]
                 }))
+                .then(() => toast("Изменения сохранены"))
                 .catch(() => toast.error("Данные не обновлены"))
             inputRef.current.click()
         } catch (e) {

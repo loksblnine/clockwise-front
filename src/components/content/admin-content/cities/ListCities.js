@@ -34,7 +34,7 @@ const ListCities = () => {
         if (!cities.items.length) {
             await getCitiesIntoStore(store)
         }
-    }, [store.getState()])
+    }, [cities.items.length])
 
     return (
         <div className="router">

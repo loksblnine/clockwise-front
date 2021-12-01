@@ -12,10 +12,8 @@ import AppRouter from "./AppRouter";
 import {observer} from "mobx-react-lite";
 import {ToastContainer} from "react-toastify";
 import jwt_decode from "jwt-decode";
-import {useSelector, useStore} from "react-redux";
-import * as constants from "../constants";
 
-const App = observer((props) => {
+const App = observer(() => {
     const {user} = useContext(Context)
     const [loading, setLoading] = useState(true)
     useEffect(() => {

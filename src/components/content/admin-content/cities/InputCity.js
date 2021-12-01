@@ -17,11 +17,11 @@ const InputCity = () => {
                 data: body,
                 url: "/cities"
             })
-                .then(() => toast("Город добавлен"))
                 .then(({data}) => store.dispatch({
                     type: constants.ACTIONS.CITIES.ADD_CITY,
                     payload: data
                 }))
+                .then(() => toast("Город добавлен"))
                 .catch(() => toast.error("Город не добавлен"))
             inputRef.current.click()
         } catch (e) {
