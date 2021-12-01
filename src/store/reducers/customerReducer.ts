@@ -10,18 +10,17 @@ const initialState = {
 export default (state: { isReady: boolean, items: any [], page: number, loadNext: boolean } = initialState, action: any) => {
     switch (action.type) {
         case constants.ACTIONS.CUSTOMERS.SET_CUSTOMERS: {
-            const array = state.items.concat(action.payload)
             if (action.payload.length < 10) {
                 return {
                     ...state,
-                    items: array,
+                    items: state.items.concat(action.payload),
                     isReady: true,
                     loadNext: false
                 }
             }
             return {
                 ...state,
-                items: array,
+                items: state.items.concat(action.payload),
                 isReady: true,
                 page: ++state.page
             };
@@ -31,7 +30,6 @@ export default (state: { isReady: boolean, items: any [], page: number, loadNext
             return {
                 ...state,
                 items: array,
-                isReady: true
             };
         }
         case constants.ACTIONS.CUSTOMERS.SET_READY_CUSTOMERS: {
@@ -44,14 +42,12 @@ export default (state: { isReady: boolean, items: any [], page: number, loadNext
             return {
                 ...state,
                 items: state.items.concat(action.payload),
-                isReady: true
             }
         }
         case constants.ACTIONS.CUSTOMERS.DELETE_CUSTOMER: {
             return {
                 ...state,
                 items: state.items.filter((item: any) => item.customer_id !== action.payload),
-                isReady: true
             }
         }
         default:

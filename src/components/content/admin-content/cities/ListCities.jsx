@@ -30,12 +30,15 @@ const ListCities = () => {
         }
     }
 
-    useEffect(() => {
+    useEffect(async () => {
         if (!cities.items.length) {
-            getCitiesIntoStore(store)
+            await getCitiesIntoStore(store)
         }
-    }, [cities])
+    }, [store, cities])
 
+    if (!cities.isReady) {
+        return <Spinner animation="grow"/>
+    }
     return (
         <div className="router">
             <h2 className="text-left mt-5">Список городов</h2>
@@ -50,21 +53,18 @@ const ListCities = () => {
                 </thead>
 
                 <tbody>
-                {cities.isReady ?
-                    cities.items?.map(city => (
-                        <tr key={city.city_id}>
-                            <th scope="row"> {city.city_id}</th>
-                            <td>{city.city_name}</td>
-                            <td><EditCity city={city}/></td>
-                            <td>
-                                <button className="btn btn-danger"
-                                        onClick={() => deleteCity(city.city_id)}>Удалить
-                                </button>
-                            </td>
-                        </tr>
-                    ))
-                    : <Spinner animation="grow"/>
-                }
+                {cities.items?.map(city => (
+                    <tr key={city.city_id}>
+                        <th scope="row"> {city.city_id}</th>
+                        <td>{city.city_name}</td>
+                        <td><EditCity city={city}/></td>
+                        <td>
+                            <button className="btn btn-danger"
+                                    onClick={() => deleteCity(city.city_id)}>Удалить
+                            </button>
+                        </td>
+                    </tr>
+                ))}
                 </tbody>
             </table>
             <InputCity/>

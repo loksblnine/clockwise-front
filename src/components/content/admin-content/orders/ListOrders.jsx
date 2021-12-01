@@ -32,9 +32,12 @@ const ListOrders = () => {
         if (!orders.items.length) {
             await getOrdersIntoStore(store, orders.page)
         }
-    }, [orders])
-    const handleNextOrders = async () => {
-        await getOrdersIntoStore(store, orders.page)
+    }, [store, orders])
+    const handleNextOrders = () => {
+        getOrdersIntoStore(store, orders.page)
+    }
+    if (!orders.isReady) {
+        return <Spinner animation="grow"/>
     }
     return (
         <div className="router">
@@ -54,27 +57,24 @@ const ListOrders = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {orders.isReady ?
-                    orders.items?.map(order => (
-                        <tr key={order.order_id}>
-                            <th scope="row"> {order.order_id}</th>
-                            <td>{order.master.master_name}</td>
-                            <td>{order.customer.customer_name}</td>
-                            <td>{order.city.city_name}</td>
-                            <td>{constants.WORK_TYPES[order.work_id].key}</td>
-                            <td>{order.order_time.split('T')[0]}</td>
-                            <td>{order.order_time.split('T')[1].split('.')[0]}</td>
-                            <td><EditOrder order={order}/></td>
-                            <td>
-                                <button className="btn btn-danger"
-                                        onClick={() => deleteOrder(order.order_id)}
-                                        disabled={order.order_time.split('T')[0] <= constants.DATE_FROM}>Удалить
-                                </button>
-                            </td>
-                        </tr>
-                    ))
-                    : <Spinner animation="grow"/>
-                }
+                {orders.items?.map(order => (
+                    <tr key={order.order_id}>
+                        <th scope="row"> {order.order_id}</th>
+                        <td>{order.master.master_name}</td>
+                        <td>{order.customer.customer_name}</td>
+                        <td>{order.city.city_name}</td>
+                        <td>{constants.WORK_TYPES[order.work_id].key}</td>
+                        <td>{order.order_time.split('T')[0]}</td>
+                        <td>{order.order_time.split('T')[1].split('.')[0]}</td>
+                        <td><EditOrder order={order}/></td>
+                        <td>
+                            <button className="btn btn-danger"
+                                    onClick={() => deleteOrder(order.order_id)}
+                                    disabled={order.order_time.split('T')[0] <= constants.DATE_FROM}>Удалить
+                            </button>
+                        </td>
+                    </tr>
+                ))}
                 </tbody>
             </table>
             {

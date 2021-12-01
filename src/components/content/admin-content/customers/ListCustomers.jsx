@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import EditCustomer from "./EditCustomer";
 import InputCustomer from "./InputCustomer";
 import {toast} from "react-toastify";
@@ -11,6 +11,7 @@ import * as constants from "../../../../constants";
 const ListCustomers = () => {
     const store = useStore()
     const {customers} = store.getState()
+    const [loading, setLoading] = useState(true)
     const deleteCustomer = async (id) => {
         try {
             instance({
@@ -32,9 +33,14 @@ const ListCustomers = () => {
         if (!customers.items.length) {
             await getCustomersIntoStore(store, customers.page)
         }
-    }, [customers])
-    const handleNextCustomers = async () => {
-        await getCustomersIntoStore(store, customers.page)
+        setLoading(!customers.isReady)
+    }, [store, customers])
+    const handleNextCustomers = () => {
+        getCustomersIntoStore(store, customers.page)
+    }
+
+    if (loading) {
+        return <Spinner animation="grow"/>
     }
     return (
         <div className="router">
@@ -50,22 +56,19 @@ const ListCustomers = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {customers.isReady ?
-                    customers.items?.map(customer => (
-                        <tr key={customer.customer_id}>
-                            <th scope="row"> {customer.customer_id}</th>
-                            <td>{customer.customer_name}</td>
-                            <td>{customer.customer_email}</td>
-                            <td><EditCustomer customer={customer}/></td>
-                            <td>
-                                <button className="btn btn-danger"
-                                        onClick={() => deleteCustomer(customer.customer_id)}>Удалить
-                                </button>
-                            </td>
-                        </tr>
-                    ))
-                    : <Spinner animation="grow"/>
-                }
+                {customers.items?.map(customer => (
+                    <tr key={customer.customer_id}>
+                        <th scope="row"> {customer.customer_id}</th>
+                        <td>{customer.customer_name}</td>
+                        <td>{customer.customer_email}</td>
+                        <td><EditCustomer customer={customer}/></td>
+                        <td>
+                            <button className="btn btn-danger"
+                                    onClick={() => deleteCustomer(customer.customer_id)}>Удалить
+                            </button>
+                        </td>
+                    </tr>
+                ))}
                 </tbody>
             </table>
             {
