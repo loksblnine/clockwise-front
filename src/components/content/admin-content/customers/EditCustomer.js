@@ -1,15 +1,13 @@
-import React, {Fragment, useContext, useState} from "react";
-import {SERVER_URL} from "../../../../constants";
+import React, {useState} from "react";
 import {toast} from "react-toastify";
-import {Context} from "../../../../index";
-import {getCustomersIntoStore} from "../../getData";
-import axios from "axios";
 import {instance} from "../../../../http/headerPlaceholder.instance";
+import {useStore} from "react-redux";
+import * as constants from "../../../../constants";
 
 const EditCustomer = ({customer}) => {
+    const store = useStore()
     const [customer_name, setCustomerName] = useState(customer.customer_name)
     const [customer_email, setCustomerEmail] = useState(customer.customer_email)
-    const {DB} = useContext(Context);
     const inputRef = React.useRef(null)
     const updateCustomer = async (e) => {
         e.preventDefault()
@@ -20,8 +18,12 @@ const EditCustomer = ({customer}) => {
                 data: body,
                 url: `/customers/${customer.customer_id}`
             })
-                .then((resp) => toast(resp.data))
-                .then(() => getCustomersIntoStore(DB))
+                .then(({data}) =>
+                    store.dispatch({
+                        type: constants.ACTIONS.CUSTOMERS.UPDATE_CUSTOMER,
+                        payload: data
+                    }))
+                .then(() => toast("Изменения сохранены"))
                 .catch(() => toast.error("Данные не обновлены"))
             inputRef.current.click()
         } catch (e) {
@@ -29,7 +31,7 @@ const EditCustomer = ({customer}) => {
         }
     }
     return (
-        <Fragment>
+        <div>
             <button type="button" className="btn btn-warning" data-toggle="modal"
                     data-target={`#id${customer.customer_id}`}>
                 Редактировать
@@ -72,7 +74,7 @@ const EditCustomer = ({customer}) => {
                     </div>
                 </div>
             </div>
-        </Fragment>
+        </div>
     )
 }
 

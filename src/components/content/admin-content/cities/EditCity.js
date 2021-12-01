@@ -3,7 +3,6 @@ import {toast} from "react-toastify";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {useStore} from "react-redux";
 import * as constants from "../../../../constants";
-
 const EditCity = ({city}) => {
     const store = useStore()
     const [city_name, setCityName] = useState(city.city_name)

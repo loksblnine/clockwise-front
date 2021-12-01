@@ -17,7 +17,6 @@ const ListCities = () => {
                 method: "DELETE",
                 url: `/cities/${id}`
             })
-                .then(resp => toast(resp.data))
                 .then(async () => {
                         store.dispatch({
                             type: constants.ACTIONS.CITIES.DELETE_CITY,
@@ -25,6 +24,7 @@ const ListCities = () => {
                         })
                     }
                 )
+                .then(() => toast("Город удален"))
         } catch (e) {
             toast.info("Server is busy at this moment")
         }

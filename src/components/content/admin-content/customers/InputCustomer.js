@@ -1,14 +1,13 @@
-import React, {Fragment, useContext, useState} from "react";
+import React, {Fragment, useState} from "react";
 import {toast} from "react-toastify";
-import {Context} from "../../../../index";
-import {getCustomersIntoStore} from "../../getData";
 import {instance} from "../../../../http/headerPlaceholder.instance";
+import * as constants from "../../../../constants";
+import {useStore} from "react-redux";
 
 const InputCustomer = () => {
     const [customer_name, setCustomerName] = useState("")
     const [customer_email, setCustomerEmail] = useState("")
-
-    const {DB} = useContext(Context);
+    const store = useStore()
     const inputRef = React.useRef(null)
     const onSubmitForm = async e => {
         e.preventDefault();
@@ -19,8 +18,15 @@ const InputCustomer = () => {
                 data: body,
                 url: "/customers"
             })
+                .then(({data}) => {
+                    console.log(data)
+                    store.dispatch({
+                        type: constants.ACTIONS.CUSTOMERS.ADD_CUSTOMER,
+                        payload: data
+                    })
+                })
                 .then(() => toast(`Покупатель ${customer_name} добавлен`))
-                .then(() => getCustomersIntoStore(DB))
+                .catch(() => toast.error("Покупатель не добавлен"))
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")
