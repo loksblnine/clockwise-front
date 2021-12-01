@@ -1,51 +1,40 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import EditOrder from "./EditOrder";
 import InputOrder from "./InputOrder";
-import {WORK_TYPES} from "../../../../constants";
 import {toast} from "react-toastify";
 import * as constants from "../../../../constants";
-import {Context} from "../../../../index";
-import {observer} from "mobx-react-lite";
 import {Spinner} from "react-bootstrap";
 import {getOrdersIntoStore} from "../../getData";
 import {instance} from "../../../../http/headerPlaceholder.instance";
+import {useStore} from "react-redux";
 
-const ListOrders = observer(() => {
-    const [loading, setLoading] = useState(true)
-    const {DB} = useContext(Context)
+const ListOrders = () => {
+    const store = useStore()
+    const {orders} = store.getState()
     const deleteOrder = async (id) => {
         try {
             instance({
                 method: "DELETE",
                 url: `/orders/${id}`
             })
-                .then(resp => toast(resp.data))
                 .then(() =>
-                    getOrdersIntoStore(DB)
+                    store.dispatch({
+                        type: constants.ACTIONS.ORDERS.DELETE_ORDER,
+                        payload: id
+                    })
                 )
+                .then(() => toast("Заказ удален"))
         } catch (e) {
             toast.info("Server is busy at this moment")
         }
     }
-    const handleNextOrders = () => {
-        DB?.setOrders(DB.orders.concat(DB.ordersNext))
-        sessionStorage.setItem('pageOrderList', (Number(sessionStorage.getItem('pageOrderList')) + 1).toString())
-        instance({
-            method: "get",
-            url: `/orders/offset/${sessionStorage.getItem('pageOrderList')}`
-        })
-            .then(resp => DB.setOrdersNext(resp.data))
-    }
     useEffect(async () => {
-        getOrdersIntoStore(DB)
-            .finally(() => setLoading(false))
-    }, [DB])
-    if (loading) {
-        return (
-            <div>
-                <Spinner animation="grow"/>
-            </div>
-        )
+        if (!orders.items.length) {
+            await getOrdersIntoStore(store, orders.page)
+        }
+    }, [orders])
+    const handleNextOrders = async () => {
+        await getOrdersIntoStore(store, orders.page)
     }
     return (
         <div className="router">
@@ -60,19 +49,19 @@ const ListOrders = observer(() => {
                     <th scope="col">Тип работы</th>
                     <th scope="col">Дата заказа</th>
                     <th scope="col">Время заказа</th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
+                    <th scope="col">&nbsp;</th>
+                    <th scope="col">&nbsp;</th>
                 </tr>
                 </thead>
                 <tbody>
-                {
-                    DB.orders?.map(order => (
+                {orders.isReady ?
+                    orders.items?.map(order => (
                         <tr key={order.order_id}>
                             <th scope="row"> {order.order_id}</th>
                             <td>{order.master.master_name}</td>
                             <td>{order.customer.customer_name}</td>
                             <td>{order.city.city_name}</td>
-                            <td>{WORK_TYPES[order.work_id].key}</td>
+                            <td>{constants.WORK_TYPES[order.work_id].key}</td>
                             <td>{order.order_time.split('T')[0]}</td>
                             <td>{order.order_time.split('T')[1].split('.')[0]}</td>
                             <td><EditOrder order={order}/></td>
@@ -83,19 +72,19 @@ const ListOrders = observer(() => {
                                 </button>
                             </td>
                         </tr>
-                    ))}
-
+                    ))
+                    : <Spinner animation="grow"/>
+                }
                 </tbody>
             </table>
             {
-                DB.ordersNext.length >= 1 ?
-                    <div className="col text-center">
-                        <button className="btn btn-primary" onClick={() => handleNextOrders()}> Еще заказы...</button>
-                    </div>
-                    : null
+                orders.loadNext === true &&
+                <div className="col text-center">
+                    <button className="btn btn-primary" onClick={() => handleNextOrders()}> Еще заказы...</button>
+                </div>
             }
             <InputOrder/>
         </div>
     )
-})
+}
 export default ListOrders

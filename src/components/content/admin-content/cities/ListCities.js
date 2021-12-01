@@ -30,11 +30,11 @@ const ListCities = () => {
         }
     }
 
-    useEffect(async () => {
+    useEffect(() => {
         if (!cities.items.length) {
-            await getCitiesIntoStore(store)
+            getCitiesIntoStore(store)
         }
-    }, [cities.items.length])
+    }, [cities])
 
     return (
         <div className="router">

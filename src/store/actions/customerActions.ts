@@ -5,11 +5,6 @@ export const setCustomers: object = (cities: any []) => ({
     payload: cities
 });
 
-export const setCustomersNext: object = (cities: any []) => ({
-    type: constants.ACTIONS.CUSTOMERS.SET_CUSTOMERS_NEXT,
-    payload: cities
-});
-
 export const setReadyCustomers: object = (bool: boolean) => ({
     type: constants.ACTIONS.CUSTOMERS.SET_READY_CUSTOMERS,
     payload: bool

@@ -9,9 +9,10 @@ const initialState = {
 
 export default (state: { isReady: boolean, items: any [], page: number, loadNext: boolean } = initialState, action: any) => {
     switch (action.type) {
-        case constants.ACTIONS.CUSTOMERS.SET_CUSTOMERS: {
+        case constants.ACTIONS.ORDERS.SET_ORDERS: {
             const array = state.items.concat(action.payload)
             if (action.payload.length < 10) {
+                console.log(action.payload.length)
                 return {
                     ...state,
                     items: array,
@@ -26,31 +27,31 @@ export default (state: { isReady: boolean, items: any [], page: number, loadNext
                 page: ++state.page
             };
         }
-        case constants.ACTIONS.CUSTOMERS.UPDATE_CUSTOMER: {
-            const array = state.items.filter((item: any) => item.customer_id !== action.payload.customer_id).concat(action.payload)
+        case constants.ACTIONS.ORDERS.UPDATE_ORDER: {
+            const array = state.items.filter((item: any) => item.order_id !== action.payload.order_id).concat(action.payload)
             return {
                 ...state,
                 items: array,
                 isReady: true
             };
         }
-        case constants.ACTIONS.CUSTOMERS.SET_READY_CUSTOMERS: {
+        case constants.ACTIONS.ORDERS.SET_READY_ORDERS: {
             return {
                 ...state,
                 isReady: action.payload
             };
         }
-        case constants.ACTIONS.CUSTOMERS.ADD_CUSTOMER: {
+        case constants.ACTIONS.ORDERS.ADD_ORDER: {
             return {
                 ...state,
                 items: state.items.concat(action.payload),
                 isReady: true
             }
         }
-        case constants.ACTIONS.CUSTOMERS.DELETE_CUSTOMER: {
+        case constants.ACTIONS.ORDERS.DELETE_ORDER: {
             return {
                 ...state,
-                items: state.items.filter((item: any) => item.customer_id !== action.payload),
+                items: state.items.filter((item: any) => item.order_id !== action.payload),
                 isReady: true
             }
         }

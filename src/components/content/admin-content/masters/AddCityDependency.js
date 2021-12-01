@@ -4,12 +4,14 @@ import {Context} from "../../../../index";
 import {getAllDepsIntoStore} from "../../getData";
 import {observer} from "mobx-react-lite";
 import {instance} from "../../../../http/headerPlaceholder.instance";
+import {useStore} from "react-redux";
 
 const AddCityDependency = observer(({master}) => {
     const inputRef = React.useRef(null)
     const [cityId, setCityId] = useState("-1")
     const {DB} = useContext(Context);
-
+    const store = useStore()
+    const {cities} = store.getState()
     const onSubmitForm = async e => {
         e.preventDefault();
         try {
@@ -19,8 +21,8 @@ const AddCityDependency = observer(({master}) => {
                 data: body,
                 url: '/deps'
             })
-                .then(response => toast("Город добавлен " + master.master_name))
                 .then(() => getAllDepsIntoStore(DB))
+                .then(() => toast("Город добавлен " + master.master_name))
             inputRef.current.click()
         } catch (e) {
             toast.info("Server is busy at this moment")
@@ -38,7 +40,7 @@ const AddCityDependency = observer(({master}) => {
                     <div className="modal-content">
                         <form onSubmit={event => onSubmitForm(event)}>
                             <div className="modal-header">
-                                <h2 className="modal-title" id="exampleModalLabel">Добавить город мастеру<br></br>
+                                <h2 className="modal-title" id="exampleModalLabel">Добавить город мастеру<br/>
                                     {master.master_name}</h2>
                                 <button type="button" className="close" data-dismiss="modal">
                                     <span aria-hidden="true">&times;</span>
@@ -50,7 +52,7 @@ const AddCityDependency = observer(({master}) => {
                                         onBlur={e => setCityId(e.target.value)}
                                         onChange={e => setCityId(e.target.value)} required>
                                     <option key="default" value="-1" disabled={true}>---Выбрать город---</option>
-                                    {DB.cities?.filter(c => !DB.depsMasterCity.find(d => d.master_id === master.master_id && c.city_id === d.city_id)).map(city =>
+                                    {cities.items?.filter(c => !DB.depsMasterCity.find(d => d.master_id === master.master_id && c.city_id === d.city_id)).map(city =>
                                         <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
                                 </select>
                             </div>

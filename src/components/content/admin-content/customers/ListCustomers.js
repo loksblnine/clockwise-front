@@ -33,9 +33,8 @@ const ListCustomers = () => {
             await getCustomersIntoStore(store, customers.page)
         }
     }, [customers])
-
-    const handleNextCustomers = () => {
-        getCustomersIntoStore(store, customers.page)
+    const handleNextCustomers = async () => {
+        await getCustomersIntoStore(store, customers.page)
     }
     return (
         <div className="router">
@@ -75,7 +74,6 @@ const ListCustomers = () => {
                     <button className="btn btn-primary" onClick={() => handleNextCustomers()}> Еще покупатели...
                     </button>
                 </div>
-
             }
             <InputCustomer/>
         </div>

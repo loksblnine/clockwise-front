@@ -41,7 +41,7 @@ export const getMastersIntoStore = async (DB) => {
                     (Number(sessionStorage.getItem('pageMasterList')) + 1).toString()))
         )
 }
-export const getCustomersIntoStore = (store, page) => {
+export const getCustomersIntoStore = async (store, page) => {
     instance({
         method: "get",
         url: `/customers/offset/${page}`
@@ -58,20 +58,13 @@ export const getAllDepsIntoStore = async (DB) => {
     })
         .then(resp => DB.setDepsMasterCity(resp.data))
 }
-export const getOrdersIntoStore = async (DB) => {
-    sessionStorage.setItem('pageOrderList', "0")
+export const getOrdersIntoStore = async (store, page) => {
     instance({
         method: "get",
-        url: `/orders/offset/${sessionStorage.getItem('pageOrderList')}`
+        url: `/orders/offset/${page}`
     })
-        .then(resp => DB?.setOrders(resp.data))
-        .then(() =>
-            instance({
-                method: "get",
-                url: `/orders/offset/1`
-            })
-                .then(resp => DB?.setOrdersNext(resp.data))
-                .then(() => sessionStorage.setItem('pageOrderList',
-                    (Number(sessionStorage.getItem('pageOrderList')) + 1).toString()))
-        )
+        .then(({data}) => store.dispatch({
+            type: constants.ACTIONS.ORDERS.SET_ORDERS,
+            payload: data
+        }))
 }

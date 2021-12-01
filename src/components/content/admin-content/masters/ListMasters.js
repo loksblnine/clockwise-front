@@ -9,8 +9,11 @@ import {observer} from "mobx-react-lite";
 import AddCityDependency from "./AddCityDependency";
 import {getAllDepsIntoStore, getCitiesIntoStore, getMastersIntoStore} from "../../getData";
 import {instance} from "../../../../http/headerPlaceholder.instance";
+import {useStore} from "react-redux";
 
 const WorkIn = observer(({master}) => {
+    const store = useStore()
+    const {cities} = store.getState()
     const {DB} = useContext(Context)
     const deleteCity = async (city_id, master_id) => {
         const body = {city_id, master_id}
@@ -32,7 +35,7 @@ const WorkIn = observer(({master}) => {
     }
     return (
         <div>
-            {DB.cities?.map(c => {
+            {cities.items?.map(c => {
                 if (DB.depsMasterCity?.find(d => (d.city_id === c.city_id && d.master_id === master.master_id))) {
                     return (
                         <div key={c.city_id}>
@@ -51,6 +54,8 @@ const WorkIn = observer(({master}) => {
 
 const ListMasters = observer(() => {
     const {DB} = useContext(Context)
+    const store = useStore()
+    const {cities} = store.getState()
     const [loading, setLoading] = useState(true)
     const deleteMaster = async (id) => {
         try {
@@ -67,8 +72,8 @@ const ListMasters = observer(() => {
         }
     }
     useEffect(async () => {
-        if (DB.cities?.length <= 0)
-            await getCitiesIntoStore(DB)
+        if (cities.items?.length <= 0)
+            await getCitiesIntoStore(store)
         if (DB.depsMasterCity?.length <= 0)
             await getAllDepsIntoStore(DB)
         getMastersIntoStore(DB)
@@ -117,7 +122,7 @@ const ListMasters = observer(() => {
                             <td>{master.photo}</td>
                             <td><WorkIn master={master}/></td>
                             <td>{
-                                DB.cities?.length > DB.depsMasterCity?.filter(d => d.master_id === master.master_id).length &&
+                                cities.items?.length > DB.depsMasterCity?.filter(d => d.master_id === master.master_id).length &&
                                 <AddCityDependency master={master}/>}</td>
                             <td><EditMaster master={master}/></td>
                             <td>
