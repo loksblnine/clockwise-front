@@ -1,15 +1,15 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as customerActions from '../../../store/actions/customerActions';
+import * as orderActions from '../../../store/actions/orderActions';
 import ListOrders from "../../../components/content/admin-content/orders/ListOrders";
 
-const mapStateToProps = ({customers}) => ({
-    customers: customers.items,
-    isReady: customers.isReady,
+const mapStateToProps = ({orders}) => ({
+    orders: orders.items,
+    isReady: orders.isReady,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    ...bindActionCreators(customerActions, dispatch),
+    ...bindActionCreators(orderActions, dispatch),
 })
 
 export default connect(
