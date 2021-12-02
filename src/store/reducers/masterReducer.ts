@@ -15,7 +15,7 @@ const initialState: initialState = {
 };
 export default (state: initialState = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
-        case constants.ACTIONS.ORDERS.SET_ORDERS: {
+        case constants.ACTIONS.MASTERS.SET_MASTERS: {
             if (action.payload.length < 10) {
                 return {
                     ...state,
@@ -31,26 +31,26 @@ export default (state: initialState = initialState, action: { type: string; payl
                 page: state.page + 1
             };
         }
-        case constants.ACTIONS.ORDERS.UPDATE_ORDER: {
+        case constants.ACTIONS.MASTERS.UPDATE_MASTER: {
             const array = state.items.filter((item: any) => item.order_id !== action.payload.order_id).concat(action.payload)
             return {
                 ...state,
                 items: array,
             };
         }
-        case constants.ACTIONS.ORDERS.SET_READY_ORDERS: {
+        case constants.ACTIONS.MASTERS.SET_READY_MASTERS: {
             return {
                 ...state,
                 isReady: action.payload
             };
         }
-        case constants.ACTIONS.ORDERS.ADD_ORDER: {
+        case constants.ACTIONS.MASTERS.ADD_MASTER: {
             return {
                 ...state,
                 items: state.items.concat(action.payload),
             }
         }
-        case constants.ACTIONS.ORDERS.DELETE_ORDER: {
+        case constants.ACTIONS.MASTERS.DELETE_MASTER: {
             return {
                 ...state,
                 items: state.items.filter((item: any) => item.order_id !== action.payload),

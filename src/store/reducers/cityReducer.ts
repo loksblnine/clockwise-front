@@ -1,11 +1,15 @@
 import * as constants from "../../constants";
 
-const initialState = {
+type initialState = {
+    isReady: boolean,
+    items: any[]
+}
+const initialState: initialState = {
     isReady: false,
     items: []
 };
 
-export default (state: { isReady: boolean, items: any [] } = initialState, action: any) => {
+export default (state: initialState = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
         case constants.ACTIONS.CITIES.SET_CITIES: {
             return {

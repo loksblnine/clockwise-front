@@ -1,13 +1,20 @@
 import * as constants from "../../constants";
 
-const initialState = {
+type initialState = {
+    isReady: boolean,
+    items: any[]
+    page: number,
+    loadNext: boolean
+}
+
+const initialState: initialState = {
     isReady: false,
     items: [],
     page: 0,
     loadNext: true,
 };
 
-export default (state: { isReady: boolean, items: any [], page: number, loadNext: boolean } = initialState, action: any) => {
+export default (state: initialState = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
         case constants.ACTIONS.CUSTOMERS.SET_CUSTOMERS: {
             if (action.payload.length < 10) {
@@ -22,7 +29,7 @@ export default (state: { isReady: boolean, items: any [], page: number, loadNext
                 ...state,
                 items: state.items.concat(action.payload),
                 isReady: true,
-                page: ++state.page
+                page: state.page + 1
             };
         }
         case constants.ACTIONS.CUSTOMERS.UPDATE_CUSTOMER: {
