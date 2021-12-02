@@ -1,41 +1,29 @@
 import React, {useEffect} from "react";
 import EditCustomer from "./EditCustomer";
 import InputCustomer from "./InputCustomer";
-import {toast} from "react-toastify";
 import {getCustomersIntoStore} from "../../getData";
-import {instance} from "../../../../http/headerPlaceholder.instance";
-import {useDispatch, useSelector, useStore} from "react-redux";
-import * as constants from "../../../../constants";
+import {useDispatch, useSelector} from "react-redux";
+import {Spinner} from "react-bootstrap";
+import {deleteCustomer} from "../../workWithData";
 
 const ListCustomers = () => {
-    const customers = useSelector((state) => state.customers)
+    const customers = useSelector((state) => state.customers.items)
+    const {isReady, loadNext, page} = useSelector((state) => state.customers)
     const dispatch = useDispatch()
-    const deleteCustomer = async (id) => {
-        try {
-            instance({
-                method: "DELETE",
-                url: `/customers/${id}`
-            })
-                .then(() =>
-                    dispatch({
-                        type: constants.ACTIONS.CUSTOMERS.DELETE_CUSTOMER,
-                        payload: id
-                    })
-                )
-                .then(() => toast("Покупатель удален"))
-        } catch (e) {
-            toast.info("Server is busy at this moment")
-        }
-    }
+
     useEffect(async () => {
-        if (!customers.items.length) {
-            await getCustomersIntoStore(dispatch, customers.page)
+        if (customers.length <= 0) {
+            await getCustomersIntoStore(dispatch, page)
         }
     }, [dispatch])
-    const handleNextCustomers = async () => {
-        await getCustomersIntoStore(dispatch, customers.page)
+    const handleNextCustomers = async (e) => {
+        e.target.disabled = true
+        await getCustomersIntoStore(dispatch, page)
+        e.target.disabled = false
     }
-
+    if (!isReady) {
+        return <Spinner animation="grow"/>
+    }
     return (
         <div className="router">
             <h2 className="text-left mt-5">Список покупателей</h2>
@@ -50,7 +38,7 @@ const ListCustomers = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {customers.items?.map(customer => (
+                {customers?.map(customer => (
                     <tr key={customer.customer_id}>
                         <th scope="row"> {customer.customer_id}</th>
                         <td>{customer.customer_name}</td>
@@ -58,7 +46,7 @@ const ListCustomers = () => {
                         <td><EditCustomer customer={customer}/></td>
                         <td>
                             <button className="btn btn-danger"
-                                    onClick={() => deleteCustomer(customer.customer_id)}>Удалить
+                                    onClick={() => deleteCustomer(customer.customer_id, dispatch)}>Удалить
                             </button>
                         </td>
                     </tr>
@@ -66,9 +54,9 @@ const ListCustomers = () => {
                 </tbody>
             </table>
             {
-                customers.loadNext === true &&
+                loadNext &&
                 <div className="col text-center">
-                    <button className="btn btn-primary" onClick={() => handleNextCustomers()}> Еще покупатели...
+                    <button className="btn btn-primary" onClick={(e) => handleNextCustomers(e)}> Еще покупатели...
                     </button>
                 </div>
             }

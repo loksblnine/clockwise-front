@@ -8,7 +8,7 @@ import {useStore} from "react-redux";
 
 const AddCityDependency = observer(({master}) => {
     const inputRef = React.useRef(null)
-    const [cityId, setCityId] = useState("-1")
+    const [cityId, setCityId] = useState(-1)
     const {DB} = useContext(Context);
     const store = useStore()
     const {cities} = store.getState()

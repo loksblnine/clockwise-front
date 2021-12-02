@@ -56,6 +56,16 @@ export default (state: initialState = initialState, action: { type: string; payl
                 items: state.items.filter((item: any) => item.order_id !== action.payload),
             }
         }
+        // case constants.ACTIONS.MASTERS.DELETE_CITY_AT_MASTER: {
+        //     return {
+        //         ...state,
+        //         items: state.items.map((master: any) => {
+        //             if (master.master_id === action.payload.master_id) {
+        //                 master.deps.filter((d: number) => d === action.payload.city_id)
+        //             }
+        //         })
+        //     }
+        // }
         default:
             return state;
     }

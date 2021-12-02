@@ -12,6 +12,7 @@ const initialState: initialState = {
 export default (state: initialState = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
         case constants.ACTIONS.CITIES.SET_CITIES: {
+
             return {
                 ...state,
                 items: action.payload,

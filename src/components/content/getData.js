@@ -2,15 +2,12 @@ import {toast} from "react-toastify";
 import {instance} from "../../http/headerPlaceholder.instance";
 import * as constants from "../../constants";
 
-export const getDepsMasterIdCities = (setDeps, master_id) => {
+export const getAllDepsIntoStore = async (DB) => {
     instance({
         method: "get",
-        url: `/deps/master/${master_id}`
+        url: "/deps"
     })
-        .then(resp => setDeps(resp.data))
-        .catch(() => {
-            toast.error("🦄 Сервер решил полежать)")
-        })
+        .then(resp => DB.setDepsMasterCity(resp.data))
 }
 export const getCitiesIntoStore = async (dispatch) => {
     instance({
@@ -24,22 +21,15 @@ export const getCitiesIntoStore = async (dispatch) => {
             })
         })
 }
-export const getMastersIntoStore = async (DB) => {
-    sessionStorage.setItem('pageMasterList', "0")
+export const getMastersIntoStore = async (dispatch, page) => {
     instance({
         method: "get",
-        url: `/masters/offset/${sessionStorage.getItem('pageMasterList')}`
+        url: `/masters/offset/${page}`
     })
-        .then(resp => DB?.setMasters(resp.data))
-        .then(() =>
-            instance({
-                method: "get",
-                url: `/masters/offset/1`
-            })
-                .then(resp => DB?.setMastersNext(resp.data))
-                .then(() => sessionStorage.setItem('pageMasterList',
-                    (Number(sessionStorage.getItem('pageMasterList')) + 1).toString()))
-        )
+        .then(({data}) => dispatch({
+            type: constants.ACTIONS.MASTERS.SET_MASTERS,
+            payload: data
+        }))
 }
 export const getCustomersIntoStore = async (dispatch, page) => {
     instance({
@@ -51,15 +41,8 @@ export const getCustomersIntoStore = async (dispatch, page) => {
             payload: data
         }))
 }
-export const getAllDepsIntoStore = async (DB) => {
-    instance({
-        method: "get",
-        url: "/deps"
-    })
-        .then(resp => DB.setDepsMasterCity(resp.data))
-}
 export const getOrdersIntoStore = async (dispatch, page) => {
-    return instance({
+    instance({
         method: "get",
         url: `/orders/offset/${page}`
     })
@@ -67,4 +50,13 @@ export const getOrdersIntoStore = async (dispatch, page) => {
             type: constants.ACTIONS.ORDERS.SET_ORDERS,
             payload: data
         }))
+}
+export const getFreeMasters = async (orderBody, setMasters) => {
+    instance({
+        method: "post",
+        data: orderBody,
+        url: `/masters/free`,
+    })
+        .then(({data}) => setMasters(data))
+        .catch(() => toast.error("Возникли трудности"))
 }

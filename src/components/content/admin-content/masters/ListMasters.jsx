@@ -1,103 +1,62 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import EditMaster from "./EditMaster";
 import InputMaster from "./InputMaster";
-import {SERVER_URL} from "../../../../constants";
-import {toast} from "react-toastify";
-import {Context} from "../../../../index";
 import {Spinner} from "react-bootstrap";
-import {observer} from "mobx-react-lite";
 import AddCityDependency from "./AddCityDependency";
-import {getAllDepsIntoStore, getCitiesIntoStore, getMastersIntoStore} from "../../getData";
-import {instance} from "../../../../http/headerPlaceholder.instance";
-import {useStore} from "react-redux";
+import {getCitiesIntoStore, getMastersIntoStore} from "../../getData";
+import {connect, useDispatch, useSelector} from "react-redux";
+import mapStateToProps from "react-redux/lib/connect/mapStateToProps";
+import mapDispatchToProps from "react-redux/lib/connect/mapDispatchToProps";
+import {deleteMaster, deleteCityAtMaster} from "../../workWithData";
 
-const WorkIn = observer(({master}) => {
-    const store = useStore()
-    const {cities} = store.getState()
-    const {DB} = useContext(Context)
-    const deleteCity = async (city_id, master_id) => {
-        const body = {city_id, master_id}
-        try {
-            await fetch(SERVER_URL + `/deps`, {
-                method: "DELETE",
-                headers:
-                    {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem('token')}`
-                    }, body: JSON.stringify(body)
-            })
-                .then(response => response.json())
-                .then(data => toast(data));
-            await getAllDepsIntoStore(DB)
-        } catch (e) {
-            toast.info("Server is busy at this moment")
-        }
-    }
+const WorkIn = ({master}) => {
+    const {cities} = useSelector((state) => state)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+    }, [dispatch])
+
     return (
-        <div>
-            {cities.items?.map(c => {
-                if (DB.depsMasterCity?.find(d => (d.city_id === c.city_id && d.master_id === master.master_id))) {
-                    return (
-                        <div key={c.city_id}>
-                            {c.city_name}
-                            <button className="btn" onClick={() => deleteCity(c.city_id, master.master_id)}>
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                    )
-                }
-                return null
-            })}
+        <div key={master.master_id}>
+            {
+                master.deps.map(d => {
+                        return (
+                            <div> {cities.items.find(city => city.city_id === d)?.city_name}
+                                <button className="btn" onClick={() => deleteCityAtMaster(d, master.master_id, dispatch)}>
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                        )
+                    }
+                )}
         </div>
     )
-})
+}
+connect(mapStateToProps, mapDispatchToProps)(WorkIn)
 
-const ListMasters = observer(() => {
-    const {DB} = useContext(Context)
-    const store = useStore()
-    const {cities} = store.getState()
-    const [loading, setLoading] = useState(true)
-    const deleteMaster = async (id) => {
-        try {
-            instance({
-                method: "DELETE",
-                url: `/masters/${id}`
-            })
-                .then(resp => toast(resp.data))
-                .then(() =>
-                    getMastersIntoStore(DB)
-                )
-        } catch (e) {
-            toast.info("Server is busy at this moment")
-        }
-    }
+const ListMasters = () => {
+    const masters = useSelector((state) => state.masters.items)
+    const cities = useSelector((state) => state.cities.items)
+    const {isReady, loadNext, page} = useSelector((state) => state.masters)
+    const dispatch = useDispatch()
     useEffect(async () => {
-        if (cities.items?.length <= 0)
-            await getCitiesIntoStore(store)
-        if (DB.depsMasterCity?.length <= 0)
-            await getAllDepsIntoStore(DB)
-        getMastersIntoStore(DB)
-            .finally(() => setLoading(false))
-    }, [DB])
-
-    if (loading) {
-        return (
-            <div>
-                <Spinner animation={`grow`}/>
-            </div>
-        )
+        if (masters.length <= 0) {
+            await getMastersIntoStore(dispatch, page)
+        }
+        if (cities.length <= 0) {
+            await getCitiesIntoStore(dispatch)
+        }
+    }, [dispatch])
+    const handleNextMasters = async (e) => {
+        e.target.disabled = true
+        await getMastersIntoStore(dispatch, page)
+        e.target.disabled = false
     }
-    const handleNextMasters = () => {
-        DB?.setMasters(DB.masters.concat(DB.mastersNext))
-        sessionStorage.setItem('pageMasterList', (Number(sessionStorage.getItem('pageMasterList')) + 1).toString())
-        instance({
-            method: "get",
-            url: `/masters/offset/${sessionStorage.getItem('pageMasterList')}`
-        })
-            .then(resp => DB.setMastersNext(resp.data))
+    if (!isReady) {
+        return <Spinner animation="grow"/>
     }
     return (
-        <Fragment>
+        <div className="router">
             <h2 className="text-left mt-5">Список мастеров</h2>
             <table className="table mt-5 text-justify">
                 <thead>
@@ -105,7 +64,7 @@ const ListMasters = observer(() => {
                     <th scope="col">#</th>
                     <th scope="col">Имя</th>
                     <th scope="col">Рейтинг</th>
-                    <th scope="col">Фото</th>
+                    <th scope="col">Email</th>
                     <th scope="col">Работает в</th>
                     <th scope="col">Добавить город</th>
                     <th scope="col">Изменить</th>
@@ -114,37 +73,36 @@ const ListMasters = observer(() => {
                 </thead>
                 <tbody>
                 {
-                    DB?.masters?.map(master => (
+                    masters?.map(master => (
                         <tr key={master.master_id}>
                             <th scope="row"> {master.master_id}</th>
                             <td>{master.master_name}</td>
                             <td>{master.ranking}</td>
-                            <td>{master.photo}</td>
+                            <td>{master.email}</td>
                             <td><WorkIn master={master}/></td>
                             <td>{
-                                cities.items?.length > DB.depsMasterCity?.filter(d => d.master_id === master.master_id).length &&
-                                <AddCityDependency master={master}/>}</td>
+                                cities?.length !== master.deps.length &&
+                                <AddCityDependency master={master}/>}
+                            </td>
                             <td><EditMaster master={master}/></td>
                             <td>
                                 <button className="btn btn-danger"
-                                        onClick={() => deleteMaster(master.master_id)}>Удалить
+                                        onClick={() => deleteMaster(master.master_id, dispatch)}>Удалить
                                 </button>
                             </td>
                         </tr>
                     ))
                 }
-
                 </tbody>
             </table>
             {
-                DB.mastersNext.length >= 1 ?
-                    <div className="col text-center">
-                        <button className="btn btn-primary" onClick={() => handleNextMasters()}> Еще мастера...</button>
-                    </div>
-                    : null
+                loadNext &&
+                <div className="col text-center">
+                    <button className="btn btn-primary" onClick={(e) => handleNextMasters(e)}> Еще мастера...</button>
+                </div>
             }
             <InputMaster/>
-        </Fragment>
+        </div>
     )
-})
+}
 export default ListMasters

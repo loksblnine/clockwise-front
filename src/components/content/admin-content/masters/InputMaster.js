@@ -1,33 +1,23 @@
-import React, {Fragment, useContext, useState} from "react";
-import {toast} from "react-toastify";
-import {Context} from "../../../../index";
-import {getMastersIntoStore} from "../../getData";
-import {instance} from "../../../../http/headerPlaceholder.instance";
+import React, {useState} from "react";
+import {postMaster} from "../../workWithData";
+import {useDispatch} from "react-redux";
 
 const InputMaster = () => {
     const [master_name, setMasterName] = useState("")
     const [ranking, setRanking] = useState("")
 
-    const {DB} = useContext(Context);
+    const dispatch = useDispatch()
     const inputRef = React.useRef(null)
+
     const onSubmitForm = async e => {
         e.preventDefault();
-        try {
-            const body = {master_name, ranking}
-            instance({
-                method: "POST",
-                data: body,
-                url: "/masters"
-            })
-                .then(() => toast(`Мастер ${master_name} добавлен`))
-                .then(() => getMastersIntoStore(DB))
-            inputRef.current.click()
-        } catch (e) {
-            toast.info("Server is busy at this moment")
-        }
+        const body = {master_name, ranking}
+        postMaster(body, dispatch)
+            .then(() =>
+                inputRef.current.click())
     }
     return (
-        <Fragment>
+        <div>
             <button type="button" className="btn btn-success mb-5" data-toggle="modal"
                     data-target="#addMaster">
                 Добавить
@@ -67,7 +57,7 @@ const InputMaster = () => {
                     </div>
                 </div>
             </div>
-        </Fragment>
+        </div>
     )
 }
 export default InputMaster;

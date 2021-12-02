@@ -1,61 +1,59 @@
-import React, {Fragment, useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import * as constants from "../../../../constants";
-import {toast} from "react-toastify";
-import {Context} from "../../../../index";
-import {getDepsMasterIdCities, getOrdersIntoStore} from "../../getData";
-import {instance} from "../../../../http/headerPlaceholder.instance";
+import {postOrder} from "../../workWithData";
+import {useDispatch, useSelector} from "react-redux";
+import {getCitiesIntoStore, getCustomersIntoStore, getMastersIntoStore} from "../../getData";
+import {Spinner} from "react-bootstrap";
 
 const InputOrder = () => {
-    const {DB} = useContext(Context)
     const inputRef = React.useRef(null)
-    const [deps, setDeps] = useState([])
+    const dispatch = useDispatch()
+    const cities = useSelector(state => state.cities)
+    const customers = useSelector(state => state.customer)
+    const masters = useSelector(state => state.masters)
+
     const [order, setOrder] = useState({
-        customer_id: "",
-        master_id: "",
-        city_id: "",
-        work_id: '1',
+        customer_id: -1,
+        master_id: -1,
+        city_id: -1,
+        work_id: 1,
         date: '',
         time: ''
     });
-    useEffect(() => {
-        if (!!order.master_id)
-            getDepsMasterIdCities(setDeps, order.master_id)
-    }, [order.master_id])
 
-    const onSubmitForm = async e => {
-        e.preventDefault();
-        try {
-            const body = {order}
-            body.order.time = `${Number(body.order.time.split(':')[0])}:00`
-            body.order.order_time = body.order.date + 'T' + body.order.time
-            instance({
-                method: "POST",
-                data: body.order,
-                url: "/orders"
-            })
-                .then(response => toast("Заказ добавлен"))
-                .then(() =>
-                    getOrdersIntoStore(DB)
-                )
-            inputRef.current.click()
-        } catch (e) {
-            toast.info("Server is busy at this moment")
+    useEffect(async () => {
+        if (cities.items.length <= 0) {
+            await getCitiesIntoStore(dispatch)
         }
+        if (customers?.loadNext) {
+            await getCustomersIntoStore(dispatch)
+        }
+        if (masters?.loadNext) {
+            await getMastersIntoStore(dispatch)
+        }
+    }, [dispatch])
+
+    const onSubmitForm = async (e) => {
+        e.preventDefault();
+        const body = {order}
+        postOrder(body, dispatch)
+            .then(() => inputRef.current.click())
     }
     const isMasterSelected = () => {
-        return order.master_id.length <= 0
+        return order.master_id !== -1
     }
-
-    const handleChange = e => {
+    const handleChange = (e) => {
         const {name, value} = e.target;
         setOrder(prevState => ({
             ...prevState,
             [name]: value
         }));
     };
-
+    if (!(cities?.isReady && customers?.isReady && masters?.isReady)) {
+        return <Spinner animation="grow"/>
+    }
     return (
-        <Fragment>
+        <div>
             <button type="button" className="btn btn-success mb-5" data-toggle="modal"
                     data-target="#addOrder">
                 Добавить
@@ -78,7 +76,7 @@ const InputOrder = () => {
                                         id="master_id" defaultValue="-1"
                                         onChange={handleChange} required>
                                     <option value="-1" disabled={true}>---Выбрать мастера---</option>
-                                    {DB.masters?.map(master =>
+                                    {masters.items?.map(master =>
                                         <option key={master.master_id}
                                                 value={master.master_id}>{master.master_name} </option>)}
                                 </select>
@@ -88,7 +86,7 @@ const InputOrder = () => {
                                         defaultValue="-1"
                                         onChange={handleChange} required>
                                     <option value="-1" disabled={true}>---Выбрать покупателя---</option>
-                                    {DB.customers?.map(customer =>
+                                    {customers.items?.map(customer =>
                                         <option key={customer.customer_id}
                                                 value={customer.customer_id}>{customer.customer_name} </option>)}
                                 </select>
@@ -97,7 +95,7 @@ const InputOrder = () => {
                                 <select className="form-control" name="city_id" defaultValue="-1"
                                         onChange={handleChange} required disabled={isMasterSelected()}>
                                     <option value="-1" disabled={true}>---Выбрать город---</option>
-                                    {DB.cities.filter(c => deps.includes(c.city_id)).map(city =>
+                                    {cities.items?.filter(c => masters.find(m => m.master_id === order.master_id).deps.includes(c.city_id)).map(city =>
                                         <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
                                 </select>
 
@@ -139,7 +137,7 @@ const InputOrder = () => {
                     </div>
                 </div>
             </div>
-        </Fragment>
+        </div>
     )
 }
 export default InputOrder;

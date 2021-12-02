@@ -2,7 +2,7 @@ import OrderForm from "./containers/content/client/OrderForm";
 import MasterView from "./components/content/customer-content/MasterView/MasterView";
 import ListCities from "./containers/content/admin/ListCities";
 import ListOrders from "./containers/content/admin/ListOrders";
-import ListMasters from "./components/content/admin-content/masters/ListMasters";
+import ListMasters from "./containers/content/admin/ListMasters";
 import ListCustomers from "./containers/content/admin/ListCustomers";
 import LoginForm from "./components/content/customer-content/LoginForm/LoginForm";
 import AdminPanel from "./components/content/admin-content/admin-panel/AdminPanel";
@@ -100,6 +100,7 @@ export const ACTIONS = {
         SET_MASTERS: "SET_MASTERS",
         SET_READY_MASTERS: "SET_READY_MASTERS",
         DELETE_MASTER: "DELETE_MASTER",
+        DELETE_CITY_AT_MASTER: "DELETE_CITY_AT_MASTER",
         UPDATE_MASTER: "UPDATE_MASTER",
         ADD_MASTER: "ADD_MASTER"
     },

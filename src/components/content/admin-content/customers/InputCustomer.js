@@ -1,39 +1,22 @@
-import React, {Fragment, useState} from "react";
-import {toast} from "react-toastify";
-import {instance} from "../../../../http/headerPlaceholder.instance";
-import * as constants from "../../../../constants";
-import {useStore} from "react-redux";
+import React, {useState} from "react";
+import {useDispatch} from "react-redux";
+import {postCustomer} from "../../workWithData";
 
 const InputCustomer = () => {
     const [customer_name, setCustomerName] = useState("")
     const [customer_email, setCustomerEmail] = useState("")
-    const store = useStore()
+
     const inputRef = React.useRef(null)
-    const onSubmitForm = async e => {
+    const dispatch = useDispatch()
+
+    const onSubmitForm = async (e) => {
         e.preventDefault();
-        try {
-            const body = {customer_name, customer_email}
-            instance({
-                method: "POST",
-                data: body,
-                url: "/customers"
-            })
-                .then(({data}) => {
-                    console.log(data)
-                    store.dispatch({
-                        type: constants.ACTIONS.CUSTOMERS.ADD_CUSTOMER,
-                        payload: data
-                    })
-                })
-                .then(() => toast(`Покупатель ${customer_name} добавлен`))
-                .catch(() => toast.error("Покупатель не добавлен"))
-            inputRef.current.click()
-        } catch (e) {
-            toast.info("Server is busy at this moment")
-        }
+        const body = {customer_name, customer_email}
+        postCustomer(body, dispatch)
+            .then(() => inputRef.current.click())
     }
     return (
-        <Fragment>
+        <div>
             <button type="button" className="btn btn-success mb-5" data-toggle="modal"
                     data-target="#addCustomer">
                 Добавить
@@ -76,7 +59,6 @@ const InputCustomer = () => {
                     </div>
                 </div>
             </div>
-        </Fragment>
-    )
+        </div>)
 }
 export default InputCustomer;

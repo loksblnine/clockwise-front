@@ -1,41 +1,29 @@
 import React, {useEffect} from "react";
 import EditOrder from "./EditOrder";
-import InputOrder from "./InputOrder";
-import {toast} from "react-toastify";
 import * as constants from "../../../../constants";
 import {getOrdersIntoStore} from "../../getData";
-import {instance} from "../../../../http/headerPlaceholder.instance";
-import {useDispatch, useSelector, useStore} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {Spinner} from "react-bootstrap";
+import {deleteOrder} from "../../workWithData";
 
 const ListOrders = () => {
-    const orders = useSelector((state => state.orders))
+    const orders = useSelector((state => state.orders.items))
+    const {isReady, loadNext, page} = useSelector((state => state.orders))
     const dispatch = useDispatch()
-    const deleteOrder = async (id) => {
-        try {
-            instance({
-                method: "DELETE",
-                url: `/orders/${id}`
-            })
-                .then(() =>
-                    dispatch({
-                        type: constants.ACTIONS.ORDERS.DELETE_ORDER,
-                        payload: id
-                    })
-                )
-                .then(() => toast("Заказ удален"))
-        } catch (e) {
-            toast.info("Server is busy at this moment")
-        }
-    }
+
     useEffect(async () => {
-        if (!orders.items.length) {
-            await getOrdersIntoStore(dispatch, orders.page)
+        if (orders.length <= 0) {
+            await getOrdersIntoStore(dispatch, page)
         }
     }, [dispatch])
-    const handleNextOrders = async () => {
-        await getOrdersIntoStore(dispatch, orders.page)
+    const handleNextOrders = async (e) => {
+        e.target.disabled = true
+        await getOrdersIntoStore(dispatch, page)
+        e.target.disabled = false
     }
-
+    if (!isReady) {
+        return <Spinner animation="grow"/>
+    }
     return (
         <div className="router">
             <h2 className="text-left mt-5">Список заказов</h2>
@@ -54,7 +42,7 @@ const ListOrders = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {orders.items?.map(order => (
+                {orders?.map(order => (
                     <tr key={order.order_id}>
                         <th scope="row"> {order.order_id}</th>
                         <td>{order.master.master_name}</td>
@@ -66,7 +54,7 @@ const ListOrders = () => {
                         <td><EditOrder order={order}/></td>
                         <td>
                             <button className="btn btn-danger"
-                                    onClick={() => deleteOrder(order.order_id)}
+                                    onClick={() => deleteOrder(order.order_id, dispatch)}
                                     disabled={order.order_time.split('T')[0] <= constants.DATE_FROM}>Удалить
                             </button>
                         </td>
@@ -75,12 +63,11 @@ const ListOrders = () => {
                 </tbody>
             </table>
             {
-                orders.loadNext === true &&
+                loadNext &&
                 <div className="col text-center">
-                    <button className="btn btn-primary" onClick={() => handleNextOrders()}> Еще заказы...</button>
+                    <button className="btn btn-primary" onClick={(e) => handleNextOrders(e)}> Еще заказы...</button>
                 </div>
             }
-            <InputOrder/>
         </div>
     )
 }

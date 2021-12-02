@@ -1,35 +1,23 @@
-import React, {Fragment, useState} from "react";
-import {toast} from "react-toastify";
-import {instance} from "../../../../http/headerPlaceholder.instance";
-import {useStore} from "react-redux";
-import * as constants from "../../../../constants";
+import React, {useState} from "react";
+import {useDispatch} from "react-redux";
+import {postCity} from "../../workWithData";
 
 const InputCity = () => {
     const [city_name, setCityName] = useState("")
-    const store = useStore()
+
+    const dispatch = useDispatch()
     const inputRef = React.useRef(null)
+
     const onSubmitForm = async e => {
-        e.preventDefault();
-        try {
-            const body = {city_name}
-            instance({
-                method: "POST",
-                data: body,
-                url: "/cities"
-            })
-                .then(({data}) => store.dispatch({
-                    type: constants.ACTIONS.CITIES.ADD_CITY,
-                    payload: data
-                }))
-                .then(() => toast("Город добавлен"))
-                .catch(() => toast.error("Город не добавлен"))
-            inputRef.current.click()
-        } catch (e) {
-            toast.info("Server is busy at this moment")
-        }
+        e.preventDefault()
+        const body = {city_name}
+        postCity(body, dispatch)
+            .then(() =>
+                inputRef.current.click()
+            )
     }
     return (
-        <Fragment>
+        <div>
             <button type="button" className="btn btn-success mb-5" data-toggle="modal"
                     data-target="#addTown">
                 Добавить
@@ -65,7 +53,7 @@ const InputCity = () => {
                 </div>
             </div>
 
-        </Fragment>
+        </div>
     )
 }
 

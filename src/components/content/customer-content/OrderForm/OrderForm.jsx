@@ -1,14 +1,13 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useFormik} from 'formik';
 import * as constants from "../../../../constants";
 import {withRouter, useHistory, useLocation} from "react-router-dom";
 import './OrderStyles.css'
 import {observer} from "mobx-react-lite";
 import {toast} from "react-toastify";
-import {Context} from "../../../../index";
-import {instance} from "../../../../http/headerPlaceholder.instance";
-import {useStore} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
+import {getCitiesIntoStore} from "../../getData";
 
 const validate = (values) => {
     const errors = {};
@@ -43,29 +42,22 @@ const orderPageStyle = {
 const OrderForm = observer(({props}) => {
     const history = useHistory()
     const location = useLocation()
-    const store = useStore()
-    const {cities} = store.getState()
 
-    useEffect(() => {
-        if (cities.items.length <= 0) {
-            instance({
-                method: "get",
-                url: "/cities"
-            })
-                .then(({data}) => {
-                    store.dispatch({
-                        type: constants.ACTIONS.CITIES.SET_CITIES,
-                        payload: data
-                    })
-                })
+    const cities = useSelector(state => state.cities.items)
+    const isReady = useSelector(state => state.cities.isReady)
+
+    const dispatch = useDispatch()
+    useEffect(async () => {
+        if (!isReady) {
+            await getCitiesIntoStore(dispatch)
         }
-    }, [store])
+    }, [dispatch])
 
     const formik = useFormik({
         initialValues: {
             name: location?.state?.data?.name || '',
             email: location?.state?.data?.email || '',
-            city: location?.state?.data?.city || '-1',
+            city: location?.state?.data?.city || -1,
             date: location?.state?.data?.date || constants.DATE_FROM,
             time: location?.state?.data?.time || "08:00",
             type: location?.state?.data?.type || '1'
@@ -78,7 +70,7 @@ const OrderForm = observer(({props}) => {
             })
         },
     });
-    if (!cities.isReady) {
+    if (!isReady) {
         return <Spinner animation="grow"/>
     }
     return (
@@ -110,7 +102,7 @@ const OrderForm = observer(({props}) => {
                             required>
                         <option key="choose-city" value="-1" disabled>---Выберете город---</option>
                         )
-                        {cities.items?.map(city =>
+                        {cities?.map(city =>
                             <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
                     </select>
                 </div>
