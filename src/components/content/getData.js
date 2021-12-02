@@ -12,13 +12,13 @@ export const getDepsMasterIdCities = (setDeps, master_id) => {
             toast.error("🦄 Сервер решил полежать)")
         })
 }
-export const getCitiesIntoStore = async (store) => {
+export const getCitiesIntoStore = async (dispatch) => {
     instance({
         method: "get",
         url: "/cities"
     })
         .then(({data}) => {
-            store.dispatch({
+            dispatch({
                 type: constants.ACTIONS.CITIES.SET_CITIES,
                 payload: data
             })
@@ -41,12 +41,12 @@ export const getMastersIntoStore = async (DB) => {
                     (Number(sessionStorage.getItem('pageMasterList')) + 1).toString()))
         )
 }
-export const getCustomersIntoStore = async (store, page) => {
+export const getCustomersIntoStore = async (dispatch, page) => {
     instance({
         method: "get",
         url: `/customers/offset/${page}`
     })
-        .then(({data}) => store.dispatch({
+        .then(({data}) => dispatch({
             type: constants.ACTIONS.CUSTOMERS.SET_CUSTOMERS,
             payload: data
         }))
@@ -58,12 +58,12 @@ export const getAllDepsIntoStore = async (DB) => {
     })
         .then(resp => DB.setDepsMasterCity(resp.data))
 }
-export const getOrdersIntoStore = async (store, page) => {
-    instance({
+export const getOrdersIntoStore = async (dispatch, page) => {
+    return instance({
         method: "get",
         url: `/orders/offset/${page}`
     })
-        .then(({data}) => store.dispatch({
+        .then(({data}) => dispatch({
             type: constants.ACTIONS.ORDERS.SET_ORDERS,
             payload: data
         }))

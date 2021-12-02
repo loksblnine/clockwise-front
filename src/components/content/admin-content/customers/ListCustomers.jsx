@@ -4,12 +4,12 @@ import InputCustomer from "./InputCustomer";
 import {toast} from "react-toastify";
 import {getCustomersIntoStore} from "../../getData";
 import {instance} from "../../../../http/headerPlaceholder.instance";
-import {useStore} from "react-redux";
+import {useDispatch, useSelector, useStore} from "react-redux";
 import * as constants from "../../../../constants";
 
 const ListCustomers = () => {
-    const store = useStore()
-    const {customers} = store.getState()
+    const customers = useSelector((state) => state.customers)
+    const dispatch = useDispatch()
     const deleteCustomer = async (id) => {
         try {
             instance({
@@ -17,7 +17,7 @@ const ListCustomers = () => {
                 url: `/customers/${id}`
             })
                 .then(() =>
-                    store.dispatch({
+                    dispatch({
                         type: constants.ACTIONS.CUSTOMERS.DELETE_CUSTOMER,
                         payload: id
                     })
@@ -29,11 +29,11 @@ const ListCustomers = () => {
     }
     useEffect(async () => {
         if (!customers.items.length) {
-            await getCustomersIntoStore(store, customers.page)
+            await getCustomersIntoStore(dispatch, customers.page)
         }
-    }, [store, customers])
-    const handleNextCustomers = () => {
-        getCustomersIntoStore(store, customers.page)
+    }, [dispatch])
+    const handleNextCustomers = async () => {
+        await getCustomersIntoStore(dispatch, customers.page)
     }
 
     return (

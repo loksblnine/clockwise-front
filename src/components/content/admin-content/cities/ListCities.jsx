@@ -3,13 +3,13 @@ import EditCity from "./EditCity";
 import InputCity from "./InputCity";
 import {toast} from "react-toastify";
 import {instance} from "../../../../http/headerPlaceholder.instance";
-import {useStore} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {getCitiesIntoStore} from "../../getData";
 import * as constants from "../../../../constants";
 
 const ListCities = () => {
-    const store = useStore()
-    const {cities} = store.getState()
+    const cities = useSelector((state) => state.cities)
+    const dispatch = useDispatch()
     const deleteCity = async (id) => {
         try {
             instance({
@@ -17,7 +17,7 @@ const ListCities = () => {
                 url: `/cities/${id}`
             })
                 .then(async () => {
-                        store.dispatch({
+                        dispatch({
                             type: constants.ACTIONS.CITIES.DELETE_CITY,
                             payload: id
                         })
@@ -29,11 +29,11 @@ const ListCities = () => {
         }
     }
 
-    useEffect(async () => {
+    useEffect(() => async () => {
         if (!cities.items.length) {
-            await getCitiesIntoStore(store)
+            await getCitiesIntoStore(dispatch)
         }
-    }, [cities])
+    }, [dispatch])
 
     return (
         <div className="router">

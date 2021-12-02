@@ -5,11 +5,11 @@ import {toast} from "react-toastify";
 import * as constants from "../../../../constants";
 import {getOrdersIntoStore} from "../../getData";
 import {instance} from "../../../../http/headerPlaceholder.instance";
-import {useStore} from "react-redux";
+import {useDispatch, useSelector, useStore} from "react-redux";
 
 const ListOrders = () => {
-    const store = useStore()
-    const {orders} = store.getState()
+    const orders = useSelector((state => state.orders))
+    const dispatch = useDispatch()
     const deleteOrder = async (id) => {
         try {
             instance({
@@ -17,7 +17,7 @@ const ListOrders = () => {
                 url: `/orders/${id}`
             })
                 .then(() =>
-                    store.dispatch({
+                    dispatch({
                         type: constants.ACTIONS.ORDERS.DELETE_ORDER,
                         payload: id
                     })
@@ -29,11 +29,11 @@ const ListOrders = () => {
     }
     useEffect(async () => {
         if (!orders.items.length) {
-            await getOrdersIntoStore(store, orders.page)
+            await getOrdersIntoStore(dispatch, orders.page)
         }
-    }, [orders])
-    const handleNextOrders = () => {
-        getOrdersIntoStore(store, orders.page)
+    }, [dispatch])
+    const handleNextOrders = async () => {
+        await getOrdersIntoStore(dispatch, orders.page)
     }
 
     return (
