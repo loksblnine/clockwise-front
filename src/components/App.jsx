@@ -17,10 +17,6 @@ const App = observer(() => {
     const {user} = useContext(Context)
     const [loading, setLoading] = useState(true)
     useEffect(() => {
-        console.log()
-        sessionStorage.setItem('pageOrderList', "0")
-        sessionStorage.setItem('pageCustomerList', "0")
-        sessionStorage.setItem('pageMasterList', "0")
         checkAuth()
             .then(data => {
                 if (data?.status === 200) {
