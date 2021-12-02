@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import EditCustomer from "./EditCustomer";
 import InputCustomer from "./InputCustomer";
 import {toast} from "react-toastify";
-import {Spinner} from "react-bootstrap";
 import {getCustomersIntoStore} from "../../getData";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {useStore} from "react-redux";
@@ -11,7 +10,6 @@ import * as constants from "../../../../constants";
 const ListCustomers = () => {
     const store = useStore()
     const {customers} = store.getState()
-    const [loading, setLoading] = useState(true)
     const deleteCustomer = async (id) => {
         try {
             instance({
@@ -33,15 +31,11 @@ const ListCustomers = () => {
         if (!customers.items.length) {
             await getCustomersIntoStore(store, customers.page)
         }
-        setLoading(!customers.isReady)
     }, [store, customers])
     const handleNextCustomers = () => {
         getCustomersIntoStore(store, customers.page)
     }
 
-    if (loading) {
-        return <Spinner animation="grow"/>
-    }
     return (
         <div className="router">
             <h2 className="text-left mt-5">Список покупателей</h2>

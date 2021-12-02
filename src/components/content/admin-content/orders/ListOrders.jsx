@@ -3,7 +3,6 @@ import EditOrder from "./EditOrder";
 import InputOrder from "./InputOrder";
 import {toast} from "react-toastify";
 import * as constants from "../../../../constants";
-import {Spinner} from "react-bootstrap";
 import {getOrdersIntoStore} from "../../getData";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {useStore} from "react-redux";
@@ -32,13 +31,11 @@ const ListOrders = () => {
         if (!orders.items.length) {
             await getOrdersIntoStore(store, orders.page)
         }
-    }, [store, orders])
+    }, [orders])
     const handleNextOrders = () => {
         getOrdersIntoStore(store, orders.page)
     }
-    if (!orders.isReady) {
-        return <Spinner animation="grow"/>
-    }
+
     return (
         <div className="router">
             <h2 className="text-left mt-5">Список заказов</h2>

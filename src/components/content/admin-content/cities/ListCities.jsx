@@ -2,7 +2,6 @@ import React, {useEffect} from "react";
 import EditCity from "./EditCity";
 import InputCity from "./InputCity";
 import {toast} from "react-toastify";
-import {Spinner} from "react-bootstrap";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {useStore} from "react-redux";
 import {getCitiesIntoStore} from "../../getData";
@@ -34,11 +33,8 @@ const ListCities = () => {
         if (!cities.items.length) {
             await getCitiesIntoStore(store)
         }
-    }, [store, cities])
+    }, [cities])
 
-    if (!cities.isReady) {
-        return <Spinner animation="grow"/>
-    }
     return (
         <div className="router">
             <h2 className="text-left mt-5">Список городов</h2>
