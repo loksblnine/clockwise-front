@@ -1,15 +1,15 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as cityActions from '../store/actions/cityActions';
+import * as userActions from '../store/actions/userActions';
 import App from '../components/App';
 
-const mapStateToProps = ({cities}) => ({
-    cities: cities.items,
-    isReady: cities.isReady,
+const mapStateToProps = ({user}) => ({
+    user: user.user,
+    isReady: user.isReady,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    ...bindActionCreators(cityActions, dispatch),
+    ...bindActionCreators(userActions, dispatch),
 })
 
 export default connect(
