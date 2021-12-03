@@ -4,8 +4,8 @@ import * as userActions from '../store/actions/userActions';
 import App from '../components/App';
 
 const mapStateToProps = ({user}) => ({
-    user: user.user,
-    isReady: user.isReady,
+    user: {},
+    isReady: false,
 })
 
 const mapDispatchToProps = (dispatch) => ({

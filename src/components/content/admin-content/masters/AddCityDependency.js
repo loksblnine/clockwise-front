@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {useState} from "react";
 import {observer} from "mobx-react-lite";
 import {useDispatch, useSelector} from "react-redux";
 import {addCityAtMaster} from "../../workWithData";
@@ -8,15 +8,16 @@ const AddCityDependency = observer(({master}) => {
     const [cityId, setCityId] = useState(-1)
     const cities = useSelector((state) => state.cities.items)
     const dispatch = useDispatch()
-    console.log(master)
     const onSubmitForm = async e => {
         e.preventDefault();
         const body = {city_id: cityId, master_id: master.master_id}
         addCityAtMaster(body, dispatch)
             .then(() => inputRef.current.click())
     }
+
+    //TODO citiesToCheck
     return (
-        <Fragment>
+        <div>
             <button type="button" className="btn btn-outline-success mb-5" data-toggle="modal"
                     data-target={`#id_see${master.master_id}`}>
                 Добавить
@@ -57,7 +58,7 @@ const AddCityDependency = observer(({master}) => {
                     </div>
                 </div>
             </div>
-        </Fragment>
+        </div>
     )
 })
 export default AddCityDependency;

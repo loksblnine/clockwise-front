@@ -65,7 +65,7 @@ const ListOrders = () => {
             {
                 loadNext &&
                 <div className="col text-center">
-                    <button className="btn btn-primary" onClick={(e) => handleNextOrders(e)}> Еще заказы...</button>
+                    <button className="btn btn-primary mb-5" onClick={(e) => handleNextOrders(e)}> Еще заказы...</button>
                 </div>
             }
         </div>

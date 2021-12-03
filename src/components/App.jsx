@@ -1,5 +1,5 @@
 //libs
-import React, {Fragment, useContext, useEffect, useState} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import {BrowserRouter as Router} from "react-router-dom";
 import {checkAuth} from "../http/userAPI";
 import {Spinner} from "react-bootstrap";
@@ -7,31 +7,18 @@ import {Spinner} from "react-bootstrap";
 import 'react-toastify/dist/ReactToastify.css';
 //components
 import Header from "./header/Header";
-import {Context} from "../index";
 import AppRouter from "./AppRouter";
-import {observer} from "mobx-react-lite";
 import {ToastContainer} from "react-toastify";
-import jwt_decode from "jwt-decode";
+import {useDispatch, useSelector} from "react-redux";
 
-const App = observer(() => {
-    const {user} = useContext(Context)
-    const [loading, setLoading] = useState(true)
+const App = () => {
+    const dispatch = useDispatch()
+    const user = useSelector(state => state.users)
     useEffect(() => {
-        checkAuth()
-            .then(data => {
-                if (data?.status === 200) {
-                    user.setUser(jwt_decode(localStorage.getItem('token')).role)
-                    user.setIsAuth(true)
-                } else {
-                    localStorage.removeItem('token')
-                    user.setUser({})
-                    user.setIsAuth(false)
-                }
-            })
-            .finally(() => setLoading(false))
-    }, [user])
+        checkAuth(dispatch)
+    }, [dispatch])
 
-    if (loading) {
+    if (!user.isReady) {
         return <Spinner animation={"grow"}/>
     }
 
@@ -44,5 +31,5 @@ const App = observer(() => {
             <ToastContainer/>
         </Fragment>
     );
-})
+}
 export default App;

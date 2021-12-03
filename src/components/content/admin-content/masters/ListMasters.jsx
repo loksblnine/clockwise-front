@@ -21,7 +21,7 @@ const WorkIn = ({master}) => {
             {
                 master?.deps?.map(d => {
                         return (
-                            <div> {cities.items.find(city => city.city_id === d)?.city_name}
+                            <div key={d}> {cities.items.find(city => city.city_id === d)?.city_name}
                                 <button className="btn" onClick={() => deleteCityAtMaster(d, master.master_id, dispatch)}>
                                     <span>&times;</span>
                                 </button>

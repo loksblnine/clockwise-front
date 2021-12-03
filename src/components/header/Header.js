@@ -1,12 +1,12 @@
-import React, {useContext} from 'react'
+import React, {useEffect} from 'react'
 import imageSrc from "../../images/logo.png"
 import './Header.css'
-import {Context} from "../../index";
-import {observer} from 'mobx-react-lite'
 import {useHistory} from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
+import {useDispatch, useSelector} from "react-redux";
+import * as constants from "../../constants";
 
 const Logo = () => {
     const history = useHistory()
@@ -22,36 +22,41 @@ const Logo = () => {
     )
 }
 
-const Header = observer((props) => {
-    const {user} = useContext(Context)
+const Header = () => {
     const history = useHistory()
+    const dispatch = useDispatch()
+    const user = useSelector(state => state.users.user)
 
     const logOut = () => {
-        user.setUser({})
-        user.setIsAuth(false)
+        dispatch({
+            type: constants.ACTIONS.USER.LOG_OUT
+        })
         history.push(
             {pathname: '/'}
         )
-        localStorage.removeItem('token')
     }
-    const handleAdminAccess = () => {
+
+    const handleAccess = () => {
         history.push(
-            {pathname: '/access_succeed_admin'}
+            {pathname: constants.PATH[user.role]}
         )
     }
+
+    useEffect(() => {
+    }, [dispatch])
 
     return (
         <div className="router">
             <Navbar>
                 <Container>
                     <Logo/>
-                    {(user.isAuth) ?
+                    {(user.role > 0) ?
                         <Nav className="ml-auto" style={{color: 'white'}}>
                             <button
-                                onClick={handleAdminAccess}
+                                onClick={handleAccess}
                                 className="btn btn-xl"
                             >
-                                Админ панель
+                                Панель
                             </button>
                             <button
                                 onClick={() => logOut()}
@@ -69,6 +74,6 @@ const Header = observer((props) => {
             </Navbar>
         </div>
     );
-});
+}
 
 export default Header

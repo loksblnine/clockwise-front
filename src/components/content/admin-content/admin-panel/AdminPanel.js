@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {LinkContainer} from 'react-router-bootstrap'
-import './AdminPanel.css'
+import '../../Panel.css'
 import {observer} from "mobx-react-lite";
 
 //components

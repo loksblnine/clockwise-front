@@ -6,6 +6,7 @@ import ListMasters from "./containers/content/admin/ListMasters";
 import ListCustomers from "./containers/content/admin/ListCustomers";
 import LoginForm from "./components/content/customer-content/LoginForm/LoginForm";
 import AdminPanel from "./components/content/admin-content/admin-panel/AdminPanel";
+import MasterPanel from "./components/content/master-content/MasterPanel";
 
 export const WORK_TYPES = {
     1: {
@@ -55,7 +56,12 @@ export const customerRoutes = [
         Component: LoginForm
     }
 ]
-
+export const authMasterRoutes = [
+    {
+        path: '/access_succeed_master',
+        Component: MasterPanel
+    }
+]
 export const authRoutes = [
     {
         path: '/access_succeed_admin',
@@ -114,6 +120,13 @@ export const ACTIONS = {
         SET_USER: "SET_USER",
         SET_READY_USER: "SET_READY_USER",
         SET_JSON_WEB_TOKEN: "SET_JSON_WEB_TOKEN",
-        REMOVE_JSON_WEB_TOKEN: "REMOVE_JSON_WEB_TOKEN"
+        REMOVE_JSON_WEB_TOKEN: "REMOVE_JSON_WEB_TOKEN",
+        LOG_OUT: "LOG_OUT"
     }
 }
+
+export const PATH = [
+    '/',
+    '/access_succeed_admin',
+    '/access_succeed_master'
+]

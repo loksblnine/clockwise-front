@@ -1,7 +1,7 @@
 import React, {createContext} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './components/App';
+import App from './containers/App';
 import createStore from './store/store';
 import {Provider} from "react-redux";
 
