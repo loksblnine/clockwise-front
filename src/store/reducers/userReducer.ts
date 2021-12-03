@@ -57,7 +57,6 @@ export default (state: initialState = initialState, action: { type: string; payl
         }
         case constants.ACTIONS.USER.LOG_OUT: {
             localStorage.removeItem('token')
-            //
             return {
                 ...state,
                 user: {},

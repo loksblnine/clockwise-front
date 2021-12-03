@@ -32,7 +32,7 @@ export const login = (email, password, dispatch, history) => {
 }
 
 export const checkAuth = (dispatch) => {
-    if (!!localStorage.getItem('token')) {
+    if (localStorage.getItem('token').length > 0) {
         instance({
             method: "get",
             url: `/auth/login`
@@ -43,8 +43,8 @@ export const checkAuth = (dispatch) => {
                     payload: data
                 })
             })
-    }
-    else {
+    } else {
+        console.log(1234)
         dispatch({
             type: constants.ACTIONS.USER.LOG_OUT
         })
