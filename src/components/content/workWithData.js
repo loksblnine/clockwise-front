@@ -1,8 +1,8 @@
-//region delete
 import {instance} from "../../http/headerPlaceholder.instance";
 import * as constants from "../../constants";
 import {toast} from "react-toastify";
 
+//region delete
 export const deleteCity = async (id, dispatch) => {
     try {
         instance({
@@ -97,6 +97,79 @@ export const deleteOrder = async (id, dispatch) => {
 }
 //endregion
 //region update
+export const editCity = (body, id, dispatch) => {
+    try {
+        instance({
+            method: "PUT",
+            data: body,
+            url: `/cities/${id}`
+        })
+            .then(({data}) => dispatch({
+                type: constants.ACTIONS.CITIES.UPDATE_CITY,
+                payload: data[0]
+            }))
+            .then(() => toast("Изменения сохранены"))
+            .catch(() => toast.error("Данные не обновлены"))
+    } catch (e) {
+        toast.info("Server is busy at this moment")
+    }
+}
+export const editCustomer = (body, id, dispatch) => {
+    try {
+        instance({
+            method: "PUT",
+            data: body,
+            url: `/customers/${id}`
+        })
+            .then(({data}) =>
+                dispatch({
+                    type: constants.ACTIONS.CUSTOMERS.UPDATE_CUSTOMER,
+                    payload: data
+                }))
+            .then(() => toast("Изменения сохранены"))
+            .catch(() => toast.error("Данные не обновлены"))
+    } catch (e) {
+        toast.info("Server is busy at this moment")
+    }
+}
+export const editMaster = (body, id, dispatch) => {
+    try {
+        instance({
+            method: "PUT",
+            data: body,
+            url: `/masters/${id}`
+        })
+            .then(({data}) =>
+                dispatch({
+                    type: constants.ACTIONS.MASTERS.UPDATE_MASTER,
+                    payload: data
+                }))
+            .then(() => toast("Изменения сохранены"))
+            .catch(() => toast.error("Данные не обновлены"))
+    } catch (e) {
+        toast.info("Server is busy at this moment")
+    }
+}
+export const editOrder = (body, id, dispatch) => {
+    try {
+        body.order.time = `${Number(body.order.time.split(':')[0])}:00`
+        body.order.order_time = body.order.date + 'T' + body.order.time
+        instance({
+            method: "PUT",
+            data: body.order,
+            url: `/orders/${id}`
+        })
+            .then(({data}) =>
+                dispatch({
+                    type: constants.ACTIONS.ORDERS.UPDATE_ORDER,
+                    payload: data
+                }))
+            .then(() => toast("Изменения сохранены"))
+            .catch(() => toast.error("Данные не обновлены"))
+    } catch (e) {
+        toast.info("Server is busy at this moment")
+    }
+}
 
 //endregion
 //region add

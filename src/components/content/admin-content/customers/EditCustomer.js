@@ -1,34 +1,18 @@
 import React, {useState} from "react";
-import {toast} from "react-toastify";
-import {instance} from "../../../../http/headerPlaceholder.instance";
-import {useStore} from "react-redux";
-import * as constants from "../../../../constants";
+import {useDispatch} from "react-redux";
+import {editCustomer} from "../../workWithData";
 
 const EditCustomer = ({customer}) => {
-    const store = useStore()
+    const dispatch = useDispatch()
     const [customer_name, setCustomerName] = useState(customer.customer_name)
     const [customer_email, setCustomerEmail] = useState(customer.customer_email)
     const inputRef = React.useRef(null)
     const updateCustomer = async (e) => {
         e.preventDefault()
-        try {
-            const body = {customer_name, customer_email}
-            instance({
-                method: "PUT",
-                data: body,
-                url: `/customers/${customer.customer_id}`
-            })
-                .then(({data}) =>
-                    store.dispatch({
-                        type: constants.ACTIONS.CUSTOMERS.UPDATE_CUSTOMER,
-                        payload: data
-                    }))
-                .then(() => toast("Изменения сохранены"))
-                .catch(() => toast.error("Данные не обновлены"))
-            inputRef.current.click()
-        } catch (e) {
-            toast.info("Server is busy at this moment")
-        }
+        const body = {customer_name, customer_email}
+        editCustomer(body, customer.customer_id, dispatch)
+            .then(() =>
+                inputRef.current.click())
     }
     return (
         <div>

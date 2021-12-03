@@ -1,31 +1,17 @@
 import React, {Fragment, useState} from "react";
-import {toast} from "react-toastify";
-import {instance} from "../../../../http/headerPlaceholder.instance";
-import {useStore} from "react-redux";
-import * as constants from "../../../../constants";
+import {useDispatch} from "react-redux";
+import {editCity} from "../../workWithData";
+
 const EditCity = ({city}) => {
-    const store = useStore()
     const [city_name, setCityName] = useState(city.city_name)
     const inputRef = React.useRef(null)
+    const dispatch = useDispatch()
     const updateCity = async (e) => {
         e.preventDefault()
-        try {
-            const body = {city_name}
-            instance({
-                method: "PUT",
-                data: body,
-                url: `/cities/${city.city_id}`
-            })
-                .then(({data}) => store.dispatch({
-                    type: constants.ACTIONS.CITIES.UPDATE_CITY,
-                    payload: data[0]
-                }))
-                .then(() => toast("Изменения сохранены"))
-                .catch(() => toast.error("Данные не обновлены"))
-            inputRef.current.click()
-        } catch (e) {
-            toast.info("Server is busy at this moment")
-        }
+        const body = {city_name}
+        editCity(body, city.city_id, dispatch)
+            .then(() =>
+                inputRef.current.click())
     }
     return (
         <Fragment>
