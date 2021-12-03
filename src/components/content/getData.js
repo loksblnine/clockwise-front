@@ -2,13 +2,6 @@ import {toast} from "react-toastify";
 import {instance} from "../../http/headerPlaceholder.instance";
 import * as constants from "../../constants";
 
-export const getAllDepsIntoStore = async (DB) => {
-    instance({
-        method: "get",
-        url: "/deps"
-    })
-        .then(resp => DB.setDepsMasterCity(resp.data))
-}
 export const getCitiesIntoStore = async (dispatch) => {
     instance({
         method: "get",
