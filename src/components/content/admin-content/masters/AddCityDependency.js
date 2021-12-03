@@ -1,32 +1,19 @@
-import React, {Fragment, useContext, useState} from "react";
-import {toast} from "react-toastify";
-import {Context} from "../../../../index";
-import {getAllDepsIntoStore} from "../../getData";
+import React, {Fragment, useState} from "react";
 import {observer} from "mobx-react-lite";
-import {instance} from "../../../../http/headerPlaceholder.instance";
-import {useStore} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {addCityAtMaster} from "../../workWithData";
 
 const AddCityDependency = observer(({master}) => {
     const inputRef = React.useRef(null)
     const [cityId, setCityId] = useState(-1)
-    const {DB} = useContext(Context);
-    const store = useStore()
-    const {cities} = store.getState()
+    const cities = useSelector((state) => state.cities.items)
+    const dispatch = useDispatch()
+    console.log(master)
     const onSubmitForm = async e => {
         e.preventDefault();
-        try {
-            const body = {city_id: cityId, master_id: master.master_id}
-            instance({
-                method: "post",
-                data: body,
-                url: '/deps'
-            })
-                .then(() => getAllDepsIntoStore(DB))
-                .then(() => toast("Город добавлен " + master.master_name))
-            inputRef.current.click()
-        } catch (e) {
-            toast.info("Server is busy at this moment")
-        }
+        const body = {city_id: cityId, master_id: master.master_id}
+        addCityAtMaster(body, dispatch)
+            .then(() => inputRef.current.click())
     }
     return (
         <Fragment>
@@ -52,8 +39,10 @@ const AddCityDependency = observer(({master}) => {
                                         onBlur={e => setCityId(e.target.value)}
                                         onChange={e => setCityId(e.target.value)} required>
                                     <option key="default" value="-1" disabled={true}>---Выбрать город---</option>
-                                    {cities.items?.filter(c => !DB.depsMasterCity.find(d => d.master_id === master.master_id && c.city_id === d.city_id)).map(city =>
-                                        <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)}
+                                    {cities?.map(city => {
+                                        return (
+                                            <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)
+                                    })}
                                 </select>
                             </div>
                             <div className="modal-footer">

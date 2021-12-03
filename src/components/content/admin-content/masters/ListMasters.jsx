@@ -19,7 +19,7 @@ const WorkIn = ({master}) => {
     return (
         <div key={master.master_id}>
             {
-                master.deps.map(d => {
+                master?.deps?.map(d => {
                         return (
                             <div> {cities.items.find(city => city.city_id === d)?.city_name}
                                 <button className="btn" onClick={() => deleteCityAtMaster(d, master.master_id, dispatch)}>
@@ -39,6 +39,7 @@ const ListMasters = () => {
     const cities = useSelector((state) => state.cities.items)
     const {isReady, loadNext, page} = useSelector((state) => state.masters)
     const dispatch = useDispatch()
+
     useEffect(async () => {
         if (masters.length <= 0) {
             await getMastersIntoStore(dispatch, page)
@@ -47,11 +48,13 @@ const ListMasters = () => {
             await getCitiesIntoStore(dispatch)
         }
     }, [dispatch])
+
     const handleNextMasters = async (e) => {
         e.target.disabled = true
         await getMastersIntoStore(dispatch, page)
         e.target.disabled = false
     }
+
     if (!isReady) {
         return <Spinner animation="grow"/>
     }
@@ -81,7 +84,7 @@ const ListMasters = () => {
                             <td>{master.email}</td>
                             <td><WorkIn master={master}/></td>
                             <td>{
-                                cities?.length !== master.deps.length &&
+                                cities?.length !== master?.deps?.length &&
                                 <AddCityDependency master={master}/>}
                             </td>
                             <td><EditMaster master={master}/></td>

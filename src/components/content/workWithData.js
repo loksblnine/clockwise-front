@@ -207,6 +207,23 @@ export const postMaster = async (body, dispatch) => {
         toast.info("Server is busy at this moment")
     }
 }
+export const addCityAtMaster = async (body, dispatch) => {
+    try {
+        instance({
+            method: "post",
+            data: body,
+            url: '/deps'
+        })
+            .then(({data}) => dispatch({
+                type: constants.ACTIONS.MASTERS.ADD_CITY_AT_MASTER,
+                payload: data
+            }))
+            .then(() => toast("Город добавлен"))
+            .catch(() => toast.error("Город не добавлен"))
+    } catch (e) {
+        toast.info("Server is busy at this moment")
+    }
+}
 export const postCustomer = async (body, dispatch) => {
     try {
         instance({

@@ -7,8 +7,6 @@ import ListCustomers from "./containers/content/admin/ListCustomers";
 import LoginForm from "./components/content/customer-content/LoginForm/LoginForm";
 import AdminPanel from "./components/content/admin-content/admin-panel/AdminPanel";
 
-export const SERVER_URL = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "https://enigmatic-spire-58695.herokuapp.com"
-
 export const WORK_TYPES = {
     1: {
         key: "маленькие",
@@ -102,7 +100,8 @@ export const ACTIONS = {
         DELETE_MASTER: "DELETE_MASTER",
         DELETE_CITY_AT_MASTER: "DELETE_CITY_AT_MASTER",
         UPDATE_MASTER: "UPDATE_MASTER",
-        ADD_MASTER: "ADD_MASTER"
+        ADD_MASTER: "ADD_MASTER",
+        ADD_CITY_AT_MASTER: "ADD_CITY_AT_MASTER"
     },
     ORDERS: {
         SET_ORDERS: "SET_ORDERS",

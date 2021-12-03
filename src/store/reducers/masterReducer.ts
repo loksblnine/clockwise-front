@@ -45,6 +45,7 @@ export default (state: initialState = initialState, action: { type: string; payl
             };
         }
         case constants.ACTIONS.MASTERS.ADD_MASTER: {
+            console.log(action.payload)
             return {
                 ...state,
                 items: state.items.concat(action.payload),
@@ -53,20 +54,25 @@ export default (state: initialState = initialState, action: { type: string; payl
         case constants.ACTIONS.MASTERS.DELETE_MASTER: {
             return {
                 ...state,
-                items: state.items.filter((item: any) => item.order_id !== action.payload),
+                items: state.items.filter((item: any) => item.master_id !== action.payload),
             }
         }
-        // case constants.ACTIONS.MASTERS.DELETE_CITY_AT_MASTER: {
-        //     return {
-        //         ...state,
-        //         items: state.items.map((master: any) => {
-        //             if (master.master_id === action.payload.master_id) {
-        //                 master.deps.filter((d: number) => d === action.payload.city_id)
-        //             }
-        //         })
-        //     }
-        // }
+        case constants.ACTIONS.MASTERS.DELETE_CITY_AT_MASTER: {
+            state.items.find(item => item.master_id === action.payload.master_id).deps.splice(state.items.find(item => item.master_id === action.payload.master_id).deps.indexOf(action.payload.city_id), 1)
+            return {
+                ...state,
+                items: state.items
+            }
+        }
+        case constants.ACTIONS.MASTERS.ADD_CITY_AT_MASTER: {
+            state.items.find(item => item.master_id === action.payload.master_id).deps.splice(0, 0, action.payload.city_id)
+            return {
+                ...state,
+                items: state.items
+            }
+        }
         default:
             return state;
     }
-};
+}
+;

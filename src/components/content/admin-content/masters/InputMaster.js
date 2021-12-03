@@ -4,6 +4,7 @@ import {useDispatch} from "react-redux";
 
 const InputMaster = () => {
     const [master_name, setMasterName] = useState("")
+    const [email, setEmail] = useState("")
     const [ranking, setRanking] = useState("")
 
     const dispatch = useDispatch()
@@ -11,7 +12,7 @@ const InputMaster = () => {
 
     const onSubmitForm = async e => {
         e.preventDefault();
-        const body = {master_name, ranking}
+        const body = {master_name, email, ranking}
         postMaster(body, dispatch)
             .then(() =>
                 inputRef.current.click())
@@ -34,13 +35,19 @@ const InputMaster = () => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <label htmlFor={`name`}>ФИО мастера</label>
+                                <label htmlFor="name">ФИО мастера</label>
                                 <input className="form-control" placeholder="Иван Иванович Иванов" value={master_name}
-                                       name={`name`} onChange={e => setMasterName(e.target.value)}
+                                       name="name" onChange={e => setMasterName(e.target.value)}
                                        required pattern="[A-ZА-Яa-zа-я -]+"
                                 />
-                                <label htmlFor={`rating`}>Рейтинг</label>
-                                <input className="form-control" placeholder="5.0" value={ranking} name={`ranking`}
+                                <label htmlFor="email">e-mail</label>
+                                <input className="form-control" value={email} name="email" type="email"
+                                       onChange={e => setEmail(e.target.value)}
+                                       required
+                                       pattern="[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]+"
+                                />
+                                <label htmlFor="rating">Рейтинг</label>
+                                <input className="form-control" placeholder="5.0" value={ranking} name="ranking"
                                        onChange={e => setRanking(e.target.value)}
                                        required pattern="([1-5])|([1-4].[05])|(5.0)"
                                 />
