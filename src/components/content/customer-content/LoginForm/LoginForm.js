@@ -4,6 +4,7 @@ import {useHistory} from "react-router-dom";
 import {observer} from "mobx-react-lite";
 import {login} from "../../../../http/userAPI";
 import {useDispatch, useSelector} from "react-redux";
+import {LinkContainer} from "react-router-bootstrap";
 
 const validate = (values) => {
     const errors = {};
@@ -68,10 +69,14 @@ const LoginForm = observer(() => {
                     />
                     {formik.errors.password ? <div className="error">{formik.errors.password}</div> : null}
                 </div>
-                <div className="form-group">
-                    <button type="submit" className="mt-5 btn btn-primary" disabled={user.isReady}>
+                <div className="form-group form-group-inline mt-5">
+                    {/*todo дизейбл кнопки по ошибкам */}
+                    <button type="submit" className="btn btn-primary" disabled={user.isReady}>
                         Войти
                     </button>
+                    <LinkContainer to='/registration'>
+                        <button className="btn btn-primary-outline">Нет аккаунта? Зарегистрируйтесь!</button>
+                    </LinkContainer>
                 </div>
             </form>
         </div>
