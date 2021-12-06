@@ -111,7 +111,7 @@ const RegistrationForm = observer(() => {
                            checked={formik.values.isMaster}
                            onClick={() => formik.values.isMaster = !formik.values.isMaster}
                            onChange={formik.handleChange}/>
-                    <p>Хочу работать мастером и жду конктракт на почту <a className="text">~</a>
+                    <p>Хочу работать мастером и жду контракт на почту <a className="text">~</a>
                     </p>
                 </div>
 

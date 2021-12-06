@@ -73,6 +73,10 @@ export const authMasterRoutes = [
         path: '/access_succeed_master',
         Component: MasterPanel
     }
+    //todo
+    // 1. see orders as a client
+    // 2. edit info
+    // 3. see comments
 ]
 export const authClientRoutes = [
     {
@@ -81,7 +85,8 @@ export const authClientRoutes = [
     }
     //todo
     // 1. how to become a master
-    // 2.
+    // 2. edit info
+    // 3. leave a comment as client
 ]
 export const authAdminRoutes = [
     {

@@ -17,19 +17,19 @@ const ClientPanel = () => {
     const {loadNext, page} = useSelector((state => state.orders))
 
     useEffect(() => {
-        instance({
-            method: "post",
-            data: {email},
-            url: `/masters/email`
-        })
-            .then(({data}) => {
-                setCustomer(data)
-                getOrdersIntoStore(dispatch, page, 3, data.customer_id)
+        if (orders.length <= 0) {
+            instance({
+                method: "get",
+                url: `/customers/email/${email}`
             })
-            .catch(() => {
-                setCustomer({master_name: email})
-            })
-
+                .then(({data}) => {
+                    setCustomer(data)
+                    getOrdersIntoStore(dispatch, page, 3, data.customer_id)
+                })
+                .catch(() => {
+                    setCustomer({master_name: email})
+                })
+        }
     }, [dispatch, email, page]);
 
     const handleNextOrders = (e) => {

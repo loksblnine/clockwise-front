@@ -12,23 +12,24 @@ const MasterPanel = () => {
     const isReady = useSelector((state => state.users))
     const orders = useSelector((state => state.orders.items))
 
-    const [master, setMaster] = useState({})
+    const [master, setMaster] = useState(sessionStorage.getItem('user') || {})
     const {loadNext, page} = useSelector((state => state.orders))
 
     useEffect(async () => {
-        instance({
-            method: "get",
-            url: `/master/${email}`
-        })
-            .then(({data}) => {
-                setMaster(data)
-                getOrdersIntoStore(dispatch, page, 2, data.master_id)
+        if (orders.length <= 0) {
+            instance({
+                method: "get",
+                url: `/masters/email/${email}`
             })
-            .catch(() => {
-                setMaster({master_name: email})
-            })
-
-    }, [dispatch]);
+                .then(({data}) => {
+                    setMaster(data)
+                    getOrdersIntoStore(dispatch, page, 2, data.master_id)
+                })
+                .catch(() => {
+                    setMaster({master_name: email})
+                })
+        }
+    }, [dispatch, page, email]);
 
     const handleNextOrders = (e) => {
         e.target.disabled = true

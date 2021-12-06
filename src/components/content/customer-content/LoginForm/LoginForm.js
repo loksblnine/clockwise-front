@@ -31,7 +31,7 @@ const LoginForm = observer(() => {
             password: 'passwordsecret',
         },
         validate,
-        onSubmit: () => {
+        onSubmit:  () => {
             login(formik.values.email, formik.values.password, dispatch, history)
         }
     })

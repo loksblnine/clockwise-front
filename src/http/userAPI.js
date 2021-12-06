@@ -30,12 +30,17 @@ export const login = (email, password, dispatch, history) => {
                 type: constants.ACTIONS.USER.SET_USER,
                 payload: data
             })
-            history.push(constants.PATH[data.role])
         })
-        .catch(() =>
-            dispatch({
-                type: constants.ACTIONS.USER.LOG_OUT
-            }))
+        .catch(() => {
+                dispatch({
+                    type: constants.ACTIONS.USER.LOG_OUT
+                })
+                history.push(
+                    {pathname: '/'}
+                )
+            }
+        )
+
 }
 
 export const checkAuth = (dispatch) => {

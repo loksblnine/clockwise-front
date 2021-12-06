@@ -293,7 +293,7 @@ export const sendConfirmationOrder = (order, master, history) => {
             instance({
                 method: "POST",
                 data: messageBody,
-                url: "/send"
+                url: "/send/confirm-order"
             })
                 .then(() => toast.dismiss())
                 .then(() => {
