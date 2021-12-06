@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {Route, Switch} from "react-router-dom";
-import {authRoutes, authMasterRoutes, customerRoutes} from "../constants";
+import {authAdminRoutes, authMasterRoutes, customerRoutes, authClientRoutes} from "../constants";
 import NotFound from "../http/NotFound";
 import {useDispatch, useSelector} from "react-redux";
 
@@ -13,10 +13,13 @@ const AppRouter = () => {
 
     return (
         <Switch>
-            {user.role === 1 && authRoutes.map(({path, Component}) =>
+            {user.role === 1 && authAdminRoutes.map(({path, Component}) =>
                 <Route path={path} component={Component} key={path} exact/>
             )}
             {user.role === 2 && authMasterRoutes.map(({path, Component}) =>
+                <Route path={path} component={Component} key={path} exact/>
+            )}
+            {user.role === 3 && authClientRoutes.map(({path, Component}) =>
                 <Route path={path} component={Component} key={path} exact/>
             )}
             {customerRoutes.map(({path, Component}) =>
