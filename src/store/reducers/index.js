@@ -6,10 +6,19 @@ import orders from './orderReducer'
 import users from './userReducer'
 import masters from './masterReducer'
 
-export default combineReducers({
+const appReducer = combineReducers({
     cities,
     customers,
     orders,
     users,
     masters
 });
+
+const rootReducer = (state, action) => {
+    if (action.type === "LOG_OUT") {
+        state = undefined;
+    }
+    return appReducer(state, action);
+};
+
+export default rootReducer;
