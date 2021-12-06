@@ -7,7 +7,10 @@ import ListCustomers from "./containers/content/admin/ListCustomers";
 import LoginForm from "./components/content/customer-content/LoginForm/LoginForm";
 import AdminPanel from "./components/content/admin-content/admin-panel/AdminPanel";
 import MasterPanel from "./components/content/master-content/MasterPanel";
+import RegistrationForm from "./components/content/customer-content/RegistrationForm/RegistrationForm";
+import ClientPanel from "./components/content/client-content/ClientPanel";
 
+//todo remove this trash))
 export const WORK_TYPES = {
     1: {
         key: "маленькие",
@@ -54,6 +57,10 @@ export const customerRoutes = [
     {
         path: '/login',
         Component: LoginForm
+    },
+    {
+        path: '/registration',
+        Component: RegistrationForm
     }
 ]
 export const authMasterRoutes = [
@@ -62,7 +69,16 @@ export const authMasterRoutes = [
         Component: MasterPanel
     }
 ]
-export const authRoutes = [
+export const authClientRoutes = [
+    {
+        path: '/access_succeed_client',
+        Component: ClientPanel
+    }
+    //todo
+    // 1. how to become a master
+    // 2.
+]
+export const authAdminRoutes = [
     {
         path: '/access_succeed_admin',
         Component: AdminPanel
@@ -128,5 +144,6 @@ export const ACTIONS = {
 export const PATH = [
     '/',
     '/access_succeed_admin',
-    '/access_succeed_master'
+    '/access_succeed_master',
+    '/access_succeed_client'
 ]
