@@ -27,7 +27,7 @@ const MasterPanel = () => {
                 setMaster(data)
                 getOrdersIntoStore(dispatch, page, role, data.master_id)
             })
-            .catch(e => {
+            .catch(() => {
                 setMaster({master_name: email})
             })
 
@@ -40,6 +40,16 @@ const MasterPanel = () => {
     // }
     if (!isReady) {
         return <Spinner animation="grow"/>
+    }
+    if (orders.length === 0) {
+        return (
+            <div className="router">
+                <h2 className="text-left mt-5">Привет, {master.master_name}</h2>
+                <div>
+                    <h2 className="text-left mt-5">Ваш список заказов пуст</h2>
+                </div>
+            </div>
+        )
     }
     return (
         <div className="router">
