@@ -19,7 +19,7 @@ const initialState: initialState = {
     }
 };
 
-export default (state: initialState = initialState, action: { type: string; payload: any; }) => {
+const userReducer = (state = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
         case constants.ACTIONS.USER.SET_USER: {
             const {token} = action.payload
@@ -67,3 +67,4 @@ export default (state: initialState = initialState, action: { type: string; payl
             return state;
     }
 };
+export default userReducer

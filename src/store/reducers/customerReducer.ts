@@ -14,7 +14,7 @@ const initialState: initialState = {
     loadNext: true,
 };
 
-export default (state: initialState = initialState, action: { type: string; payload: any; }) => {
+const customerReducer = (state = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
         case constants.ACTIONS.CUSTOMERS.SET_CUSTOMERS: {
             if (action.payload.length < 10) {
@@ -61,3 +61,5 @@ export default (state: initialState = initialState, action: { type: string; payl
             return state;
     }
 };
+
+export default customerReducer

@@ -13,7 +13,7 @@ const initialState: initialState = {
     page: 0,
     loadNext: true,
 };
-export default (state: initialState = initialState, action: { type: string; payload: any; }) => {
+const orderReducer = (state = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
         case constants.ACTIONS.ORDERS.SET_ORDERS: {
             if (action.payload.length < 10) {
@@ -60,3 +60,4 @@ export default (state: initialState = initialState, action: { type: string; payl
             return state;
     }
 };
+export default orderReducer

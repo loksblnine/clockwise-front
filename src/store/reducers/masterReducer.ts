@@ -14,7 +14,7 @@ const initialState: initialState = {
     loadNext: true,
 };
 
-export default (state = initialState, action: { type: string; payload: any; }) => {
+const masterReducer = (state = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
         case constants.ACTIONS.MASTERS.SET_MASTERS: {
             if (action.payload.length < 10) {
@@ -76,4 +76,5 @@ export default (state = initialState, action: { type: string; payload: any; }) =
             return state;
     }
 }
-;
+
+export default masterReducer

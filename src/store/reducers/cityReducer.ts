@@ -4,12 +4,13 @@ type initialState = {
     isReady: boolean,
     items: any[]
 }
+
 const initialState: initialState = {
     isReady: false,
     items: []
 };
 
-export default (state: initialState = initialState, action: { type: string; payload: any; }) => {
+const cityReducer = (state = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
         case constants.ACTIONS.CITIES.SET_CITIES: {
 
@@ -49,3 +50,4 @@ export default (state: initialState = initialState, action: { type: string; payl
             return state;
     }
 };
+export default cityReducer
