@@ -12,7 +12,7 @@ const MasterPanel = () => {
     const isReady = useSelector((state => state.users))
     const orders = useSelector((state => state.orders.items))
 
-    const [master, setMaster] = useState(sessionStorage.getItem('user') || {})
+    const [master, setMaster] = useState({})
     const {loadNext, page} = useSelector((state => state.orders))
 
     useEffect(async () => {
