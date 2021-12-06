@@ -37,6 +37,16 @@ const MasterPanel = () => {
             .then(() =>
                 e.target.disabled = false)
     }
+    const handleApproveOrder = (order) => {
+        instance({
+            method: "put",
+            url: `/auth/approve-order/${order.order_id}`
+        }).then(() =>
+            dispatch({
+                type: constants.ACTIONS.MASTERS.APPROVE_ORDER,
+                payload: {...order, isDone: true}
+            }))
+    }
     if (!isReady) {
         return <Spinner animation="grow"/>
     }
@@ -64,7 +74,10 @@ const MasterPanel = () => {
                         <th scope="col">Город</th>
                         <th scope="col">Тип работы</th>
                         <th scope="col">Дата заказа</th>
-                        <th scope="col">Время заказа</th>
+                        <th scope="col">Время начала</th>
+                        <th scope="col">Время конца</th>
+                        <th scope="col">Сумма заказа</th>
+                        <th scope="col">Статус заказа</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -75,7 +88,15 @@ const MasterPanel = () => {
                             <td>{order.city.city_name}</td>
                             <td>{constants.WORK_TYPES[order.work_id].key}</td>
                             <td>{order.order_time.split('T')[0]}</td>
-                            <td>{order.order_time.split('T')[1].split('.')[0]}</td>
+                            <td>{Number(order.order_time.split('T')[1].split(':')[0]) + ":00:00"}</td>
+                            <td>{Number(order.order_time.split('T')[1].split(':')[0]) + Number(order.work_id) + ":00:00"}</td>
+                            <td>{
+                                !order.isDone ?
+                                    <button className="btn btn-outline-success"
+                                            onClick={() => handleApproveOrder(order)}>
+                                        Заказ выполнен!
+                                    </button>
+                                    : "Готово"}</td>
                         </tr>
                     ))}
                     </tbody>

@@ -38,6 +38,13 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
                 items: array,
             };
         }
+        case constants.ACTIONS.MASTERS.APPROVE_ORDER: {
+            const array = state.items.filter((item: any) => item.order_id !== action.payload.order_id).concat(action.payload)
+            return {
+                ...state,
+                items: array,
+            };
+        }
         case constants.ACTIONS.ORDERS.SET_READY_ORDERS: {
             return {
                 ...state,
