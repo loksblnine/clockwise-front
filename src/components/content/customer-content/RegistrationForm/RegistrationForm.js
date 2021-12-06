@@ -44,8 +44,9 @@ const RegistrationForm = observer(() => {
             isAgreed: false
         },
         validate,
-        onSubmit: () => {
-            registration(formik.values.email, formik.values.password, formik.values.isMaster === true ? 2 : 3, dispatch, history)
+        onSubmit: async () => {
+           await registration(formik.values.email, formik.values.password, formik.values.isMaster === true ? 2 : 3, dispatch)
+                history.push('/registration_success')
         }
     })
     const loginPageStyle = {

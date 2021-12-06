@@ -9,6 +9,7 @@ import AdminPanel from "./components/content/admin-content/admin-panel/AdminPane
 import MasterPanel from "./components/content/master-content/MasterPanel";
 import RegistrationForm from "./components/content/customer-content/RegistrationForm/RegistrationForm";
 import ClientPanel from "./components/content/client-content/ClientPanel";
+import SuccessRegister from "./components/content/customer-content/RegistrationForm/SuccessRegister";
 
 //todo remove this trash))
 export const WORK_TYPES = {
@@ -61,6 +62,10 @@ export const customerRoutes = [
     {
         path: '/registration',
         Component: RegistrationForm
+    },
+    {
+        path: '/registration_success',
+        Component: SuccessRegister
     }
 ]
 export const authMasterRoutes = [

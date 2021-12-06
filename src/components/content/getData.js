@@ -34,7 +34,7 @@ export const getCustomersIntoStore = async (dispatch, page) => {
             payload: data
         }))
 }
-export const getOrdersIntoStore = async (dispatch, page, role = 1, master_id) => {
+export const getOrdersIntoStore = async (dispatch, page, role = 1, id) => {
     switch (role) {
         case 1: {
             instance({
@@ -50,7 +50,18 @@ export const getOrdersIntoStore = async (dispatch, page, role = 1, master_id) =>
         case 2: {
             instance({
                 method: "get",
-                url: `/orders/master/${master_id}/offset/${page}`
+                url: `/orders/master/${id}/offset/${page}`
+            })
+                .then(({data}) => dispatch({
+                    type: constants.ACTIONS.ORDERS.SET_ORDERS,
+                    payload: data
+                }))
+            break;
+        }
+        case 3: {
+            instance({
+                method: "get",
+                url: `/orders/customer/${id}/offset/${page}`
             })
                 .then(({data}) => dispatch({
                     type: constants.ACTIONS.ORDERS.SET_ORDERS,

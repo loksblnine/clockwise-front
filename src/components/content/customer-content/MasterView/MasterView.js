@@ -21,7 +21,7 @@ const MasterView = observer(() => {
         order_time: T,
         work_id: order.type,
     }
-    useEffect(async () => {
+    useEffect(() => {
         getFreeMasters(orderBody, setMasters)
             .then(() =>
                 setLoading(false))
@@ -34,7 +34,7 @@ const MasterView = observer(() => {
         })
     }
 
-    const handleClick = async (master) => {
+    const handleClick = (master) => {
         sendConfirmationOrder(order, master, history)
     }
 

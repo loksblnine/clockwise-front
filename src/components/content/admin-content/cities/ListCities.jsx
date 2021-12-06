@@ -11,11 +11,11 @@ const ListCities = () => {
     const {isReady} = useSelector((state) => state.cities)
     const dispatch = useDispatch()
 
-    useEffect(async () => {
+    useEffect(() => {
         if (cities.length <= 0) {
-            await getCitiesIntoStore(dispatch)
+            getCitiesIntoStore(dispatch)
         }
-    }, [dispatch])
+    }, [dispatch, cities.length])
 
     if (!isReady) {
         return <Spinner animation="grow"/>

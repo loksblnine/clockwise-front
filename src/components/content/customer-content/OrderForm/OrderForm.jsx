@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useFormik} from 'formik';
 import * as constants from "../../../../constants";
-import {withRouter, useHistory, useLocation} from "react-router-dom";
+import {useHistory, useLocation, withRouter} from "react-router-dom";
 import './OrderStyles.css'
 import {observer} from "mobx-react-lite";
 import {toast} from "react-toastify";
@@ -47,9 +47,9 @@ const OrderForm = observer(({props}) => {
     const isReady = useSelector(state => state.cities.isReady)
 
     const dispatch = useDispatch()
-    useEffect(async () => {
+    useEffect(() => {
         if (!isReady) {
-            await getCitiesIntoStore(dispatch)
+            getCitiesIntoStore(dispatch)
         }
     }, [dispatch])
 

@@ -11,15 +11,16 @@ const ListOrders = () => {
     const {isReady, loadNext, page} = useSelector((state => state.orders))
     const dispatch = useDispatch()
 
-    useEffect(async () => {
+    useEffect(() => {
         if (orders.length <= 0) {
-            await getOrdersIntoStore(dispatch, page)
+            getOrdersIntoStore(dispatch, page)
         }
-    }, [dispatch])
-    const handleNextOrders = async (e) => {
+    }, [dispatch, orders.length, page])
+    const handleNextOrders = (e) => {
         e.target.disabled = true
-        await getOrdersIntoStore(dispatch, page)
-        e.target.disabled = false
+        getOrdersIntoStore(dispatch, page)
+            .then(() =>
+                e.target.disabled = false)
     }
     if (!isReady) {
         return <Spinner animation="grow"/>
@@ -65,7 +66,8 @@ const ListOrders = () => {
             {
                 loadNext &&
                 <div className="col text-center">
-                    <button className="btn btn-primary mb-5" onClick={(e) => handleNextOrders(e)}> Еще заказы...</button>
+                    <button className="btn btn-primary mb-5" onClick={(e) => handleNextOrders(e)}> Еще заказы...
+                    </button>
                 </div>
             }
         </div>

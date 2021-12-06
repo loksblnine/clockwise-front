@@ -7,7 +7,7 @@ import {getCitiesIntoStore, getMastersIntoStore} from "../../getData";
 import {connect, useDispatch, useSelector} from "react-redux";
 import mapStateToProps from "react-redux/lib/connect/mapStateToProps";
 import mapDispatchToProps from "react-redux/lib/connect/mapDispatchToProps";
-import {deleteMaster, deleteCityAtMaster} from "../../workWithData";
+import {deleteCityAtMaster, deleteMaster} from "../../workWithData";
 
 const WorkIn = ({master}) => {
     const {cities} = useSelector((state) => state)
@@ -40,19 +40,20 @@ const ListMasters = () => {
     const {isReady, loadNext, page} = useSelector((state) => state.masters)
     const dispatch = useDispatch()
 
-    useEffect(async () => {
+    useEffect(() => {
         if (masters.length <= 0) {
-            await getMastersIntoStore(dispatch, page)
+            getMastersIntoStore(dispatch, page)
         }
         if (cities.length <= 0) {
-            await getCitiesIntoStore(dispatch)
+            getCitiesIntoStore(dispatch)
         }
-    }, [dispatch])
+    }, [dispatch, cities.length, masters.length, page])
 
-    const handleNextMasters = async (e) => {
+    const handleNextMasters = (e) => {
         e.target.disabled = true
-        await getMastersIntoStore(dispatch, page)
-        e.target.disabled = false
+        getMastersIntoStore(dispatch, page)
+            .then(() =>
+                e.target.disabled = false)
     }
 
     if (!isReady) {

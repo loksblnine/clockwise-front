@@ -1,48 +1,50 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import '../Panel.css'
 import * as constants from "../../../constants";
 import {Spinner} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
+import {instance} from "../../../http/headerPlaceholder.instance";
+import {getOrdersIntoStore} from "../getData";
 
 
 const ClientPanel = () => {
     const dispatch = useDispatch()
-    const role = useSelector((state => state.users.user.role))
     const email = useSelector((state => state.users.user.email))
     const isReady = useSelector((state => state.users))
     const orders = useSelector((state => state.orders.items))
 
-    const [master, setMaster] = useState({})
+    const [customer, setCustomer] = useState({})
     const {loadNext, page} = useSelector((state => state.orders))
 
-    // useEffect(async () => {
-    //     instance({
-    //         method: "post",
-    //         data: {email},
-    //         url: `/masters/email`
-    //     })
-    //         .then(({data}) => {
-    //             setMaster(data)
-    //             getOrdersIntoStore(dispatch, page, role, data.master_id)
-    //         })
-    //         .catch(e => {
-    //             setMaster({master_name: email})
-    //         })
-    //
-    // }, []);
+    useEffect(() => {
+        instance({
+            method: "post",
+            data: {email},
+            url: `/masters/email`
+        })
+            .then(({data}) => {
+                setCustomer(data)
+                getOrdersIntoStore(dispatch, page, 3, data.customer_id)
+            })
+            .catch(() => {
+                setCustomer({master_name: email})
+            })
 
-    // const handleNextOrders = async (e) => {
-    //     e.target.disabled = true
-    //     await getOrdersIntoStore(dispatch, page)
-    //     e.target.disabled = false
-    // }
+    }, [dispatch, email, page]);
+
+    const handleNextOrders = (e) => {
+        e.target.disabled = true
+        getOrdersIntoStore(dispatch, page, 3, customer.customer_id)
+            .then(() =>
+                e.target.disabled = false)
+    }
     if (!isReady) {
         return <Spinner animation="grow"/>
     }
     if (orders.length === 0) {
         return (
             <div className="router">
-                <h2 className="text-left mt-5">Привет, {master.master_name}</h2>
+                <h2 className="text-left mt-5">Привет, {customer.customer_name}</h2>
                 <div>
                     <h2 className="text-left mt-5">Ваш список заказов пуст</h2>
                 </div>
@@ -51,8 +53,7 @@ const ClientPanel = () => {
     }
     return (
         <div className="router">
-            <h2 className="text-left mt-5">Привет, {master.master_name}</h2>
-
+            <h2 className="text-left mt-5">Привет, {customer.customer_name}</h2>
             <div>
                 <h2 className="text-left mt-5">Ваш список заказов</h2>
                 <table className="table mt-5 text-justify">
@@ -79,13 +80,13 @@ const ClientPanel = () => {
                     ))}
                     </tbody>
                 </table>
-                {/*{*/}
-                {/*    loadNext &&*/}
-                {/*    <div className="col text-center">*/}
-                {/*        <button className="btn btn-primary" onClick={(e) => handleNextOrders(e)}> Еще заказы...*/}
-                {/*        </button>*/}
-                {/*    </div>*/}
-                {/*}*/}
+                {
+                    loadNext &&
+                    <div className="col text-center">
+                        <button className="btn btn-primary" onClick={(e) => handleNextOrders(e)}> Еще заказы...
+                        </button>
+                    </div>
+                }
             </div>
         </div>
     )

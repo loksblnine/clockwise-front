@@ -11,15 +11,16 @@ const ListCustomers = () => {
     const {isReady, loadNext, page} = useSelector((state) => state.customers)
     const dispatch = useDispatch()
 
-    useEffect(async () => {
+    useEffect(() => {
         if (customers.length <= 0) {
-            await getCustomersIntoStore(dispatch, page)
+            getCustomersIntoStore(dispatch, page)
         }
-    }, [dispatch])
-    const handleNextCustomers = async (e) => {
+    }, [dispatch, customers.length, page])
+    const handleNextCustomers = (e) => {
         e.target.disabled = true
-        await getCustomersIntoStore(dispatch, page)
-        e.target.disabled = false
+        getCustomersIntoStore(dispatch, page)
+            .then(() =>
+                e.target.disabled = false)
     }
     if (!isReady) {
         return <Spinner animation="grow"/>

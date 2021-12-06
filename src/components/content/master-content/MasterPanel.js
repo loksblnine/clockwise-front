@@ -6,10 +6,8 @@ import {Spinner} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {instance} from "../../../http/headerPlaceholder.instance";
 
-
 const MasterPanel = () => {
     const dispatch = useDispatch()
-    const role = useSelector((state => state.users.user.role))
     const email = useSelector((state => state.users.user.email))
     const isReady = useSelector((state => state.users))
     const orders = useSelector((state => state.orders.items))
@@ -19,25 +17,25 @@ const MasterPanel = () => {
 
     useEffect(async () => {
         instance({
-            method: "post",
-            data: {email},
-            url: `/masters/email`
+            method: "get",
+            url: `/master/${email}`
         })
             .then(({data}) => {
                 setMaster(data)
-                getOrdersIntoStore(dispatch, page, role, data.master_id)
+                getOrdersIntoStore(dispatch, page, 2, data.master_id)
             })
             .catch(() => {
                 setMaster({master_name: email})
             })
 
-    }, []);
+    }, [dispatch]);
 
-    // const handleNextOrders = async (e) => {
-    //     e.target.disabled = true
-    //     await getOrdersIntoStore(dispatch, page)
-    //     e.target.disabled = false
-    // }
+    const handleNextOrders = (e) => {
+        e.target.disabled = true
+        getOrdersIntoStore(dispatch, page, 2, master.master_id)
+            .then(() =>
+                e.target.disabled = false)
+    }
     if (!isReady) {
         return <Spinner animation="grow"/>
     }
@@ -81,13 +79,13 @@ const MasterPanel = () => {
                     ))}
                     </tbody>
                 </table>
-                {/*{*/}
-                {/*    loadNext &&*/}
-                {/*    <div className="col text-center">*/}
-                {/*        <button className="btn btn-primary" onClick={(e) => handleNextOrders(e)}> Еще заказы...*/}
-                {/*        </button>*/}
-                {/*    </div>*/}
-                {/*}*/}
+                {
+                    loadNext &&
+                    <div className="col text-center">
+                        <button className="btn btn-primary" onClick={(e) => handleNextOrders(e)}> Еще заказы...
+                        </button>
+                    </div>
+                }
             </div>
         </div>
     )
