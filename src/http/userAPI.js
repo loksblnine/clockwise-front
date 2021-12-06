@@ -1,17 +1,25 @@
 import jwt_decode from "jwt-decode";
 import {instance} from "./headerPlaceholder.instance";
 import * as constants from "../constants";
+import {toast} from "react-toastify";
 
-export const registrationMaster = async (email, password) => {
-    //probably works bad
+export const registration = (email, password, role, dispatch, history) => {
+    const body = {email, password, role}
     const {data} = instance({
         method: "post",
-        data: {email, password, role: "MASTER"},
+        data: body,
         url: '/auth/register'
     })
-        .then((resp) => {
-            localStorage.setItem('token', resp.data.token)
+        .then(({data}) => {
+            console.log(data)
+            dispatch({
+                type: constants.ACTIONS.USER.SET_USER,
+                payload: data
+            })
+            history.push(constants.PATH[data.role])
         })
+        .catch(() =>
+            toast.error("Возникла ошибка при регистрации"))
     return jwt_decode(data.token)
 }
 
@@ -26,27 +34,29 @@ export const login = (email, password, dispatch, history) => {
                 type: constants.ACTIONS.USER.SET_USER,
                 payload: data
             })
+            history.push(constants.PATH[data.role])
         })
-        .then(() =>
-            history.push(constants.PATH[1]))
+        .catch(() =>
+            dispatch({
+                type: constants.ACTIONS.USER.LOG_OUT
+            }))
 }
 
 export const checkAuth = (dispatch) => {
-    if (localStorage.getItem('token').length > 0) {
-        instance({
-            method: "get",
-            url: `/auth/login`
-        })
-            .then(({data}) => {
-                dispatch({
-                    type: constants.ACTIONS.USER.SET_USER,
-                    payload: data
-                })
+    instance({
+        method: "get",
+        url: `/auth/login`
+    })
+        .then(({data}) => {
+            dispatch({
+                type: constants.ACTIONS.USER.SET_USER,
+                payload: data
             })
-    } else {
-        console.log(1234)
-        dispatch({
-            type: constants.ACTIONS.USER.LOG_OUT
         })
-    }
+        .catch(() => {
+            dispatch({
+                type: constants.ACTIONS.USER.LOG_OUT
+            })
+        })
+
 }
