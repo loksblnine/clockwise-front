@@ -72,7 +72,6 @@ export const deleteCityAtMaster = async (city_id, master_id, dispatch) => {
                 })
             })
             .then(() => toast("Город у мастера удален"))
-        // .then
     } catch (e) {
         toast.info("Server is busy at this moment")
     }

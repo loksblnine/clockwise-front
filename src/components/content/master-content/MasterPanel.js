@@ -5,6 +5,7 @@ import {getOrdersIntoStore} from "../getData";
 import {Spinner} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {instance} from "../../../http/headerPlaceholder.instance";
+import {deleteCityAtMaster} from "../workWithData";
 
 const MasterPanel = () => {
     const dispatch = useDispatch()
@@ -15,7 +16,6 @@ const MasterPanel = () => {
     const master = useSelector(state => state.users.data?.master)
     const deps = useSelector(state => state.users.data?.deps)
     const {loadNext, page} = useSelector((state => state.orders))
-
     useEffect(async () => {
         if (orders.length <= 0) {
             instance({
@@ -57,24 +57,28 @@ const MasterPanel = () => {
     return (
         <div className="router">
             <h2 className="text-left mt-5">Привет, {master?.master_name}</h2>
+
             {deps?.length > 0 ?
                 <div>
-                    <h2 className="text-left mt-5">Ваш список городов: </h2>
+                    <h4 className="text-left mt-5">Ваш список городов: </h4>
                     {
-                        cities.map(c => {
-                            if (deps?.include(c.city_id)) {
-                                return <p>{c.city_name}</p>
-                            }
+                        deps.map(d => {
+                            return <div>
+                                {cities.find(c => c.city_id === d).city_name}
+                                <button className="btn"
+                                        onClick={() => deleteCityAtMaster(d, master.master_id, dispatch)}>
+                                    <span>&times;</span></button>
+                            </div>
                         })
                     }
                 </div>
                 : <div>
-                    <h2 className="text-left mt-5">Ваш список городов пуст</h2>
+                    <h4 className="text-left mt-5">Ваш список городов пуст</h4>
                 </div>
             }
             {orders.length > 0 ?
                 <div>
-                    <h2 className="text-left mt-5">Ваш список заказов: </h2>
+                    <h4 className="text-left mt-5">Ваш список заказов: </h4>
                     <table className="table mt-5 text-justify">
                         <thead>
                         <tr>
@@ -119,7 +123,7 @@ const MasterPanel = () => {
                     }
                 </div>
                 : <div>
-                    <h2 className="text-left mt-5">Ваш список заказов пуст</h2>
+                    <h4 className="text-left mt-5">Ваш список заказов пуст</h4>
                 </div>
             }
         </div>

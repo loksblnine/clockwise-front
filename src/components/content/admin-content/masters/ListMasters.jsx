@@ -4,9 +4,7 @@ import InputMaster from "./InputMaster";
 import {Spinner} from "react-bootstrap";
 import AddCityDependency from "./AddCityDependency";
 import {getCitiesIntoStore, getMastersIntoStore} from "../../getData";
-import {connect, useDispatch, useSelector} from "react-redux";
-import mapStateToProps from "react-redux/lib/connect/mapStateToProps";
-import mapDispatchToProps from "react-redux/lib/connect/mapDispatchToProps";
+import {useDispatch, useSelector} from "react-redux";
 import {deleteCityAtMaster, deleteMaster} from "../../workWithData";
 
 const WorkIn = ({master}) => {
@@ -32,8 +30,6 @@ const WorkIn = ({master}) => {
         </div>
     )
 }
-connect(mapStateToProps, mapDispatchToProps)(WorkIn)
-
 const ListMasters = () => {
     const masters = useSelector((state) => state.masters.items)
     const cities = useSelector((state) => state.cities.items)
