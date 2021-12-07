@@ -9,13 +9,13 @@ import {instance} from "../../../http/headerPlaceholder.instance";
 
 const MasterPanel = () => {
     const dispatch = useDispatch()
-    const role = useSelector((state => state.users.user.role))
-    const email = useSelector((state => state.users.user.email))
-    const isReady = useSelector((state => state.users))
-    const orders = useSelector((state => state.orders.items))
+    const role = useSelector(state => state.users.user.role)
+    const email = useSelector(state => state.users.user.email)
+    const isReady = useSelector(state => state.users)
+    const orders = useSelector(state => state.orders.items)
 
     const [master, setMaster] = useState({})
-    const {loadNext, page} = useSelector((state => state.orders))
+    const {page} = useSelector((state => state.orders))
 
     useEffect(async () => {
         instance({
@@ -27,17 +27,12 @@ const MasterPanel = () => {
                 setMaster(data)
                 getOrdersIntoStore(dispatch, page, role, data.master_id)
             })
-            .catch(e => {
+            .catch(() => {
                 setMaster({master_name: email})
             })
 
     }, []);
 
-    // const handleNextOrders = async (e) => {
-    //     e.target.disabled = true
-    //     await getOrdersIntoStore(dispatch, page)
-    //     e.target.disabled = false
-    // }
     if (!isReady) {
         return <Spinner animation="grow"/>
     }
