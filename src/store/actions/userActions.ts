@@ -3,7 +3,8 @@ import * as constants from "../../constants";
 type User = {
     role: number,
     email: string,
-    token: string
+    token: string,
+    data: any
 }
 
 export const setUser = (user: User) => ({

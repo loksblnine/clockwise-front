@@ -4,6 +4,7 @@ import jwt_decode from "jwt-decode";
 type User = {
     role: number,
     email: string,
+    data: any
 }
 
 type initialState = {
@@ -16,6 +17,7 @@ const initialState: initialState = {
     user: {
         role: 0,
         email: "",
+        data: {}
     }
 };
 
@@ -31,15 +33,19 @@ const userReducer = (state = initialState, action: { type: string; payload: any;
                 isReady: true
             };
         }
+        case constants.ACTIONS.USER.SET_DATA: {
+            return {
+                ...state,
+                data: action.payload
+            };
+        }
         case constants.ACTIONS.USER.SET_READY_USER:
-            //
             return {
                 ...state,
                 isReady: action.payload
             };
         case constants.ACTIONS.USER.SET_JSON_WEB_TOKEN: {
             localStorage.setItem('token', action.payload.token)
-            //
             return {
                 ...state,
                 user: action.payload,
@@ -48,7 +54,6 @@ const userReducer = (state = initialState, action: { type: string; payload: any;
         }
         case constants.ACTIONS.USER.REMOVE_JSON_WEB_TOKEN: {
             localStorage.removeItem('token')
-            //
             return {
                 ...state,
                 user: {},

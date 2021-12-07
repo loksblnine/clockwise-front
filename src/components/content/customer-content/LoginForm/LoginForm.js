@@ -5,6 +5,7 @@ import {observer} from "mobx-react-lite";
 import {login} from "../../../../http/userAPI";
 import {useDispatch, useSelector} from "react-redux";
 import {LinkContainer} from "react-router-bootstrap";
+import * as constants from "../../../../constants";
 
 const validate = (values) => {
     const errors = {};
@@ -32,28 +33,12 @@ const LoginForm = observer(() => {
             password: 'passwordsecret',
         },
         validate,
-        onSubmit:  () => {
+        onSubmit: () => {
             login(formik.values.email, formik.values.password, dispatch)
+            history.push(
+                {pathname: constants.PATH[user.role]}
+            )
 
-            switch (user.role) {
-                case 1: {
-                    history.push({
-                        pathname: '/access_succeed_admin',
-                    })
-                    break;
-                }
-                case 2: {
-                    history.push('/access_succeed_master')
-                    break;
-                }
-                case 3: {
-                    history.push('/access_succeed_client')
-                    break;
-                }
-                default: {
-                    break;
-                }
-            }
         }
     })
     const loginPageStyle = {

@@ -145,6 +145,7 @@ export const ACTIONS = {
     },
     USER: {
         SET_USER: "SET_USER",
+        SET_DATA: "SET_DATA",
         SET_READY_USER: "SET_READY_USER",
         SET_JSON_WEB_TOKEN: "SET_JSON_WEB_TOKEN",
         REMOVE_JSON_WEB_TOKEN: "REMOVE_JSON_WEB_TOKEN",
