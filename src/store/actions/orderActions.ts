@@ -1,23 +1,33 @@
 import * as constants from "../../constants";
 
-export const setOrders = (cities: any []) => ({
+type Order = {
+    order_id: number,
+    master_id: number,
+    customer_id: number,
+    city_id: number,
+    work_id: number,
+    order_time: any,
+    isDone: boolean
+}
+
+export const setOrders = (orders: any []) => ({
     type: constants.ACTIONS.ORDERS.SET_ORDERS,
-    payload: cities
+    payload: orders
 });
 
-export const setReadyOrders = (bool: boolean) => ({
+export const setReadyOrders = (isReady: boolean) => ({
     type: constants.ACTIONS.ORDERS.SET_READY_ORDERS,
-    payload: bool
+    payload: isReady
 });
 
-export const updateOrder = (city: object) => ({
+export const updateOrder = (order: Order) => ({
     type: constants.ACTIONS.ORDERS.UPDATE_ORDER,
-    payload: city
+    payload: order
 });
 
-export const addOrder = (city: object) => ({
+export const addOrder = (order: Order) => ({
     type: constants.ACTIONS.ORDERS.ADD_ORDER,
-    payload: city
+    payload: order
 });
 
 export const deleteOrder = (id: number) => ({

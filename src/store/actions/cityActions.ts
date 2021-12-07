@@ -1,5 +1,10 @@
 import * as constants from "../../constants";
 
+type City = {
+    city_id: number,
+    city_name: string
+}
+
 export const setCities = (cities: any []) => ({
     type: constants.ACTIONS.CITIES.SET_CITIES,
     payload: cities
@@ -10,12 +15,12 @@ export const setReadyCities = (bool: boolean) => ({
     payload: bool
 });
 
-export const updateCity = (city: object) => ({
+export const updateCity = (city: City) => ({
     type: constants.ACTIONS.CITIES.UPDATE_CITY,
     payload: city
 });
 
-export const addCity = (city: object) => ({
+export const addCity = (city: City) => ({
     type: constants.ACTIONS.CITIES.ADD_CITY,
     payload: city
 });
