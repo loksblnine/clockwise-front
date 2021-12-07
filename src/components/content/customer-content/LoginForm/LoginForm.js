@@ -32,8 +32,9 @@ const LoginForm = observer(() => {
             password: 'passwordsecret',
         },
         validate,
-        onSubmit: async () => {
-            await login(formik.values.email, formik.values.password, dispatch)
+        onSubmit:  () => {
+            login(formik.values.email, formik.values.password, dispatch)
+
             switch (user.role) {
                 case 1: {
                     history.push({

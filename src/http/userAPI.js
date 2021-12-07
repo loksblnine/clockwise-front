@@ -20,7 +20,7 @@ export const registration = async (email, password, role, dispatch) => {
             toast.error("Возникла ошибка при регистрации"))
 }
 
-export const login = async (email, password, dispatch) => {
+export const login = (email, password, dispatch) => {
     instance({
         method: "post",
         data: {email, password},
