@@ -7,7 +7,7 @@ type User = {
 }
 
 export const setUser = (user: User) => ({
-    type: constants.ACTIONS.CITIES.SET_CITIES,
+    type: constants.ACTIONS.USER.SET_USER,
     payload: user
 });
 

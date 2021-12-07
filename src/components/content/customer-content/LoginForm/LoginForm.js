@@ -1,6 +1,6 @@
 import React from 'react';
 import {useFormik} from 'formik';
-import {useHistory} from "react-router-dom";
+import {useHistory, withRouter} from "react-router-dom";
 import {observer} from "mobx-react-lite";
 import {login} from "../../../../http/userAPI";
 import {useDispatch, useSelector} from "react-redux";
@@ -25,14 +25,34 @@ const LoginForm = observer(() => {
     const history = useHistory()
     const dispatch = useDispatch()
     const user = useSelector(state => state.users.user)
+
     const formik = useFormik({
         initialValues: {
             email: 'admin@example.com',
             password: 'passwordsecret',
         },
         validate,
-        onSubmit:  () => {
-            login(formik.values.email, formik.values.password, dispatch, history)
+        onSubmit: async () => {
+            await login(formik.values.email, formik.values.password, dispatch)
+            switch (user.role) {
+                case 1: {
+                    history.push({
+                        pathname: '/access_succeed_admin',
+                    })
+                    break;
+                }
+                case 2: {
+                    history.push('/access_succeed_master')
+                    break;
+                }
+                case 3: {
+                    history.push('/access_succeed_client')
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
         }
     })
     const loginPageStyle = {
@@ -81,6 +101,6 @@ const LoginForm = observer(() => {
             </form>
         </div>
     )
-        ;
+
 })
-export default LoginForm
+export default withRouter(LoginForm)

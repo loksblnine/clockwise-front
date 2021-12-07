@@ -3,7 +3,6 @@ import {useFormik} from 'formik';
 import * as constants from "../../../../constants";
 import {useHistory, useLocation, withRouter} from "react-router-dom";
 import './OrderStyles.css'
-import {observer} from "mobx-react-lite";
 import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
@@ -39,7 +38,7 @@ const orderPageStyle = {
     boxShadow: "0px 0px 10px 10px rgba(0,0,0,0.15)"
 };
 
-const OrderForm = observer(({props}) => {
+const OrderForm = () => {
     const history = useHistory()
     const location = useLocation()
 
@@ -157,5 +156,5 @@ const OrderForm = observer(({props}) => {
             </form>
         </div>
     );
-})
+}
 export default withRouter(OrderForm);

@@ -3,11 +3,10 @@ import * as constants from "../../../../constants";
 import {Redirect, useHistory, useLocation} from 'react-router-dom'
 import './MasterView.css'
 import {Spinner} from "react-bootstrap";
-import {observer} from "mobx-react-lite";
 import {getFreeMasters} from "../../getData";
 import {sendConfirmationOrder} from "../../workWithData";
 
-const MasterView = observer(() => {
+const MasterView = () => {
     const [masters, setMasters] = useState([])
     const [loading, setLoading] = useState(true)
 
@@ -88,6 +87,6 @@ const MasterView = observer(() => {
             </button>
         </div>
     );
-})
+}
 
 export default MasterView;

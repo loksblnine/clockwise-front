@@ -116,7 +116,6 @@ const RegistrationForm = observer(() => {
                 </div>
 
                 <div className="form-group form-group-inline mt-5">
-                    {/*todo дизейбл кнопки по ошибкам */}
                     <button type="submit" className="btn btn-primary" disabled={!formik.values.isAgreed || formik.errors.hasOwnProperty('password')|| formik.errors.hasOwnProperty('confirmPassword')}>
                         Регистрация
                     </button>
