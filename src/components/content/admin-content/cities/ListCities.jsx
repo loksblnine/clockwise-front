@@ -2,9 +2,9 @@ import React, {useEffect} from "react";
 import EditCity from "./EditCity";
 import InputCity from "./InputCity";
 import {useDispatch, useSelector} from "react-redux";
-import {getCitiesIntoStore} from "../../getData";
 import {Spinner} from "react-bootstrap";
 import {deleteCity} from "../../workWithData";
+import {setCities} from "../../../../store/actions/cityActions";
 
 const ListCities = () => {
     const cities = useSelector((state) => state.cities.items)
@@ -12,10 +12,9 @@ const ListCities = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (cities.length <= 0) {
-            getCitiesIntoStore(dispatch)
-        }
-    }, [dispatch, cities.length])
+        if (cities.length <= 0)
+            dispatch(setCities())
+    }, [dispatch])
 
     if (!isReady) {
         return <Spinner animation="grow"/>

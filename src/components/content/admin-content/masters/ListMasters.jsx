@@ -3,9 +3,11 @@ import EditMaster from "./EditMaster";
 import InputMaster from "./InputMaster";
 import {Spinner} from "react-bootstrap";
 import AddCityDependency from "./AddCityDependency";
-import {getCitiesIntoStore, getMastersIntoStore} from "../../getData";
+import {getMastersIntoStore} from "../../getData";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteCityAtMaster, deleteMaster} from "../../workWithData";
+import {setMasters} from "../../../../store/actions/masterActions";
+import {setCities} from "../../../../store/actions/cityActions";
 
 const WorkIn = ({master}) => {
     const {cities} = useSelector((state) => state)
@@ -37,19 +39,16 @@ const ListMasters = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (masters.length <= 0) {
-            getMastersIntoStore(dispatch, page)
-        }
-        if (cities.length <= 0) {
-            getCitiesIntoStore(dispatch)
-        }
-    }, [dispatch, cities.length, masters.length, page])
+        if (cities.length <= 0)
+            dispatch(setCities())
+        if (masters.length <= 0)
+            dispatch(setMasters(page))
+    }, [dispatch])
 
     const handleNextMasters = (e) => {
         e.target.disabled = true
-        getMastersIntoStore(dispatch, page)
-            .then(() =>
-                e.target.disabled = false)
+        dispatch(setMasters(page))
+        e.target.disabled = false
     }
 
     if (!isReady) {

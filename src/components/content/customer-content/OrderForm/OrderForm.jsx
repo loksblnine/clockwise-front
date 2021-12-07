@@ -49,8 +49,7 @@ const OrderForm = () => {
     const dispatch = useDispatch()
     useEffect(() => {
         if (!isReady) {
-            getCitiesIntoStore(dispatch)
-            // dispatch(setCities())
+            dispatch(setCities())
         }
     }, [dispatch])
 

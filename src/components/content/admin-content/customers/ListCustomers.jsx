@@ -1,10 +1,10 @@
 import React, {useEffect} from "react";
 import EditCustomer from "./EditCustomer";
 import InputCustomer from "./InputCustomer";
-import {getCustomersIntoStore} from "../../getData";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import {deleteCustomer} from "../../workWithData";
+import {setCustomers, setReadyCustomers} from "../../../../store/actions/customerActions";
 
 const ListCustomers = () => {
     const customers = useSelector((state) => state.customers.items)
@@ -12,19 +12,20 @@ const ListCustomers = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (customers.length <= 0) {
-            getCustomersIntoStore(dispatch, page)
-        }
-    }, [dispatch, customers.length, page])
+        if (customers.length <= 0)
+            dispatch(setCustomers(page))
+    }, [dispatch])
+
     const handleNextCustomers = (e) => {
-        e.target.disabled = true
-        getCustomersIntoStore(dispatch, page)
-            .then(() =>
-                e.target.disabled = false)
+        dispatch(setReadyCustomers(true))
+        dispatch(setCustomers(page))
+        dispatch(setReadyCustomers(false))
     }
+
     if (!isReady) {
         return <Spinner animation="grow"/>
     }
+
     return (
         <div className="router">
             <h2 className="text-left mt-5">Список покупателей</h2>
@@ -57,7 +58,8 @@ const ListCustomers = () => {
             {
                 loadNext &&
                 <div className="col text-center">
-                    <button className="btn btn-primary" onClick={(e) => handleNextCustomers(e)}> Еще покупатели...
+                    <button className="btn btn-primary" onClick={(e) => handleNextCustomers(e)} disabled={!isReady}> Еще
+                        покупатели...
                     </button>
                 </div>
             }

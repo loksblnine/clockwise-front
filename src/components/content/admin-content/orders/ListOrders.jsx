@@ -1,10 +1,10 @@
 import React, {useEffect} from "react";
 import EditOrder from "./EditOrder";
 import * as constants from "../../../../constants";
-import {getOrdersIntoStore} from "../../getData";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import {deleteOrder} from "../../workWithData";
+import {setOrders} from "../../../../store/actions/orderActions";
 
 const ListOrders = () => {
     const orders = useSelector((state => state.orders.items))
@@ -12,15 +12,13 @@ const ListOrders = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (orders.length <= 0) {
-            getOrdersIntoStore(dispatch, page)
-        }
-    }, [dispatch, orders.length, page])
+        if (orders.length <= 0)
+            dispatch(setOrders(page))
+    }, [dispatch])
     const handleNextOrders = (e) => {
         e.target.disabled = true
-        getOrdersIntoStore(dispatch, page)
-            .then(() =>
-                e.target.disabled = false)
+        dispatch(setOrders(page))
+        e.target.disabled = false
     }
     if (!isReady) {
         return <Spinner animation="grow"/>

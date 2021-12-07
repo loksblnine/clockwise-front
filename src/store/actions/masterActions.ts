@@ -1,4 +1,5 @@
 import * as constants from "../../constants";
+import {instance} from "../../http/headerPlaceholder.instance";
 
 type Master = {
     master_id: number
@@ -8,10 +9,18 @@ type Master = {
     isApproved: boolean
 }
 
-export const setMasters = (masters: any []) => ({
-    type: constants.ACTIONS.MASTERS.SET_MASTERS,
-    payload: masters
-});
+export const setMasters = (page: number) => {
+    return async (dispatch: any) => {
+        const {data}: any = await instance({
+            method: "get",
+            url: `/masters/offset/${page}`
+        })
+        dispatch({
+            type: constants.ACTIONS.MASTERS.SET_MASTERS,
+            payload: data
+        });
+    }
+}
 
 export const setReadyMasters = (isReady: boolean) => ({
     type: constants.ACTIONS.MASTERS.SET_READY_MASTERS,

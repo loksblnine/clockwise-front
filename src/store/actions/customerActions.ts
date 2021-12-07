@@ -1,4 +1,5 @@
 import * as constants from "../../constants";
+import {instance} from "../../http/headerPlaceholder.instance";
 
 type Customer = {
     customer_id: number,
@@ -7,12 +8,20 @@ type Customer = {
     isApproved: boolean
 }
 
-export const setCustomers = (customers: any []) => ({
-    type: constants.ACTIONS.CUSTOMERS.SET_CUSTOMERS,
-    payload: customers
-});
+export const setCustomers = (page: number) => {
+    return async (dispatch: any) => {
+        const {data}: any = await instance({
+            method: "get",
+            url: `/customers/offset/${page}`
+        })
+        dispatch({
+            type: constants.ACTIONS.CUSTOMERS.SET_CUSTOMERS,
+            payload: data
+        });
+    }
+}
 
-export const setReadyCustomers = (isReady: boolean) => ({
+export const setReadyCustomers = () => (isReady: boolean) => ({
     type: constants.ACTIONS.CUSTOMERS.SET_READY_CUSTOMERS,
     payload: isReady
 });

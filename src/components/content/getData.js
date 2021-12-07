@@ -6,11 +6,7 @@ import {setMasters} from "../../store/actions/masterActions";
 import {setCustomers} from "../../store/actions/customerActions";
 
 export const getCitiesIntoStore = async (dispatch) => {
-    const {data} = await instance({
-        method: "get",
-        url: "/cities"
-    })
-    console.log(data)
+
     // .then(({data}) => {
     //     console.log(data)
     //     dispatch(setCities(data))
