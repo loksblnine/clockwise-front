@@ -7,6 +7,7 @@ import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import {getCitiesIntoStore} from "../../getData";
+import {setCities} from "../../../../store/actions/cityActions";
 
 const validate = (values) => {
     const errors = {};
@@ -49,6 +50,7 @@ const OrderForm = () => {
     useEffect(() => {
         if (!isReady) {
             getCitiesIntoStore(dispatch)
+            // dispatch(setCities())
         }
     }, [dispatch])
 

@@ -9,7 +9,7 @@ export const deleteCity = async (id, dispatch) => {
             method: "DELETE",
             url: `/cities/${id}`
         })
-            .then(async () => {
+            .then(() => {
                     dispatch({
                         type: constants.ACTIONS.CITIES.DELETE_CITY,
                         payload: id

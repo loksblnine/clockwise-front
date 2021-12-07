@@ -1,38 +1,34 @@
 import {toast} from "react-toastify";
 import {instance} from "../../http/headerPlaceholder.instance";
 import * as constants from "../../constants";
+import {setCities} from "../../store/actions/cityActions";
+import {setMasters} from "../../store/actions/masterActions";
+import {setCustomers} from "../../store/actions/customerActions";
 
 export const getCitiesIntoStore = async (dispatch) => {
-    instance({
+    const {data} = await instance({
         method: "get",
         url: "/cities"
     })
-        .then(({data}) => {
-            dispatch({
-                type: constants.ACTIONS.CITIES.SET_CITIES,
-                payload: data
-            })
-        })
+    console.log(data)
+    // .then(({data}) => {
+    //     console.log(data)
+    //     dispatch(setCities(data))
+    // })
 }
 export const getMastersIntoStore = async (dispatch, page) => {
     instance({
         method: "get",
         url: `/masters/offset/${page}`
     })
-        .then(({data}) => dispatch({
-            type: constants.ACTIONS.MASTERS.SET_MASTERS,
-            payload: data
-        }))
+        .then(({data}) => dispatch(setMasters(data)))
 }
 export const getCustomersIntoStore = async (dispatch, page) => {
     instance({
         method: "get",
         url: `/customers/offset/${page}`
     })
-        .then(({data}) => dispatch({
-            type: constants.ACTIONS.CUSTOMERS.SET_CUSTOMERS,
-            payload: data
-        }))
+        .then(({data}) => dispatch(setCustomers(data)))
 }
 export const getOrdersIntoStore = async (dispatch, page, role = 1, id) => {
     switch (role) {
