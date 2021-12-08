@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
-import {postCustomer} from "../../workWithData";
+import {addCustomer} from "../../../../store/actions/customerActions";
 
 const InputCustomer = () => {
     const [customer_name, setCustomerName] = useState("")
@@ -12,8 +12,8 @@ const InputCustomer = () => {
     const onSubmitForm = async (e) => {
         e.preventDefault();
         const body = {customer_name, customer_email}
-        postCustomer(body, dispatch)
-            .then(() => inputRef.current.click())
+        dispatch(addCustomer(body))
+        inputRef.current.click()
     }
     return (
         <div>

@@ -3,8 +3,7 @@ import EditCustomer from "./EditCustomer";
 import InputCustomer from "./InputCustomer";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
-import {deleteCustomer} from "../../workWithData";
-import {setCustomers, setReadyCustomers} from "../../../../store/actions/customerActions";
+import {deleteCustomer, setCustomers} from "../../../../store/actions/customerActions";
 
 const ListCustomers = () => {
     const customers = useSelector((state) => state.customers.items)
@@ -17,9 +16,9 @@ const ListCustomers = () => {
     }, [dispatch])
 
     const handleNextCustomers = (e) => {
-        dispatch(setReadyCustomers(true))
+        e.target.disabled = true
         dispatch(setCustomers(page))
-        dispatch(setReadyCustomers(false))
+        e.target.disabled = false
     }
 
     if (!isReady) {
@@ -48,7 +47,7 @@ const ListCustomers = () => {
                         <td><EditCustomer customer={customer}/></td>
                         <td>
                             <button className="btn btn-danger"
-                                    onClick={() => deleteCustomer(customer.customer_id, dispatch)}>Удалить
+                                    onClick={() => dispatch(deleteCustomer(customer.customer_id))}>Удалить
                             </button>
                         </td>
                     </tr>

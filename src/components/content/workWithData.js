@@ -3,42 +3,6 @@ import * as constants from "../../constants";
 import {toast} from "react-toastify";
 
 //region delete
-export const deleteCity = async (id, dispatch) => {
-    try {
-        instance({
-            method: "DELETE",
-            url: `/cities/${id}`
-        })
-            .then(() => {
-                    dispatch({
-                        type: constants.ACTIONS.CITIES.DELETE_CITY,
-                        payload: id
-                    })
-                }
-            )
-            .then(() => toast("Город удален"))
-    } catch (e) {
-        toast.info("Server is busy at this moment")
-    }
-}
-
-export const deleteCustomer = async (id, dispatch) => {
-    try {
-        instance({
-            method: "DELETE",
-            url: `/customers/${id}`
-        })
-            .then(() =>
-                dispatch({
-                    type: constants.ACTIONS.CUSTOMERS.DELETE_CUSTOMER,
-                    payload: id
-                })
-            )
-            .then(() => toast("Покупатель удален"))
-    } catch (e) {
-        toast.info("Server is busy at this moment")
-    }
-}
 export const deleteMaster = async (id, dispatch) => {
     try {
         instance({
@@ -96,41 +60,6 @@ export const deleteOrder = async (id, dispatch) => {
 }
 //endregion
 //region update
-export const editCity = (body, id, dispatch) => {
-    try {
-        instance({
-            method: "PUT",
-            data: body,
-            url: `/cities/${id}`
-        })
-            .then(({data}) => dispatch({
-                type: constants.ACTIONS.CITIES.UPDATE_CITY,
-                payload: data[0]
-            }))
-            .then(() => toast("Изменения сохранены"))
-            .catch(() => toast.error("Данные не обновлены"))
-    } catch (e) {
-        toast.info("Server is busy at this moment")
-    }
-}
-export const editCustomer = (body, id, dispatch) => {
-    try {
-        instance({
-            method: "PUT",
-            data: body,
-            url: `/customers/${id}`
-        })
-            .then(({data}) =>
-                dispatch({
-                    type: constants.ACTIONS.CUSTOMERS.UPDATE_CUSTOMER,
-                    payload: data
-                }))
-            .then(() => toast("Изменения сохранены"))
-            .catch(() => toast.error("Данные не обновлены"))
-    } catch (e) {
-        toast.info("Server is busy at this moment")
-    }
-}
 export const editMaster = (body, id, dispatch) => {
     try {
         instance({
@@ -172,23 +101,7 @@ export const editOrder = (body, id, dispatch) => {
 
 //endregion
 //region add
-export const postCity = async (body, dispatch) => {
-    try {
-        instance({
-            method: "POST",
-            data: body,
-            url: "/cities"
-        })
-            .then(({data}) => dispatch({
-                type: constants.ACTIONS.CITIES.ADD_CITY,
-                payload: data
-            }))
-            .then(() => toast("Город добавлен"))
-            .catch(() => toast.error("Город не добавлен"))
-    } catch (e) {
-        toast.info("Server is busy at this moment")
-    }
-}
+
 export const postMaster = async (body, dispatch) => {
     try {
         instance({
@@ -223,25 +136,7 @@ export const addCityAtMaster = async (body, dispatch) => {
         toast.info("Server is busy at this moment")
     }
 }
-export const postCustomer = async (body, dispatch) => {
-    try {
-        instance({
-            method: "POST",
-            data: body,
-            url: "/customers"
-        })
-            .then(({data}) => {
-                dispatch({
-                    type: constants.ACTIONS.CUSTOMERS.ADD_CUSTOMER,
-                    payload: data
-                })
-            })
-            .then(() => toast(`Покупатель ${body.customer_name} добавлен`))
-            .catch(() => toast.error("Покупатель не добавлен"))
-    } catch (e) {
-        toast.info("Server is busy at this moment")
-    }
-}
+
 export const postOrder = async (body, dispatch) => {
     try {
         body.order.time = `${Number(body.order.time.split(':')[0])}:00`

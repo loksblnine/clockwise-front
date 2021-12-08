@@ -1,18 +1,17 @@
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
-import {editCustomer} from "../../workWithData";
+import {updateCustomer} from "../../../../store/actions/customerActions";
 
 const EditCustomer = ({customer}) => {
     const dispatch = useDispatch()
     const [customer_name, setCustomerName] = useState(customer.customer_name)
     const [customer_email, setCustomerEmail] = useState(customer.customer_email)
     const inputRef = React.useRef(null)
-    const updateCustomer = async (e) => {
+    const updateCustomer1 = async (e) => {
         e.preventDefault()
         const body = {customer_name, customer_email}
-        editCustomer(body, customer.customer_id, dispatch)
-            .then(() =>
-                inputRef.current.click())
+        dispatch(updateCustomer(body, customer.customer_id))
+        inputRef.current.click()
     }
     return (
         <div>
@@ -25,7 +24,7 @@ const EditCustomer = ({customer}) => {
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
-                        <form onSubmit={event => updateCustomer(event)}>
+                        <form onSubmit={event => updateCustomer1(event)}>
                             <div className="modal-header">
                                 <h2 className="modal-title" id="exampleModalLabel">Редактировать покупателя</h2>
                                 <button type="button" className="close" data-dismiss="modal">

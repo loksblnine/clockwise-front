@@ -26,17 +26,44 @@ export const setReadyCustomers = () => (isReady: boolean) => ({
     payload: isReady
 });
 
-export const updateCustomer = (customer: Customer) => ({
-    type: constants.ACTIONS.CUSTOMERS.UPDATE_CUSTOMER,
-    payload: customer
-});
+export const updateCustomer = (customer: Customer, id: number) => {
+    return async (dispatch: any) => {
+        const {data} = await instance({
+            method: "PUT",
+            data: customer,
+            url: `/customers/${id}`
+        })
+        dispatch({
+            type: constants.ACTIONS.CUSTOMERS.UPDATE_CUSTOMER,
+            payload: data
+        });
+    }
+}
 
-export const addCustomer = (customer: Customer) => ({
-    type: constants.ACTIONS.CUSTOMERS.ADD_CUSTOMER,
-    payload: customer
-});
+export const addCustomer = (customer: Customer) => {
+    return async (dispatch: any) => {
+        const {data} = await instance({
+            method: "POST",
+            data: customer,
+            url: "/customers"
+        })
+        dispatch({
+            type: constants.ACTIONS.CUSTOMERS.ADD_CUSTOMER,
+            payload: data
+        })
 
-export const deleteCustomer = (id: number) => ({
-    type: constants.ACTIONS.CUSTOMERS.DELETE_CUSTOMER,
-    payload: id
-});
+    }
+}
+
+export const deleteCustomer = (id: number) => {
+    return async (dispatch: any) => {
+        await instance({
+            method: "DELETE",
+            url: `/customers/${id}`
+        })
+        dispatch({
+            type: constants.ACTIONS.CUSTOMERS.DELETE_CUSTOMER,
+            payload: id
+        });
+    }
+}
