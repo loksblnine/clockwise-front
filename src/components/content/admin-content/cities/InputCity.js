@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
-import {postCity} from "../../workWithData";
+import {addCity} from "../../../../store/actions/cityActions";
 
 const InputCity = () => {
     const [city_name, setCityName] = useState("")
@@ -11,10 +11,8 @@ const InputCity = () => {
     const onSubmitForm = async e => {
         e.preventDefault()
         const body = {city_name}
-        postCity(body, dispatch)
-            .then(() =>
-                inputRef.current.click()
-            )
+        dispatch(addCity(body))
+        inputRef.current.click()
     }
     return (
         <div>

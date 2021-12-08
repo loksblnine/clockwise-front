@@ -18,22 +18,50 @@ export const setCities = () => {
         })
     }
 }
-export const setReadyCities = (bool: boolean) => ({
-    type: constants.ACTIONS.CITIES.SET_READY_CITIES,
-    payload: bool
-});
+export const setReadyCities = (bool: boolean) => (dispatch: any) => {
+    dispatch({
+        type: constants.ACTIONS.CITIES.SET_READY_CITIES,
+        payload: bool
+    });
+}
 
-export const updateCity = (city: City) => ({
-    type: constants.ACTIONS.CITIES.UPDATE_CITY,
-    payload: city
-});
+export const updateCity = (city: City, city_id: number) => {
+    return async (dispatch: any) => {
+        const {data} = await instance({
+            method: "PUT",
+            data: city,
+            url: `/cities/${city_id}`
+        })
+        dispatch({
+            type: constants.ACTIONS.CITIES.UPDATE_CITY,
+            payload: data
+        });
+    }
+}
 
-export const addCity = (city: City) => ({
-    type: constants.ACTIONS.CITIES.ADD_CITY,
-    payload: city
-});
+export const addCity = (city: City) => {
+    return async (dispatch: any) => {
+        const {data} = await instance({
+            method: "POST",
+            data: city,
+            url: "/cities"
+        })
+        dispatch({
+            type: constants.ACTIONS.CITIES.ADD_CITY,
+            payload: data
+        });
+    }
+}
 
-export const deleteCity = (id: number) => ({
-    type: constants.ACTIONS.CITIES.DELETE_CITY,
-    payload: id
-});
+export const deleteCity = (id: number) => {
+    return async (dispatch: any) => {
+        await instance({
+            method: "DELETE",
+            url: `/cities/${id}`
+        })
+        dispatch({
+            type: constants.ACTIONS.CITIES.DELETE_CITY,
+            payload: id
+        });
+    }
+}

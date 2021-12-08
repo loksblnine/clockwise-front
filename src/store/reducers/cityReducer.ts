@@ -13,7 +13,6 @@ const initialState: initialState = {
 const cityReducer = (state = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
         case constants.ACTIONS.CITIES.SET_CITIES: {
-
             return {
                 ...state,
                 items: action.payload,
@@ -21,7 +20,7 @@ const cityReducer = (state = initialState, action: { type: string; payload: any;
             };
         }
         case constants.ACTIONS.CITIES.UPDATE_CITY: {
-            const array = state.items.filter((item: any) => item.city_id !== action.payload.city_id).concat(action.payload)
+            const array = state.items.filter((item: any) => item.city_id !== action.payload[0].city_id).concat(action.payload)
             return {
                 ...state,
                 items: array,

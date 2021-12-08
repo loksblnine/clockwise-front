@@ -3,8 +3,7 @@ import EditCity from "./EditCity";
 import InputCity from "./InputCity";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
-import {deleteCity} from "../../workWithData";
-import {setCities} from "../../../../store/actions/cityActions";
+import {deleteCity, setCities} from "../../../../store/actions/cityActions";
 
 const ListCities = () => {
     const cities = useSelector((state) => state.cities.items)
@@ -40,7 +39,7 @@ const ListCities = () => {
                         <td><EditCity city={city}/></td>
                         <td>
                             <button className="btn btn-danger"
-                                    onClick={() => deleteCity(city.city_id, dispatch)}>Удалить
+                                    onClick={() => dispatch(deleteCity(city.city_id))}>Удалить
                             </button>
                         </td>
                     </tr>
