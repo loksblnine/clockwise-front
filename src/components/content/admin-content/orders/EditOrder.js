@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import * as constants from "../../../../constants";
 import {observer} from "mobx-react-lite";
 import {useDispatch, useSelector} from "react-redux";
-import {editOrder} from "../../workWithData";
+import {updateOrder} from "../../../../store/actions/orderActions";
 
 const EditOrder = observer((initialOrder) => {
 
@@ -19,11 +19,12 @@ const EditOrder = observer((initialOrder) => {
         time: initialOrder.order?.order_time?.split('T')[1]?.split('.')[0]
     });
 
-    const updateOrder = async (e) => {
+    const updateOrder1 = async (e) => {
         e.preventDefault()
         const body = {order}
-        editOrder(body, order.order_id, dispatch)
-            .then(() => inputRef.current.click())
+        body.order.time = `${Number(body.order.time.split(':')[0])}:00`
+        body.order.order_time = body.order.date + 'T' + body.order.time
+        dispatch(updateOrder(body.order, order.order_id))
     }
 
     const handleChange = (e) => {
@@ -49,7 +50,7 @@ const EditOrder = observer((initialOrder) => {
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
-                        <form onSubmit={event => updateOrder(event)}>
+                        <form onSubmit={event => updateOrder1(event)}>
                             <div className="modal-header">
                                 <h2 className="modal-title" id="exampleModalLabel">Редактировать заказ</h2>
                                 <button type="button" className="close" data-dismiss="modal">

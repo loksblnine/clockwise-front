@@ -29,10 +29,19 @@ export const setReadyOrders = (isReady: boolean) => ({
     payload: isReady
 });
 
-export const updateOrder = (order: Order) => ({
-    type: constants.ACTIONS.ORDERS.UPDATE_ORDER,
-    payload: order
-});
+export const updateOrder = (order: Order, id: number) => {
+    return async (dispatch: (arg0: { type: string; payload: never; }) => void) => {
+        const {data} = await instance({
+            method: "PUT",
+            data: order,
+            url: `/orders/${id}`
+        })
+        dispatch({
+            type: constants.ACTIONS.ORDERS.UPDATE_ORDER,
+            payload: data
+        });
+    }
+}
 
 export const addOrder = (order: Order) => ({
     type: constants.ACTIONS.ORDERS.ADD_ORDER,
