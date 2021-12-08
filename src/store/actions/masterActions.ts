@@ -34,7 +34,6 @@ export const updateMaster = (master: Master, id: number) => {
             data: master,
             url: `/masters/${id}`
         })
-        console.log(data)
         dispatch({
             type: constants.ACTIONS.MASTERS.UPDATE_MASTER,
             payload: data

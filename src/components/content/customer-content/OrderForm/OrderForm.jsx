@@ -6,7 +6,6 @@ import './OrderStyles.css'
 import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
-import {getCitiesIntoStore} from "../../getData";
 import {setCities} from "../../../../store/actions/cityActions";
 
 const validate = (values) => {
@@ -51,7 +50,7 @@ const OrderForm = () => {
         if (!isReady) {
             dispatch(setCities())
         }
-    }, [dispatch])
+    }, [dispatch, isReady])
 
     const formik = useFormik({
         initialValues: {
