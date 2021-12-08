@@ -3,7 +3,6 @@ import EditMaster from "./EditMaster";
 import InputMaster from "./InputMaster";
 import {Spinner} from "react-bootstrap";
 import AddCityDependency from "./AddCityDependency";
-import {getMastersIntoStore} from "../../getData";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteCityAtMaster, deleteMaster} from "../../workWithData";
 import {setMasters} from "../../../../store/actions/masterActions";
