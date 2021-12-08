@@ -4,8 +4,7 @@ import InputMaster from "./InputMaster";
 import {Spinner} from "react-bootstrap";
 import AddCityDependency from "./AddCityDependency";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteCityAtMaster, deleteMaster} from "../../workWithData";
-import {setMasters} from "../../../../store/actions/masterActions";
+import {setMasters, deleteCityAtMaster, deleteMaster} from "../../../../store/actions/masterActions";
 import {setCities} from "../../../../store/actions/cityActions";
 
 const WorkIn = ({master}) => {
@@ -21,7 +20,11 @@ const WorkIn = ({master}) => {
                 master?.deps?.map(d => {
                         return (
                             <div key={d}> {cities.items.find(city => city.city_id === d)?.city_name}
-                                <button className="btn" onClick={() => deleteCityAtMaster(d, master.master_id, dispatch)}>
+                                <button className="btn"
+                                        onClick={() => dispatch(deleteCityAtMaster({
+                                            city_id: d,
+                                            master_id: master.master_id
+                                        }))}>
                                     <span>&times;</span>
                                 </button>
                             </div>
@@ -85,7 +88,7 @@ const ListMasters = () => {
                             <td><EditMaster master={master}/></td>
                             <td>
                                 <button className="btn btn-danger"
-                                        onClick={() => deleteMaster(master.master_id, dispatch)}>Удалить
+                                        onClick={() => dispatch(deleteMaster(master.master_id))}>Удалить
                                 </button>
                             </td>
                         </tr>

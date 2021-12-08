@@ -39,6 +39,18 @@ const userReducer = (state = initialState, action: { type: string; payload: any;
                 data: action.payload
             };
         }
+        case constants.ACTIONS.USER.MASTER.ADD_CITY: {
+            return {
+                ...state,
+                data: action.payload
+            };
+        }
+        case constants.ACTIONS.USER.MASTER.DELETE_CITY: {
+            return {
+                ...state,
+                data: action.payload
+            };
+        }
         case constants.ACTIONS.USER.SET_READY_USER:
             return {
                 ...state,

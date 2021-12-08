@@ -1,5 +1,6 @@
 import * as constants from "../../constants";
 import {login} from "../../http/userAPI";
+import {instance} from "../../http/headerPlaceholder.instance";
 
 type User = {
     role: number,
@@ -18,7 +19,30 @@ export const setUser = (email: string, password: string) => {
         )
     }
 }
-
+export const setUserData = (type: string, email: string) => {
+    return async (dispatch: any) => {
+        const {data} = await instance({
+            method: "get",
+            url: `/${type}/email/${email}`
+        })
+        dispatch({
+            type: constants.ACTIONS.USER.SET_DATA,
+            payload: data
+        })
+    }
+}
+export const setMasterNewCity = (type: string, email: string) => {
+    return async (dispatch: any) => {
+        const {data} = await instance({
+            method: "get",
+            url: `/${type}/email/${email}`
+        })
+        dispatch({
+            type: constants.ACTIONS.USER.SET_DATA,
+            payload: data
+        })
+    }
+}
 export const setReadyUser = (bool: boolean) => ({
     type: constants.ACTIONS.USER.SET_READY_USER,
     payload: bool

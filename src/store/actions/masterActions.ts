@@ -67,8 +67,41 @@ export const addCityToMaster = (body: any) => {
         });
     }
 }
+export const deleteCityAtMaster = (body: any) => {
+    return async (dispatch: any) => {
+        await instance({
+            method: "DELETE",
+            data: body,
+            url: `/deps`
+        })
+        dispatch({
+            type: constants.ACTIONS.MASTERS.DELETE_CITY_AT_MASTER,
+            payload: body
+        });
+    }
+}
+export const approveOrder = (id: number) => {
+    return async (dispatch: any) => {
+        instance({
+            method: "put",
+            url: `/auth/approve-order/${id}`
+        })
+        dispatch({
+            type: constants.ACTIONS.MASTERS.APPROVE_ORDER,
+            payload: id
+        });
+    }
+}
 
-export const deleteMaster = (id: number) => ({
-    type: constants.ACTIONS.MASTERS.DELETE_MASTER,
-    payload: id
-});
+export const deleteMaster = (id: number) => {
+    return async (dispatch: any) => {
+        instance({
+            method: "DELETE",
+            url: `/masters/${id}`
+        })
+        dispatch({
+            type: constants.ACTIONS.MASTERS.DELETE_MASTER,
+            payload: id
+        });
+    }
+}

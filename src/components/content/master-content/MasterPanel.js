@@ -3,57 +3,46 @@ import '../Panel.css'
 import * as constants from "../../../constants";
 import {Spinner} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
-import {instance} from "../../../http/headerPlaceholder.instance";
-import {deleteCityAtMaster} from "../workWithData";
 import {setOrdersMaster} from "../../../store/actions/orderActions";
+import {setUserData} from "../../../store/actions/userActions";
+import {setCities} from "../../../store/actions/cityActions";
+import {approveOrder, deleteCityAtMaster} from "../../../store/actions/masterActions";
 
 const MasterPanel = () => {
     const dispatch = useDispatch()
-    const email = useSelector((state) => state.users.user.email) //todo reselect useMemo - args useCallback - function
     const isReady = useSelector((state) => state.users)
+
     const orders = useSelector((state) => state.orders.items)
+    const ordersReady = useSelector((state) => state.orders.isReady)
     const cities = useSelector((state) => state.cities.items)
-    const master = useSelector((state) => state.users.data?.master)
+
     const deps = useSelector((state) => state.users.data?.deps)
+    const master = useSelector((state) => state.users.data?.master)
+
+    const email = useSelector((state) => state.users.user.email) //todo reselect (useMemo - args) (useCallback - function)
+
     const {loadNext, page} = useSelector((state) => state.orders)
 
     useEffect(async () => {
-        if (orders.length <= 0) {
-            instance({
-                method: "get",
-                url: `/masters/email/${email}`
-            })
-                .then(({data}) => {
-                    dispatch({
-                        type: constants.ACTIONS.USER.SET_DATA,
-                        payload: data
-                    })
-                    dispatch(setOrdersMaster(page, master.master_id))
-                })
-        }
-    }, [dispatch, page, email]);
+        if (!master?.master_id)
+            await dispatch(setUserData("masters", email))
+        if (cities.length <= 0)
+            dispatch(setCities())
+        if (master?.master_id && orders.length <= 0)
+            dispatch(setOrdersMaster(page, master?.master_id))
+    }, [master, master?.master_id]);
 
     const handleNextOrders = (e) => {
         e.target.disabled = true
         dispatch(setOrdersMaster(page, master.master_id))
         e.target.disabled = false
     }
-
     const handleApproveOrder = (order) => {
-        instance({
-            method: "put",
-            url: `/auth/approve-order/${order.order_id}`
-        }).then(() =>
-            dispatch({
-                type: constants.ACTIONS.MASTERS.APPROVE_ORDER,
-                payload: {...order, isDone: true}
-            }))
+        dispatch(approveOrder(order.order_id))
     }
-
-    if (!isReady) {
+    if (!isReady && !ordersReady) {
         return <Spinner animation="grow"/>
     }
-
     return (
         <div className="router">
             <h2 className="text-left mt-5">Привет, {master?.master_name}</h2>
@@ -62,11 +51,15 @@ const MasterPanel = () => {
                     <h4 className="text-left mt-5">Ваш список городов: </h4>
                     {
                         deps.map(d => {
-                            return <div>
-                                {cities.find(c => c.city_id === d).city_name}
+                            return <div key={d}>
+                                {cities.find(c => c.city_id === d)?.city_name}
                                 <button className="btn"
-                                        onClick={() => deleteCityAtMaster(d, master.master_id, dispatch)}>
-                                    <span>&times;</span></button>
+                                        onClick={() => dispatch(deleteCityAtMaster({
+                                            city_id: d,
+                                            master_id: master.master_id
+                                        }))}>
+                                    <span>&times;</span>
+                                </button>
                             </div>
                         })
                     }
@@ -75,6 +68,7 @@ const MasterPanel = () => {
                     <h4 className="text-left mt-5">Ваш список городов пуст</h4>
                 </div>
             }
+            {/*{isReady && <AddCityDependency master={master}/>}*/}
             {orders.length > 0 ?
                 <div>
                     <h4 className="text-left mt-5">Ваш список заказов: </h4>

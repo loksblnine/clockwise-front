@@ -39,7 +39,11 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
             };
         }
         case constants.ACTIONS.MASTERS.APPROVE_ORDER: {
-            const array = state.items.filter((item: any) => item.order_id !== action.payload.order_id).concat(action.payload)
+            const array = state.items.map((item: any) => {
+                if (item.order_id === action.payload) {
+                    item.isDone = true
+                }
+            })
             return {
                 ...state,
                 items: array,

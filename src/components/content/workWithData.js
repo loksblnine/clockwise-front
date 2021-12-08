@@ -1,88 +1,6 @@
 import {instance} from "../../http/headerPlaceholder.instance";
-import * as constants from "../../constants";
 import {toast} from "react-toastify";
 
-//region delete
-export const deleteMaster = async (id, dispatch) => {
-    try {
-        instance({
-            method: "DELETE",
-            url: `/masters/${id}`
-        })
-            .then(() =>
-                dispatch({
-                    type: constants.ACTIONS.MASTERS.DELETE_MASTER,
-                    payload: id
-                })
-            )
-            .then(() => toast("Мастер удален"))
-    } catch (e) {
-        toast.info("Server is busy at this moment")
-    }
-}
-
-export const deleteCityAtMaster = async (city_id, master_id, dispatch) => {
-    const body = {city_id, master_id}
-    try {
-        instance({
-            method: "DELETE",
-            data: body,
-            url: `/deps`
-        })
-            .then(() => {
-                dispatch({
-                    type: constants.ACTIONS.MASTERS.DELETE_CITY_AT_MASTER,
-                    payload: body
-                })
-            })
-            .then(() => toast("Город у мастера удален"))
-    } catch (e) {
-        toast.info("Server is busy at this moment")
-    }
-}
-
-//endregion
-//region update
-export const editMaster = (body, id, dispatch) => {
-    try {
-        instance({
-            method: "PUT",
-            data: body,
-            url: `/masters/${id}`
-        })
-            .then(({data}) =>
-                dispatch({
-                    type: constants.ACTIONS.MASTERS.UPDATE_MASTER,
-                    payload: data
-                }))
-            .then(() => toast("Изменения сохранены"))
-            .catch(() => toast.error("Данные не обновлены"))
-    } catch (e) {
-        toast.info("Server is busy at this moment")
-    }
-}
-
-//endregion
-//region add
-export const addCityAtMaster = async (body, dispatch) => {
-    try {
-        instance({
-            method: "post",
-            data: body,
-            url: '/deps'
-        })
-            .then(({data}) => dispatch({
-                type: constants.ACTIONS.MASTERS.ADD_CITY_AT_MASTER,
-                payload: data
-            }))
-            .then(() => toast("Город добавлен"))
-            .catch(() => toast.error("Город не добавлен"))
-    } catch (e) {
-        toast.info("Server is busy at this moment")
-    }
-}
-
-//endregion
 //region send mails
 export const sendConfirmationOrder = (order, master, history) => {
     toast.loading("Обработка заказа")
@@ -96,7 +14,6 @@ export const sendConfirmationOrder = (order, master, history) => {
         order_time: T,
         work_id: order.type,
     }
-
     instance({
         method: "POST",
         data: orderBody,

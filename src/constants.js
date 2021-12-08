@@ -148,7 +148,11 @@ export const ACTIONS = {
         SET_READY_USER: "SET_READY_USER",
         SET_JSON_WEB_TOKEN: "SET_JSON_WEB_TOKEN",
         REMOVE_JSON_WEB_TOKEN: "REMOVE_JSON_WEB_TOKEN",
-        LOG_OUT: "LOG_OUT"
+        LOG_OUT: "LOG_OUT",
+        MASTER: {
+            ADD_CITY: "MASTER.ADD_CITY",
+            DELETE_CITY: "MASTER.DELETE_CITY"
+        }
     }
 }
 
