@@ -1,10 +1,9 @@
 import React from 'react';
 import {useFormik} from 'formik';
 import {useHistory, withRouter} from "react-router-dom";
-import {login} from "../../../../http/userAPI";
 import {useDispatch, useSelector} from "react-redux";
 import {LinkContainer} from "react-router-bootstrap";
-import * as constants from "../../../../constants";
+import {setUser} from "../../../../store/actions/userActions";
 
 const validate = (values) => {
     const errors = {};
@@ -22,7 +21,7 @@ const validate = (values) => {
 };
 
 const LoginForm = () => {
-    const history = useHistory()
+    // const history = useHistory()
     const dispatch = useDispatch()
     const user = useSelector(state => state.users.user)
 
@@ -33,11 +32,7 @@ const LoginForm = () => {
         },
         validate,
         onSubmit: () => {
-            login(formik.values.email, formik.values.password, dispatch)
-            history.push(
-                {pathname: constants.PATH[user.role]}
-            )
-
+            dispatch(setUser(formik.values.email, formik.values.password))
         }
     })
     const loginPageStyle = {

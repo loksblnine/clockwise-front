@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import {postMaster} from "../../workWithData";
 import {useDispatch} from "react-redux";
+import {addMaster} from "../../../../store/actions/masterActions";
 
 const InputMaster = () => {
     const [master_name, setMasterName] = useState("")
@@ -12,10 +12,9 @@ const InputMaster = () => {
 
     const onSubmitForm = async e => {
         e.preventDefault();
-        const body = {master_name, email, ranking}
-        postMaster(body, dispatch)
-            .then(() =>
-                inputRef.current.click())
+        const body = {master_name, email, ranking: Number(ranking)}
+        dispatch(addMaster(body))
+        inputRef.current.click()
     }
     return (
         <div>

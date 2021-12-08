@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addCityAtMaster} from "../../workWithData";
+import {addCityToMaster} from "../../../../store/actions/masterActions";
 
 const AddCityDependency = ({master}) => {
     const inputRef = React.useRef(null)
@@ -10,8 +10,8 @@ const AddCityDependency = ({master}) => {
     const onSubmitForm = async e => {
         e.preventDefault();
         const body = {city_id: cityId, master_id: master.master_id}
-        addCityAtMaster(body, dispatch)
-            .then(() => inputRef.current.click())
+        dispatch(addCityToMaster(body))
+        inputRef.current.click()
     }
 
     //TODO citiesToCheck

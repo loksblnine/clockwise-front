@@ -32,7 +32,7 @@ const validate = (values) => {
 
 const RegistrationForm = () => {
     const history = useHistory()
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
     const formik = useFormik({
         initialValues: {
@@ -44,7 +44,7 @@ const RegistrationForm = () => {
         },
         validate,
         onSubmit: async () => {
-            await registration(formik.values.email, formik.values.password, formik.values.isMaster === true ? 2 : 3, dispatch)
+            await registration(formik.values.email, formik.values.password, formik.values.isMaster === true ? 2 : 3)
             history.push('/registration_success')
         }
     })

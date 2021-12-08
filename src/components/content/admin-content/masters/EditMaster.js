@@ -1,17 +1,19 @@
 import React, {useState} from "react";
-import {editMaster} from "../../workWithData";
 import {useDispatch} from "react-redux";
+import {updateMaster} from "../../../../store/actions/masterActions";
 
 const EditMaster = ({master}) => {
     const [master_name, setMasterName] = useState(master.master_name)
+    const [master_email, setMasterEmail] = useState(master.email)
     const [ranking, setRanking] = useState(master.ranking)
     const dispatch = useDispatch()
     const inputRef = React.useRef(null)
-    const updateMaster = async (e) => {
+
+    const updateMaster1 = async (e) => {
         e.preventDefault()
-        const body = {master_name, ranking}
-        editMaster(body, master.master_id, dispatch)
-            .then(() => inputRef.current.click())
+        const body = {master_name, email: master_email, ranking}
+        dispatch(updateMaster(body, master.master_id))
+        inputRef.current.click()
     }
     return (
         <div>
@@ -23,7 +25,7 @@ const EditMaster = ({master}) => {
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
-                        <form onSubmit={event => updateMaster(event)}>
+                        <form onSubmit={event => updateMaster1(event)}>
                             <div className="modal-header">
                                 <h2 className="modal-title" id="exampleModalLabel">Редактировать мастера</h2>
                                 <button type="button" className="close" data-dismiss="modal">
@@ -36,6 +38,12 @@ const EditMaster = ({master}) => {
                                        name="name" onChange={e => setMasterName(e.target.value)}
                                        pattern="[A-ZА-Яa-zа-я -]+"
                                        required
+                                />
+                                <label htmlFor="email">e-mail</label>
+                                <input className="form-control" value={master_email} name="email" type="email"
+                                       onChange={e => setMasterEmail(e.target.value)}
+                                       required
+                                       pattern="[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]+"
                                 />
                                 <label htmlFor="rating">Рейтинг</label>
                                 <input className="form-control" placeholder="5.0" value={ranking} name="rating"

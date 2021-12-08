@@ -33,7 +33,9 @@ const masterReducer = (state = initialState, action: { type: string; payload: an
             };
         }
         case constants.ACTIONS.MASTERS.UPDATE_MASTER: {
-            const array = state.items.filter((item: any) => item.order_id !== action.payload.order_id).concat(action.payload)
+            console.log(action.payload.master_id)
+
+            const array = state.items.filter((item: any) => item.master_id !== action.payload.master_id).concat(action.payload)
             return {
                 ...state,
                 items: array,
@@ -46,7 +48,6 @@ const masterReducer = (state = initialState, action: { type: string; payload: an
             };
         }
         case constants.ACTIONS.MASTERS.ADD_MASTER: {
-            console.log(action.payload)
             return {
                 ...state,
                 items: state.items.concat(action.payload),

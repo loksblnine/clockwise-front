@@ -9,7 +9,7 @@ import {setOrdersMaster} from "../../../store/actions/orderActions";
 
 const MasterPanel = () => {
     const dispatch = useDispatch()
-    const email = useSelector((state) => state.users.user.email)
+    const email = useSelector((state) => state.users.user.email) //todo reselect useMemo - args useCallback - function
     const isReady = useSelector((state) => state.users)
     const orders = useSelector((state) => state.orders.items)
     const cities = useSelector((state) => state.cities.items)

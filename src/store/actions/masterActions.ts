@@ -27,15 +27,47 @@ export const setReadyMasters = (isReady: boolean) => ({
     payload: isReady
 });
 
-export const updateMaster = (master: Master) => ({
-    type: constants.ACTIONS.MASTERS.UPDATE_MASTER,
-    payload: master
-});
+export const updateMaster = (master: Master, id: number) => {
+    return async (dispatch: any) => {
+        const {data} = await instance({
+            method: "PUT",
+            data: master,
+            url: `/masters/${id}`
+        })
+        console.log(data)
+        dispatch({
+            type: constants.ACTIONS.MASTERS.UPDATE_MASTER,
+            payload: data
+        });
+    }
+}
 
-export const addMaster = (master: Master) => ({
-    type: constants.ACTIONS.MASTERS.ADD_MASTER,
-    payload: master
-});
+export const addMaster = (master: Master) => {
+    return async (dispatch: any) => {
+        const {data} = await instance({
+            method: "POST",
+            data: master,
+            url: "/masters"
+        })
+        dispatch({
+            type: constants.ACTIONS.MASTERS.ADD_MASTER,
+            payload: data
+        });
+    }
+}
+export const addCityToMaster = (body: any) => {
+    return async (dispatch: any) => {
+        const {data} = await instance({
+            method: "post",
+            data: body,
+            url: '/deps'
+        })
+        dispatch({
+            type: constants.ACTIONS.MASTERS.ADD_CITY_AT_MASTER,
+            payload: data
+        });
+    }
+}
 
 export const deleteMaster = (id: number) => ({
     type: constants.ACTIONS.MASTERS.DELETE_MASTER,

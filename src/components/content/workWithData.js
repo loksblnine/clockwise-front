@@ -64,24 +64,6 @@ export const editMaster = (body, id, dispatch) => {
 
 //endregion
 //region add
-
-export const postMaster = async (body, dispatch) => {
-    try {
-        instance({
-            method: "POST",
-            data: body,
-            url: "/masters"
-        })
-            .then(({data}) => dispatch({
-                type: constants.ACTIONS.MASTERS.ADD_MASTER,
-                payload: data
-            }))
-            .then(() => toast(`Мастер ${body.master_name} добавлен`))
-            .catch(() => toast.error("Город не добавлен"))
-    } catch (e) {
-        toast.info("Server is busy at this moment")
-    }
-}
 export const addCityAtMaster = async (body, dispatch) => {
     try {
         instance({

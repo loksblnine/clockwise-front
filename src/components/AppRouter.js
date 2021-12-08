@@ -6,20 +6,20 @@ import {useDispatch, useSelector} from "react-redux";
 
 const AppRouter = () => {
     const dispatch = useDispatch()
-    const user = useSelector(state => state.users.user)
+    const role = useSelector(state => state.users.user.role)
 
     useEffect(() => {
     }, [dispatch])
 
     return (
         <Switch>
-            {user.role === 1 && authAdminRoutes.map(({path, Component}) =>
+            {role === 1 && authAdminRoutes.map(({path, Component}) =>
                 <Route path={path} component={Component} key={path} exact/>
             )}
-            {user.role === 2 && authMasterRoutes.map(({path, Component}) =>
+            {role === 2 && authMasterRoutes.map(({path, Component}) =>
                 <Route path={path} component={Component} key={path} exact/>
             )}
-            {user.role === 3 && authClientRoutes.map(({path, Component}) =>
+            {role === 3 && authClientRoutes.map(({path, Component}) =>
                 <Route path={path} component={Component} key={path} exact/>
             )}
             {customerRoutes.map(({path, Component}) =>
