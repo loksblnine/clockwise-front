@@ -11,11 +11,35 @@ type Order = {
     isDone: boolean
 }
 
-export const setOrders = (page: number) => {
+export const setOrdersAdmin = (page: number) => {
     return async (dispatch: any) => {
         const {data}: any = await instance({
             method: "get",
             url: `/orders/offset/${page}`
+        })
+        dispatch({
+            type: constants.ACTIONS.ORDERS.SET_ORDERS,
+            payload: data
+        });
+    }
+}
+export const setOrdersMaster = (page: number, id: number) => {
+    return async (dispatch: any) => {
+        const {data}: any = await instance({
+            method: "get",
+            url: `/orders/master/${id}/offset/${page}`
+        })
+        dispatch({
+            type: constants.ACTIONS.ORDERS.SET_ORDERS,
+            payload: data
+        });
+    }
+}
+export const setOrdersCustomer = (page: number, id: number) => {
+    return async (dispatch: any) => {
+        const {data}: any = await instance({
+            method: "get",
+            url: `/orders/customer/${id}/offset/${page}`
         })
         dispatch({
             type: constants.ACTIONS.ORDERS.SET_ORDERS,
@@ -30,7 +54,7 @@ export const setReadyOrders = (isReady: boolean) => ({
 });
 
 export const updateOrder = (order: Order, id: number) => {
-    return async (dispatch: (arg0: { type: string; payload: never; }) => void) => {
+    return async (dispatch: any) => {
         const {data} = await instance({
             method: "PUT",
             data: order,
@@ -43,12 +67,29 @@ export const updateOrder = (order: Order, id: number) => {
     }
 }
 
-export const addOrder = (order: Order) => ({
-    type: constants.ACTIONS.ORDERS.ADD_ORDER,
-    payload: order
-});
+export const addOrder = (order: Order) => {
+    return async (dispatch: any) => {
+        const {data} = await instance({
+            method: "POST",
+            data: order,
+            url: "/orders"
+        })
+        dispatch({
+            type: constants.ACTIONS.ORDERS.ADD_ORDER,
+            payload: data
+        });
+    }
+}
 
-export const deleteOrder = (id: number) => ({
-    type: constants.ACTIONS.ORDERS.DELETE_ORDER,
-    payload: id
-});
+export const deleteOrder = (id: number) => {
+    return async (dispatch: any) => {
+        await instance({
+            method: "DELETE",
+            url: `/orders/${id}`
+        })
+        dispatch({
+            type: constants.ACTIONS.ORDERS.DELETE_ORDER,
+            payload: id
+        });
+    }
+}

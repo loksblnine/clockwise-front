@@ -4,7 +4,7 @@ import * as constants from "../../../constants";
 import {Spinner} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {instance} from "../../../http/headerPlaceholder.instance";
-import {getOrdersIntoStore} from "../getData";
+import {setOrdersCustomer} from "../../../store/actions/orderActions";
 
 
 const ClientPanel = () => {
@@ -27,17 +27,17 @@ const ClientPanel = () => {
                         type: constants.ACTIONS.USER.SET_DATA,
                         payload: data
                     })
-                    getOrdersIntoStore(dispatch, page, 3, data.customer_id)
+                    dispatch(setOrdersCustomer(page, customer.customer_id))
                 })
         }
     }, [dispatch, email, page]);
 
     const handleNextOrders = (e) => {
         e.target.disabled = true
-        getOrdersIntoStore(dispatch, page, 3, customer.customer_id)
-            .then(() =>
-                e.target.disabled = false)
+        dispatch(setOrdersCustomer(page, customer.customer_id))
+        e.target.disabled = false
     }
+
     if (!isReady) {
         return <Spinner animation="grow"/>
     }

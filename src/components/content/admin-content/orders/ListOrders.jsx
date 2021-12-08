@@ -3,8 +3,7 @@ import EditOrder from "./EditOrder";
 import * as constants from "../../../../constants";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
-import {deleteOrder} from "../../workWithData";
-import {setOrders} from "../../../../store/actions/orderActions";
+import {setOrdersAdmin, deleteOrder} from "../../../../store/actions/orderActions";
 
 const ListOrders = () => {
     const orders = useSelector((state => state.orders.items))
@@ -13,11 +12,11 @@ const ListOrders = () => {
 
     useEffect(() => {
         if (orders.length <= 0)
-            dispatch(setOrders(page))
+            dispatch(setOrdersAdmin(page))
     }, [dispatch])
     const handleNextOrders = (e) => {
         e.target.disabled = true
-        dispatch(setOrders(page))
+        dispatch(setOrdersAdmin(page))
         e.target.disabled = false
     }
     if (!isReady) {
@@ -53,7 +52,7 @@ const ListOrders = () => {
                         <td><EditOrder order={order}/></td>
                         <td>
                             <button className="btn btn-danger"
-                                    onClick={() => deleteOrder(order.order_id, dispatch)}
+                                    onClick={() => dispatch(deleteOrder(order.order_id))}
                                     disabled={order.order_time.split('T')[0] <= constants.DATE_FROM}>Удалить
                             </button>
                         </td>

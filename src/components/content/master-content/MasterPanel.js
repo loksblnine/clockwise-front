@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
 import '../Panel.css'
 import * as constants from "../../../constants";
-import {getOrdersIntoStore} from "../getData";
 import {Spinner} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {instance} from "../../../http/headerPlaceholder.instance";
 import {deleteCityAtMaster} from "../workWithData";
+import {setOrdersMaster} from "../../../store/actions/orderActions";
 
 const MasterPanel = () => {
     const dispatch = useDispatch()
@@ -27,16 +27,15 @@ const MasterPanel = () => {
                         type: constants.ACTIONS.USER.SET_DATA,
                         payload: data
                     })
-                    getOrdersIntoStore(dispatch, page, 2, master?.master_id)
+                    dispatch(setOrdersMaster(page, master.master_id))
                 })
         }
     }, [dispatch, page, email]);
 
     const handleNextOrders = (e) => {
         e.target.disabled = true
-        getOrdersIntoStore(dispatch, page, 2, master.master_id)
-            .then(() =>
-                e.target.disabled = false)
+        dispatch(setOrdersMaster(page, master.master_id))
+        e.target.disabled = false
     }
 
     const handleApproveOrder = (order) => {
@@ -57,7 +56,6 @@ const MasterPanel = () => {
     return (
         <div className="router">
             <h2 className="text-left mt-5">Привет, {master?.master_name}</h2>
-
             {deps?.length > 0 ?
                 <div>
                     <h4 className="text-left mt-5">Ваш список городов: </h4>

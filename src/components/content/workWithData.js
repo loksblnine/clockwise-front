@@ -41,23 +41,6 @@ export const deleteCityAtMaster = async (city_id, master_id, dispatch) => {
     }
 }
 
-export const deleteOrder = async (id, dispatch) => {
-    try {
-        instance({
-            method: "DELETE",
-            url: `/orders/${id}`
-        })
-            .then(() =>
-                dispatch({
-                    type: constants.ACTIONS.ORDERS.DELETE_ORDER,
-                    payload: id
-                })
-            )
-            .then(() => toast("Заказ удален"))
-    } catch (e) {
-        toast.info("Server is busy at this moment")
-    }
-}
 //endregion
 //region update
 export const editMaster = (body, id, dispatch) => {
@@ -70,26 +53,6 @@ export const editMaster = (body, id, dispatch) => {
             .then(({data}) =>
                 dispatch({
                     type: constants.ACTIONS.MASTERS.UPDATE_MASTER,
-                    payload: data
-                }))
-            .then(() => toast("Изменения сохранены"))
-            .catch(() => toast.error("Данные не обновлены"))
-    } catch (e) {
-        toast.info("Server is busy at this moment")
-    }
-}
-export const editOrder = (body, id, dispatch) => {
-    try {
-        body.order.time = `${Number(body.order.time.split(':')[0])}:00`
-        body.order.order_time = body.order.date + 'T' + body.order.time
-        instance({
-            method: "PUT",
-            data: body.order,
-            url: `/orders/${id}`
-        })
-            .then(({data}) =>
-                dispatch({
-                    type: constants.ACTIONS.ORDERS.UPDATE_ORDER,
                     payload: data
                 }))
             .then(() => toast("Изменения сохранены"))
@@ -137,28 +100,6 @@ export const addCityAtMaster = async (body, dispatch) => {
     }
 }
 
-export const postOrder = async (body, dispatch) => {
-    try {
-        body.order.time = `${Number(body.order.time.split(':')[0])}:00`
-        body.order.order_time = body.order.date + 'T' + body.order.time
-        instance({
-            method: "POST",
-            data: body.order,
-            url: "/orders"
-        })
-            .then(({data}) => {
-                dispatch({
-                    type: constants.ACTIONS.ORDERS.ADD_ORDER,
-                    payload: data
-                })
-            })
-            .then(() => toast(`Заказ ${body.order.customer_name} добавлен`))
-            .catch(() => toast.error("Заказ не добавлен"))
-
-    } catch (e) {
-        toast.info("Server is busy at this moment")
-    }
-}
 //endregion
 //region send mails
 export const sendConfirmationOrder = (order, master, history) => {

@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import * as constants from "../../../../constants";
-import {postOrder} from "../../workWithData";
 import {useDispatch, useSelector} from "react-redux";
-import {getCitiesIntoStore, getCustomersIntoStore, getMastersIntoStore} from "../../getData";
 import {Spinner} from "react-bootstrap";
+import {addOrder} from "../../../../store/actions/orderActions";
 
 const InputOrder = () => {
     const inputRef = React.useRef(null)
@@ -21,23 +20,13 @@ const InputOrder = () => {
         time: ''
     });
 
-    useEffect(async () => {
-        if (cities.items.length <= 0) {
-            await getCitiesIntoStore(dispatch)
-        }
-        if (customers?.loadNext) {
-            await getCustomersIntoStore(dispatch)
-        }
-        if (masters?.loadNext) {
-            await getMastersIntoStore(dispatch)
-        }
-    }, [dispatch])
-
     const onSubmitForm = async (e) => {
         e.preventDefault();
         const body = {order}
-        postOrder(body, dispatch)
-            .then(() => inputRef.current.click())
+        body.order.time = `${Number(body.order.time.split(':')[0])}:00`
+        body.order.order_time = body.order.date + 'T' + body.order.time
+        dispatch(addOrder(body.order))
+        inputRef.current.click()
     }
     const isMasterSelected = () => {
         return order.master_id !== -1
