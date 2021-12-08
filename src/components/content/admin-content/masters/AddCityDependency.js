@@ -1,9 +1,8 @@
 import React, {useState} from "react";
-import {observer} from "mobx-react-lite";
 import {useDispatch, useSelector} from "react-redux";
 import {addCityAtMaster} from "../../workWithData";
 
-const AddCityDependency = observer(({master}) => {
+const AddCityDependency = ({master}) => {
     const inputRef = React.useRef(null)
     const [cityId, setCityId] = useState(-1)
     const cities = useSelector((state) => state.cities.items)
@@ -60,5 +59,5 @@ const AddCityDependency = observer(({master}) => {
             </div>
         </div>
     )
-})
+}
 export default AddCityDependency;

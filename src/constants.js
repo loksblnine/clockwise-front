@@ -1,9 +1,9 @@
-import OrderForm from "./containers/content/client/OrderForm";
+import OrderForm from "./components/content/customer-content/OrderForm/OrderForm";
 import MasterView from "./components/content/customer-content/MasterView/MasterView";
-import ListCities from "./containers/content/admin/ListCities";
-import ListOrders from "./containers/content/admin/ListOrders";
-import ListMasters from "./containers/content/admin/ListMasters";
-import ListCustomers from "./containers/content/admin/ListCustomers";
+import ListOrders from "./components/content/admin-content/orders/ListOrders";
+import ListCustomers from "./components/content/admin-content/customers/ListCustomers";
+import ListMasters from "./components/content/admin-content/masters/ListMasters";
+import ListCities from "./components/content/admin-content/cities/ListCities";
 import LoginForm from "./components/content/customer-content/LoginForm/LoginForm";
 import AdminPanel from "./components/content/admin-content/admin-panel/AdminPanel";
 import MasterPanel from "./components/content/master-content/MasterPanel";
@@ -74,7 +74,6 @@ export const authMasterRoutes = [
         Component: MasterPanel
     }
     //todo
-    // 1. see orders as a client
     // 2. edit info
     // 3. see comments
 ]

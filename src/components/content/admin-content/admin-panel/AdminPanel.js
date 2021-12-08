@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {LinkContainer} from 'react-router-bootstrap'
 import '../../Panel.css'
-import {observer} from "mobx-react-lite";
 
 //components
 import ListMasters from "../masters/ListMasters";
@@ -10,7 +9,7 @@ import ListCities from "../cities/ListCities";
 import ListCustomers from "../customers/ListCustomers";
 import ListOrders from "../orders/ListOrders";
 
-const AdminPanel = observer(() => {
+const AdminPanel = () => {
     const inputRef = React.useRef(null)
     useEffect(() => {
         inputRef.current.click()
@@ -43,6 +42,6 @@ const AdminPanel = observer(() => {
             </div>
         </Router>
     );
-})
+}
 
 export default AdminPanel;

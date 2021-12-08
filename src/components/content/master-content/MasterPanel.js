@@ -9,13 +9,14 @@ import {setOrdersMaster} from "../../../store/actions/orderActions";
 
 const MasterPanel = () => {
     const dispatch = useDispatch()
-    const email = useSelector(state => state.users.user.email)
-    const isReady = useSelector(state => state.users)
-    const orders = useSelector(state => state.orders.items)
-    const cities = useSelector(state => state.cities.items)
-    const master = useSelector(state => state.users.data?.master)
-    const deps = useSelector(state => state.users.data?.deps)
-    const {loadNext, page} = useSelector((state => state.orders))
+    const email = useSelector((state) => state.users.user.email)
+    const isReady = useSelector((state) => state.users)
+    const orders = useSelector((state) => state.orders.items)
+    const cities = useSelector((state) => state.cities.items)
+    const master = useSelector((state) => state.users.data?.master)
+    const deps = useSelector((state) => state.users.data?.deps)
+    const {loadNext, page} = useSelector((state) => state.orders)
+
     useEffect(async () => {
         if (orders.length <= 0) {
             instance({

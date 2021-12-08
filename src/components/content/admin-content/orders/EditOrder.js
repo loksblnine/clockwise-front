@@ -1,10 +1,9 @@
 import React, {useState} from "react";
 import * as constants from "../../../../constants";
-import {observer} from "mobx-react-lite";
 import {useDispatch, useSelector} from "react-redux";
 import {updateOrder} from "../../../../store/actions/orderActions";
 
-const EditOrder = observer((initialOrder) => {
+const EditOrder = (initialOrder) => {
 
     const cities = useSelector((state) => state.cities.items)
     const customers = useSelector((state) => state.customers.items)
@@ -169,6 +168,6 @@ const EditOrder = observer((initialOrder) => {
             </div>
         </div>
     )
-})
+}
 
 export default EditOrder;

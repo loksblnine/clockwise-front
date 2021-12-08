@@ -1,7 +1,6 @@
 import React from 'react';
 import {useFormik} from 'formik';
 import {useHistory, withRouter} from "react-router-dom";
-import {observer} from "mobx-react-lite";
 import {login} from "../../../../http/userAPI";
 import {useDispatch, useSelector} from "react-redux";
 import {LinkContainer} from "react-router-bootstrap";
@@ -22,7 +21,7 @@ const validate = (values) => {
     return errors;
 };
 
-const LoginForm = observer(() => {
+const LoginForm = () => {
     const history = useHistory()
     const dispatch = useDispatch()
     const user = useSelector(state => state.users.user)
@@ -87,6 +86,5 @@ const LoginForm = observer(() => {
             </form>
         </div>
     )
-
-})
+}
 export default withRouter(LoginForm)

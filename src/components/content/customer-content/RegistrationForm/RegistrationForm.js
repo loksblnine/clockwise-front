@@ -1,7 +1,6 @@
 import React from 'react';
 import {useFormik} from 'formik';
 import {useHistory} from "react-router-dom";
-import {observer} from "mobx-react-lite";
 import {registration} from "../../../../http/userAPI";
 import {useDispatch} from "react-redux";
 import {LinkContainer} from "react-router-bootstrap";
@@ -31,7 +30,7 @@ const validate = (values) => {
     return errors;
 };
 
-const RegistrationForm = observer(() => {
+const RegistrationForm = () => {
     const history = useHistory()
     const dispatch = useDispatch()
 
@@ -45,8 +44,8 @@ const RegistrationForm = observer(() => {
         },
         validate,
         onSubmit: async () => {
-           await registration(formik.values.email, formik.values.password, formik.values.isMaster === true ? 2 : 3, dispatch)
-                history.push('/registration_success')
+            await registration(formik.values.email, formik.values.password, formik.values.isMaster === true ? 2 : 3, dispatch)
+            history.push('/registration_success')
         }
     })
     const loginPageStyle = {
@@ -116,7 +115,8 @@ const RegistrationForm = observer(() => {
                 </div>
 
                 <div className="form-group form-group-inline mt-5">
-                    <button type="submit" className="btn btn-primary" disabled={!formik.values.isAgreed || formik.errors.hasOwnProperty('password')|| formik.errors.hasOwnProperty('confirmPassword')}>
+                    <button type="submit" className="btn btn-primary"
+                            disabled={!formik.values.isAgreed || formik.errors.hasOwnProperty('password') || formik.errors.hasOwnProperty('confirmPassword')}>
                         Регистрация
                     </button>
                     <LinkContainer to='/login'>
@@ -132,6 +132,5 @@ const RegistrationForm = observer(() => {
             </div>
         </div>
     )
-        ;
-})
+}
 export default RegistrationForm

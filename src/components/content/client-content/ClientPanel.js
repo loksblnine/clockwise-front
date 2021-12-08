@@ -9,12 +9,12 @@ import {setOrdersCustomer} from "../../../store/actions/orderActions";
 
 const ClientPanel = () => {
     const dispatch = useDispatch()
-    const email = useSelector((state => state.users.user.email))
-    const isReady = useSelector((state => state.users))
-    const orders = useSelector((state => state.orders.items))
-    const customer = useSelector(state => state.users.data)
+    const email = useSelector((state) => state.users.user.email)
+    const isReady = useSelector((state) => state.users)
+    const orders = useSelector((state) => state.orders.items)
+    const customer = useSelector((state) => state.users.data)
 
-    const {loadNext, page} = useSelector((state => state.orders))
+    const {loadNext, page} = useSelector((state) => state.orders)
 
     useEffect(() => {
         if (orders.length <= 0) {
