@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import imageSrc from "../../images/logo.png"
 import './Header.css'
 import {useHistory} from "react-router-dom";
@@ -41,9 +41,6 @@ const Header = () => {
             {pathname: constants.PATH[user.role]}
         )
     }
-
-    useEffect(() => {
-    }, [dispatch])
 
     return (
         <div className="router">

@@ -34,9 +34,9 @@ const RegistrationForm = () => {
 
     const formik = useFormik({
         initialValues: {
-            email: 'admin@example.com',
-            password: 'passwordsecret',
-            confirmPassword: 'passwordsecret',
+            email: '',
+            password: '',
+            confirmPassword: '',
             isMaster: false,
             isAgreed: false
         },
@@ -125,7 +125,7 @@ const RegistrationForm = () => {
             <div className="modal fade" id="show-agreement" tabIndex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
-                    <div className="modal-content"><p>Рабство</p></div>
+                    <div className="modal-content"><p>Черным по белому - Честное предложение =) </p></div>
                 </div>
             </div>
         </div>

@@ -24,9 +24,9 @@ const MasterPanel = () => {
 
     const {loadNext, page} = useSelector((state) => state.orders)
 
-    useEffect(async () => {
+    useEffect(() => {
         if (!master?.master_id)
-            await dispatch(setUserData("masters", email))
+            dispatch(setUserData("masters", email))
         if (cities.length <= 0)
             dispatch(setCities())
         if (master?.master_id && orders.length <= 0)

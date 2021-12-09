@@ -1,15 +1,11 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Route, Switch} from "react-router-dom";
 import {authAdminRoutes, authMasterRoutes, customerRoutes, authClientRoutes} from "../constants";
 import NotFound from "../http/NotFound";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 
 const AppRouter = () => {
-    const dispatch = useDispatch()
     const role = useSelector(state => state.users.user.role)
-
-    useEffect(() => {
-    }, [dispatch])
 
     return (
         <Switch>

@@ -11,9 +11,6 @@ const WorkIn = ({master}) => {
     const {cities} = useSelector((state) => state)
     const dispatch = useDispatch()
 
-    useEffect(() => {
-    }, [dispatch])
-
     return (
         <div key={master.master_id}>
             {
