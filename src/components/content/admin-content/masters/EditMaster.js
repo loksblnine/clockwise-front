@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {useDispatch} from "react-redux";
 import {updateMaster} from "../../../../store/actions/masterActions";
 
@@ -9,12 +9,12 @@ const EditMaster = ({master}) => {
     const dispatch = useDispatch()
     const inputRef = React.useRef(null)
 
-    const editMaster = (e) => {
+    const editMaster = useCallback((e) => {
         e.preventDefault()
         const body = {master_name, email: master_email, ranking}
         dispatch(updateMaster(body, master.master_id))
         inputRef.current.click()
-    }
+    }, [master_name, master_email, ranking])
     return (
         <div>
             <button type="button" className="btn btn-warning" data-toggle="modal"

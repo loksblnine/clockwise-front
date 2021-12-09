@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {useDispatch} from "react-redux";
 import {addCity} from "../../../../store/actions/cityActions";
 
@@ -8,12 +8,12 @@ const InputCity = () => {
     const dispatch = useDispatch()
     const inputRef = React.useRef(null)
 
-    const onSubmitForm = (e) => {
+    const onSubmitForm = useCallback((e) => {
         e.preventDefault()
         const body = {city_name}
         dispatch(addCity(body))
         inputRef.current.click()
-    }
+    }, [city_name])
     return (
         <div>
             <button type="button" className="btn btn-success mb-5" data-toggle="modal"

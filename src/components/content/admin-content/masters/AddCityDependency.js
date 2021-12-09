@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addCityToMaster} from "../../../../store/actions/masterActions";
 
@@ -7,12 +7,12 @@ const AddCityDependency = ({master}) => {
     const [cityId, setCityId] = useState(-1)
     const cities = useSelector((state) => state.cities.items)
     const dispatch = useDispatch()
-    const onSubmitForm = (e) => {
+    const onSubmitForm = useCallback((e) => {
         e.preventDefault();
         const body = {city_id: cityId, master_id: master.master_id}
         dispatch(addCityToMaster(body))
         inputRef.current.click()
-    }
+    }, [cityId])
 
     //TODO citiesToCheck
     return (

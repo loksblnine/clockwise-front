@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {useDispatch} from "react-redux";
 import {addMaster} from "../../../../store/actions/masterActions";
 
@@ -10,12 +10,12 @@ const InputMaster = () => {
     const dispatch = useDispatch()
     const inputRef = React.useRef(null)
 
-    const onSubmitForm = (e) => {
+    const onSubmitForm = useCallback((e) => {
         e.preventDefault();
         const body = {master_name, email, ranking: Number(ranking)}
         dispatch(addMaster(body))
         inputRef.current.click()
-    }
+    }, [master_name, email, ranking])
     return (
         <div>
             <button type="button" className="btn btn-success mb-5" data-toggle="modal"

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {useDispatch} from "react-redux";
 import {updateCustomer} from "../../../../store/actions/customerActions";
 
@@ -7,12 +7,12 @@ const EditCustomer = ({customer}) => {
     const [customer_name, setCustomerName] = useState(customer.customer_name)
     const [customer_email, setCustomerEmail] = useState(customer.customer_email)
     const inputRef = React.useRef(null)
-    const editCustomer = (e) => {
+    const editCustomer = useCallback((e) => {
         e.preventDefault()
         const body = {customer_name, customer_email}
         dispatch(updateCustomer(body, customer.customer_id))
         inputRef.current.click()
-    }
+    }, [customer_name, customer_email])
     return (
         <div>
             <button type="button" className="btn btn-warning" data-toggle="modal"

@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useCallback, useState} from "react";
 import {useDispatch} from "react-redux";
 import {updateCity} from "../../../../store/actions/cityActions";
 
@@ -6,12 +6,14 @@ const EditCity = ({city}) => {
     const [city_name, setCityName] = useState(city.city_name)
     const inputRef = React.useRef(null)
     const dispatch = useDispatch()
-    const editCity = (e) => {
+
+    const editCity = useCallback((e) => {
         e.preventDefault()
         const body = {city_name}
         dispatch(updateCity(body, city.city_id))
         inputRef.current.click()
-    }
+    }, [city_name])
+
     return (
         <Fragment>
             <button type="button" className="btn btn-warning" data-toggle="modal"

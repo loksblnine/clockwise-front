@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import * as constants from "../../../../constants";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
@@ -20,17 +20,17 @@ const InputOrder = () => {
         time: ''
     });
 
-    const onSubmitForm = (e) => {
+    const onSubmitForm = useCallback((e) => {
         e.preventDefault();
         const body = {order}
         body.order.time = `${Number(body.order.time.split(':')[0])}:00`
         body.order.order_time = body.order.date + 'T' + body.order.time
         dispatch(addOrder(body.order))
         inputRef.current.click()
-    }
-    const isMasterSelected = () => {
+    }, [order])
+    const isMasterSelected = useCallback(() => {
         return order.master_id !== -1
-    }
+    }, [order.master_id])
     const handleChange = (e) => {
         const {name, value} = e.target;
         setOrder(prevState => ({

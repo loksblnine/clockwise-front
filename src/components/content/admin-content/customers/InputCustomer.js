@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {useDispatch} from "react-redux";
 import {addCustomer} from "../../../../store/actions/customerActions";
 
@@ -9,12 +9,12 @@ const InputCustomer = () => {
     const inputRef = React.useRef(null)
     const dispatch = useDispatch()
 
-    const onSubmitForm = (e) => {
+    const onSubmitForm = useCallback((e) => {
         e.preventDefault();
         const body = {customer_name, customer_email}
         dispatch(addCustomer(body))
         inputRef.current.click()
-    }
+    }, [customer_email, customer_name])
     return (
         <div>
             <button type="button" className="btn btn-success mb-5" data-toggle="modal"

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import * as constants from "../../../../constants";
 import {useDispatch, useSelector} from "react-redux";
 import {updateOrder} from "../../../../store/actions/orderActions";
@@ -18,13 +18,13 @@ const EditOrder = (initialOrder) => {
         time: initialOrder.order?.order_time?.split('T')[1]?.split('.')[0]
     });
 
-    const editOrder = (e) => {
+    const editOrder = useCallback((e) => {
         e.preventDefault()
         const body = {order}
         body.order.time = `${Number(body.order.time.split(':')[0])}:00`
         body.order.order_time = body.order.date + 'T' + body.order.time
         dispatch(updateOrder(body.order, order.order_id))
-    }
+    }, [order])
 
     const handleChange = (e) => {
         const {name, value} = e.target;
