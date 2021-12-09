@@ -9,7 +9,7 @@ const EditMaster = ({master}) => {
     const dispatch = useDispatch()
     const inputRef = React.useRef(null)
 
-    const updateMaster1 = async (e) => {
+    const editMaster = async (e) => {
         e.preventDefault()
         const body = {master_name, email: master_email, ranking}
         dispatch(updateMaster(body, master.master_id))
@@ -25,7 +25,7 @@ const EditMaster = ({master}) => {
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
-                        <form onSubmit={event => updateMaster1(event)}>
+                        <form onSubmit={event => editMaster(event)}>
                             <div className="modal-header">
                                 <h2 className="modal-title" id="exampleModalLabel">Редактировать мастера</h2>
                                 <button type="button" className="close" data-dismiss="modal">

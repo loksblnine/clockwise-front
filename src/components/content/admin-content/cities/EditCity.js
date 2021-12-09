@@ -6,7 +6,7 @@ const EditCity = ({city}) => {
     const [city_name, setCityName] = useState(city.city_name)
     const inputRef = React.useRef(null)
     const dispatch = useDispatch()
-    const updateCity1 = async (e) => {
+    const editCity = async (e) => {
         e.preventDefault()
         const body = {city_name}
         dispatch(updateCity(body, city.city_id))
@@ -23,7 +23,7 @@ const EditCity = ({city}) => {
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
-                        <form onSubmit={event => updateCity1(event)}>
+                        <form onSubmit={event => editCity(event)}>
                             <div className="modal-header">
                                 <h2 className="modal-title" id="exampleModalLabel">Редактировать город</h2>
                                 <button type="button" className="btn-close" data-dismiss="modal"

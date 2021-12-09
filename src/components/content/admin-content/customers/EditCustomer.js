@@ -7,7 +7,7 @@ const EditCustomer = ({customer}) => {
     const [customer_name, setCustomerName] = useState(customer.customer_name)
     const [customer_email, setCustomerEmail] = useState(customer.customer_email)
     const inputRef = React.useRef(null)
-    const updateCustomer1 = async (e) => {
+    const editCustomer = async (e) => {
         e.preventDefault()
         const body = {customer_name, customer_email}
         dispatch(updateCustomer(body, customer.customer_id))
@@ -24,7 +24,7 @@ const EditCustomer = ({customer}) => {
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
-                        <form onSubmit={event => updateCustomer1(event)}>
+                        <form onSubmit={event => editCustomer(event)}>
                             <div className="modal-header">
                                 <h2 className="modal-title" id="exampleModalLabel">Редактировать покупателя</h2>
                                 <button type="button" className="close" data-dismiss="modal">

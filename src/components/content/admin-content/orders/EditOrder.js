@@ -18,7 +18,7 @@ const EditOrder = (initialOrder) => {
         time: initialOrder.order?.order_time?.split('T')[1]?.split('.')[0]
     });
 
-    const updateOrder1 = async (e) => {
+    const editOrder = async (e) => {
         e.preventDefault()
         const body = {order}
         body.order.time = `${Number(body.order.time.split(':')[0])}:00`
@@ -49,7 +49,7 @@ const EditOrder = (initialOrder) => {
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
-                        <form onSubmit={event => updateOrder1(event)}>
+                        <form onSubmit={event => editOrder(event)}>
                             <div className="modal-header">
                                 <h2 className="modal-title" id="exampleModalLabel">Редактировать заказ</h2>
                                 <button type="button" className="close" data-dismiss="modal">

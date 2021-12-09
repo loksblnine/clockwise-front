@@ -12,7 +12,8 @@ import ClientPanel from "./components/content/client-content/ClientPanel";
 import SuccessRegister from "./components/content/customer-content/RegistrationForm/SuccessRegister";
 import SuccessActivate from "./components/content/customer-content/RegistrationForm/SuccessActivate";
 
-//todo remove this trash))
+//todo remove this garbage =))
+//todo use ENUM with TS
 export const WORK_TYPES = {
     1: {
         key: "маленькие",
