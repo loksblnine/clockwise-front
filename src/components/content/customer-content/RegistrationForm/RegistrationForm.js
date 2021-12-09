@@ -2,7 +2,6 @@ import React from 'react';
 import {useFormik} from 'formik';
 import {useHistory} from "react-router-dom";
 import {registration} from "../../../../http/userAPI";
-import {useDispatch} from "react-redux";
 import {LinkContainer} from "react-router-bootstrap";
 
 const validate = (values) => {
@@ -32,7 +31,6 @@ const validate = (values) => {
 
 const RegistrationForm = () => {
     const history = useHistory()
-    // const dispatch = useDispatch()
 
     const formik = useFormik({
         initialValues: {
@@ -45,7 +43,7 @@ const RegistrationForm = () => {
         validate,
         onSubmit: async () => {
             await registration(formik.values.email, formik.values.password, formik.values.isMaster === true ? 2 : 3)
-            history.push('/registration_success')
+            history.push('/registration_success', formik.values)
         }
     })
     const loginPageStyle = {

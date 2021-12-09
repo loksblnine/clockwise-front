@@ -40,4 +40,18 @@ export const sendConfirmationOrder = (order, master, history) => {
             toast.info("Возникли трудности c сервером")
         })
 }
+export const sendConfirmRegistrationMail = (email) => {
+    const messageBody = {
+        email
+    }
+    instance({
+        method: "POST",
+        data: messageBody,
+        url: "/send/confirm-registration"
+    })
+        .then(() => {
+            toast.dismiss()
+            toast("Письмо отправлено вам на почту")
+        })
+}
 //endregion
