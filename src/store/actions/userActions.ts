@@ -1,6 +1,7 @@
 import * as constants from "../../constants";
 import {login} from "../../http/userAPI";
 import {instance} from "../../http/headerPlaceholder.instance";
+import jwt_decode from "jwt-decode";
 
 type User = {
     role: number,
@@ -9,13 +10,16 @@ type User = {
     data: any
 }
 
-export const setUser = (email: string, password: string) => {
+export const setUser = (email: string, password: string, history: any) => {
     return async (dispatch: any) => {
-        login(email, password).then(({token}) =>
-            dispatch({
-                type: constants.ACTIONS.USER.SET_USER,
-                payload: {token}
-            })
+        login(email, password).then(({token}) => {
+                dispatch({
+                    type: constants.ACTIONS.USER.SET_USER,
+                    payload: {token}
+                })
+                // @ts-ignore
+            history.push(constants.PATH[jwt_decode(token).role])
+            }
         )
     }
 }

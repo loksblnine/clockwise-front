@@ -21,7 +21,7 @@ const validate = (values) => {
 };
 
 const LoginForm = () => {
-    // const history = useHistory()
+    const history = useHistory()
     const dispatch = useDispatch()
     const user = useSelector(state => state.users.user)
 
@@ -31,8 +31,8 @@ const LoginForm = () => {
             password: 'passwordsecret',
         },
         validate,
-        onSubmit: () => {
-            dispatch(setUser(formik.values.email, formik.values.password))
+        onSubmit: async () => {
+            dispatch(setUser(formik.values.email, formik.values.password, history))
         }
     })
     const loginPageStyle = {
