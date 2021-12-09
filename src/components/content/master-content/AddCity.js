@@ -22,7 +22,7 @@ const AddCity = ({master}) => {
     //TODO citiesToCheck
     return (
         <div>
-            <button type="button" className="btn btn-outline-success mb-5" data-toggle="modal"
+            <button type="button" className="btn btn-success mb-5" data-toggle="modal"
                     data-target={`#id_see`}>
                 Добавить
             </button>

@@ -50,20 +50,24 @@ const MasterPanel = () => {
             {deps?.length > 0 ?
                 <div>
                     <h4 className="text-left mt-5">Ваш список городов: </h4>
-                    {
-                        deps.map(d => {
-                            return <div key={d}>
-                                {cities.find(c => c.city_id === d)?.city_name}
-                                <button className="btn"
-                                        onClick={() => dispatch(deleteMasterCity({
-                                            city_id: d,
-                                            master_id: master.master_id
-                                        }))}>
-                                    <span>&times;</span>
-                                </button>
-                            </div>
-                        })
-                    }
+                    <ul className="list-group-row">
+                        {
+                            deps.map(d => {
+                                return (
+                                    <button key={d}
+                                            className="list-group-item border border-secondary rounded w-25 p-3">
+                                        {cities.find(c => c.city_id === d)?.city_name}
+                                        <button className="btn"
+                                                onClick={() => dispatch(deleteMasterCity({
+                                                    city_id: d,
+                                                    master_id: master.master_id
+                                                }))}>
+                                            <span>&times;</span>
+                                        </button>
+                                    </button>)
+                            })
+                        }
+                    </ul>
                 </div>
                 : <div>
                     <h4 className="text-left mt-5">Ваш список городов пуст</h4>
