@@ -3,9 +3,8 @@ import '../Panel.css'
 import * as constants from "../../../constants";
 import {Spinner} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
-import {instance} from "../../../http/headerPlaceholder.instance";
 import {setOrdersCustomer} from "../../../store/actions/orderActions";
-
+import {setUserData} from "../../../store/actions/userActions";
 
 const ClientPanel = () => {
     const dispatch = useDispatch()
@@ -16,25 +15,16 @@ const ClientPanel = () => {
 
     const {loadNext, page} = useSelector((state) => state.orders)
 
-    useEffect(() => {
-        if (orders.length <= 0) {
-            instance({
-                method: "get",
-                url: `/customers/email/${email}`
-            })
-                .then(({data}) => {
-                    dispatch({
-                        type: constants.ACTIONS.USER.SET_DATA,
-                        payload: data
-                    })
-                    dispatch(setOrdersCustomer(page, customer.customer_id))
-                })
-        }
-    }, [dispatch, email, page]);
+    useEffect(async () => {
+        if (!customer?.customer_id)
+            await dispatch(setUserData("customers", email))
+        if (customer?.customer_id && orders.length <= 0)
+            dispatch(setOrdersCustomer(page, customer?.customer_id))
+    }, [customer, customer?.master_id]);
 
     const handleNextOrders = (e) => {
         e.target.disabled = true
-        dispatch(setOrdersCustomer(page, customer.customer_id))
+        dispatch(setOrdersCustomer(page, customer?.customer_id))
         e.target.disabled = false
     }
 
@@ -75,7 +65,7 @@ const ClientPanel = () => {
                     {
                         loadNext &&
                         <div className="col text-center">
-                            <button className="btn btn-primary" onClick={(e) => handleNextOrders(e)}> Еще заказы...
+                            <button className="btn btn-primary mb-5" onClick={(e) => handleNextOrders(e)}> Еще заказы...
                             </button>
                         </div>
                     }
