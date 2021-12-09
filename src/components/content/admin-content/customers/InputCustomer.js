@@ -9,7 +9,7 @@ const InputCustomer = () => {
     const inputRef = React.useRef(null)
     const dispatch = useDispatch()
 
-    const onSubmitForm = async (e) => {
+    const onSubmitForm = (e) => {
         e.preventDefault();
         const body = {customer_name, customer_email}
         dispatch(addCustomer(body))

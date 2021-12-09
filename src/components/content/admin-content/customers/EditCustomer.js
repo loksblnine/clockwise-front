@@ -7,7 +7,7 @@ const EditCustomer = ({customer}) => {
     const [customer_name, setCustomerName] = useState(customer.customer_name)
     const [customer_email, setCustomerEmail] = useState(customer.customer_email)
     const inputRef = React.useRef(null)
-    const editCustomer = async (e) => {
+    const editCustomer = (e) => {
         e.preventDefault()
         const body = {customer_name, customer_email}
         dispatch(updateCustomer(body, customer.customer_id))

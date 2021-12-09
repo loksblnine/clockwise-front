@@ -6,7 +6,7 @@ const EditCity = ({city}) => {
     const [city_name, setCityName] = useState(city.city_name)
     const inputRef = React.useRef(null)
     const dispatch = useDispatch()
-    const editCity = async (e) => {
+    const editCity = (e) => {
         e.preventDefault()
         const body = {city_name}
         dispatch(updateCity(body, city.city_id))

@@ -7,7 +7,7 @@ const AddCityDependency = ({master}) => {
     const [cityId, setCityId] = useState(-1)
     const cities = useSelector((state) => state.cities.items)
     const dispatch = useDispatch()
-    const onSubmitForm = async e => {
+    const onSubmitForm = (e) => {
         e.preventDefault();
         const body = {city_id: cityId, master_id: master.master_id}
         dispatch(addCityToMaster(body))

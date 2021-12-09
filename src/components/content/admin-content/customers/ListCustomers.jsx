@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useCallback, useEffect} from "react";
 import EditCustomer from "./EditCustomer";
 import InputCustomer from "./InputCustomer";
 import {useDispatch, useSelector} from "react-redux";
@@ -15,11 +15,11 @@ const ListCustomers = () => {
             dispatch(setCustomers(page))
     }, [dispatch])
 
-    const handleNextCustomers = (e) => {
+    const handleNextCustomers = useCallback((e) => {
         e.target.disabled = true
         dispatch(setCustomers(page))
         e.target.disabled = false
-    }
+    }, [page])
 
     if (!isReady) {
         return <Spinner animation="grow"/>

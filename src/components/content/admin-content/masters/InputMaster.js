@@ -10,7 +10,7 @@ const InputMaster = () => {
     const dispatch = useDispatch()
     const inputRef = React.useRef(null)
 
-    const onSubmitForm = async e => {
+    const onSubmitForm = (e) => {
         e.preventDefault();
         const body = {master_name, email, ranking: Number(ranking)}
         dispatch(addMaster(body))

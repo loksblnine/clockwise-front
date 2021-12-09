@@ -18,7 +18,7 @@ const EditOrder = (initialOrder) => {
         time: initialOrder.order?.order_time?.split('T')[1]?.split('.')[0]
     });
 
-    const editOrder = async (e) => {
+    const editOrder = (e) => {
         e.preventDefault()
         const body = {order}
         body.order.time = `${Number(body.order.time.split(':')[0])}:00`

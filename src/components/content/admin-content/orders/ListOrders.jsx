@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useCallback, useEffect} from "react";
 import EditOrder from "./EditOrder";
 import * as constants from "../../../../constants";
 import {useDispatch, useSelector} from "react-redux";
@@ -14,11 +14,13 @@ const ListOrders = () => {
         if (orders.length <= 0)
             dispatch(setOrdersAdmin(page))
     }, [dispatch])
-    const handleNextOrders = (e) => {
+
+    const handleNextOrders = useCallback((e) => {
         e.target.disabled = true
         dispatch(setOrdersAdmin(page))
         e.target.disabled = false
-    }
+    }, [page])
+
     if (!isReady) {
         return <Spinner animation="grow"/>
     }

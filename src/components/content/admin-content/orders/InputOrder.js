@@ -20,7 +20,7 @@ const InputOrder = () => {
         time: ''
     });
 
-    const onSubmitForm = async (e) => {
+    const onSubmitForm = (e) => {
         e.preventDefault();
         const body = {order}
         body.order.time = `${Number(body.order.time.split(':')[0])}:00`

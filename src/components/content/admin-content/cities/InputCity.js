@@ -8,7 +8,7 @@ const InputCity = () => {
     const dispatch = useDispatch()
     const inputRef = React.useRef(null)
 
-    const onSubmitForm = async e => {
+    const onSubmitForm = (e) => {
         e.preventDefault()
         const body = {city_name}
         dispatch(addCity(body))

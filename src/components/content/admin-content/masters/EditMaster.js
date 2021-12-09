@@ -9,7 +9,7 @@ const EditMaster = ({master}) => {
     const dispatch = useDispatch()
     const inputRef = React.useRef(null)
 
-    const editMaster = async (e) => {
+    const editMaster = (e) => {
         e.preventDefault()
         const body = {master_name, email: master_email, ranking}
         dispatch(updateMaster(body, master.master_id))

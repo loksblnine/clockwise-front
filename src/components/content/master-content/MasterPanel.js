@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import '../Panel.css'
 import * as constants from "../../../constants";
 import {Spinner} from "react-bootstrap";
@@ -33,17 +33,20 @@ const MasterPanel = () => {
             dispatch(setOrdersMaster(page, master?.master_id))
     }, [master, master?.master_id]);
 
-    const handleNextOrders = (e) => {
+    const handleNextOrders = useCallback((e) => {
         e.target.disabled = true
         dispatch(setOrdersMaster(page, master.master_id))
         e.target.disabled = false
-    }
+    }, [page])
+
     const handleApproveOrder = (order) => {
         dispatch(approveOrder(order.order_id))
     }
+
     if (!isReady && !ordersReady) {
         return <Spinner animation="grow"/>
     }
+
     return (
         <div className="router">
             <h2 className="text-left mt-5">Привет, {master?.master_name}</h2>

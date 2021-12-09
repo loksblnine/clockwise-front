@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useCallback, useEffect} from "react";
 import EditMaster from "./EditMaster";
 import InputMaster from "./InputMaster";
 import {Spinner} from "react-bootstrap";
@@ -44,11 +44,11 @@ const ListMasters = () => {
             dispatch(setMasters(page))
     }, [dispatch])
 
-    const handleNextMasters = (e) => {
+    const handleNextMasters = useCallback((e) => {
         e.target.disabled = true
         dispatch(setMasters(page))
         e.target.disabled = false
-    }
+    }, [page])
 
     if (!isReady) {
         return <Spinner animation="grow"/>

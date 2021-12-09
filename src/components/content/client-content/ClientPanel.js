@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import '../Panel.css'
 import * as constants from "../../../constants";
 import {Spinner} from "react-bootstrap";
@@ -22,11 +22,11 @@ const ClientPanel = () => {
             dispatch(setOrdersCustomer(page, customer?.customer_id))
     }, [customer, customer?.master_id]);
 
-    const handleNextOrders = (e) => {
+    const handleNextOrders = useCallback((e) => {
         e.target.disabled = true
         dispatch(setOrdersCustomer(page, customer?.customer_id))
         e.target.disabled = false
-    }
+    }, [page])
 
     if (!isReady) {
         return <Spinner animation="grow"/>
