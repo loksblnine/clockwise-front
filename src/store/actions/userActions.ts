@@ -31,16 +31,30 @@ export const setUserData = (type: string, email: string) => {
         })
     }
 }
-export const setMasterNewCity = (type: string, email: string) => {
+export const setMasterNewCity = (body: any) => {
     return async (dispatch: any) => {
         const {data} = await instance({
-            method: "get",
-            url: `/${type}/email/${email}`
+            method: "post",
+            data: body,
+            url: `/deps`
         })
         dispatch({
-            type: constants.ACTIONS.USER.SET_DATA,
+            type: constants.ACTIONS.USER.MASTER.ADD_CITY,
             payload: data
         })
+    }
+}
+export const deleteMasterCity = (body: any) => {
+    return async (dispatch: any) => {
+        await instance({
+            method: "DELETE",
+            data: body,
+            url: `/deps`
+        })
+        dispatch({
+            type: constants.ACTIONS.USER.MASTER.DELETE_CITY,
+            payload: body
+        });
     }
 }
 export const setReadyUser = (bool: boolean) => ({

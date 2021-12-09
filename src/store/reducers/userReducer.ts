@@ -4,20 +4,20 @@ import jwt_decode from "jwt-decode";
 type User = {
     role: number,
     email: string,
-    data: any
 }
 
 type initialState = {
     isReady: boolean,
-    user: User
+    user: User,
+    data: any
 }
 
 const initialState: initialState = {
     isReady: false,
+    data: {},
     user: {
         role: 0,
         email: "",
-        data: {}
     }
 };
 
@@ -42,7 +42,7 @@ const userReducer = (state = initialState, action: { type: string; payload: any;
         case constants.ACTIONS.USER.MASTER.ADD_CITY: {
             return {
                 ...state,
-                data: action.payload
+                data: state.data.deps.push(action.payload.city_id)
             };
         }
         case constants.ACTIONS.USER.MASTER.DELETE_CITY: {

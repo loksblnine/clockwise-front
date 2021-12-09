@@ -43,6 +43,7 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
                 if (item.order_id === action.payload) {
                     item.isDone = true
                 }
+                return item
             })
             return {
                 ...state,
