@@ -29,8 +29,8 @@ export const sendConfirmationOrder = (order, master, history) => {
                 data: messageBody,
                 url: "/send/confirm-order"
             })
-                .then(() => toast.dismiss())
                 .then(() => {
+                    toast.dismiss()
                     toast("Письмо отправлено вам на почту")
                     history.push('/')
                 })
