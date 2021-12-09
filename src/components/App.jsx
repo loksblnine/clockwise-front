@@ -15,7 +15,7 @@ const App = () => {
     const dispatch = useDispatch()
     const user = useSelector(state => state.users)
     useEffect(() => {
-        checkAuth(dispatch)
+        dispatch(checkAuth())
     }, [dispatch])
 
     if (!user.isReady) {

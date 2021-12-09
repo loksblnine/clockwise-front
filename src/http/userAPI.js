@@ -20,21 +20,43 @@ export const login = async (email, password) => {
     return data
 }
 
-export const checkAuth = (dispatch) => {
-    instance({
-        method: "get",
-        url: `/auth/login`
-    })
-        .then(({data}) => {
-            dispatch({
-                type: constants.ACTIONS.USER.SET_USER,
-                payload: data
-            })
+export const checkAuth = () => {
+    return async (dispatch) => {
+        instance({
+            method: "get",
+            url: `/auth/login`
         })
-        .catch(() => {
-            dispatch({
-                type: constants.ACTIONS.USER.LOG_OUT
+            .then(({data}) => {
+                dispatch({
+                    type: constants.ACTIONS.USER.SET_USER,
+                    payload: data
+                })
             })
-        })
+            .catch(() => {
+                dispatch({
+                    type: constants.ACTIONS.USER.LOG_OUT
+                })
+            })
 
+    }
+}
+export const setActivate = () => {
+    return async (dispatch) => {
+        instance({
+            method: "get",
+            url: `/auth/approve-user`
+        })
+            .then(({data}) => {
+                dispatch({
+                    type: constants.ACTIONS.USER.SET_USER,
+                    payload: data
+                })
+            })
+            .catch(() => {
+                dispatch({
+                    type: constants.ACTIONS.USER.LOG_OUT
+                })
+            })
+
+    }
 }
