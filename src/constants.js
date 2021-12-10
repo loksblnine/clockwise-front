@@ -157,10 +157,12 @@ export const ACTIONS = {
         LOG_OUT: "LOG_OUT",
         MASTER: {
             ADD_CITY: "MASTER.ADD_CITY",
-            DELETE_CITY: "MASTER.DELETE_CITY"
+            DELETE_CITY: "MASTER.DELETE_CITY",
+            CHANGE_PROFILE: "CHANGE_PROFILE",
         },
         CUSTOMER: {
-            SET_MARK: "CUSTOMER.SET_MARK"
+            SET_MARK: "CUSTOMER.SET_MARK",
+            CHANGE_PROFILE: "CHANGE_PROFILE",
         },
         ADMIN: {
             APPROVE_MASTER: "ADMIN.APPROVE_MASTER"

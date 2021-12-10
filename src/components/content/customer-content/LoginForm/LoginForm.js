@@ -15,7 +15,7 @@ const validate = (values) => {
     }
     if (!values.email) {
         errors.email = 'Адрес электронный почты обязателен';
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    } else if (!/^[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]+/i.test(values.email)) {
         errors.email = 'Невалидный адрес электронной почты';
     }
     return errors;

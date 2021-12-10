@@ -4,16 +4,8 @@ import {instance} from "../../http/headerPlaceholder.instance";
 import jwt_decode from "jwt-decode";
 import {toast} from "react-toastify";
 
-type User = {
-    role: number,
-    email: string,
-    token: string,
-    data: any
-}
-
 export const setUser = (email: string, password: string, history: any) => {
     return async (dispatch: any) => {
-
         login(email, password).then(({token}) => {
             dispatch({
                 type: constants.ACTIONS.USER.SET_USER,
@@ -22,7 +14,7 @@ export const setUser = (email: string, password: string, history: any) => {
             // @ts-ignore
             history.push(constants.PATH[jwt_decode(token).role])
         })
-            .catch(e =>
+            .catch(() =>
                 toast("Проверьте логин или пароль")
             )
     }
@@ -71,12 +63,31 @@ export const setReadyUser = (bool: boolean) => ({
     payload: bool
 });
 
-export const setJWT = (user: User) => ({
-    type: constants.ACTIONS.USER.SET_JSON_WEB_TOKEN,
-    payload: user
-});
-
-export const removeJWT = (user: User) => ({
-    type: constants.ACTIONS.USER.REMOVE_JSON_WEB_TOKEN,
-    payload: user
-});
+export const updateUserData = (type: string, body: any, id: number) => {
+    return async (dispatch: any) => {
+        const {data} = await instance({
+            method: "put",
+            data: body,
+            url: `/${type}/${id}`
+        })
+        switch (type) {
+            case "customers": {
+                dispatch({
+                    type: constants.ACTIONS.USER.SET_DATA,
+                    payload: data
+                })
+                break
+            }
+            case "masters": {
+                dispatch({
+                    type: constants.ACTIONS.USER.SET_DATA,
+                    payload: data
+                })
+                break
+            }
+            default: {
+                break
+            }
+        }
+    }
+}

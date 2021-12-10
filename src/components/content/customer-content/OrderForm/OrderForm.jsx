@@ -42,9 +42,9 @@ const OrderForm = () => {
     const history = useHistory()
     const location = useLocation()
 
-    const cities = useSelector(state => state.cities.items)
-    const isReady = useSelector(state => state.cities.isReady)
-
+    const cities = useSelector((state) => state.cities.items)
+    const isReady = useSelector((state) => state.cities.isReady)
+    const user = useSelector((state) => state.users.user)
     const dispatch = useDispatch()
     useEffect(() => {
         if (!isReady) {
@@ -55,7 +55,7 @@ const OrderForm = () => {
     const formik = useFormik({
         initialValues: {
             name: location?.state?.data?.name || '',
-            email: location?.state?.data?.email || '',
+            email: location?.state?.data?.email || user?.email || '',
             city: location?.state?.data?.city || -1,
             date: location?.state?.data?.date || constants.DATE_FROM,
             time: location?.state?.data?.time || "08:00",
