@@ -93,3 +93,17 @@ export const deleteOrder = (id: number) => {
         });
     }
 }
+
+export const setMarkOrder = (id: number, mark: number) => {
+    return async (dispatch: any) => {
+        await instance({
+            method: "put",
+            data: {mark},
+            url: `/auth/set-mark/${id}`
+        })
+        dispatch({
+            type: constants.ACTIONS.USER.CUSTOMER.SET_MARK,
+            payload: {mark, id}
+        });
+    }
+}

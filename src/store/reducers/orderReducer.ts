@@ -56,6 +56,18 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
                 isReady: action.payload
             };
         }
+        case constants.ACTIONS.USER.CUSTOMER.SET_MARK: {
+            const array = state.items.map(order => {
+                if (order.order_id === action.payload.id) {
+                    order.mark = action.payload.mark
+                }
+                return order
+            })
+            return {
+                ...state,
+                items: array,
+            };
+        }
         case constants.ACTIONS.ORDERS.ADD_ORDER: {
             return {
                 ...state,

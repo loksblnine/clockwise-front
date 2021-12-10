@@ -2,6 +2,7 @@ import * as constants from "../../constants";
 import {login} from "../../http/userAPI";
 import {instance} from "../../http/headerPlaceholder.instance";
 import jwt_decode from "jwt-decode";
+import {toast} from "react-toastify";
 
 type User = {
     role: number,
@@ -12,17 +13,21 @@ type User = {
 
 export const setUser = (email: string, password: string, history: any) => {
     return async (dispatch: any) => {
+
         login(email, password).then(({token}) => {
-                dispatch({
-                    type: constants.ACTIONS.USER.SET_USER,
-                    payload: {token}
-                })
-                // @ts-ignore
+            dispatch({
+                type: constants.ACTIONS.USER.SET_USER,
+                payload: {token}
+            })
+            // @ts-ignore
             history.push(constants.PATH[jwt_decode(token).role])
-            }
-        )
+        })
+            .catch(e =>
+                toast("Проверьте логин или пароль")
+            )
     }
 }
+
 export const setUserData = (type: string, email: string) => {
     return async (dispatch: any) => {
         const {data} = await instance({

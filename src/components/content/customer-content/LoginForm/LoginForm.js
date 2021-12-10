@@ -4,6 +4,7 @@ import {useHistory, withRouter} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {LinkContainer} from "react-router-bootstrap";
 import {setUser} from "../../../../store/actions/userActions";
+import {toast} from "react-toastify";
 
 const validate = (values) => {
     const errors = {};
@@ -32,7 +33,11 @@ const LoginForm = () => {
         },
         validate,
         onSubmit: async () => {
-            dispatch(setUser(formik.values.email, formik.values.password, history))
+            try {
+                dispatch(setUser(formik.values.email, formik.values.password, history))
+            } catch (e) {
+                toast("Проверьте логин или пароль")
+            }
         }
     })
     const loginPageStyle = {

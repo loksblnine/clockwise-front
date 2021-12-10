@@ -158,6 +158,9 @@ export const ACTIONS = {
         MASTER: {
             ADD_CITY: "MASTER.ADD_CITY",
             DELETE_CITY: "MASTER.DELETE_CITY"
+        },
+        CUSTOMER: {
+            SET_MARK: "CUSTOMER.SET_MARK"
         }
     }
 }
