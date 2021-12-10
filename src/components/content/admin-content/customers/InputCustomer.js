@@ -1,33 +1,22 @@
-import React, {Fragment, useContext, useState} from "react";
-import {toast} from "react-toastify";
-import {Context} from "../../../../index";
-import {getCustomersIntoStore} from "../../getData";
-import {instance} from "../../../../http/headerPlaceholder.instance";
+import React, {useCallback, useState} from "react";
+import {useDispatch} from "react-redux";
+import {addCustomer} from "../../../../store/actions/customerActions";
 
 const InputCustomer = () => {
     const [customer_name, setCustomerName] = useState("")
     const [customer_email, setCustomerEmail] = useState("")
 
-    const {DB} = useContext(Context);
     const inputRef = React.useRef(null)
-    const onSubmitForm = async e => {
+    const dispatch = useDispatch()
+
+    const onSubmitForm = useCallback((e) => {
         e.preventDefault();
-        try {
-            const body = {customer_name, customer_email}
-            instance({
-                method: "POST",
-                data: body,
-                url: "/customers"
-            })
-                .then(() => toast(`Покупатель ${customer_name} добавлен`))
-                .then(() => getCustomersIntoStore(DB))
-            inputRef.current.click()
-        } catch (e) {
-            toast.info("Server is busy at this moment")
-        }
-    }
+        const body = {customer_name, customer_email}
+        dispatch(addCustomer(body))
+        inputRef.current.click()
+    }, [customer_email, customer_name])
     return (
-        <Fragment>
+        <div>
             <button type="button" className="btn btn-success mb-5" data-toggle="modal"
                     data-target="#addCustomer">
                 Добавить
@@ -70,7 +59,6 @@ const InputCustomer = () => {
                     </div>
                 </div>
             </div>
-        </Fragment>
-    )
+        </div>)
 }
 export default InputCustomer;

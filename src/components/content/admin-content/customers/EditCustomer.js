@@ -1,35 +1,20 @@
-import React, {Fragment, useContext, useState} from "react";
-import {SERVER_URL} from "../../../../constants";
-import {toast} from "react-toastify";
-import {Context} from "../../../../index";
-import {getCustomersIntoStore} from "../../getData";
-import axios from "axios";
-import {instance} from "../../../../http/headerPlaceholder.instance";
+import React, {useCallback, useState} from "react";
+import {useDispatch} from "react-redux";
+import {updateCustomer} from "../../../../store/actions/customerActions";
 
 const EditCustomer = ({customer}) => {
+    const dispatch = useDispatch()
     const [customer_name, setCustomerName] = useState(customer.customer_name)
     const [customer_email, setCustomerEmail] = useState(customer.customer_email)
-    const {DB} = useContext(Context);
     const inputRef = React.useRef(null)
-    const updateCustomer = async (e) => {
+    const editCustomer = useCallback((e) => {
         e.preventDefault()
-        try {
-            const body = {customer_name, customer_email}
-            instance({
-                method: "PUT",
-                data: body,
-                url: `/customers/${customer.customer_id}`
-            })
-                .then((resp) => toast(resp.data))
-                .then(() => getCustomersIntoStore(DB))
-                .catch(() => toast.error("Данные не обновлены"))
-            inputRef.current.click()
-        } catch (e) {
-            toast.info("Server is busy at this moment")
-        }
-    }
+        const body = {customer_name, customer_email}
+        dispatch(updateCustomer(body, customer.customer_id))
+        inputRef.current.click()
+    }, [customer_name, customer_email])
     return (
-        <Fragment>
+        <div>
             <button type="button" className="btn btn-warning" data-toggle="modal"
                     data-target={`#id${customer.customer_id}`}>
                 Редактировать
@@ -39,7 +24,7 @@ const EditCustomer = ({customer}) => {
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
-                        <form onSubmit={event => updateCustomer(event)}>
+                        <form onSubmit={event => editCustomer(event)}>
                             <div className="modal-header">
                                 <h2 className="modal-title" id="exampleModalLabel">Редактировать покупателя</h2>
                                 <button type="button" className="close" data-dismiss="modal">
@@ -72,7 +57,7 @@ const EditCustomer = ({customer}) => {
                     </div>
                 </div>
             </div>
-        </Fragment>
+        </div>
     )
 }
 

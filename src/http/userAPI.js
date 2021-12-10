@@ -1,35 +1,62 @@
-import jwt_decode from "jwt-decode";
 import {instance} from "./headerPlaceholder.instance";
+import * as constants from "../constants";
 
-export const registrationMaster = async (email, password) => {
-    //probably works bad
-    const {data} = instance({
+export const registration = async (email, password, role) => {
+    const body = {email, password, role}
+    const {data} = await instance({
         method: "post",
-        data: {email, password, role: "MASTER"},
-        url: '/register'
+        data: body,
+        url: '/auth/register'
     })
-        .then((resp) => {
-            localStorage.setItem('token', resp.data.token)
-        })
-    localStorage.setItem('token', data.token)
-    return jwt_decode(data.token)
+    return data
 }
 
 export const login = async (email, password) => {
-    return instance({
+    const {data} = await instance({
         method: "post",
         data: {email, password},
-        url: '/login'
+        url: '/auth/login'
     })
-        .then((resp) => {
-            localStorage.setItem('token', resp.data.token)
-        })
+    return data
 }
 
-export const checkAuth = async () => {
-    if (!!localStorage.getItem('token'))
-        return instance({
+export const checkAuth = () => {
+    return async (dispatch) => {
+        instance({
             method: "get",
-            url: `/login`
+            url: `/auth/login`
         })
+            .then(({data}) => {
+                dispatch({
+                    type: constants.ACTIONS.USER.SET_USER,
+                    payload: data
+                })
+            })
+            .catch(() => {
+                dispatch({
+                    type: constants.ACTIONS.USER.LOG_OUT
+                })
+            })
+
+    }
+}
+export const setActivate = () => {
+    return async (dispatch) => {
+        instance({
+            method: "get",
+            url: `/auth/approve-user`
+        })
+            .then(({data}) => {
+                dispatch({
+                    type: constants.ACTIONS.USER.SET_USER,
+                    payload: data
+                })
+            })
+            .catch(() => {
+                dispatch({
+                    type: constants.ACTIONS.USER.LOG_OUT
+                })
+            })
+
+    }
 }

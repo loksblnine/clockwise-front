@@ -1,14 +1,19 @@
-import OrderForm from "./components/content/customer-content/orderform/OrderForm";
-import MasterView from "./components/content/customer-content/mastersview/MasterView";
-import ListCities from "./components/content/admin-content/cities/ListCities";
+import OrderForm from "./components/content/customer-content/OrderForm/OrderForm";
+import MasterView from "./components/content/customer-content/MasterView/MasterView";
 import ListOrders from "./components/content/admin-content/orders/ListOrders";
-import ListMasters from "./components/content/admin-content/masters/ListMasters";
 import ListCustomers from "./components/content/admin-content/customers/ListCustomers";
-import LoginForm from "./components/content/customer-content/login-form/LoginForm";
+import ListMasters from "./components/content/admin-content/masters/ListMasters";
+import ListCities from "./components/content/admin-content/cities/ListCities";
+import LoginForm from "./components/content/customer-content/LoginForm/LoginForm";
 import AdminPanel from "./components/content/admin-content/admin-panel/AdminPanel";
+import MasterPanel from "./components/content/master-content/MasterPanel";
+import RegistrationForm from "./components/content/customer-content/RegistrationForm/RegistrationForm";
+import ClientPanel from "./components/content/client-content/ClientPanel";
+import SuccessRegister from "./components/content/customer-content/RegistrationForm/SuccessRegister";
+import SuccessActivate from "./components/content/customer-content/RegistrationForm/SuccessActivate";
 
-export const SERVER_URL = process.env.NODE_ENV === "development" ? "http://localhost:5000" : "https://enigmatic-spire-58695.herokuapp.com"
-
+//todo remove this garbage =))
+//todo use ENUM with TS
 export const WORK_TYPES = {
     1: {
         key: "маленькие",
@@ -31,7 +36,7 @@ export const WORK_TYPES = {
 }
 
 function nowDate() {
-    return new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()+2).toISOString().split('T')[0]
+    return new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 2).toISOString().split('T')[0]
 }
 
 function finalDate() {
@@ -55,12 +60,42 @@ export const customerRoutes = [
     {
         path: '/login',
         Component: LoginForm
+    },
+    {
+        path: '/registration',
+        Component: RegistrationForm
+    },
+    {
+        path: '/registration_success',
+        Component: SuccessRegister
+    },
+    {
+        path: '/activate/:token',
+        Component: SuccessActivate
     }
 ]
-
-export const authRoutes = [
+export const authMasterRoutes = [
     {
-        path: '/access_succeed',
+        path: '/access_succeed_master',
+        Component: MasterPanel
+    }
+    //todo
+    // 2. edit info
+    // 3. see comments
+]
+export const authClientRoutes = [
+    {
+        path: '/access_succeed_client',
+        Component: ClientPanel
+    }
+    //todo
+    // 1. how to become a master
+    // 2. edit info
+    // 3. leave a comment as client
+]
+export const authAdminRoutes = [
+    {
+        path: '/access_succeed_admin',
         Component: AdminPanel
     },
     {
@@ -79,4 +114,63 @@ export const authRoutes = [
         path: '/customers',
         Component: ListCustomers
     }
+]
+
+export const ACTIONS = {
+    CITIES: {
+        SET_CITIES: "SET_CITIES",
+        SET_READY_CITIES: "SET_READY_CITIES",
+        DELETE_CITY: "DELETE_CITY",
+        UPDATE_CITY: "UPDATE_CITY",
+        ADD_CITY: "ADD_CITY"
+    },
+    CUSTOMERS: {
+        SET_CUSTOMERS: "SET_CUSTOMERS",
+        SET_READY_CUSTOMERS: "SET_READY_CUSTOMERS",
+        DELETE_CUSTOMER: "DELETE_CUSTOMER",
+        UPDATE_CUSTOMER: "UPDATE_CUSTOMER",
+        ADD_CUSTOMER: "ADD_CUSTOMER"
+    },
+    MASTERS: {
+        SET_MASTERS: "SET_MASTERS",
+        SET_READY_MASTERS: "SET_READY_MASTERS",
+        DELETE_MASTER: "DELETE_MASTER",
+        DELETE_CITY_AT_MASTER: "DELETE_CITY_AT_MASTER",
+        UPDATE_MASTER: "UPDATE_MASTER",
+        ADD_MASTER: "ADD_MASTER",
+        ADD_CITY_AT_MASTER: "ADD_CITY_AT_MASTER",
+        APPROVE_ORDER: "APPROVE_ORDER"
+    },
+    ORDERS: {
+        SET_ORDERS: "SET_ORDERS",
+        SET_READY_ORDERS: "SET_READY_ORDERS",
+        DELETE_ORDER: "DELETE_ORDER",
+        UPDATE_ORDER: "UPDATE_ORDER",
+        ADD_ORDER: "ADD_ORDER"
+    },
+    USER: {
+        SET_USER: "SET_USER",
+        SET_DATA: "SET_DATA",
+        SET_READY_USER: "SET_READY_USER",
+        SET_JSON_WEB_TOKEN: "SET_JSON_WEB_TOKEN",
+        REMOVE_JSON_WEB_TOKEN: "REMOVE_JSON_WEB_TOKEN",
+        LOG_OUT: "LOG_OUT",
+        MASTER: {
+            ADD_CITY: "MASTER.ADD_CITY",
+            DELETE_CITY: "MASTER.DELETE_CITY"
+        },
+        CUSTOMER: {
+            SET_MARK: "CUSTOMER.SET_MARK"
+        },
+        ADMIN: {
+            APPROVE_MASTER: "ADMIN.APPROVE_MASTER"
+        }
+    }
+}
+
+export const PATH = [
+    '/',
+    '/access_succeed_admin',
+    '/access_succeed_master',
+    '/access_succeed_client'
 ]

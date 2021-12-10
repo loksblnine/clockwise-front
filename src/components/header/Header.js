@@ -1,12 +1,12 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import imageSrc from "../../images/logo.png"
 import './Header.css'
-import {Context} from "../../index";
-import {observer} from 'mobx-react-lite'
 import {useHistory} from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
+import {useDispatch, useSelector} from "react-redux";
+import * as constants from "../../constants";
 
 const Logo = () => {
     const history = useHistory()
@@ -22,52 +22,55 @@ const Logo = () => {
     )
 }
 
-const Header = observer((props) => {
-    const {user} = useContext(Context)
+const Header = () => {
     const history = useHistory()
+    const dispatch = useDispatch()
+    const user = useSelector(state => state.users.user)
 
     const logOut = () => {
-        user.setUser({})
-        user.setIsAuth(false)
+        dispatch({
+            type: constants.ACTIONS.USER.LOG_OUT
+        })
         history.push(
             {pathname: '/'}
         )
-        localStorage.removeItem('token')
     }
-    const handleAdminAccess = () => {
+
+    const handleAccess = () => {
         history.push(
-            {pathname: '/access_succeed'}
+            {pathname: constants.PATH[user.role]}
         )
     }
 
     return (
-        <Navbar variant="dark">
-            <Container>
-                <Logo/>
-                {(user.isAuth) ?
-                    <Nav className="ml-auto" style={{color: 'white'}}>
-                        <button
-                            onClick={handleAdminAccess}
-                            className="btn btn-xl"
-                        >
-                            Админ панель
-                        </button>
-                        <button
-                            onClick={() => logOut()}
-                            className="btn btn-xl"
-                        >
-                            Выйти
-                        </button>
-                    </Nav>
-                    :
-                    <Nav className="ml-auto" style={{color: 'white'}}>
-                        <button className="btn btn-xl" onClick={() => history.push('/login')}>Авторизация</button>
-                    </Nav>
-                }
-            </Container>
-        </Navbar>
-
+        <div className="router">
+            <Navbar>
+                <Container>
+                    <Logo/>
+                    {(user.role > 0) ?
+                        <Nav className="ml-auto" style={{color: 'white'}}>
+                            <button
+                                onClick={handleAccess}
+                                className="btn btn-xl"
+                            >
+                                Панель
+                            </button>
+                            <button
+                                onClick={() => logOut()}
+                                className="btn btn-xl"
+                            >
+                                Выйти
+                            </button>
+                        </Nav>
+                        :
+                        <Nav className="ml-auto" style={{color: 'white'}}>
+                            <button className="btn btn-xl" onClick={() => history.push('/login')}>Авторизация</button>
+                        </Nav>
+                    }
+                </Container>
+            </Navbar>
+        </div>
     );
-});
+}
 
 export default Header

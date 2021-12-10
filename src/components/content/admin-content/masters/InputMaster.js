@@ -1,33 +1,23 @@
-import React, {Fragment, useContext, useState} from "react";
-import {toast} from "react-toastify";
-import {Context} from "../../../../index";
-import {getMastersIntoStore} from "../../getData";
-import {instance} from "../../../../http/headerPlaceholder.instance";
+import React, {useCallback, useState} from "react";
+import {useDispatch} from "react-redux";
+import {addMaster} from "../../../../store/actions/masterActions";
 
 const InputMaster = () => {
     const [master_name, setMasterName] = useState("")
+    const [email, setEmail] = useState("")
     const [ranking, setRanking] = useState("")
 
-    const {DB} = useContext(Context);
+    const dispatch = useDispatch()
     const inputRef = React.useRef(null)
-    const onSubmitForm = async e => {
+
+    const onSubmitForm = useCallback((e) => {
         e.preventDefault();
-        try {
-            const body = {master_name, ranking}
-            instance({
-                method: "POST",
-                data: body,
-                url: "/masters"
-            })
-                .then(() => toast(`Мастер ${master_name} добавлен`))
-                .then(() => getMastersIntoStore(DB))
-            inputRef.current.click()
-        } catch (e) {
-            toast.info("Server is busy at this moment")
-        }
-    }
+        const body = {master_name, email, ranking: Number(ranking)}
+        dispatch(addMaster(body))
+        inputRef.current.click()
+    }, [master_name, email, ranking])
     return (
-        <Fragment>
+        <div>
             <button type="button" className="btn btn-success mb-5" data-toggle="modal"
                     data-target="#addMaster">
                 Добавить
@@ -44,13 +34,19 @@ const InputMaster = () => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <label htmlFor={`name`}>ФИО мастера</label>
+                                <label htmlFor="name">ФИО мастера</label>
                                 <input className="form-control" placeholder="Иван Иванович Иванов" value={master_name}
-                                       name={`name`} onChange={e => setMasterName(e.target.value)}
+                                       name="name" onChange={e => setMasterName(e.target.value)}
                                        required pattern="[A-ZА-Яa-zа-я -]+"
                                 />
-                                <label htmlFor={`rating`}>Рейтинг</label>
-                                <input className="form-control" placeholder="5.0" value={ranking} name={`ranking`}
+                                <label htmlFor="email">e-mail</label>
+                                <input className="form-control" value={email} name="email" type="email"
+                                       onChange={e => setEmail(e.target.value)}
+                                       required
+                                       pattern="[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]+"
+                                />
+                                <label htmlFor="rating">Рейтинг</label>
+                                <input className="form-control" placeholder="5.0" value={ranking} name="ranking"
                                        onChange={e => setRanking(e.target.value)}
                                        required pattern="([1-5])|([1-4].[05])|(5.0)"
                                 />
@@ -67,7 +63,7 @@ const InputMaster = () => {
                     </div>
                 </div>
             </div>
-        </Fragment>
+        </div>
     )
 }
 export default InputMaster;

@@ -1,8 +1,7 @@
 import React, {useEffect} from 'react';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {LinkContainer} from 'react-router-bootstrap'
-import './AdminPanel.css'
-import {observer} from "mobx-react-lite";
+import '../../Panel.css'
 
 //components
 import ListMasters from "../masters/ListMasters";
@@ -10,7 +9,7 @@ import ListCities from "../cities/ListCities";
 import ListCustomers from "../customers/ListCustomers";
 import ListOrders from "../orders/ListOrders";
 
-const AdminPanel = observer(() => {
+const AdminPanel = () => {
     const inputRef = React.useRef(null)
     useEffect(() => {
         inputRef.current.click()
@@ -18,6 +17,7 @@ const AdminPanel = observer(() => {
 
     return (
         <Router>
+            <div>
             <div className="router">
                 <h2>Администрирование</h2>
                 <LinkContainer to='/masters'>
@@ -30,8 +30,9 @@ const AdminPanel = observer(() => {
                     <button className="btn btn-xl">Покупатели</button>
                 </LinkContainer>
                 <LinkContainer to='/orders'>
-                    <button className="btn btn-xl" id={`btn-orders`} ref={inputRef}>Заказы</button>
+                    <button className="btn btn-xl" id="btn-orders" ref={inputRef}>Заказы</button>
                 </LinkContainer>
+                </div>
                 <Switch>
                     <Route exact path='/masters' component={ListMasters}/>
                     <Route exact path='/cities' component={ListCities}/>
@@ -41,6 +42,6 @@ const AdminPanel = observer(() => {
             </div>
         </Router>
     );
-})
+}
 
 export default AdminPanel;

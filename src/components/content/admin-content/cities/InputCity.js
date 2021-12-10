@@ -1,31 +1,21 @@
-import React, {Fragment, useContext, useState} from "react";
-import {toast} from "react-toastify";
-import {Context} from "../../../../index";
-import {getCitiesIntoStore} from "../../getData";
-import {instance} from "../../../../http/headerPlaceholder.instance";
+import React, {useCallback, useState} from "react";
+import {useDispatch} from "react-redux";
+import {addCity} from "../../../../store/actions/cityActions";
 
 const InputCity = () => {
     const [city_name, setCityName] = useState("")
-    const {DB} = useContext(Context);
+
+    const dispatch = useDispatch()
     const inputRef = React.useRef(null)
-    const onSubmitForm = async e => {
-        e.preventDefault();
-        try {
-            const body = {city_name}
-            instance({
-                method: "POST",
-                data: body,
-                url: "/cities"
-            })
-                .then(() => toast("Город добавлен"))
-                .then(() => getCitiesIntoStore(DB))
-            inputRef.current.click()
-        } catch (e) {
-            toast.info("Server is busy at this moment")
-        }
-    }
+
+    const onSubmitForm = useCallback((e) => {
+        e.preventDefault()
+        const body = {city_name}
+        dispatch(addCity(body))
+        inputRef.current.click()
+    }, [city_name])
     return (
-        <Fragment>
+        <div>
             <button type="button" className="btn btn-success mb-5" data-toggle="modal"
                     data-target="#addTown">
                 Добавить
@@ -61,7 +51,7 @@ const InputCity = () => {
                 </div>
             </div>
 
-        </Fragment>
+        </div>
     )
 }
 
