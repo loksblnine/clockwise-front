@@ -51,7 +51,7 @@ const MasterView = () => {
         )
     }
     return (
-        <div className={`content`}>
+        <div className="content">
             <div>
                 <h3>Выберите свободного мастера</h3>
                 <p>Вы заказали
