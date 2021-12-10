@@ -161,6 +161,9 @@ export const ACTIONS = {
         },
         CUSTOMER: {
             SET_MARK: "CUSTOMER.SET_MARK"
+        },
+        ADMIN: {
+            APPROVE_MASTER: "ADMIN.APPROVE_MASTER"
         }
     }
 }

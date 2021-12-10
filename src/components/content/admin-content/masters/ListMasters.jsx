@@ -4,7 +4,7 @@ import InputMaster from "./InputMaster";
 import {Spinner} from "react-bootstrap";
 import AddCityDependency from "./AddCityDependency";
 import {useDispatch, useSelector} from "react-redux";
-import {setMasters, deleteCityAtMaster, deleteMaster} from "../../../../store/actions/masterActions";
+import {setMasters, deleteCityAtMaster, deleteMaster, approveMaster} from "../../../../store/actions/masterActions";
 import {setCities} from "../../../../store/actions/cityActions";
 
 const WorkIn = ({master}) => {
@@ -50,6 +50,10 @@ const ListMasters = () => {
         e.target.disabled = false
     }, [page])
 
+    const handleApproveMaster = (master) => {
+        dispatch(approveMaster(master.master_id))
+    }
+
     if (!isReady) {
         return <Spinner animation="grow"/>
     }
@@ -66,6 +70,7 @@ const ListMasters = () => {
                     <th scope="col">Работает в</th>
                     <th scope="col">Добавить город</th>
                     <th scope="col">Изменить</th>
+                    <th scope="col">Статус</th>
                     <th scope="col">Удалить</th>
                 </tr>
                 </thead>
@@ -83,6 +88,13 @@ const ListMasters = () => {
                                 <AddCityDependency master={master}/>}
                             </td>
                             <td><EditMaster master={master}/></td>
+                            <td>{
+                                !master.isApproved ?
+                                    <button className="btn btn-outline-success"
+                                            onClick={() => handleApproveMaster(master)}>
+                                       Активировать
+                                    </button>
+                                    : "Активный"}</td>
                             <td>
                                 <button className="btn btn-danger"
                                         onClick={() => dispatch(deleteMaster(master.master_id))}>Удалить

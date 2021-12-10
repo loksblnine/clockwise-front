@@ -33,8 +33,7 @@ const masterReducer = (state = initialState, action: { type: string; payload: an
             };
         }
         case constants.ACTIONS.MASTERS.UPDATE_MASTER: {
-            console.log(action.payload.master_id)
-
+            //todo rewrite
             const array = state.items.filter((item: any) => item.master_id !== action.payload.master_id).concat(action.payload)
             return {
                 ...state,
@@ -52,6 +51,18 @@ const masterReducer = (state = initialState, action: { type: string; payload: an
                 ...state,
                 items: state.items.concat(action.payload),
             }
+        }
+        case constants.ACTIONS.USER.ADMIN.APPROVE_MASTER: {
+            const array = state.items.map((item: any) => {
+                if (item.master_id === action.payload) {
+                    item.isApproved = true
+                }
+                return item
+            })
+            return {
+                ...state,
+                items: array,
+            };
         }
         case constants.ACTIONS.MASTERS.DELETE_MASTER: {
             return {

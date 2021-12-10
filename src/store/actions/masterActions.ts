@@ -54,6 +54,18 @@ export const addMaster = (master: Master) => {
         });
     }
 }
+export const approveMaster = (id: number) => {
+    return async (dispatch: any) => {
+        await instance({
+            method: "PUT",
+            url: `/auth/approve-master/${id}`
+        })
+        dispatch({
+            type: constants.ACTIONS.USER.ADMIN.APPROVE_MASTER,
+            payload: id
+        });
+    }
+}
 export const addCityToMaster = (body: any) => {
     return async (dispatch: any) => {
         const {data} = await instance({
