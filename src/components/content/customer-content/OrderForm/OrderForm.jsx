@@ -7,6 +7,7 @@ import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import {setCities} from "../../../../store/actions/cityActions";
+import UploadImage from "./UploadImage";
 
 const validate = (values) => {
     const errors = {};
@@ -59,7 +60,7 @@ const OrderForm = () => {
             city: location?.state?.data?.city || -1,
             date: location?.state?.data?.date || constants.DATE_FROM,
             time: location?.state?.data?.time || "08:00",
-            type: location?.state?.data?.type || '1'
+            type: location?.state?.data?.type || '1',
         },
         validate,
         onSubmit: (values) => {
@@ -150,6 +151,7 @@ const OrderForm = () => {
                         </label>
                     </div>
                 </div>
+                <UploadImage />
                 <button type="submit" className="btn btn-primary" disabled={formik.values.city === "-1"}>Выбрать
                     мастера
                 </button>
