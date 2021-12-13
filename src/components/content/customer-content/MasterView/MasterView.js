@@ -12,7 +12,7 @@ const MasterView = () => {
 
     const location = useLocation()
     const history = useHistory()
-
+    console.log(location.state.data)
     const order = location.state.data
     const T = order.date + "T" + order.time
     const orderBody = {

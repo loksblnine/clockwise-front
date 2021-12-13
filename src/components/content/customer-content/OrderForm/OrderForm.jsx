@@ -7,7 +7,6 @@ import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import {setCities} from "../../../../store/actions/cityActions";
-import UploadImage from "./UploadImage";
 
 const validate = (values) => {
     const errors = {};
@@ -53,6 +52,15 @@ const OrderForm = () => {
         }
     }, [dispatch, isReady])
 
+    const handleChooseFile = (e) => {
+        console.log(e.target.files[0])
+        const reader = new FileReader();
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onloadend = () => {
+            formik.values.base64Arr.push(reader.result);
+        };
+    }
+
     const formik = useFormik({
         initialValues: {
             name: location?.state?.data?.name || '',
@@ -61,6 +69,7 @@ const OrderForm = () => {
             date: location?.state?.data?.date || constants.DATE_FROM,
             time: location?.state?.data?.time || "08:00",
             type: location?.state?.data?.type || '1',
+            base64Arr: location?.state?.data?.base64Arr || [],
         },
         validate,
         onSubmit: (values) => {
@@ -151,8 +160,21 @@ const OrderForm = () => {
                         </label>
                     </div>
                 </div>
-                <UploadImage />
-                <button type="submit" className="btn btn-primary" disabled={formik.values.city === "-1"}>Выбрать
+                <div className="form-group">
+                    <label>Прикрепите фото</label>
+                    <input type="file" className="form-control" onInput={e => handleChooseFile(e)}
+                           id="file-input" key="file-input"/>
+                    {
+                        formik.values.base64Arr.length &&
+                        formik.values.base64Arr.map((item, i) => < div>
+                            <img
+                                src={item}
+                                alt="chosen"
+                                style={{height: '150px'}}
+                            />
+                        </div>)}
+                </div>
+                <button type="submit" className="btn btn-primary" disabled={formik.values.city === -1}>Выбрать
                     мастера
                 </button>
             </form>

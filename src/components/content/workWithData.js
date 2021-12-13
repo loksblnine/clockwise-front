@@ -13,6 +13,7 @@ export const sendConfirmationOrder = (order, master, history) => {
         city_id: order.city,
         order_time: T,
         work_id: order.type,
+        data: order.base64Arr
     }
     instance({
         method: "POST",
