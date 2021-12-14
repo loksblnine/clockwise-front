@@ -7,6 +7,7 @@ const AddCityDependency = ({master}) => {
     const [cityId, setCityId] = useState(-1)
     const cities = useSelector((state) => state.cities.items)
     const dispatch = useDispatch()
+
     const onSubmitForm = useCallback((e) => {
         e.preventDefault();
         const body = {city_id: cityId, master_id: master.master_id}
@@ -14,7 +15,7 @@ const AddCityDependency = ({master}) => {
         inputRef.current.click()
     }, [cityId])
 
-    //TODO citiesToCheck
+    console.log(master)
     return (
         <div>
             <button type="button" className="btn btn-outline-success mb-5" data-toggle="modal"
@@ -40,8 +41,10 @@ const AddCityDependency = ({master}) => {
                                         onChange={e => setCityId(e.target.value)} required>
                                     <option key="default" value="-1" disabled={true}>---Выбрать город---</option>
                                     {cities?.map(city => {
-                                        return (
-                                            <option key={city.city_id} value={city.city_id}>{city.city_name} </option>)
+                                        if (!master.deps.includes(city.city_id))
+                                            return (
+                                                <option key={city.city_id}
+                                                        value={city.city_id}>{city.city_name}</option>)
                                     })}
                                 </select>
                             </div>

@@ -1,10 +1,12 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import '../Panel.css'
 import * as constants from "../../../constants";
 import {Spinner} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
-import {setMarkOrder, setOrdersCustomer} from "../../../store/actions/orderActions";
+import {setOrdersCustomer} from "../../../store/actions/orderActions";
 import {setUserData} from "../../../store/actions/userActions";
+import SetMarkDialog from "./SetMarkDialog";
+import EditProfileClient from "./EditProfileClient";
 
 const ClientPanel = () => {
     const dispatch = useDispatch()
@@ -12,16 +14,14 @@ const ClientPanel = () => {
     const isReady = useSelector((state) => state.users)
     const orders = useSelector((state) => state.orders.items)
     const customer = useSelector((state) => state.users.data)
-    const [mark, setMark] = useState(5)
     const {loadNext, page} = useSelector((state) => state.orders)
-    const inputRef = React.useRef(null)
 
     useEffect(() => {
         if (!customer?.customer_id)
             dispatch(setUserData("customers", email))
         if (customer?.customer_id && orders.length <= 0)
             dispatch(setOrdersCustomer(page, customer?.customer_id))
-    }, [customer, customer?.master_id]);
+    }, [customer.customer_name, customer.customer_email, customer?.master_id]);
 
     const handleNextOrders = useCallback((e) => {
         e.target.disabled = true
@@ -32,13 +32,10 @@ const ClientPanel = () => {
     if (!isReady) {
         return <Spinner animation="grow"/>
     }
-    const handleSetMarkOrder = (order) => {
-        dispatch(setMarkOrder(order.order_id, mark))
-    }
-
     return (
         <div className="router">
             <h2 className="text-left mt-5">Привет, {customer.customer_name}</h2>
+            {customer?.customer_email && <EditProfileClient customer={customer}/>}
             {orders.length > 0 &&
                 <div>
                     <h2 className="text-left mt-5">Ваш список заказов</h2>
@@ -76,52 +73,7 @@ const ClientPanel = () => {
                                                 </svg>
                                             </div>
                                         ) :
-                                        <div>
-                                            <button className="btn btn-outline-success" data-toggle="modal"
-                                                    data-target={`#id${order.order_id}`}
-                                            >
-                                                Поставить оценку!
-                                            </button>
-                                            <div className="modal fade" id={`id${order.order_id}`} tabIndex="-1"
-                                                 role="dialog"
-                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div className="modal-dialog" role="document">
-                                                    <div className="modal-content">
-                                                        <form onSubmit={() => handleSetMarkOrder(order)}>
-                                                            <div className="modal-header">
-                                                                <h2 className="modal-title"
-                                                                    id="exampleModalLabel">Поставить оценку
-                                                                    мастеру {order.master.master_name}</h2>
-                                                                <button type="button" className="close"
-                                                                        data-dismiss="modal">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div className="modal-body">
-                                                                <label htmlFor="name">ФИО мастера</label>
-                                                                <input className="form-control"
-                                                                       placeholder="Иван Иванович Иванов"
-                                                                       value={mark}
-                                                                       name="name"
-                                                                       onChange={e => setMark(e.target.value)}
-                                                                       pattern="([1-5])|([1-4].[05])|(5.0)"
-                                                                       required
-                                                                />
-                                                            </div>
-                                                            <div className="modal-footer">
-                                                                <button type="button" className="btn btn-secondary"
-                                                                        data-dismiss="modal"
-                                                                        ref={inputRef}>Закрыть
-                                                                </button>
-                                                                <button type="submit" className="btn btn-primary">
-                                                                    Сохранить изменения
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <SetMarkDialog order={order}/>
                                     : "Не готов"}</td>
                             </tr>
                         ))}

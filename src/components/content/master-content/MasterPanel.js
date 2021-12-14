@@ -8,6 +8,7 @@ import {deleteMasterCity, setUserData} from "../../../store/actions/userActions"
 import {setCities} from "../../../store/actions/cityActions";
 import {approveOrder} from "../../../store/actions/masterActions";
 import AddCity from "./AddCity";
+import EditProfileMaster from "./EditProfileMaster";
 
 const MasterPanel = () => {
     const dispatch = useDispatch()
@@ -50,6 +51,7 @@ const MasterPanel = () => {
     return (
         <div className="router">
             <h2 className="text-left mt-5">Привет, {master?.master_name}</h2>
+            {master?.email && <EditProfileMaster master={master}/>}
             {deps?.length > 0 ?
                 <div>
                     <h4 className="text-left mt-5">Ваш список городов: </h4>
@@ -59,7 +61,7 @@ const MasterPanel = () => {
                                 return (
                                     <button key={d}
                                             className="list-group-item border border-secondary rounded w-25 p-3">
-                                        {cities.find(c => c.city_id === d)?.city_name}
+                                        {cities?.find(c => c.city_id === d)?.city_name}
                                         <button className="btn"
                                                 onClick={() => dispatch(deleteMasterCity({
                                                     city_id: d,
@@ -91,7 +93,6 @@ const MasterPanel = () => {
                             <th scope="col">Время начала</th>
                             <th scope="col">Время конца</th>
                             <th scope="col">Статус заказа</th>
-                            <th scope="col">Сумма заказа</th>
                         </tr>
                         </thead>
                         <tbody>

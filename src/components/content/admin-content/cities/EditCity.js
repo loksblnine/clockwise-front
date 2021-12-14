@@ -32,7 +32,7 @@ const EditCity = ({city}) => {
                                         aria-label="Close"/>
                             </div>
                             <div className="modal-body">
-                                <label htmlFor={`city_name`}>Название города</label>
+                                <label htmlFor="city_name">Название города</label>
                                 <input className="form-control" placeholder="Город" value={city_name}
                                        name="city_name"
                                        required onChange={e => setCityName(e.target.value)}
