@@ -8,6 +8,7 @@ const AddCity = ({master}) => {
     const [cityId, setCityId] = useState(-1)
     const cities = useSelector((state) => state.cities.items)
     const isReady = useSelector((state) => state.cities.isReady)
+    const deps = useSelector((state) => state.users.data.deps)
     const dispatch = useDispatch()
     const onSubmitForm = async e => {
         e.preventDefault();
@@ -43,7 +44,7 @@ const AddCity = ({master}) => {
                                         onChange={e => setCityId(e.target.value)} required>
                                     <option key="default" value="-1" disabled={true}>---Выбрать город---</option>
                                     {cities?.map(city => {
-                                        if (!master?.deps?.includes(city.city_id))
+                                        if (!deps?.includes(city.city_id))
                                             return (
                                                 <option key={city.city_id}
                                                         value={city.city_id}>{city.city_name} </option>)
