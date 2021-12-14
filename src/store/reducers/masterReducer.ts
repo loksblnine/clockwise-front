@@ -78,7 +78,6 @@ const masterReducer = (state = initialState, action: { type: string; payload: an
             }
         }
         case constants.ACTIONS.MASTERS.ADD_CITY_AT_MASTER: {
-            console.log(action.payload)
             state.items.find(item => item.master_id === action.payload.master_id).deps.push(action.payload.city_id)
             return {
                 ...state,

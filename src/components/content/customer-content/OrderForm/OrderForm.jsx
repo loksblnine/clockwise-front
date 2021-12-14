@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 import {useFormik} from 'formik';
 import * as constants from "../../../../constants";
 import {useHistory, useLocation, withRouter} from "react-router-dom";
@@ -7,6 +7,7 @@ import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import {setCities} from "../../../../store/actions/cityActions";
+import {removePhoto, setPhotos} from "../../../../store/actions/userActions";
 
 const validate = (values) => {
     const errors = {};
@@ -45,6 +46,7 @@ const OrderForm = () => {
     const cities = useSelector((state) => state.cities.items)
     const isReady = useSelector((state) => state.cities.isReady)
     const user = useSelector((state) => state.users.user)
+    const photo = useSelector((state) => state.users.photo)
     const dispatch = useDispatch()
     useEffect(() => {
         if (!isReady) {
@@ -52,25 +54,41 @@ const OrderForm = () => {
         }
     }, [dispatch, isReady])
 
-    const handleChooseFile = (e) => {
-        console.log(e.target.files[0])
-        const reader = new FileReader();
-        reader.readAsDataURL(e.target.files[0]);
-        reader.onloadend = () => {
-            formik.values.base64Arr.push(reader.result);
-        };
-    }
+    const handleChooseFile = useCallback((e) => {
+        if (e?.target?.files[0].size < 8 * 1024 * 1024) {
+            if (e.target?.files[0]?.type.split('/')[0] === "image") {
+                const reader = new FileReader();
+                reader.readAsDataURL(e.target.files[0]);
+                reader.onloadend = () => {
+                    if (photo.length <= 4) {
+                        e.target.value = ""
+                        dispatch(setPhotos(reader.result))
+                    } else {
+                        e.target.disabled = true
+                    }
+                };
+            } else {
+                toast.info("Только фотографии")
+            }
+        } else {
+            toast.info("Файл неприлично много весит!")
+        }
+    }, [photo.length])
 
+    const handleRemovePhoto = useCallback((index) => {
+        dispatch(removePhoto(index))
+    }, [])
     const formik = useFormik({
-        initialValues: {
-            name: location?.state?.data?.name || '',
-            email: location?.state?.data?.email || user?.email || '',
-            city: location?.state?.data?.city || -1,
-            date: location?.state?.data?.date || constants.DATE_FROM,
-            time: location?.state?.data?.time || "08:00",
-            type: location?.state?.data?.type || '1',
-            base64Arr: location?.state?.data?.base64Arr || [],
-        },
+        initialValues: useMemo(() => {
+            return {
+                name: location?.state?.data?.name || '',
+                email: location?.state?.data?.email || user?.email || '',
+                city: location?.state?.data?.city || -1,
+                date: location?.state?.data?.date || constants.DATE_FROM,
+                time: location?.state?.data?.time || "08:00",
+                type: location?.state?.data?.type || "1",
+            }
+        }, []),
         validate,
         onSubmit: (values) => {
             history.push({
@@ -79,6 +97,23 @@ const OrderForm = () => {
             })
         },
     });
+
+    const makeBeautiful = (length) => {
+        switch (length) {
+            case 1:
+            case 2:
+            case 3: {
+                return 3
+            }
+            case 4: {
+                return 4
+            }
+            case 5: {
+                return 3
+            }
+        }
+    }
+
     if (!isReady) {
         return <Spinner animation="grow"/>
     }
@@ -138,7 +173,7 @@ const OrderForm = () => {
                             <input type="radio" value="1" name="type"
                                    id="radio1"
                                    key="radio1"
-                                   checked={formik.values.type === '1'}
+                                   checked={formik.values.type === "1"}
                                    onChange={formik.handleChange}/>
                             <span>Маленькие часы </span>
                         </label>
@@ -146,7 +181,7 @@ const OrderForm = () => {
                             <input type="radio" value="2" name="type"
                                    id="radio2"
                                    key="radio2"
-                                   checked={formik.values.type === '2'}
+                                   checked={formik.values.type === "2"}
                                    onChange={formik.handleChange}/>
                             <span>Средние часы </span>
                         </label>
@@ -154,7 +189,7 @@ const OrderForm = () => {
                             <input type="radio" value="3" name="type"
                                    id="radio3"
                                    key="radio3"
-                                   checked={formik.values.type === '3'}
+                                   checked={formik.values.type === "3"}
                                    onChange={formik.handleChange}/>
                             <span>Большие часы </span>
                         </label>
@@ -163,20 +198,41 @@ const OrderForm = () => {
                 <div className="form-group">
                     <label>Прикрепите фото</label>
                     <input type="file" className="form-control" onInput={e => handleChooseFile(e)}
-                           id="file-input" key="file-input"/>
-                    {
-                        formik.values.base64Arr.length &&
-                        formik.values.base64Arr.map((item, i) => < div>
-                            <img
-                                src={item}
-                                alt="chosen"
-                                style={{height: '150px'}}
-                            />
-                        </div>)}
+                           onChange={formik.handleChange} onBlur={formik.handleChange}
+                           id="file-input" key="file-input" disabled={photo.length >= 5}
+                           accept="image/*"/>
+                    <div className="row mb-5 w-60" key="show-preview">
+                        {
+                            photo?.length > 0 &&
+                            photo.map((item, i, array) => {
+                                return (
+                                    <div
+                                        className={`d-flex align-items-start col-${makeBeautiful(array.length)} col-md-${makeBeautiful(array.length)} m-3`}
+                                        key={i}>
+                                        <img
+                                            src={item}
+                                            alt="chosen"
+                                            style={{height: '150px'}}
+                                        />
+                                        <button className="btn" type="button"
+                                                onClick={() => {
+                                                    handleRemovePhoto(i)
+                                                }}
+                                        >
+                                            <span>&times;</span>
+                                        </button>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
                 </div>
-                <button type="submit" className="btn btn-primary" disabled={formik.values.city === -1}>Выбрать
-                    мастера
-                </button>
+                <div className="form-group">
+                    <button type="submit" className="btn btn-primary"
+                            disabled={formik.values.city === -1 || photo.length === 0}>Выбрать
+                        мастера
+                    </button>
+                </div>
             </form>
         </div>
     );

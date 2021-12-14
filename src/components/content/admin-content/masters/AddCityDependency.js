@@ -15,7 +15,6 @@ const AddCityDependency = ({master}) => {
         inputRef.current.click()
     }, [cityId])
 
-    console.log(master)
     return (
         <div>
             <button type="button" className="btn btn-outline-success mb-5" data-toggle="modal"

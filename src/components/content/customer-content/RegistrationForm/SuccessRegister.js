@@ -4,7 +4,6 @@ import {sendConfirmRegistrationMail} from "../../workWithData";
 
 const SuccessRegister = () => {
     const location = useLocation()
-    console.log(location.state.email)
     useEffect(() => {
         sendConfirmRegistrationMail(location.state.email)
     }, [])

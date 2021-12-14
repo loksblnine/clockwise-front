@@ -2,7 +2,7 @@ import {instance} from "../../http/headerPlaceholder.instance";
 import {toast} from "react-toastify";
 
 //region send mails
-export const sendConfirmationOrder = (order, master, history) => {
+export const sendConfirmationOrder = (order, master, history, photos) => {
     toast.loading("Обработка заказа")
     const text = `Спасибо за заказ ${order.name}, мастер ${master["master.master_name"]} будет у вас ${order.date} в ${order.time}`
     const T = order.date + "T" + order.time
@@ -13,7 +13,7 @@ export const sendConfirmationOrder = (order, master, history) => {
         city_id: order.city,
         order_time: T,
         work_id: order.type,
-        data: order.base64Arr
+        data: photos
     }
     instance({
         method: "POST",

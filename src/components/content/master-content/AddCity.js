@@ -19,7 +19,6 @@ const AddCity = ({master}) => {
     if (!isReady) {
         return <Spinner animation="grow"/>
     }
-    console.log(master)
     return (
         <div>
             <button type="button" className="btn btn-success mb-5" data-toggle="modal"

@@ -32,6 +32,29 @@ export const setUserData = (type: string, email: string) => {
         })
     }
 }
+export const setPhotos = (photo: string) => {
+    return async (dispatch: any) => {
+        dispatch({
+            type: constants.ACTIONS.USER.ADD_PHOTO,
+            payload: photo
+        })
+    }
+}
+export const removePhoto = (id: number) => {
+    return async (dispatch: any) => {
+        dispatch({
+            type: constants.ACTIONS.USER.REMOVE_PHOTO,
+            payload: id
+        })
+    }
+}
+export const clearPhotos = () => {
+    return async (dispatch: any) => {
+        dispatch({
+            type: constants.ACTIONS.USER.CLEAR_PHOTOS,
+        })
+    }
+}
 export const setMasterNewCity = (body: any) => {
     return async (dispatch: any) => {
         const {data} = await instance({
