@@ -11,11 +11,11 @@ type Order = {
     isDone: boolean
 }
 
-export const setOrdersAdmin = (page: number) => {
+export const setOrdersAdmin = (page: number, queryParams: string) => {
     return async (dispatch: any) => {
         const {data}: any = await instance({
             method: "get",
-            url: `/orders/offset/${page}`
+            url: `/orders/offset/${page}?${queryParams}`
         })
         dispatch({
             type: constants.ACTIONS.ORDERS.SET_ORDERS,

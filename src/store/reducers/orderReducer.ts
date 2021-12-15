@@ -28,6 +28,7 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
                 ...state,
                 items: state.items.concat(action.payload),
                 isReady: true,
+                loadNext: true,
                 page: state.page + 1
             };
         }
@@ -49,6 +50,14 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
                 ...state,
                 items: array,
             };
+        }
+        case constants.ACTIONS.ORDERS.SET_PAGE: {
+            return {
+                ...state,
+                isReady: false,
+                items: [],
+                page: action.payload
+            }
         }
         case constants.ACTIONS.ORDERS.SET_READY_ORDERS: {
             return {

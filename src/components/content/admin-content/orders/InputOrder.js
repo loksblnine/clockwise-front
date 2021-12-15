@@ -31,13 +31,13 @@ const InputOrder = () => {
     const isMasterSelected = useCallback(() => {
         return order.master_id !== -1
     }, [order.master_id])
-    const handleChange = (e) => {
+    const handleChange = useCallback((e) => {
         const {name, value} = e.target;
         setOrder(prevState => ({
             ...prevState,
             [name]: value
         }));
-    };
+    }, [])
     if (!(cities?.isReady && customers?.isReady && masters?.isReady)) {
         return <Spinner animation="grow"/>
     }

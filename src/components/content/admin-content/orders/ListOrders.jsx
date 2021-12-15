@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import EditOrder from "./EditOrder";
 import * as constants from "../../../../constants";
 import {useDispatch, useSelector} from "react-redux";
@@ -7,26 +7,87 @@ import {setOrdersAdmin, deleteOrder} from "../../../../store/actions/orderAction
 
 const ListOrders = () => {
     const orders = useSelector((state => state.orders.items))
-    const {isReady, loadNext, page} = useSelector((state => state.orders))
+    const {isReady, loadNext, page} = useSelector(state => state.orders)
     const dispatch = useDispatch()
-
+    const [queryParams, setQueryParams] = useState({
+        master_id: -1,
+        city_id: -1,
+        work_id: "",
+        isDone: "",
+        from: '',
+        to: '',
+    });
     useEffect(() => {
         if (orders.length <= 0)
-            dispatch(setOrdersAdmin(page))
+            dispatch(setOrdersAdmin(page, objectToQueryString(queryParams)))
     }, [dispatch])
 
     const handleNextOrders = useCallback((e) => {
         e.target.disabled = true
-        dispatch(setOrdersAdmin(page))
+        dispatch(setOrdersAdmin(page, objectToQueryString(queryParams)))
         e.target.disabled = false
-    }, [page])
+    }, [dispatch, page, queryParams])
 
+    const objectToQueryString = useCallback((object) => {
+        let string = ""
+        if (object?.work_id?.length > 0) {
+            string += (`&work_id=${object?.work_id}`)
+        }
+        if (object?.isDone?.length > 0) {
+            string += (`&isDone=${object?.isDone}`)
+        }
+        return string
+    }, [{...queryParams}])
+
+    const handleChange = useCallback((e) => {
+        const {name, value} = e.target;
+        console.log(name, value)
+        setQueryParams(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    }, [])
+    const handleSearch = useCallback((e) => {
+        e.preventDefault()
+        dispatch({
+            type: constants.ACTIONS.ORDERS.SET_PAGE,
+            payload: 0
+        })
+        dispatch(setOrdersAdmin(0, objectToQueryString(queryParams)))
+    }, [objectToQueryString, page, dispatch])
     if (!isReady) {
         return <Spinner animation="grow"/>
     }
     return (
         <div className="router">
             <h2 className="text-left mt-5">Список заказов</h2>
+            <div>
+                <form>
+                    <div className="form-group">
+                        <label>Тип работы</label>
+                        <select className="form-control" value={queryParams.work_id} name="work_id"
+                                onChange={handleChange}>
+                            <option value="">---Выбрать тип работы---</option>
+                            <option key="1" value="1">Маленькие часы</option>
+                            <option key="2" value="2">Средние часы</option>
+                            <option key="3" value="3">Большие часы</option>
+                        </select>
+                        <label>Статус заказа</label>
+                        <select className="form-control" value={queryParams.isDone} name="isDone"
+                                onChange={handleChange}>
+                            <option key="1" value="">---Выбрать тип работы---</option>
+                            <option key="2" value="false">Не сделано</option>
+                            <option key="3" value="true">Выполнено</option>
+                        </select>
+
+                        <div className="form-group">
+                            <button className="btn btn-search" type="button"
+                                    onClick={(e) => handleSearch(e)}>Поиск
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
             <table className="table mt-5 text-justify">
                 <thead>
                 <tr>

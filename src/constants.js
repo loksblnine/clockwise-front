@@ -144,6 +144,7 @@ export const ACTIONS = {
     ORDERS: {
         SET_ORDERS: "SET_ORDERS",
         SET_READY_ORDERS: "SET_READY_ORDERS",
+        SET_PAGE: "SET_PAGE",
         DELETE_ORDER: "DELETE_ORDER",
         UPDATE_ORDER: "UPDATE_ORDER",
         ADD_ORDER: "ADD_ORDER"
