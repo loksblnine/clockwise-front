@@ -11,14 +11,15 @@ const ListOrders = () => {
     const [masters, setMasters] = useState([])
     const {isReady, loadNext, page} = useSelector(state => state.orders)
     const dispatch = useDispatch()
-    const [queryParams, setQueryParams] = useState({
+    const initialState = {
         master_id: -1,
         city_id: -1,
         work_id: "",
         isDone: "",
         from: '',
         to: '',
-    });
+    }
+    const [queryParams, setQueryParams] = useState(initialState);
     useEffect(() => {
         if (orders.length <= 0)
             dispatch(setOrdersAdmin(page, objectToQueryString(queryParams)))
@@ -28,7 +29,6 @@ const ListOrders = () => {
         dispatch(setOrdersAdmin(page, objectToQueryString(queryParams)))
         e.target.disabled = false
     }, [dispatch, page, queryParams])
-
     const objectToQueryString = useCallback((object) => {
         let string = ""
         if (object?.work_id?.length > 0) {
@@ -48,7 +48,6 @@ const ListOrders = () => {
         }
         return string
     }, [{...queryParams}])
-
     const handleChange = useCallback((e) => {
         const {name, value} = e.target;
         console.log(name, value)
@@ -65,7 +64,8 @@ const ListOrders = () => {
         })
         dispatch(setOrdersAdmin(0, objectToQueryString(queryParams)))
     }, [objectToQueryString, page, dispatch])
-    const handleMasterInput = (e) => {
+
+    const handleMasterInput = useCallback((e) => {
         e.preventDefault()
         instance({
             method: "GET",
@@ -77,7 +77,7 @@ const ListOrders = () => {
             ...prevState,
             [name]: value
         }));
-    }
+    }, [dispatch, setQueryParams, queryParams])
     if (!isReady) {
         return <Spinner animation="grow"/>
     }
@@ -90,32 +90,40 @@ const ListOrders = () => {
             </button>
             <div id="Filter" className="collapse">
                 <div className="form-group">
-                    <label>Статус заказа</label>
-                    <select className="form-control" value={queryParams.isDone} name="isDone"
-                            onChange={handleChange}>
-                        <option key="1" value="">---Выбрать тип работы---</option>
-                        <option key="2" value="false">Не сделано</option>
-                        <option key="3" value="true">Выполнено</option>
-                    </select>
-                    <label>Тип работы</label>
-                    <select className="form-control" value={queryParams.work_id} name="work_id"
-                            onChange={handleChange}>
-                        <option value="">---Выбрать тип работы---</option>
-                        <option key="1" value="1">Маленькие часы</option>
-                        <option key="2" value="2">Средние часы</option>
-                        <option key="3" value="3">Большие часы</option>
-                    </select>
-                    <label>Выбрать мастера</label>
-                    <input className="form-control" list="datalistOptions" name="master_id"
-                           placeholder="Type to search..." onChange={(e) => handleMasterInput(e)}/>
-                    <datalist id="datalistOptions">
-                        <option key="1" value="">---Выбрать мастера---</option>
-                        {masters?.map(master => {
-                            return (
-                                <option key={master.master_id} value={master.master_id}>{master.master_name}</option>
-                            )
-                        })}
-                    </datalist>
+                    <div className="form-group">
+
+                        <label>Статус заказа</label>
+                        <select className="form-control" value={queryParams.isDone} name="isDone"
+                                onChange={handleChange}>
+                            <option key="1" value="">---Выбрать тип работы---</option>
+                            <option key="2" value="false">Не сделано</option>
+                            <option key="3" value="true">Выполнено</option>
+                        </select></div>
+                    <div className="form-group">
+
+                        <label>Тип работы</label>
+                        <select className="form-control" value={queryParams.work_id} name="work_id"
+                                onChange={handleChange}>
+                            <option value="">---Выбрать тип работы---</option>
+                            <option key="1" value="1">Маленькие часы</option>
+                            <option key="2" value="2">Средние часы</option>
+                            <option key="3" value="3">Большие часы</option>
+                        </select></div>
+                    <div className="form-group">
+
+                        <label>Выбрать мастера</label>
+                        <input className="form-control" list="datalistOptions" name="master_id"
+                               placeholder="Type to search..." onChange={(e) => handleMasterInput(e)}/>
+                        <datalist id="datalistOptions">
+                            <option key="1" value="">---Выбрать мастера---</option>
+                            {masters?.map(master => {
+                                return (
+                                    <option key={master.master_id}
+                                            value={master.master_id}>{master.master_name}</option>
+                                )
+                            })}
+                        </datalist>
+                    </div>
                     <div className="form-group d-flex">
                         <div className="col col-1"><label>Дата</label></div>
                         <div className="col col-5">
@@ -137,51 +145,55 @@ const ListOrders = () => {
                                    onChange={handleChange}/>
                         </div>
                     </div>
-                    <div className="form-group">
-                        <button className="btn" type="button"
+                    <div className="form-group d-row">
+                        <button className="btn btn-outline-primary" type="button"
                                 onClick={(e) => handleSearch(e)}>Поиск
+                        </button>
+                        <button className="btn btn-outline-secondary" type="button"
+                                onClick={() => setQueryParams(initialState)}>Сбросить фильтры
                         </button>
                     </div>
                 </div>
             </div>
-            <table className="table mt-5 text-justify">
-                <thead>
-                <tr>
-                    <th scope="col"># заказа</th>
-                    <th scope="col">Мастер</th>
-                    <th scope="col">Покупатель</th>
-                    <th scope="col">Город</th>
-                    <th scope="col">Тип работы</th>
-                    <th scope="col">Дата заказа</th>
-                    <th scope="col">Время заказа</th>
-                    <th scope="col">&nbsp;</th>
-                    <th scope="col">&nbsp;</th>
-                </tr>
-                </thead>
-                <tbody>
-                {orders.length === 0 ?
-                    <h5>список заказов пуст</h5>
-                    :
-                    orders?.map(order => (
-                        <tr key={order.order_id}>
-                            <th scope="row"> {order.order_id}</th>
-                            <td>{order.master.master_name}</td>
-                            <td>{order.customer.customer_name}</td>
-                            <td>{order.city.city_name}</td>
-                            <td>{constants.WORK_TYPES[order.work_id].key}</td>
-                            <td>{order.order_time.split('T')[0]}</td>
-                            <td>{order.order_time.split('T')[1].split('.')[0]}</td>
-                            <td><EditOrder order={order}/></td>
-                            <td>
-                                <button className="btn btn-danger"
-                                        onClick={() => dispatch(deleteOrder(order.order_id))}
-                                        disabled={order.order_time.split('T')[0] <= constants.DATE_FROM}>Удалить
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            {orders.length === 0 ?
+                <h5>список заказов пуст</h5>
+                :
+                <table className="table mt-5 text-justify">
+                    <thead>
+                    <tr>
+                        <th scope="col"># заказа</th>
+                        <th scope="col">Мастер</th>
+                        <th scope="col">Покупатель</th>
+                        <th scope="col">Город</th>
+                        <th scope="col">Тип работы</th>
+                        <th scope="col">Дата заказа</th>
+                        <th scope="col">Время заказа</th>
+                        <th scope="col">&nbsp;</th>
+                        <th scope="col">&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {
+                        orders?.map(order => (
+                            <tr key={order.order_id}>
+                                <th scope="row"> {order.order_id}</th>
+                                <td>{order.master.master_name}</td>
+                                <td>{order.customer.customer_name}</td>
+                                <td>{order.city.city_name}</td>
+                                <td>{constants.WORK_TYPES[order.work_id].key}</td>
+                                <td>{order.order_time.split('T')[0]}</td>
+                                <td>{order.order_time.split('T')[1].split('.')[0]}</td>
+                                <td><EditOrder order={order}/></td>
+                                <td>
+                                    <button className="btn btn-danger"
+                                            onClick={() => dispatch(deleteOrder(order.order_id))}
+                                            disabled={order.order_time.split('T')[0] <= constants.DATE_FROM}>Удалить
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>}
             {
                 loadNext &&
                 <div className="col text-center">
