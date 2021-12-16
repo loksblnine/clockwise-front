@@ -38,7 +38,8 @@ const ListOrders = () => {
             string += (`&isDone=${object?.isDone}`)
         }
         if (object?.master_id?.length > 0) {
-            string += (`&master_id=${object?.master_id}`)
+            if (Number(object.master_id) > 0)
+                string += (`&master_id=${object?.master_id}`)
         }
         if (object?.from?.length > 0) {
             string += (`&from=${object?.from}`)
@@ -50,7 +51,6 @@ const ListOrders = () => {
     }, [{...queryParams}])
     const handleChange = useCallback((e) => {
         const {name, value} = e.target;
-        console.log(name, value)
         setQueryParams(prevState => ({
             ...prevState,
             [name]: value
@@ -65,19 +65,26 @@ const ListOrders = () => {
         dispatch(setOrdersAdmin(0, objectToQueryString(queryParams)))
     }, [objectToQueryString, page, dispatch])
 
+    const hasNumber = useCallback((myString) => {
+        return /\d/.test(myString);
+    }, [])
+
     const handleMasterInput = useCallback((e) => {
-        e.preventDefault()
-        instance({
-            method: "GET",
-            url: `masters/offset/0?name=${e.target.value}`
-        }).then(({data}) => setMasters(data))
-        const {name, value} = e.target;
-        console.log(name, value)
-        setQueryParams(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-    }, [dispatch, setQueryParams, queryParams])
+        if (!hasNumber(e.target.value)) {
+            e.preventDefault()
+            instance({
+                method: "GET",
+                url: `masters/offset/0?name=${e.target.value}`
+            }).then(({data}) => setMasters(data))
+        } else {
+            const {name, value} = e.target;
+            setQueryParams(prevState => ({
+                ...prevState,
+                [name]: value.split("|")[0]
+            }));
+            e.target.value = e.target.value.split('|')[1] || ""
+        }
+    }, [dispatch, setQueryParams, queryParams, hasNumber])
     if (!isReady) {
         return <Spinner animation="grow"/>
     }
@@ -112,14 +119,17 @@ const ListOrders = () => {
                     <div className="form-group">
 
                         <label>Выбрать мастера</label>
-                        <input className="form-control" list="datalistOptions" name="master_id"
-                               placeholder="Type to search..." onChange={(e) => handleMasterInput(e)}/>
+                        <input className="form-control" list="datalistOptions" name="master_id" autoComplete="on"
+                               type="text"
+                               placeholder="Type to search..." onChange={(e) => handleMasterInput(e)}
+                        />
                         <datalist id="datalistOptions">
                             <option key="1" value="">---Выбрать мастера---</option>
                             {masters?.map(master => {
                                 return (
                                     <option key={master.master_id}
-                                            value={master.master_id}>{master.master_name}</option>
+                                            value={master.master_id + "|" + master.master_name}
+                                    />
                                 )
                             })}
                         </datalist>
