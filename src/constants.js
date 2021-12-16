@@ -83,6 +83,7 @@ export const authMasterRoutes = [
     // 2. edit info
     // 3. see comments
 ]
+export const ONE_MEGABYTE = 8 * 1024 * 1024
 export const authClientRoutes = [
     {
         path: '/access_succeed_client',
@@ -151,6 +152,9 @@ export const ACTIONS = {
     USER: {
         SET_USER: "SET_USER",
         SET_DATA: "SET_DATA",
+        ADD_PHOTO: "ADD_PHOTO",
+        REMOVE_PHOTO: "REMOVE_PHOTO",
+        CLEAR_PHOTOS: "CLEAR_PHOTOS",
         SET_READY_USER: "SET_READY_USER",
         SET_JSON_WEB_TOKEN: "SET_JSON_WEB_TOKEN",
         REMOVE_JSON_WEB_TOKEN: "REMOVE_JSON_WEB_TOKEN",

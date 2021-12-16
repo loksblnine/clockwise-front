@@ -9,12 +9,14 @@ type User = {
 type initialState = {
     isReady: boolean,
     user: User,
-    data: any
+    data: any,
+    photo: any
 }
 
 const initialState: initialState = {
     isReady: false,
     data: {},
+    photo: [],
     user: {
         role: 0,
         email: "",
@@ -49,6 +51,26 @@ const userReducer = (state = initialState, action: { type: string; payload: any;
             return {
                 ...state,
                 data: action.payload
+            };
+        }
+        case constants.ACTIONS.USER.ADD_PHOTO: {
+            const array = state.photo.concat(action.payload)
+            return {
+                ...state,
+                photo: array
+            };
+        }
+        case constants.ACTIONS.USER.REMOVE_PHOTO: {
+            const array = state.photo.filter((item: string, i: number) => i !== action.payload)
+            return {
+                ...state,
+                photo: array
+            };
+        }
+        case constants.ACTIONS.USER.CLEAR_PHOTOS: {
+            return {
+                ...state,
+                photo: []
             };
         }
         case constants.ACTIONS.USER.SET_READY_USER:

@@ -5,14 +5,16 @@ import './MasterView.css'
 import {Spinner} from "react-bootstrap";
 import {getFreeMasters} from "../../getData";
 import {sendConfirmationOrder} from "../../workWithData";
+import {useDispatch, useSelector} from "react-redux";
+import {clearPhotos} from "../../../../store/actions/userActions";
 
 const MasterView = () => {
+    const dispatch = useDispatch()
     const [masters, setMasters] = useState([])
     const [loading, setLoading] = useState(true)
-
     const location = useLocation()
     const history = useHistory()
-
+    const photo = useSelector((state) => state.users.photo)
     const order = location.state.data
     const T = order.date + "T" + order.time
     const orderBody = {
@@ -34,7 +36,8 @@ const MasterView = () => {
     }
 
     const handleClick = (master) => {
-        sendConfirmationOrder(order, master, history)
+        sendConfirmationOrder(order, master, history, photo)
+        dispatch(clearPhotos())
     }
 
     if (!location.state) {

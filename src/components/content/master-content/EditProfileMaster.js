@@ -11,7 +11,6 @@ const EditProfileClient = ({master}) => {
     const editProfile = useCallback((e) => {
         e.preventDefault()
         const body = {master_name, email}
-        console.log(body)
         dispatch(updateUserData("masters", body, master.master_id))
         inputRef.current.click()
     }, [dispatch, master_name, email])
