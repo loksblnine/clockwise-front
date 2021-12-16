@@ -55,7 +55,7 @@ const OrderForm = () => {
     }, [dispatch, isReady])
 
     const handleChooseFile = useCallback((e) => {
-        if (e?.target?.files[0].size < 8 * 1024 * 1024) {
+        if (e?.target?.files[0].size < constants.ONE_MEGABYTE) {
             if (e.target?.files[0]?.type.split('/')[0] === "image") {
                 const reader = new FileReader();
                 reader.readAsDataURL(e.target.files[0]);
