@@ -159,10 +159,10 @@ const ListOrders = () => {
                         <button className="btn btn-outline-primary" type="button"
                                 onClick={(e) => handleSearch(e)}>Поиск
                         </button>
-                        <button className="btn btn-outline-secondary" type="button"
-                                onClick={() => {
+                        <button className="btn btn-outline-secondary"
+                                onClick={(e) => {
                                     setQueryParams(initialState)
-                                    dispatch(setOrdersAdmin(page, objectToQueryString(queryParams)))
+                                    handleSearch(e)
                                 }}>Сбросить фильтры
                         </button>
                     </div>
