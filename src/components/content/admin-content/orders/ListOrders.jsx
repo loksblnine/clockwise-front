@@ -82,7 +82,7 @@ const ListOrders = () => {
                 ...prevState,
                 [name]: value.split("|")[0]
             }));
-            e.target.value = e.target.value.split('|')[1] || ""
+            e.target.value = e.target.value.replace(/[0-9|]/g, '');
         }
     }, [dispatch, setQueryParams, queryParams, hasNumber])
     if (!isReady) {
