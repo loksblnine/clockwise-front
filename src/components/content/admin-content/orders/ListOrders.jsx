@@ -29,7 +29,7 @@ const ListOrders = () => {
         dispatch(setOrdersAdmin(page, objectToQueryString(queryParams)))
         e.target.disabled = false
     }, [dispatch, page, queryParams])
-    const objectToQueryString = useCallback((object) => {
+    const objectToQueryString = useCallback((object) => { //to utils
         let string = ""
         if (object?.work_id?.length > 0) {
             string += (`&work_id=${object?.work_id}`)
@@ -75,7 +75,7 @@ const ListOrders = () => {
             instance({
                 method: "GET",
                 url: `masters/offset/0?name=${e.target.value}`
-            }).then(({data}) => setMasters(data))
+            }).then(({data}) => setMasters(data))//catch or length check
         } else {
             const {name, value} = e.target;
             setQueryParams(prevState => ({
@@ -83,6 +83,7 @@ const ListOrders = () => {
                 [name]: value.split("|")[0]
             }));
             e.target.value = e.target.value.replace(/[0-9|]/g, '');
+            console.log(queryParams.master_id)
         }
     }, [dispatch, setQueryParams, queryParams, hasNumber])
     if (!isReady) {
@@ -95,48 +96,51 @@ const ListOrders = () => {
                     data-target="#Filter"
                     aria-controls="Filter">Фильтрация
             </button>
-            <div id="Filter" className="collapse">
+            <div id="Filter">
                 <div className="form-group">
-                    <div className="form-group">
-
-                        <label>Статус заказа</label>
-                        <select className="form-control" value={queryParams.isDone} name="isDone"
-                                onChange={handleChange}>
-                            <option key="1" value="">---Выбрать тип работы---</option>
-                            <option key="2" value="false">Не сделано</option>
-                            <option key="3" value="true">Выполнено</option>
-                        </select></div>
-                    <div className="form-group">
-
-                        <label>Тип работы</label>
-                        <select className="form-control" value={queryParams.work_id} name="work_id"
-                                onChange={handleChange}>
-                            <option value="">---Выбрать тип работы---</option>
-                            <option key="1" value="1">Маленькие часы</option>
-                            <option key="2" value="2">Средние часы</option>
-                            <option key="3" value="3">Большие часы</option>
-                        </select></div>
-                    <div className="form-group">
-
-                        <label>Выбрать мастера</label>
-                        <input className="form-control" list="datalistOptions" name="master_id" autoComplete="on"
-                               type="text"
-                               placeholder="Type to search..." onChange={(e) => handleMasterInput(e)}
-                        />
-                        <datalist id="datalistOptions">
-                            <option key="1" value="">---Выбрать мастера---</option>
-                            {masters?.map(master => {
-                                return (
-                                    <option key={master.master_id}
-                                            value={master.master_id + "|" + master.master_name}
-                                    />
-                                )
-                            })}
-                        </datalist>
+                    <div className="form-group d-flex">
+                        <div className="form-group col-md-4">
+                            <label>Статус заказа</label>
+                            <select className="form-control" value={queryParams.isDone} name="isDone"
+                                    onChange={handleChange}>
+                                <option key="1" value="">---Выбрать тип работы---</option>
+                                <option key="2" value="false">Не сделано</option>
+                                <option key="3" value="true">Выполнено</option>
+                            </select>
+                        </div>
+                        <div className="form-group col-md-4">
+                            <label>Тип работы</label>
+                            <select className="form-control" value={queryParams.work_id} name="work_id"
+                                    onChange={handleChange}>
+                                <option value="">---Выбрать тип работы---</option>
+                                <option key="1" value="1">Маленькие часы</option>
+                                <option key="2" value="2">Средние часы</option>
+                                <option key="3" value="3">Большие часы</option>
+                            </select>
+                        </div>
+                        <div className="form-group col-md-4">
+                            <label>Выбрать мастера</label>
+                            <input className="form-control" list="datalistOptions" name="master_id" autoComplete="on"
+                                   type="text"
+                                   placeholder="Type to search..." onChange={(e) => handleMasterInput(e)}
+                            />
+                            <datalist id="datalistOptions">
+                                <option key="1" value="">---Выбрать мастера---</option>
+                                {masters?.map(master => {
+                                    return (
+                                        <option key={master.master_id}
+                                                value={master.master_id + "|" + master.master_name}
+                                        />
+                                    )
+                                })}
+                            </datalist>
+                        </div>
                     </div>
                     <div className="form-group d-flex">
-                        <div className="col col-1"><label>Дата</label></div>
-                        <div className="col col-5">
+                        <div className="form-group col-2">
+                            <label>Дата</label>
+                        </div>
+                        <div className="col col-md-5">
                             <label className="text" htmlFor="date">С</label>
                             <input type="date" id="date" name="from"
                                    className="form-control react-datetime-range-picker"
@@ -144,8 +148,7 @@ const ListOrders = () => {
                                    value={queryParams.from}
                                    onChange={handleChange}/>
                         </div>
-                        <div className="col col-1">&nbsp;</div>
-                        <div className="col col-5">
+                        <div className="col col-md-5">
                             <label className="text" htmlFor="date">По</label>
                             <input type="date" id="date" name="to"
                                    className="form-control react-datetime-range-picker"
