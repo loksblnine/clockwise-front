@@ -13,7 +13,7 @@ const EditProfileClient = ({customer}) => {
         const body = {customer_name, customer_email}
         dispatch(updateUserData("customers", body, customer.customer_id))
         inputRef.current.click()
-    }, [dispatch, customer])
+    }, [dispatch, customer_name, customer_email])
 
     return (
         <div>

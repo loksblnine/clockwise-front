@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {setMarkOrder} from "../../../store/actions/orderActions";
 import {useDispatch} from "react-redux";
 
@@ -7,9 +7,11 @@ const SetMarkDialog = ({order}) => {
     const inputRef = React.useRef(null)
     const [mark, setMark] = useState(5)
 
-    const handleSetMarkOrder = (order) => {
+    const handleSetMarkOrder = useCallback((e, order) => {
+        e.preventDefault()
+        inputRef.current.click()
         dispatch(setMarkOrder(order.order_id, mark))
-    }
+    }, [dispatch, mark])
     return (
         <div>
             <button className="btn btn-outline-success" data-toggle="modal"
@@ -22,7 +24,7 @@ const SetMarkDialog = ({order}) => {
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
-                        <form onSubmit={() => handleSetMarkOrder(order)}>
+                        <form onSubmit={(e) => handleSetMarkOrder(e, order)}>
                             <div className="modal-header">
                                 <h2 className="modal-title"
                                     id="exampleModalLabel">Поставить оценку
@@ -38,7 +40,7 @@ const SetMarkDialog = ({order}) => {
                                        placeholder="Иван Иванович Иванов"
                                        value={mark}
                                        name="name"
-                                       onChange={e => setMark(e.target.value)}
+                                       onChange={(e) => setMark(e.target.value)}
                                        pattern="([1-5])|([1-4].[05])|(5.0)"
                                        required
                                 />
