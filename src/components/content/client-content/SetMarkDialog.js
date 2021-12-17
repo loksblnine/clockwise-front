@@ -35,12 +35,11 @@ const SetMarkDialog = ({order}) => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <label htmlFor="name">ФИО мастера</label>
                                 <input className="form-control"
-                                       placeholder="Иван Иванович Иванов"
                                        value={mark}
                                        name="name"
                                        onChange={(e) => setMark(e.target.value)}
+
                                        pattern="([1-5])|([1-4].[05])|(5.0)"
                                        required
                                 />
