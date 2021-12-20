@@ -1,5 +1,5 @@
 import {instance} from "./headerPlaceholder.instance";
-import * as constants from "../constants";
+import * as constants from "../utils/constants";
 
 export const registration = async (email, password, role) => {
     const body = {email, password, role}

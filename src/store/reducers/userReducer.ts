@@ -1,4 +1,4 @@
-import * as constants from "../../constants";
+import * as constants from "../../utils/constants";
 import jwt_decode from "jwt-decode";
 
 type User = {

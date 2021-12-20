@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
 import '../Panel.css'
-import * as constants from "../../../constants";
+import * as constants from "../../../utils/constants";
 import {Spinner} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {setOrdersCustomer} from "../../../store/actions/orderActions";

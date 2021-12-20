@@ -1,10 +1,11 @@
 import React, {useCallback, useEffect, useState} from "react";
 import EditOrder from "./EditOrder";
-import * as constants from "../../../../constants";
+import * as constants from "../../../../utils/constants";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import {setOrdersAdmin, deleteOrder} from "../../../../store/actions/orderActions";
 import {instance} from "../../../../http/headerPlaceholder.instance";
+import {hasNumber, objectToQueryString} from "../../../../utils/utils";
 
 const ListOrders = () => {
     const orders = useSelector(state => state.orders.items)
@@ -29,26 +30,7 @@ const ListOrders = () => {
         dispatch(setOrdersAdmin(page, objectToQueryString(queryParams)))
         e.target.disabled = false
     }, [dispatch, page, queryParams])
-    const objectToQueryString = useCallback((object) => {
-        let string = ""
-        if (object?.work_id?.length > 0) {
-            string += (`&work_id=${object?.work_id}`)
-        }
-        if (object?.isDone?.length > 0) {
-            string += (`&isDone=${object?.isDone}`)
-        }
-        if (object?.master_id?.length > 0) {
-            if (Number(object.master_id) > 0)
-                string += (`&master_id=${object?.master_id}`)
-        }
-        if (object?.from?.length > 0) {
-            string += (`&from=${object?.from}`)
-        }
-        if (object?.to?.length > 0) {
-            string += (`&to=${object?.to}`)
-        }
-        return string
-    }, [{...queryParams}])
+
     const handleChange = useCallback((e) => {
         const {name, value} = e.target;
         setQueryParams(prevState => ({
@@ -64,10 +46,6 @@ const ListOrders = () => {
         })
         dispatch(setOrdersAdmin(0, objectToQueryString(queryParams)))
     }, [objectToQueryString, page, dispatch])
-
-    const hasNumber = useCallback((myString) => {
-        return /\d/.test(myString);
-    }, [])
 
     const handleMasterInput = useCallback((e) => {
         if (!hasNumber(e.target.value)) {

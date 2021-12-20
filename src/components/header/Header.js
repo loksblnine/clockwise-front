@@ -6,7 +6,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
 import {useDispatch, useSelector} from "react-redux";
-import * as constants from "../../constants";
+import * as constants from "../../utils/constants";
 
 const Logo = () => {
     const history = useHistory()

@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from "react";
-import * as constants from "../../../../constants";
+import * as constants from "../../../../utils/constants";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import {addOrder} from "../../../../store/actions/orderActions";

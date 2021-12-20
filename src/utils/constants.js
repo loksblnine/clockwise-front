@@ -1,16 +1,16 @@
-import OrderForm from "./components/content/customer-content/OrderForm/OrderForm";
-import MasterView from "./components/content/customer-content/MasterView/MasterView";
-import ListOrders from "./components/content/admin-content/orders/ListOrders";
-import ListCustomers from "./components/content/admin-content/customers/ListCustomers";
-import ListMasters from "./components/content/admin-content/masters/ListMasters";
-import ListCities from "./components/content/admin-content/cities/ListCities";
-import LoginForm from "./components/content/customer-content/LoginForm/LoginForm";
-import AdminPanel from "./components/content/admin-content/admin-panel/AdminPanel";
-import MasterPanel from "./components/content/master-content/MasterPanel";
-import RegistrationForm from "./components/content/customer-content/RegistrationForm/RegistrationForm";
-import ClientPanel from "./components/content/client-content/ClientPanel";
-import SuccessRegister from "./components/content/customer-content/RegistrationForm/SuccessRegister";
-import SuccessActivate from "./components/content/customer-content/RegistrationForm/SuccessActivate";
+import OrderForm from "../components/content/customer-content/OrderForm/OrderForm";
+import MasterView from "../components/content/customer-content/MasterView/MasterView";
+import ListOrders from "../components/content/admin-content/orders/ListOrders";
+import ListCustomers from "../components/content/admin-content/customers/ListCustomers";
+import ListMasters from "../components/content/admin-content/masters/ListMasters";
+import ListCities from "../components/content/admin-content/cities/ListCities";
+import LoginForm from "../components/content/customer-content/LoginForm/LoginForm";
+import AdminPanel from "../components/content/admin-content/admin-panel/AdminPanel";
+import MasterPanel from "../components/content/master-content/MasterPanel";
+import RegistrationForm from "../components/content/customer-content/RegistrationForm/RegistrationForm";
+import ClientPanel from "../components/content/client-content/ClientPanel";
+import SuccessRegister from "../components/content/customer-content/RegistrationForm/SuccessRegister";
+import SuccessActivate from "../components/content/customer-content/RegistrationForm/SuccessActivate";
 
 //todo remove this garbage =))
 //todo use ENUM with TS

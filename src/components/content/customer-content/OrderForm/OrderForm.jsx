@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo} from 'react';
 import {useFormik} from 'formik';
-import * as constants from "../../../../constants";
+import * as constants from "../../../../utils/constants";
 import {useHistory, useLocation, withRouter} from "react-router-dom";
 import './OrderStyles.css'
 import {toast} from "react-toastify";

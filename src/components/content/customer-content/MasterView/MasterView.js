@@ -1,5 +1,5 @@
 import React, {Fragment, useEffect, useState} from 'react';
-import * as constants from "../../../../constants";
+import * as constants from "../../../../utils/constants";
 import {Redirect, useHistory, useLocation} from 'react-router-dom'
 import './MasterView.css'
 import {Spinner} from "react-bootstrap";
