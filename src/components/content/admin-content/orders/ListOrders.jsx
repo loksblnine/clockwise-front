@@ -3,7 +3,7 @@ import EditOrder from "./EditOrder";
 import * as constants from "../../../../utils/constants";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
-import {setOrdersAdmin, deleteOrder} from "../../../../store/actions/orderActions";
+import {deleteOrder, setOrdersAdmin} from "../../../../store/actions/orderActions";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {hasNumber, objectToQueryString} from "../../../../utils/utils";
 
@@ -13,6 +13,7 @@ const ListOrders = () => {
     const {isReady, loadNext, page} = useSelector(state => state.orders)
     const dispatch = useDispatch()
     const initialState = {
+        master_name:"",
         master_id: -1,
         city_id: -1,
         work_id: "",
@@ -25,42 +26,50 @@ const ListOrders = () => {
         if (orders.length <= 0)
             dispatch(setOrdersAdmin(page, objectToQueryString(queryParams)))
     }, [dispatch])
+
     const handleNextOrders = useCallback((e) => {
         e.target.disabled = true
         dispatch(setOrdersAdmin(page, objectToQueryString(queryParams)))
         e.target.disabled = false
     }, [dispatch, page, queryParams])
 
-    const handleChange = useCallback((e) => {
+    const handleChange = (e) => {
         const {name, value} = e.target;
         setQueryParams(prevState => ({
             ...prevState,
             [name]: value
         }));
-    }, [])
-    const handleSearch = useCallback((e) => {
+    }
+
+    const handleSearch = (e) => {
         e.preventDefault()
         dispatch({
             type: constants.ACTIONS.ORDERS.SET_PAGE,
             payload: 0
         })
         dispatch(setOrdersAdmin(0, objectToQueryString(queryParams)))
-    }, [objectToQueryString, page, dispatch])
+    }
 
     const handleMasterInput = useCallback((e) => {
-        if (!hasNumber(e.target.value)) {
-            e.preventDefault()
+        e.preventDefault()
+        const {name, value} = e.target;
+        if (!hasNumber(value)) {
             instance({
                 method: "GET",
-                url: `masters/offset/0?name=${e.target.value}`
+                url: `masters/offset/0?name=${value}`
             }).then(({data}) => setMasters(data))
-        } else {
-            const {name, value} = e.target;
             setQueryParams(prevState => ({
                 ...prevState,
-                [name]: value.split("|")[0]
-            }));
-            e.target.value = e.target.value.replace(/[0-9|]/g, '');
+                [name]: "",
+                master_name: value
+            }))
+        } else {
+            setQueryParams(prevState => ({
+                ...prevState,
+                [name]: value.split("|")[0],
+                master_name: value.split("|")[1]
+            }))
+            e.target.value = e.target.value.replace(/[0-9|]/g, '')
         }
     }, [dispatch, setQueryParams, queryParams, hasNumber])
     if (!isReady) {
@@ -73,19 +82,18 @@ const ListOrders = () => {
                     data-target="#Filter"
                     aria-controls="Filter">Фильтрация
             </button>
-            <div id="Filter" className="collapse">
+            <div id="Filter">
                 <div className="form-group">
                     <div className="form-group">
-
                         <label>Статус заказа</label>
                         <select className="form-control" value={queryParams.isDone} name="isDone"
                                 onChange={handleChange}>
                             <option key="1" value="">---Выбрать тип работы---</option>
                             <option key="2" value="false">Не сделано</option>
                             <option key="3" value="true">Выполнено</option>
-                        </select></div>
+                        </select>
+                    </div>
                     <div className="form-group">
-
                         <label>Тип работы</label>
                         <select className="form-control" value={queryParams.work_id} name="work_id"
                                 onChange={handleChange}>
@@ -93,12 +101,12 @@ const ListOrders = () => {
                             <option key="1" value="1">Маленькие часы</option>
                             <option key="2" value="2">Средние часы</option>
                             <option key="3" value="3">Большие часы</option>
-                        </select></div>
+                        </select>
+                    </div>
                     <div className="form-group">
-
                         <label>Выбрать мастера</label>
                         <input className="form-control" list="datalistOptions" name="master_id" autoComplete="on"
-                               type="text"
+                               type="text" value={queryParams.master_name}
                                placeholder="Type to search..." onChange={(e) => handleMasterInput(e)}
                         />
                         <datalist id="datalistOptions">
@@ -138,9 +146,8 @@ const ListOrders = () => {
                                 onClick={(e) => handleSearch(e)}>Поиск
                         </button>
                         <button className="btn btn-outline-secondary"
-                                onClick={(e) => {
+                                onClick={() => {
                                     setQueryParams(initialState)
-                                    handleSearch(e)
                                 }}>Сбросить фильтры
                         </button>
                     </div>
@@ -178,7 +185,7 @@ const ListOrders = () => {
                                 <td>
                                     <button className="btn btn-danger"
                                             onClick={() => dispatch(deleteOrder(order.order_id))}
-                                            disabled={order.order_time.split('T')[0] <= constants.DATE_FROM}>Удалить
+                                            disabled={!order.isDone && order.order_time.split('T')[0] <= constants.DATE_FROM}>Удалить
                                     </button>
                                 </td>
                             </tr>

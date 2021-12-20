@@ -35,14 +35,15 @@ const EditOrder = (initialOrder) => {
     };
     return (
         <div>
-            {order.date > constants.DATE_FROM ?
+            {order.isDone ?
+                <button type="button" className="btn btn-info" data-toggle="modal"
+                        data-target={`#id_see${order.order_id}`}>
+                    Посмотреть
+                </button>
+                :
                 <button type="button" className="btn btn-warning" data-toggle="modal"
                         data-target={`#id_edit${order.order_id}`}>
                     Редактировать
-                </button>
-                : <button type="button" className="btn btn-info" data-toggle="modal"
-                          data-target={`#id_see${order.order_id}`}>
-                    Посмотреть
                 </button>}
 
             <div className="modal fade" id={`id_edit${order.order_id}`} tabIndex="-1" role="dialog"
