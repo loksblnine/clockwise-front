@@ -19,6 +19,9 @@ const validate = (values) => {
     if (values.name === "Ян") {
         errors.name = 'Извините, станьте Яной)';
     }
+    if (values.time.split(":")[1] !== "00") {
+        errors.time = 'Заказать ремонт можно только в целый час'
+    }
     if (!values.email) {
         errors.email = 'Адрес электронный почты обязателен';
     } else if (!/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i.test(values.email)) {
@@ -47,6 +50,7 @@ const OrderForm = () => {
     const cities = useSelector((state) => state.cities.items)
     const isReady = useSelector((state) => state.cities.isReady)
     const user = useSelector((state) => state.users.user)
+    const data = useSelector((state) => state.users.data)
     const photo = useSelector((state) => state.users.photo)
     const dispatch = useDispatch()
     useEffect(() => {
@@ -82,7 +86,7 @@ const OrderForm = () => {
     const formik = useFormik({
         initialValues: useMemo(() => {
             return {
-                name: location?.state?.data?.name || '',
+                name: location?.state?.data?.name || data?.customer?.customer_name || data?.master?.master_name || '',
                 email: location?.state?.data?.email || user?.email || '',
                 city: location?.state?.data?.city || -1,
                 date: location?.state?.data?.date || constants.DATE_FROM,
@@ -164,8 +168,9 @@ const OrderForm = () => {
                     <input type="time" name="time" className="form-control timepicker"
                            min={constants.TIME_FROM} max={constants.TIME_TO} key="time"
                            required step="3600" value={formik.values.time}
-                           pattern="([01]?[0-9]|2[0-3]):[0][0]" id="24h"
+                           pattern="([01]?[0-9]|2[0-3]):00" id="24h"
                            onChange={formik.handleChange}/>
+                    {formik.errors.time ? <div className="error">{formik.errors.time}</div> : null}
                 </div>
                 <div className="form-group">
                     <label className="text" htmlFor="type"> Выберите тип поломки </label>

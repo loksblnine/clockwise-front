@@ -11,9 +11,10 @@ const ListOrders = () => {
     const orders = useSelector(state => state.orders.items)
     const [masters, setMasters] = useState([])
     const {isReady, loadNext, page} = useSelector(state => state.orders)
+    const [openFilter, setOpenFilter] = useState(false)
     const dispatch = useDispatch()
     const initialState = {
-        master_name:"",
+        master_name: "",
         master_id: -1,
         city_id: -1,
         work_id: "",
@@ -69,7 +70,7 @@ const ListOrders = () => {
                 [name]: value.split("|")[0],
                 master_name: value.split("|")[1]
             }))
-            e.target.value = e.target.value.replace(/[0-9|]/g, '')
+            e.target.value = value.replace(/[0-9|]/g, '')
         }
     }, [dispatch, setQueryParams, queryParams, hasNumber])
     if (!isReady) {
@@ -79,10 +80,23 @@ const ListOrders = () => {
         <div className="router">
             <h2 className="text-left mt-5">Список заказов</h2>
             <button className="btn" type="button" data-toggle="collapse"
-                    data-target="#Filter"
+                    data-target="#Filter" onClick={(e) => {
+                e.preventDefault()
+                setOpenFilter(!openFilter)
+            }}
                     aria-controls="Filter">Фильтрация
+                {!openFilter ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                   className="bi bi-arrows-expand" viewBox="0 0 16 16">
+                        <path fillRule="evenodd"
+                              d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8zM7.646.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 1.707V5.5a.5.5 0 0 1-1 0V1.707L6.354 2.854a.5.5 0 1 1-.708-.708l2-2zM8 10a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 14.293V10.5A.5.5 0 0 1 8 10z"/>
+                    </svg> :
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         className="bi bi-arrows-collapse" viewBox="0 0 16 16">
+                        <path fillRule="evenodd"
+                              d="M1 8a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 8zm7-8a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 4.293V.5A.5.5 0 0 1 8 0zm-.5 11.707-1.146 1.147a.5.5 0 0 1-.708-.708l2-2a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 11.707V15.5a.5.5 0 0 1-1 0v-3.793z"/>
+                    </svg>}
             </button>
-            <div id="Filter">
+            {openFilter && <div id="Filter">
                 <div className="form-group">
                     <div className="form-group">
                         <label>Статус заказа</label>
@@ -152,7 +166,7 @@ const ListOrders = () => {
                         </button>
                     </div>
                 </div>
-            </div>
+            </div>}
             {orders.length === 0 ?
                 <h5>список заказов пуст</h5>
                 :
@@ -185,7 +199,7 @@ const ListOrders = () => {
                                 <td>
                                     <button className="btn btn-danger"
                                             onClick={() => dispatch(deleteOrder(order.order_id))}
-                                            disabled={!order.isDone && order.order_time.split('T')[0] <= constants.DATE_FROM}>Удалить
+                                            disabled={!order.isDone || order.order_time.split('T')[0] <= constants.DATE_FROM}>Удалить
                                     </button>
                                 </td>
                             </tr>
