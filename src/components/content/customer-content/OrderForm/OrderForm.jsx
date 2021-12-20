@@ -27,6 +27,7 @@ const validate = (values) => {
     if (!values.city) {
         toast.info("На данный момент сервер недоступен, попробуйте перезагрузить страницу, если это не помогло обратитесь к нам на прямую admin@example.com")
     }
+
     return errors;
 };
 
@@ -55,7 +56,7 @@ const OrderForm = () => {
     }, [dispatch, isReady])
 
     const handleChooseFile = useCallback((e) => {
-        if (e?.target?.files[0].size < 8 * 1024 * 1024) {
+        if (e?.target?.files[0]?.size < constants.ONE_MEGABYTE) {
             if (e.target?.files[0]?.type.split('/')[0] === "image") {
                 const reader = new FileReader();
                 reader.readAsDataURL(e.target.files[0]);
@@ -196,7 +197,7 @@ const OrderForm = () => {
                     </div>
                 </div>
                 <div className="form-group">
-                    <label>Прикрепите фото</label>
+                    <label>Прикрепите фото</label> <p>Не более 1 МБ, не более 5 штук, только форматы фотографий</p>
                     <input type="file" className="form-control" onInput={e => handleChooseFile(e)}
                            onChange={formik.handleChange} onBlur={formik.handleChange}
                            id="file-input" key="file-input" disabled={photo.length >= 5}

@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import * as constants from "../../../../utils/constants";
 import {Redirect, useHistory, useLocation} from 'react-router-dom'
 import './MasterView.css'
@@ -56,38 +56,43 @@ const MasterView = () => {
     return (
         <div className="content">
             <div>
-                <h3>Выберите свободного мастера</h3>
+                <h3>Выбор мастера</h3>
                 <p>Вы заказали
                     ремонт {constants.WORK_TYPES[location.state.data.type].message} на {location.state.data.date} в {location.state.data.time}</p>
             </div>
-            <Fragment>
-                <table className="table mt-5">
-                    <thead>
-                    <tr>
-                        <th scope="col">Имя</th>
-                        <th scope="col">Рейтинг</th>
-                        <th scope="col">&nbsp;</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {masters?.map(elem => (
-                        <tr key={elem.master_id}>
-                            <td>{elem["master.master_name"]}</td>
-                            <td>{elem["master.ranking"]}</td>
-                            <td>
-                                <button className="btn btn-success" id={elem["master.master_id"]}
-                                        value={elem["master.master_id"]}
-                                        onClick={() => handleClick(elem)}
-                                >Выбрать
-                                </button>
-                            </td>
+            {masters.length > 0 ?
+                <div>
+                    <table className="table mt-5">
+                        <thead>
+                        <tr>
+                            <th scope="col">Имя</th>
+                            <th scope="col">Рейтинг</th>
+                            <th scope="col">&nbsp;</th>
                         </tr>
-                    ))}
-                    </tbody>
-                </table>
-            </Fragment>
-            <button className="btn btn-primary" onClick={handleBack}>Назад
-            </button>
+                        </thead>
+                        <tbody>
+                        {masters?.map(elem => (
+                            <tr key={elem.master_id}>
+                                <td>{elem["master.master_name"]}</td>
+                                <td>{elem["master.ranking"]}</td>
+                                <td>
+                                    <button className="btn btn-success" id={elem["master.master_id"]}
+                                            value={elem["master.master_id"]}
+                                            onClick={() => handleClick(elem)}
+                                    >Выбрать
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div> :
+                <h4>Нет свободных мастеров</h4>}
+            <div>
+                <button className="btn btn-primary" onClick={handleBack}
+                >Назад
+                </button>
+            </div>
         </div>
     );
 }

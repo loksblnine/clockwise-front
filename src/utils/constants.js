@@ -42,7 +42,7 @@ function nowDate() {
 function finalDate() {
     return new Date(new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate()).toISOString().split('T')[0]
 }
-
+export const ONE_MEGABYTE = 8 * 1024 * 1024
 export const DATE_FROM = nowDate()
 export const DATE_TO = finalDate()
 export const TIME_FROM = new Date(2011, 0, 1, 8).toISOString().split('T')[1]
