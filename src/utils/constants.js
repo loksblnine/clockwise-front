@@ -83,7 +83,6 @@ export const authMasterRoutes = [
     // 2. edit info
     // 3. see comments
 ]
-export const ONE_MEGABYTE = 8 * 1024 * 1024
 export const authClientRoutes = [
     {
         path: '/access_succeed_client',
