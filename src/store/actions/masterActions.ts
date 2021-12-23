@@ -54,15 +54,15 @@ export const addMaster = (master: Master) => {
         });
     }
 }
-export const approveMaster = (id: number) => {
+export const activeMaster = (id: number, active: boolean) => {
     return async (dispatch: any) => {
         await instance({
             method: "PUT",
-            url: `/auth/approve-master/${id}`
+            url: `/auth/approve-master/${id}?active=${active}`
         })
         dispatch({
             type: constants.ACTIONS.USER.ADMIN.APPROVE_MASTER,
-            payload: id
+            payload: {id, active}
         });
     }
 }
@@ -94,7 +94,7 @@ export const deleteCityAtMaster = (body: any) => {
 }
 export const approveOrder = (id: number) => {
     return async (dispatch: any) => {
-        instance({
+        await instance({
             method: "put",
             url: `/auth/approve-order/${id}`
         })
@@ -107,7 +107,7 @@ export const approveOrder = (id: number) => {
 
 export const deleteMaster = (id: number) => {
     return async (dispatch: any) => {
-        instance({
+        await instance({
             method: "DELETE",
             url: `/masters/${id}`
         })

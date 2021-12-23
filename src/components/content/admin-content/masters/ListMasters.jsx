@@ -4,11 +4,11 @@ import InputMaster from "./InputMaster";
 import {Spinner} from "react-bootstrap";
 import AddCity from "./AddCity";
 import {useDispatch, useSelector} from "react-redux";
-import {setMasters, deleteCityAtMaster, deleteMaster, approveMaster} from "../../../../store/actions/masterActions";
+import {setMasters, deleteCityAtMaster, deleteMaster, activeMaster} from "../../../../store/actions/masterActions";
 import {setCities} from "../../../../store/actions/cityActions";
 
 const WorkIn = ({master}) => {
-    const {cities} = useSelector((state) => state)
+    const cities = useSelector((state) => state.cities.items)
     const dispatch = useDispatch()
 
     return (
@@ -16,7 +16,7 @@ const WorkIn = ({master}) => {
             {
                 master?.deps?.map(d => {
                         return (
-                            <div key={d}> {cities.items.find(city => city.city_id === d)?.city_name}
+                            <div key={d}> {cities.find(city => city.city_id === d)?.city_name}
                                 <button className="btn"
                                         onClick={() => dispatch(deleteCityAtMaster({
                                             city_id: d,
@@ -28,6 +28,8 @@ const WorkIn = ({master}) => {
                         )
                     }
                 )}
+            {master?.deps?.length !== cities.length &&
+                <AddCity master={master}/>}
         </div>
     )
 }
@@ -50,8 +52,8 @@ const ListMasters = () => {
         e.target.disabled = false
     }, [page])
 
-    const handleApproveMaster = (master) => {
-        dispatch(approveMaster(master.master_id))
+    const handleApproveMaster = (master, active) => {
+        dispatch(activeMaster(master.master_id, active))
     }
 
     if (!isReady) {
@@ -68,7 +70,6 @@ const ListMasters = () => {
                     <th scope="col">Рейтинг</th>
                     <th scope="col">Email</th>
                     <th scope="col">Работает в</th>
-                    <th scope="col">Добавить город</th>
                     <th scope="col">Изменить</th>
                     <th scope="col">Статус</th>
                     <th scope="col">Удалить</th>
@@ -83,18 +84,18 @@ const ListMasters = () => {
                             <td>{master.ranking}</td>
                             <td>{master.email}</td>
                             <td><WorkIn master={master}/></td>
-                            <td>{
-                                cities?.length !== master?.deps?.length &&
-                                <AddCity master={master}/>}
-                            </td>
                             <td><EditMaster master={master}/></td>
                             <td>{
                                 !master.isApproved ?
                                     <button className="btn btn-outline-success"
-                                            onClick={() => handleApproveMaster(master)}>
-                                       Активировать
+                                            onClick={() => handleApproveMaster(master, true)}>
+                                        Активировать
                                     </button>
-                                    : "Активный"}</td>
+                                    :
+                                    <button className="btn btn-outline-danger"
+                                            onClick={() => handleApproveMaster(master, false)}>
+                                        Деактивировать
+                                    </button>}</td>
                             <td>
                                 <button className="btn btn-danger"
                                         onClick={() => dispatch(deleteMaster(master.master_id))}>Удалить

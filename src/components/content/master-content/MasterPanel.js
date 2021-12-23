@@ -19,7 +19,6 @@ const MasterPanel = () => {
     const deps = useSelector((state) => state.users.data?.deps)
     const master = useSelector((state) => state.users.data?.master)
     const email = useSelector((state) => state.users.user.email)
-
     const {loadNext, page} = useSelector((state) => state.orders)
     const [openFilter, setOpenFilter] = useState(false)
 
@@ -38,9 +37,9 @@ const MasterPanel = () => {
         e.target.disabled = false
     }, [dispatch, page, master?.master_id])
 
-    const handleApproveOrder = useCallback((order) => {
+    const handleApproveOrder = (order) => {
         dispatch(approveOrder(order.order_id))
-    }, [dispatch])
+    }
 
     if (!isReady && !ordersReady) {
         return <Spinner animation="grow"/>
@@ -104,7 +103,7 @@ const MasterPanel = () => {
                     }</div>
                 : <div>
                     <h4 className="text-left mt-5">Ваш список городов пуст</h4>
-                    <div className="router">
+                    <div className="col-4">
                         <AddCity master={master}/>
                     </div>
                 </div>
@@ -133,25 +132,58 @@ const MasterPanel = () => {
                                 <td>{order.city.city_name}</td>
                                 <td>{constants.WORK_TYPES[order.work_id].key}</td>
                                 <td>{order.order_time.split('T')[0]}</td>
-                                <td>{Number(order.order_time.split('T')[1].split(':')[0]) + ":00:00"}</td>
-                                <td>{Number(order.order_time.split('T')[1].split(':')[0]) + Number(order.work_id) + ":00:00"}</td>
+                                <td>{Number(order.order_time.split('T')[1].split(':')[0]) + ":" + order.order_time.split('T')[1].split(':')[1]}</td>
+                                <td>{Number(order.order_time.split('T')[1].split(':')[0]) + Number(order.work_id) + ":" + order.order_time.split('T')[1].split(':')[1]}</td>
                                 <td>{
                                     !order.isDone ?
-                                        <button className="btn btn-outline-success"
-                                                onClick={() => handleApproveOrder(order)}>
-                                            Заказ выполнен!
-                                        </button>
+                                        <div>
+                                            <button type="button" className="btn btn-outline-success"
+                                                    data-toggle="modal"
+                                                    data-target={`#id${order.order_id}`}>
+                                                Заказ выполнен!
+                                            </button>
+                                            <div className="modal fade" id={`id${order.order_id}`} tabIndex="-1"
+                                                 role="dialog"
+                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div className="modal-dialog" role="document">
+                                                    <div className="modal-content">
+                                                        <form>
+                                                            <div className="modal-header">
+                                                                <h3 className="modal-title"
+                                                                    id="exampleModalLabel">Подтвердить выполнение
+                                                                    заказа?</h3>
+                                                                <button type="button" className="btn-close"
+                                                                        data-dismiss="modal"
+                                                                        aria-label="Close"/>
+                                                            </div>
+                                                            <div className="modal-footer">
+                                                                <button type="button" className="btn btn-danger"
+                                                                        data-dismiss="modal"
+                                                                >Нет, отмена
+                                                                </button>
+                                                                <button type="button" className="btn btn-success"
+                                                                        data-dismiss="modal" onClick={() => handleApproveOrder(order)}
+                                                                >Да!
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         : order.mark ?
                                             <div>
                                                 {order.mark} &nbsp;
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                     height="16"
                                                      fill="currentColor"
                                                      className="bi bi-star" viewBox="0 0 16 16">
                                                     <path
                                                         d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
                                                 </svg>
                                             </div>
-                                            : "Готово"}</td>
+                                            : "Готово"}
+                                </td>
                             </tr>
                         ))}
                         </tbody>
@@ -159,7 +191,8 @@ const MasterPanel = () => {
                     {
                         loadNext &&
                         <div className="col text-center">
-                            <button className="btn btn-primary" onClick={(e) => handleNextOrders(e)}> Еще заказы...
+                            <button className="btn btn-primary"
+                                    onClick={(e) => handleNextOrders(e)}> Еще заказы...
                             </button>
                         </div>
                     }
