@@ -22,3 +22,18 @@ export const objectToQueryString = (object) => {
 export const hasNumber = (myString) => {
     return /\d/.test(myString);
 }
+export const makeBeautiful = (length) => {
+    switch (length) {
+        case 1:
+        case 2:
+        case 3: {
+            return 3
+        }
+        case 4: {
+            return 4
+        }
+        case 5: {
+            return 3
+        }
+    }
+}

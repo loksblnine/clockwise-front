@@ -71,14 +71,14 @@ const MasterView = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {masters?.map(elem => (
-                            <tr key={elem.master_id}>
-                                <td>{elem["master.master_name"]}</td>
-                                <td>{elem["master.ranking"]}</td>
+                        {masters?.map(master => (
+                            <tr key={master.master_id}>
+                                <td>{master.master_name}</td>
+                                <td>{master.ranking}</td>
                                 <td>
-                                    <button className="btn btn-success" id={elem["master.master_id"]}
-                                            value={elem["master.master_id"]}
-                                            onClick={() => handleClick(elem)}
+                                    <button className="btn btn-success" id={master.master_id}
+                                            value={master.master_id}
+                                            onClick={() => handleClick(master)}
                                     >Выбрать
                                     </button>
                                 </td>

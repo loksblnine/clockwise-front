@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import {setCities} from "../../../../store/actions/cityActions";
 import {removePhoto, setPhotos} from "../../../../store/actions/userActions";
+import {makeBeautiful} from "../../../../utils/utils";
 
 const validate = (values) => {
     const errors = {};
@@ -102,22 +103,6 @@ const OrderForm = () => {
             })
         },
     });
-
-    const makeBeautiful = (length) => {
-        switch (length) {
-            case 1:
-            case 2:
-            case 3: {
-                return 3
-            }
-            case 4: {
-                return 4
-            }
-            case 5: {
-                return 3
-            }
-        }
-    }
 
     if (!isReady) {
         return <Spinner animation="grow"/>

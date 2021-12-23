@@ -75,7 +75,6 @@ const LoginForm = () => {
                     {formik.errors.password ? <div className="error">{formik.errors.password}</div> : null}
                 </div>
                 <div className="form-group form-group-inline mt-5">
-                    {/*todo дизейбл кнопки по ошибкам */}
                     <button type="submit" className="btn btn-primary" disabled={user.isReady}>
                         Войти
                     </button>

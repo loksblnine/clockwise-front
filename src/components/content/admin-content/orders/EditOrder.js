@@ -1,15 +1,16 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import * as constants from "../../../../utils/constants";
 import {useDispatch, useSelector} from "react-redux";
 import {updateOrder} from "../../../../store/actions/orderActions";
+import {instance} from "../../../../http/headerPlaceholder.instance";
+import {makeBeautiful} from "../../../../utils/utils";
 
 const EditOrder = (initialOrder) => {
-
     const cities = useSelector((state) => state.cities.items)
     const customers = useSelector((state) => state.customers.items)
     const masters = useSelector((state) => state.masters.items)
     const dispatch = useDispatch()
-
+    const [photo, setPhoto] = useState([])
     const inputRef = React.useRef(null)
 
     const [order, setOrder] = useState({
@@ -18,6 +19,12 @@ const EditOrder = (initialOrder) => {
         time: initialOrder.order?.order_time?.split('T')[1]?.split('.')[0]
     });
 
+    useEffect(() => {
+        instance({
+            url: `photo/show/${order.order_id}`
+        })
+            .then(({data}) => setPhoto(data))
+    }, [])
     const editOrder = useCallback((e) => {
         e.preventDefault()
         const body = {order}
@@ -33,6 +40,7 @@ const EditOrder = (initialOrder) => {
             [name]: value
         }));
     };
+    console.log(photo)
     return (
         <div>
             {order.isDone ?
@@ -44,8 +52,8 @@ const EditOrder = (initialOrder) => {
                 <button type="button" className="btn btn-warning" data-toggle="modal"
                         data-target={`#id_edit${order.order_id}`}>
                     Редактировать
-                </button>}
-
+                </button>
+            }
             <div className="modal fade" id={`id_edit${order.order_id}`} tabIndex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
@@ -107,6 +115,24 @@ const EditOrder = (initialOrder) => {
                                        required step="3600"
                                        pattern="([01]?[0-9]|2[0-3]):[0][0]" id="24h"
                                        onChange={handleChange}/>
+                                <div className="form-group">
+                                {
+                                    photo?.length > 0 &&
+                                    photo.map((item, i, array) => {
+                                        return (
+                                            <div
+                                                className={`d-flex align-items-start col-1 m-3`}
+                                                key={i}>
+                                                <img
+                                                    src={item}
+                                                    alt="chosen"
+                                                    style={{height: '150px'}}
+                                                />
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal"
@@ -159,6 +185,24 @@ const EditOrder = (initialOrder) => {
                                    min={constants.TIME_FROM} max={constants.TIME_TO}
                                    value={order.time}
                                    disabled/>
+                            <div className="form-group">
+                                {
+                                    photo?.length > 0 &&
+                                    photo.map((item, i, array) => {
+                                        return (
+                                            <div
+                                                className={`d-flex align-items-start col-1   m-3`}
+                                                key={i}>
+                                                <img
+                                                    src={item}
+                                                    alt="chosen"
+                                                    style={{height: '150px'}}
+                                                />
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть
