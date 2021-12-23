@@ -101,14 +101,14 @@ const RegistrationForm = () => {
                            onChange={formik.handleChange}
                     />
                     <p>Я принимаю условия&nbsp;
-                        <a className="primary-link" data-toggle="modal" data-target="#show-agreement">Пользовательского
+                        <a href='#' className="primary-link" data-toggle="modal" data-target="#show-agreement">Пользовательского
                             соглашения</a>
                     </p>
                     <input type="checkbox" className="form-check-input" id="master-check"
                            checked={formik.values.isMaster}
                            onClick={() => formik.values.isMaster = !formik.values.isMaster}
                            onChange={formik.handleChange}/>
-                    <p>Хочу работать мастером и жду контракт на почту <a className="text">~</a>
+                    <p>Хочу работать мастером и жду контракт на почту <a className="text" href='#'>~</a>
                     </p>
                 </div>
 

@@ -12,7 +12,7 @@ const EditCity = ({city}) => {
         const body = {city_name}
         dispatch(updateCity(body, city.city_id))
         inputRef.current.click()
-    }, [city_name])
+    }, [dispatch, city_name, city.city_id])
 
     return (
         <Fragment>

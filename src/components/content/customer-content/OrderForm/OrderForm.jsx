@@ -8,7 +8,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import {setCities} from "../../../../store/actions/cityActions";
 import {removePhoto, setPhotos} from "../../../../store/actions/userActions";
-import {makeBeautiful} from "../../../../utils/utils";
 
 const validate = (values) => {
     const errors = {};
@@ -79,11 +78,11 @@ const OrderForm = () => {
         } else {
             toast.info("Файл неприлично много весит!")
         }
-    }, [photo.length])
+    }, [dispatch, photo.length])
 
     const handleRemovePhoto = useCallback((index) => {
         dispatch(removePhoto(index))
-    }, [])
+    }, [dispatch])
     const formik = useFormik({
         initialValues: useMemo(() => {
             return {
@@ -195,15 +194,15 @@ const OrderForm = () => {
                     <div className="row mb-5 w-60" key="show-preview">
                         {
                             photo?.length > 0 &&
-                            photo.map((item, i, array) => {
+                            photo.map((item, i) => {
                                 return (
                                     <div
-                                        className={`d-flex align-items-start col-${makeBeautiful(array.length)} col-md-${makeBeautiful(array.length)} m-3`}
+                                        className={`d-flex align-items-start  col-md-3 m-3`}
                                         key={i}>
                                         <img
                                             src={item}
                                             alt="chosen"
-                                            style={{height: '150px'}}
+                                            style={{height: '150px', width: '150px'}}
                                         />
                                         <button className="btn" type="button"
                                                 onClick={() => {

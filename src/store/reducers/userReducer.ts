@@ -48,6 +48,7 @@ const userReducer = (state = initialState, action: { type: string; payload: any;
             };
         }
         case constants.ACTIONS.USER.MASTER.DELETE_CITY: {
+
             return {
                 ...state,
                 data: action.payload

@@ -22,7 +22,7 @@ const AddCity = ({master}) => {
     }
     return (
         <div>
-            <button type="button" className="btn btn-success mb-5" data-toggle="modal"
+            <button type="button" className="btn btn-success m-3" data-toggle="modal"
                     data-target={`#id_see`}>
                 Добавить
             </button>
@@ -48,6 +48,7 @@ const AddCity = ({master}) => {
                                             return (
                                                 <option key={city.city_id}
                                                         value={city.city_id}>{city.city_name} </option>)
+                                        return null
                                     })}
                                 </select>
                             </div>

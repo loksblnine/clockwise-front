@@ -36,7 +36,7 @@ const ClientPanel = () => {
         <div className="router">
             <h2 className="text-left mt-5">Привет, {customer.customer_name}</h2>
             {customer?.customer_email && <EditProfileClient customer={customer}/>}
-            {orders.length > 0 &&
+            {orders.length > 0 ?
                 <div>
                     <h2 className="text-left mt-5">Ваш список заказов</h2>
                     <table className="table mt-5 text-justify">
@@ -87,7 +87,7 @@ const ClientPanel = () => {
                         </div>
                     }
                 </div>
-                || <div>
+                : <div>
                     <h2 className="text-left mt-5">Ваш список заказов пуст</h2>
                 </div>}
         </div>

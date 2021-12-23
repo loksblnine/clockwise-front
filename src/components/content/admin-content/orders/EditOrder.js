@@ -3,7 +3,6 @@ import * as constants from "../../../../utils/constants";
 import {useDispatch, useSelector} from "react-redux";
 import {updateOrder} from "../../../../store/actions/orderActions";
 import {instance} from "../../../../http/headerPlaceholder.instance";
-import {makeBeautiful} from "../../../../utils/utils";
 
 const EditOrder = (initialOrder) => {
     const cities = useSelector((state) => state.cities.items)
@@ -40,7 +39,6 @@ const EditOrder = (initialOrder) => {
             [name]: value
         }));
     };
-    console.log(photo)
     return (
         <div>
             {order.isDone ?
@@ -116,23 +114,23 @@ const EditOrder = (initialOrder) => {
                                        pattern="([01]?[0-9]|2[0-3]):[0][0]" id="24h"
                                        onChange={handleChange}/>
                                 <div className="form-group">
-                                {
-                                    photo?.length > 0 &&
-                                    photo.map((item, i, array) => {
-                                        return (
-                                            <div
-                                                className={`d-flex align-items-start col-1 m-3`}
-                                                key={i}>
-                                                <img
-                                                    src={item}
-                                                    alt="chosen"
-                                                    style={{height: '150px'}}
-                                                />
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
+                                    {
+                                        photo?.length > 0 &&
+                                        photo.map((item, i) => {
+                                            return (
+                                                <div
+                                                    className={`d-flex align-items-start col-1 m-3`}
+                                                    key={i}>
+                                                    <img
+                                                        src={item}
+                                                        alt="chosen"
+                                                        style={{height: '150px', width: '150px'}}
+                                                    />
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal"
@@ -188,7 +186,7 @@ const EditOrder = (initialOrder) => {
                             <div className="form-group">
                                 {
                                     photo?.length > 0 &&
-                                    photo.map((item, i, array) => {
+                                    photo.map((item, i) => {
                                         return (
                                             <div
                                                 className={`d-flex align-items-start col-1   m-3`}
@@ -196,7 +194,7 @@ const EditOrder = (initialOrder) => {
                                                 <img
                                                     src={item}
                                                     alt="chosen"
-                                                    style={{height: '150px'}}
+                                                    style={{height: '150px', width: '150px'}}
                                                 />
                                             </div>
                                         )

@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from "react";
 import EditMaster from "./EditMaster";
 import InputMaster from "./InputMaster";
 import {Spinner} from "react-bootstrap";
-import AddCityDependency from "./AddCityDependency";
+import AddCity from "./AddCity";
 import {useDispatch, useSelector} from "react-redux";
 import {setMasters, deleteCityAtMaster, deleteMaster, approveMaster} from "../../../../store/actions/masterActions";
 import {setCities} from "../../../../store/actions/cityActions";
@@ -85,7 +85,7 @@ const ListMasters = () => {
                             <td><WorkIn master={master}/></td>
                             <td>{
                                 cities?.length !== master?.deps?.length &&
-                                <AddCityDependency master={master}/>}
+                                <AddCity master={master}/>}
                             </td>
                             <td><EditMaster master={master}/></td>
                             <td>{

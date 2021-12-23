@@ -14,7 +14,7 @@ const InputCustomer = () => {
         const body = {customer_name, customer_email}
         dispatch(addCustomer(body))
         inputRef.current.click()
-    }, [customer_email, customer_name])
+    }, [dispatch,customer_email, customer_name])
     return (
         <div>
             <button type="button" className="btn btn-success mb-5" data-toggle="modal"

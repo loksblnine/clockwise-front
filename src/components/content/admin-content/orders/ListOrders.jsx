@@ -72,7 +72,7 @@ const ListOrders = () => {
             }))
             e.target.value = value.replace(/[0-9|]/g, '')
         }
-    }, [dispatch, setQueryParams, queryParams, hasNumber])
+    }, [setQueryParams])
     if (!isReady) {
         return <Spinner animation="grow"/>
     }
