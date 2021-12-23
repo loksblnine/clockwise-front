@@ -36,7 +36,7 @@ const MasterPanel = () => {
         e.target.disabled = true
         dispatch(setOrdersMaster(page, master.master_id))
         e.target.disabled = false
-    }, [dispatch, page, master.master_id])
+    }, [dispatch, page, master?.master_id])
 
     const handleApproveOrder = useCallback((order) => {
         dispatch(approveOrder(order.order_id))

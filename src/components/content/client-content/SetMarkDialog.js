@@ -8,26 +8,6 @@ const SetMarkDialog = ({order}) => {
     const inputRef = React.useRef(null)
     const [mark, setMark] = useState(5)
 
-    const makeNiceRange = useCallback(() => {
-        switch (mark) {
-            case 1:
-                return `bg-danger`
-            case 1.5:
-                return `bg-danger`
-            case 2:
-                return `bg-danger`
-            case 2.5:
-                return `bg-warning`
-            case 3:
-                return `bg-warning`
-            case 3.5:
-                return `bg-warning`
-            case 4:
-            case 4.5:
-            case 5:
-                return `bg-success`
-        }
-    }, [mark, setMark])
     const handleSetMarkOrder = useCallback((e, order) => {
         e.preventDefault()
         inputRef.current.click()
@@ -56,13 +36,21 @@ const SetMarkDialog = ({order}) => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <input className="form-control"
-                                       value={mark}
-                                       name="name"
-                                       onChange={(e) => setMark(e.target.value)}
-                                       pattern="([1-5])|([1-4].[05])|(5.0)"
-                                       required
-                                />
+                                <div className="range-slider">
+                                    <input type="range" list="mark-list" id="rs-range-line"
+                                           value={mark} min={1} max={5} step={1} className="rs-range"
+                                           onChange={(e) => setMark(e.target.value)}
+                                           pattern="([1-5])|([1-4].[05])|(5.0)"
+                                           required
+                                    />
+                                    <datalist id="mark-list" className="d-flex justify-content-between">
+                                        <option value={1} label="1" className="col-md-2"/>
+                                        <option value={2} label="2" className="col-md-2"/>
+                                        <option value={3} label="3" className="col-md-2"/>
+                                        <option value={4} label="4" className="col-md-2"/>
+                                        <option value={5} label="5" className="col-md-2"/>
+                                    </datalist>
+                                </div>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary"
