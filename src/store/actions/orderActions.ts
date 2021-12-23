@@ -35,6 +35,14 @@ export const setOrdersMaster = (page: number, id: number) => {
         });
     }
 }
+export const sortOrders = (param: string[]) => {
+    return (dispatch: any) => {
+        dispatch({
+            type: constants.ACTIONS.ORDERS.SORT,
+            payload: param
+        })
+    }
+}
 export const setOrdersCustomer = (page: number, id: number) => {
     return async (dispatch: any) => {
         const {data}: any = await instance({
@@ -43,7 +51,7 @@ export const setOrdersCustomer = (page: number, id: number) => {
         })
         dispatch({
             type: constants.ACTIONS.ORDERS.SET_ORDERS,
-            payload: data
+            payload: {page, data}
         });
     }
 }
