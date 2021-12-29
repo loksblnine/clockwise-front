@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import * as constants from "../../../../utils/constants";
 import {Redirect, useHistory, useLocation} from 'react-router-dom'
-import './MasterView.css'
+import '../Form.css'
 import {Spinner} from "react-bootstrap";
 import {getFreeMasters} from "../../getData";
 import {sendConfirmationOrder} from "../../workWithData";

@@ -12,6 +12,7 @@ import ClientPanel from "../components/content/client-content/ClientPanel";
 import SuccessRegister from "../components/content/customer-content/RegistrationForm/SuccessRegister";
 import SuccessActivate from "../components/content/customer-content/RegistrationForm/SuccessActivate";
 import React from "react";
+import Blog from "../components/content/customer-content/Blog/Blog";
 
 //todo remove this garbage =))
 //todo use ENUM with TS
@@ -54,6 +55,10 @@ export const customerRoutes = [
     {
         path: '/',
         Component: OrderForm
+    },
+    {
+        path: '/blog',
+        Component: Blog
     },
     {
         path: '/masters_choosing',

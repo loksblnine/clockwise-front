@@ -49,6 +49,11 @@ const Header = () => {
                     <Logo/>
                     {(user.role > 0) ?
                         <Nav className="ml-auto" style={{color: 'white'}}>
+                            <button onClick={() => history.push('/blog')}
+                                    className="btn btn-xl"
+                            >
+                                Блог
+                            </button>
                             <button
                                 onClick={handleAccess}
                                 className="btn btn-xl"
@@ -64,7 +69,16 @@ const Header = () => {
                         </Nav>
                         :
                         <Nav className="ml-auto" style={{color: 'white'}}>
-                            <button className="btn btn-xl" onClick={() => history.push('/login')}>Авторизация</button>
+                            <button className="btn btn-xl"
+                                    onClick={() => history.push('/blog')}
+                            >
+                                Блог
+                            </button>
+                            <button className="btn btn-xl"
+                                    onClick={() => history.push('/login')}
+                            >
+                                Авторизация
+                            </button>
                         </Nav>
                     }
                 </Container>
