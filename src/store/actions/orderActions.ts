@@ -19,7 +19,7 @@ export const setOrdersAdmin = (page: number, queryParams: string) => {
         })
         dispatch({
             type: constants.ACTIONS.ORDERS.SET_ORDERS,
-            payload: data
+            payload: {data}
         });
     }
 }
@@ -31,7 +31,7 @@ export const setOrdersMaster = (page: number, id: number) => {
         })
         dispatch({
             type: constants.ACTIONS.ORDERS.SET_ORDERS,
-            payload: data
+            payload: {data}
         });
     }
 }
