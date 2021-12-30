@@ -3,6 +3,7 @@ import {Route, Switch} from "react-router-dom";
 import {authAdminRoutes, authMasterRoutes, customerRoutes, authClientRoutes} from "../utils/constants";
 import NotFound from "../http/NotFound";
 import {useSelector} from "react-redux";
+import Blog from "./content/customer-content/Blog/Blog";
 
 const AppRouter = () => {
     const role = useSelector(state => state.users.user.role)
@@ -21,6 +22,7 @@ const AppRouter = () => {
             {customerRoutes.map(({path, Component}) =>
                 <Route path={path} component={Component} key={path} exact/>
             )}
+            <Route path="/blog/*" component={Blog}/>
             <Route path="*" component={NotFound}/>
         </Switch>
     );

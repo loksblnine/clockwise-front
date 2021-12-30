@@ -2,7 +2,7 @@ import React from 'react';
 import './footer.css'
 function Footer() {
     return (
-        <div className="footer">
+        <div className="footer container-fluid">
             @footer caesar-cipher 4: hwko.cio oxyvfx h knyncx tj [nlnmfzf grfodzf  =)
         </div>
     );
