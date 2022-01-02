@@ -15,24 +15,17 @@ import Footer from "./footer/Footer";
 
 const App = () => {
     const dispatch = useDispatch()
-    const user = useSelector(state => state.users)
+    const isUserReady = useSelector(state => state.users.isReady)
     useEffect(() => {
         dispatch(checkAuth())
     }, [dispatch])
 
-    if (!user.isReady) {
+    if (!isUserReady) {
         return <Spinner animation={"grow"}/>
     }
-const styles = {
-    "clear": "both",
-    "position": "relative",
-    "height": "100%",
-    "margin-top": "0px",
-    "width":"99,99%",
-    "background":"rgba(179,255,246,0.25)"
-}
+
     return (
-        <div style={styles} >
+        <div>
             <Snowfall snowflakeCount={450}
             />
             <Router>

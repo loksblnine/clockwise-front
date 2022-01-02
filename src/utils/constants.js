@@ -177,6 +177,13 @@ export const ACTIONS = {
         ADMIN: {
             APPROVE_MASTER: "ADMIN.APPROVE_MASTER"
         }
+    },
+    BLOG: {
+        SET_ARTICLES: "SET_ARTICLES",
+        SET_READY_ARTICLES: "SET_READY_ARTICLES",
+        DELETE_ARTICLE: "DELETE_ARTICLE",
+        UPDATE_ARTICLE: "UPDATE_ARTICLE",
+        ADD_ARTICLE: "ADD_ARTICLE"
     }
 }
 

@@ -98,14 +98,12 @@ const EditOrder = (initialOrder) => {
                                     <option key="2" value="2">Средние часы</option>
                                     <option key="3" value="3">Большие часы</option>
                                 </select>
-
                                 <label className="text" htmlFor="date">Введите дату заказа </label>
                                 <input type="date" name="date" value={order.date}
                                        className="form-control react-datetime-picker"
                                        min={constants.DATE_FROM} max={constants.DATE_TO}
                                        required pattern="[0-9]{4}.[0-9]{2}.[0-9]{2}"
                                        onChange={handleChange}/>
-
                                 <label className="text" htmlFor="time">Время заказа (8:00 - 17:00) </label>
                                 <input type="time" name="time" className="form-control timepicker"
                                        min={constants.TIME_FROM} max={constants.TIME_TO}
