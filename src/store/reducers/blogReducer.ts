@@ -2,7 +2,7 @@ import * as constants from "../../utils/constants";
 
 type initialState = {
     isReady: boolean,
-    items: any[]
+    items: any[],
     page: number,
     loadNext: boolean
 }
@@ -14,7 +14,7 @@ const initialState: initialState = {
     loadNext: true,
 };
 
-const customerReducer = (state = initialState, action: { type: string; payload: any; }) => {
+const blogReducer = (state = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
         case constants.ACTIONS.BLOG.SET_ARTICLES: {
             if (action.payload.length < 10) {
@@ -32,13 +32,6 @@ const customerReducer = (state = initialState, action: { type: string; payload: 
                 page: state.page + 1
             };
         }
-        case constants.ACTIONS.BLOG.UPDATE_ARTICLE: {
-            const array = state.items.filter((item: any) => item.customer_id !== action.payload.customer_id).concat(action.payload)
-            return {
-                ...state,
-                items: array,
-            };
-        }
         case constants.ACTIONS.BLOG.SET_READY_ARTICLES: {
             return {
                 ...state,
@@ -54,7 +47,7 @@ const customerReducer = (state = initialState, action: { type: string; payload: 
         case constants.ACTIONS.BLOG.DELETE_ARTICLE: {
             return {
                 ...state,
-                items: state.items.filter((item: any) => item.customer_id !== action.payload),
+                items: state.items.filter((item: any) => item.article_id !== action.payload),
             }
         }
         default:
@@ -62,4 +55,4 @@ const customerReducer = (state = initialState, action: { type: string; payload: 
     }
 };
 
-export default customerReducer
+export default blogReducer

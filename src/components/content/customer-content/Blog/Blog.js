@@ -1,22 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import ArticlePreview from "./ArticlePreview";
-import {instance} from "../../../../http/headerPlaceholder.instance";
+import {useDispatch, useSelector} from "react-redux";
+import {setArticles} from "../../../../store/actions/blogActions";
 
 const Blog = () => {
-    const [articles, setArticles] = useState([])
+    const dispatch = useDispatch()
+    const articles = useSelector((state) => state?.articles?.items)
 
+    const {isReady, loadNext, page} = useSelector((state) => state?.articles)
     useEffect(() => {
-        instance({
-            method: "get",
-            url: '/blog/offset/0',
-        }).then(({data}) => setArticles(data))
-    }, [])
+        if (articles.length <= 0)
+            dispatch(setArticles(page))
+    }, [dispatch])
     const handleNextArticles = (e) => {
         e.target.disabled = true
-        instance({
-            method: "get",
-            url: '/blog/offset/',
-        }).then(({data}) => setArticles(data))
+        dispatch(setArticles(page))
         e.target.disabled = false
     }
 
@@ -28,7 +26,14 @@ const Blog = () => {
                         <ArticlePreview key={art.article_id} article={art}/>)
                 }
             </div>
-            <button className="btn btn-primary" onClick={(e) => handleNextArticles(e)}>Читать еще</button>
+            {
+                loadNext &&
+                <div className="col text-center">
+                    <button className="btn btn-primary" onClick={(e) => handleNextArticles(e)} disabled={!isReady}> Еще
+                        статьи...
+                    </button>
+                </div>
+            }
         </div>
     );
 };

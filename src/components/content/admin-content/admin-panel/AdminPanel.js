@@ -8,6 +8,7 @@ import ListMasters from "../masters/ListMasters";
 import ListCities from "../cities/ListCities";
 import ListCustomers from "../customers/ListCustomers";
 import ListOrders from "../orders/ListOrders";
+import CreateArticle from "../blog/CreateArticle";
 
 const AdminPanel = () => {
     const inputRef = React.useRef(null)
@@ -32,12 +33,16 @@ const AdminPanel = () => {
                 <LinkContainer to='/orders'>
                     <button className="btn btn-xl" id="btn-orders" ref={inputRef}>Заказы</button>
                 </LinkContainer>
+                <LinkContainer to='/blog/create'>
+                    <button className="btn btn-xl">Создать статью</button>
+                </LinkContainer>
                 </div>
                 <Switch>
                     <Route exact path='/masters' component={ListMasters}/>
                     <Route exact path='/cities' component={ListCities}/>
                     <Route exact path='/customers' component={ListCustomers}/>
                     <Route exact path='/orders' component={ListOrders}/>
+                    <Route exact path='/blog/create' component={CreateArticle}/>
                 </Switch>
             </div>
         </Router>
