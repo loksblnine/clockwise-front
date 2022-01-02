@@ -93,7 +93,6 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
             }
         }
         case constants.ACTIONS.ORDERS.SORT: {
-            console.log(action.payload)
             return {
                 ...state,
                 items: state.items.sort((i1: any, i2: any) => {

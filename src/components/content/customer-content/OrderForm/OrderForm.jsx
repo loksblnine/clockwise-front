@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {useFormik} from 'formik';
 import * as constants from "../../../../utils/constants";
 import {useHistory, useLocation, withRouter} from "react-router-dom";
@@ -18,9 +18,6 @@ const validate = (values) => {
     }
     if (values.name === "Ян") {
         errors.name = 'Извините, станьте Яной)';
-    }
-    if (values.time.split(":")[1] !== "00") {
-        errors.time = 'Заказать ремонт можно только в целый час'
     }
     if (!values.email) {
         errors.email = 'Адрес электронный почты обязателен';
@@ -46,7 +43,7 @@ const orderPageStyle = {
 const OrderForm = () => {
     const history = useHistory()
     const location = useLocation()
-
+    const inputRef = useRef()
     const cities = useSelector((state) => state.cities.items)
     const isReady = useSelector((state) => state.cities.isReady)
     const user = useSelector((state) => state.users.user)
@@ -86,7 +83,7 @@ const OrderForm = () => {
     const formik = useFormik({
         initialValues: useMemo(() => {
             return {
-                name: location?.state?.data?.name || data?.customer?.customer_name || data?.master?.master_name || '',
+                name: location?.state?.data?.name || data?.customer_name || data?.master?.master_name || '',
                 email: location?.state?.data?.email || user?.email || '',
                 city: location?.state?.data?.city || -1,
                 date: location?.state?.data?.date || constants.DATE_FROM,
@@ -149,12 +146,21 @@ const OrderForm = () => {
                 </div>
                 <div className="form-group">
                     <label className="text" htmlFor="time">Время заказа (8:00 - 17:00) </label>
-                    <input type="time" name="time" className="form-control timepicker"
-                           min={constants.TIME_FROM} max={constants.TIME_TO} key="time"
-                           required step="3600" value={formik.values.time}
-                           pattern="([01]?[0-9]|2[0-3]):00" id="24h"
-                           onChange={formik.handleChange}/>
-                    {formik.errors.time ? <div className="error">{formik.errors.time}</div> : null}
+                    <select name="time" className="form-control"
+                            key="time"
+                            required value={formik.values.time}
+                            onChange={formik.handleChange}>
+                        <option value="8:00">8:00</option>
+                        <option value="9:00">9:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                    </select>
                 </div>
                 <div className="form-group">
                     <label className="text" htmlFor="type"> Выберите тип поломки </label>
@@ -187,10 +193,15 @@ const OrderForm = () => {
                 </div>
                 <div className="form-group">
                     <label>Прикрепите фото</label> <p>Не более 1 МБ, не более 5 штук, только форматы фотографий</p>
-                    <input type="file" className="form-control" onInput={e => handleChooseFile(e)}
-                           onChange={formik.handleChange} onBlur={formik.handleChange}
+                    <input type="file" className="form-control d-none" onInput={(e) => handleChooseFile(e)}
+                           onChange={formik.handleChange} onBlur={formik.handleChange} ref={inputRef}
                            id="file-input" key="file-input" disabled={photo.length >= 5}
                            accept="image/*"/>
+                    <input type="text" className="form-control" readOnly value="Добавьте фото" onClick={(event => {
+                        event.preventDefault()
+                        inputRef.current.click()
+                    })}
+                    />
                     <div className="row mb-5 w-60" key="show-preview">
                         {
                             photo?.length > 0 &&
@@ -202,7 +213,7 @@ const OrderForm = () => {
                                         <img
                                             src={item}
                                             alt="chosen"
-                                            style={{height: '150px', width: '150px'}}
+                                            style={{height: '150px'}}
                                         />
                                         <button className="btn" type="button"
                                                 onClick={() => {
