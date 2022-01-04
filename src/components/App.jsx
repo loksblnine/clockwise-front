@@ -32,8 +32,8 @@ const App = () => {
                 <Header/>
                 <AppRouter/>
             </Router>
-            <ToastContainer/>
             <Footer/>
+            <ToastContainer/>
         </div>
     );
 }

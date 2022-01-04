@@ -49,6 +49,7 @@ const Header = () => {
                     <Logo/>
                     {(user.role > 0) ?
                         <Nav className="ml-auto" style={{color: 'white'}}>
+                            <input type="checkbox" checked data-toggle="toggle"/>
                             <button onClick={() => history.push('/blog')}
                                     className="btn btn-xl"
                             >
@@ -69,7 +70,8 @@ const Header = () => {
                         </Nav>
                         :
                         <Nav className="ml-auto" style={{color: 'white'}}>
-                            <button className="btn btn-xl"
+                        <input type="checkbox" checked data-toggle="toggle"/>
+                        <button className="btn btn-xl"
                                     onClick={() => history.push('/blog')}
                             >
                                 Блог

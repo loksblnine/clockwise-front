@@ -1,5 +1,8 @@
-.footer{
-    margin-left: 10%;
+.footer {
+    position: relative;
+    margin-top: 10%;
+    height: 10%;
+    clear:both;
     margin-right: 10%;
-    margin-bottom: 100px;
+    padding-bottom: 20px;
 }

@@ -8,10 +8,12 @@ const Blog = () => {
     const articles = useSelector((state) => state?.articles?.items)
 
     const {isReady, loadNext, page} = useSelector((state) => state?.articles)
+
     useEffect(() => {
         if (articles.length <= 0)
             dispatch(setArticles(page))
     }, [dispatch])
+
     const handleNextArticles = (e) => {
         e.target.disabled = true
         dispatch(setArticles(page))
@@ -29,8 +31,7 @@ const Blog = () => {
             {
                 loadNext &&
                 <div className="col text-center">
-                    <button className="btn btn-primary" onClick={(e) => handleNextArticles(e)} disabled={!isReady}> Еще
-                        статьи...
+                    <button className="btn btn-primary" onClick={(e) => handleNextArticles(e)} disabled={!isReady}> Еще...
                     </button>
                 </div>
             }

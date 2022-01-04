@@ -1,12 +1,15 @@
-.error{
+.error {
     color: crimson;
 }
-.miro-radiobutton{
+
+.miro-radiobutton {
     margin-right: 15px;
 }
-.text{
+
+.text {
     margin-right: 15px;
 }
+
 .radio-toolbar input[type="radio"] {
     display: none;
 }
@@ -22,4 +25,44 @@
 
 .radio-toolbar input[type="radio"]:checked ~ * {
     background: #c0edff !important;
+}
+
+.hatStyles {
+    display: none;
+}
+@media screen and (max-width: 450px) and (min-width: 300px){
+    /*450-300*/
+    .hatStyles {
+        display: flex;
+        position: absolute;
+        top: 13%;
+        right: -7%
+    }
+}
+@media screen and (max-width: 630px) and (min-width: 450px){
+    /*600-450*/
+    .hatStyles {
+        display: flex;
+        position: absolute;
+        top: 15%;
+        right: -2%
+    }
+}
+@media screen and (max-width: 1000px) and (min-width: 630px){
+    /*1000-600*/
+    .hatStyles {
+        display: flex;
+        position: absolute;
+        top: 16%;
+        right: 1.5%;
+    }
+}
+@media screen and (max-width: 1440px) and (min-width: 1000px){
+    /*1440-1000*/
+    .hatStyles {
+        display: flex;
+        position: absolute;
+        top: 17%;
+        right: 3.5%;
+    }
 }
