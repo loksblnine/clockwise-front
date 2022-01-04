@@ -93,11 +93,9 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
             }
         }
         case constants.ACTIONS.ORDERS.SORT: {
-            console.log(action.payload)
             return {
                 ...state,
                 items: state.items.sort((i1: any, i2: any) => {
-                    console.log(i1[`${action.payload[0]}`])
                     if (i1[`${action.payload[0]}`] < i2[`${action.payload[0]}`]) {
                         return (-1 * (action.payload[1] === "ASC" ? 1 : -1))
                     }

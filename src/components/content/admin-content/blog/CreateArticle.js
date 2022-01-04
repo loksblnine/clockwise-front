@@ -23,7 +23,6 @@ const CreateArticle = () => {
             reader.readAsDataURL(e.target.files[0]);
             reader.onloadend = () => {
                 dispatch(setPhotos(reader.result))
-                console.log(photo)
             };
         } else {
             toast.info("Только фотографии")
