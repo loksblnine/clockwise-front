@@ -189,6 +189,9 @@ export const ACTIONS = {
         DELETE_ARTICLE: "DELETE_ARTICLE",
         UPDATE_ARTICLE: "UPDATE_ARTICLE",
         ADD_ARTICLE: "ADD_ARTICLE"
+    },
+    WEATHER: {
+        SET_WINTER: "SET_WINTER"
     }
 }
 

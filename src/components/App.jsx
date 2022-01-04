@@ -16,6 +16,7 @@ import Footer from "./footer/Footer";
 const App = () => {
     const dispatch = useDispatch()
     const isUserReady = useSelector(state => state.users.isReady)
+    const letItSnow = useSelector((state)=> state.weather.letItSnow)
     useEffect(() => {
         dispatch(checkAuth())
     }, [dispatch])
@@ -26,8 +27,8 @@ const App = () => {
 
     return (
         <div>
-            <Snowfall snowflakeCount={450}
-            />
+            {letItSnow && <Snowfall snowflakeCount={450}
+            />}
             <Router>
                 <Header/>
                 <AppRouter/>

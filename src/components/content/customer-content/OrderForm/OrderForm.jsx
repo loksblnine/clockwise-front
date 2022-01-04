@@ -8,7 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import {setCities} from "../../../../store/actions/cityActions";
 import {removePhoto, setPhotos} from "../../../../store/actions/userActions";
-import santasHat from "../../../../images/santashat.png";
+import santaHat from "../../../../images/santashat.png";
 
 const validate = (values) => {
     const errors = {};
@@ -110,7 +110,7 @@ const OrderForm = () => {
         <div>
             {isWinter &&
                 <div className="hatStyles">
-                    <img src={santasHat} alt="SANTA yo ho ho"/>
+                    <img src={santaHat} alt="SANTA yo ho ho"/>
                 </div>}
             <div style={orderPageStyle}>
                 <form onSubmit={formik.handleSubmit} className="form">

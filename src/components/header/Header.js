@@ -26,7 +26,7 @@ const Header = () => {
     const history = useHistory()
     const dispatch = useDispatch()
     const user = useSelector(state => state.users.user)
-
+    const letItSnow = useSelector(state => state.weather.letItSnow)
     const logOut = () => {
         dispatch({
             type: constants.ACTIONS.USER.LOG_OUT
@@ -49,7 +49,16 @@ const Header = () => {
                     <Logo/>
                     {(user.role > 0) ?
                         <Nav className="ml-auto" style={{color: 'white'}}>
-                            <input type="checkbox" checked data-toggle="toggle"/>
+                            <button type="button" className="btn btn-xl m-5" data-toggle="toggle" id="weather"
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        dispatch({
+                                            type: constants.ACTIONS.WEATHER.SET_WINTER,
+                                            payload: !letItSnow
+                                        })
+                                    }}
+                            >Зима
+                            </button>
                             <button onClick={() => history.push('/blog')}
                                     className="btn btn-xl"
                             >
@@ -70,8 +79,17 @@ const Header = () => {
                         </Nav>
                         :
                         <Nav className="ml-auto" style={{color: 'white'}}>
-                        <input type="checkbox" checked data-toggle="toggle"/>
-                        <button className="btn btn-xl"
+                            <button type="button" className="btn btn-xl m-5" data-toggle="toggle" id="weather"
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        dispatch({
+                                            type: constants.ACTIONS.WEATHER.SET_WINTER,
+                                            payload: !letItSnow
+                                        })
+                                    }}
+                            >Зима
+                            </button>
+                            <button className="btn btn-xl"
                                     onClick={() => history.push('/blog')}
                             >
                                 Блог
