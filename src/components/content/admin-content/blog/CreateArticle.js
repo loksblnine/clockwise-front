@@ -4,25 +4,28 @@ import {removePhoto, setPhotos} from "../../../../store/actions/userActions";
 import {useDispatch, useSelector} from "react-redux";
 import Article from "../../customer-content/Blog/Article";
 import {instance} from "../../../../http/headerPlaceholder.instance";
+import {Editor} from '@tinymce/tinymce-react';
 
 const CreateArticle = () => {
     const dispatch = useDispatch()
     const inputRef = useRef(null)
     const photo = useSelector((state) => state.users.photo)
-    const [bold, setBold] = useState(false)
-    const [italic, setItalic] = useState(false)
     const initArticle = {
-        body: "<div><p>",
+        body: "<p>Начните писать свою статью</p>",
         header: ""
     }
+    const editorRef = useRef(null);
     const [article, setArticle] = useState(initArticle)
     const handleChooseFile = (e) => {
         if (e.target?.files[0]?.type.split('/')[0] === "image") {
-            if (photo.length) dispatch(removePhoto(0))
+            if (photo.length) {
+                dispatch(removePhoto(0))
+            }
             const reader = new FileReader();
             reader.readAsDataURL(e.target.files[0]);
             reader.onloadend = () => {
                 dispatch(setPhotos(reader.result))
+                e.target.value = ""
             };
         } else {
             toast.info("Только фотографии")
@@ -102,80 +105,36 @@ const CreateArticle = () => {
                                onChange={(e) => handleChange(e)}
                         />
                         <label htmlFor="zag" className="m-2">Редактор контента</label>
-                        <button type="button" className="btn btn-outline-success m-4"
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    if (bold) {
-                                        setArticle((prevState => {
-                                            return ({
-                                                ...prevState,
-                                                body: article?.body?.concat("</b>")
-                                            })
-                                        }))
-                                        setBold(!bold)
-                                    } else {
-                                        setArticle((prevState => {
-                                            return ({
-                                                ...prevState,
-                                                body: article?.body?.concat("<b>")
-                                            })
-                                        }))
-                                        setBold(!bold)
-                                    }
-                                }}
-                        >
-                            Жирный)
-                        </button>
-                        <button type="button" className="btn btn-outline-success m-4"
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    if (italic) {
-                                        setArticle((prevState => {
-                                            return ({
-                                                ...prevState,
-                                                body: article?.body?.concat("</i>")
-                                            })
-                                        }))
-                                        setItalic(!italic)
-                                    } else {
-                                        setArticle((prevState => {
-                                            return ({
-                                                ...prevState,
-                                                body: article?.body?.concat("<i>")
-                                            })
-                                        }))
-                                        setItalic(!italic)
-                                    }
-                                }}
-                        >
-                            Курсив
-                        </button>
-                        <button type="button" className="btn btn-outline-success m-4"
-                                onClick={(e) => {
-                                    e.preventDefault()
-                                    setArticle((prevState => {
-                                        return ({
-                                            ...prevState,
-                                            body: article?.body?.concat("</p><p>")
-                                        })
-                                    }))
-                                }}
-                        >
-                            Добавить абзац
-                        </button>
-                        <textarea
-                            className="form-control"
-                            placeholder="Tell your story..."
-                            autoFocus={true}
-                            name="body" value={article?.body}
-                            onChange={(e) => handleChange(e)}
+                        <Editor
+                            onInit={(evt, editor) => editorRef.current = editor}
+                            onChange={()=>{
+                                setArticle(prevState => ({
+                                    ...prevState,
+                                    body: editorRef.current.getContent()
+                                }))
+                            }}
+                            initialValue="<p>Начните писать свою статью</p>"
+                            init={{
+                                height: 500,
+                                menubar: false,
+                                plugins: [
+                                    'advlist autolink lists link image charmap print preview anchor',
+                                    'searchreplace visualblocks code fullscreen',
+                                    'insertdatetime media table paste code help wordcount'
+                                ],
+                                toolbar: 'undo redo | formatselect | ' +
+                                    'bold italic backcolor | alignleft aligncenter ' +
+                                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                                    'removeformat | help',
+                                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                            }}
                         />
                     </div>
+                    <Article article={{...article, photo}}/>
+                    <button type="submit" className="btn btn-success m-4">
+                        Опубликовать
+                    </button>
                 </div>
-                <Article article={{...article, photo}}/>
-                <button type="submit" className="btn btn-success m-4">
-                    Опубликовать
-                </button>
             </form>
         </div>
     );
