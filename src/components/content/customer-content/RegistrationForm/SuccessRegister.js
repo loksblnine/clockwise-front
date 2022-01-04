@@ -8,7 +8,7 @@ const SuccessRegister = () => {
         sendConfirmRegistrationMail(location.state.email)
     }, [])
     return (
-        <div className="router">
+        <div>
             <h3>Проверьте свой почтовый адрес</h3>
         </div>
     );

@@ -77,7 +77,7 @@ const ListOrders = () => {
         return <Spinner animation="grow"/>
     }
     return (
-        <div className="router">
+        <div>
             <h2 className="text-left mt-5">Список заказов</h2>
             <button className="btn" type="button" data-toggle="collapse"
                     data-target="#Filter" onClick={(e) => {

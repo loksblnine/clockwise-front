@@ -11,7 +11,7 @@ const SuccessRegister = () => {
     }, [dispatch])
 
     return (
-        <div className="router">
+        <div>
             <h3>Активация прошла успешно</h3>
         </div>
     );

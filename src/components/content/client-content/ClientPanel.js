@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import '../Panel.css'
 import * as constants from "../../../utils/constants";
 import {ARROWS_SVG} from "../../../utils/constants";
 import {Spinner} from "react-bootstrap";
@@ -53,7 +52,7 @@ const ClientPanel = () => {
         return <Spinner animation="grow"/>
     }
     return (
-        <div className="router">
+        <div>
             <h2 className="text-left mt-5">Привет, {customer.customer_name}</h2>
             {customer?.customer_email && <EditProfileClient customer={customer}/>}
             {orders.length > 0 ?

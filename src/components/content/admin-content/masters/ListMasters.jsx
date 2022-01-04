@@ -60,7 +60,7 @@ const ListMasters = () => {
         return <Spinner animation="grow"/>
     }
     return (
-        <div className="router">
+        <div>
             <h2 className="text-left mt-5">Список мастеров</h2>
             <table className="table mt-5 text-justify">
                 <thead>

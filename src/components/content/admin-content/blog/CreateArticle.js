@@ -37,7 +37,7 @@ const CreateArticle = () => {
     }
 
     return (
-        <div className="router">
+        <div>
             <form onSubmit={() => {
                 setArticle((prevState => {
                     return ({

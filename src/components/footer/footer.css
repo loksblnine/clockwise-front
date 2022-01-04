@@ -1,8 +1,10 @@
 .footer {
     position: relative;
-    margin-top: 10%;
-    height: 10%;
-    clear:both;
-    margin-right: 10%;
-    padding-bottom: 20px;
+    left: 0;
+    bottom: 0;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    width: 100%;
+    background-color: rgba(255, 0, 0, 0);
+    text-align: center;
 }

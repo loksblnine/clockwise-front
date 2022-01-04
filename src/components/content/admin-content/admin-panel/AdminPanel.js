@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {LinkContainer} from 'react-router-bootstrap'
-import '../../Panel.css'
 
 //components
 import ListMasters from "../masters/ListMasters";
@@ -19,7 +18,6 @@ const AdminPanel = () => {
     return (
         <Router>
             <div>
-            <div className="router">
                 <h2>Администрирование</h2>
                 <LinkContainer to='/masters'>
                     <button className="btn btn-xl">Мастера</button>
@@ -44,7 +42,6 @@ const AdminPanel = () => {
                     <Route exact path='/orders' component={ListOrders}/>
                     <Route exact path='/blog/create' component={CreateArticle}/>
                 </Switch>
-            </div>
         </Router>
     );
 }

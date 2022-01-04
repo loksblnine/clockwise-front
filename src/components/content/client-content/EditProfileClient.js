@@ -21,7 +21,6 @@ const EditProfileClient = ({customer}) => {
                     data-target={`#id${customer.customer_id}`}>
                 Редактировать
             </button>
-
             <div className="modal fade" id={`id${customer.customer_id}`} tabIndex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">

@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import '../Panel.css'
 import * as constants from "../../../utils/constants";
 import {Spinner} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
@@ -46,7 +45,7 @@ const MasterPanel = () => {
     }
 
     return (
-        <div className="router">
+        <div>
             <div className="d-flex">
                 <h2 className="text-left mt-5">Привет, {master?.master_name}</h2>
                 {master?.email && <EditProfileMaster master={master}/>}
