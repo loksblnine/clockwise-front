@@ -14,6 +14,7 @@ import SuccessActivate from "../components/content/customer-content/Registration
 import React from "react";
 import Blog from "../components/content/customer-content/Blog/Blog";
 import CreateArticle from "../components/content/admin-content/blog/CreateArticle";
+import RedirectingPage from "../components/content/customer-content/LoginForm/Redirect";
 
 //todo remove this garbage =))
 //todo use ENUM with TS
@@ -68,6 +69,10 @@ export const customerRoutes = [
     {
         path: '/login',
         Component: LoginForm
+    },
+    {
+        path: '/login/token/*',
+        Component: RedirectingPage
     },
     {
         path: '/registration',
@@ -214,3 +219,5 @@ export const ARROWS_SVG = {
             d="M3.204 11h9.592L8 5.519 3.204 11zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z"/>
     </svg>
 }
+
+export const SERVER_URL = process.env.NODE_ENV === "production" ? "https://enigmatic-spire-58695.herokuapp.com" : "http://localhost:5000"

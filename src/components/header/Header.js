@@ -86,7 +86,7 @@ const Header = () => {
                                         payload: !letItSnow
                                     })
                                 }}
-                        >Зима
+                        >{letItSnow ? "Зима" : "Лето"}
                         </button>
                         <button className="btn btn-xl"
                                 onClick={() => history.push('/blog')}
