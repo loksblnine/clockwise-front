@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {useFormik} from 'formik';
 import {useHistory, withRouter} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {LinkContainer} from "react-router-bootstrap";
 import {setUser} from "../../../../store/actions/userActions";
 import {toast} from "react-toastify";
-import {instance} from "../../../../http/headerPlaceholder.instance";
 import {SERVER_URL} from "../../../../utils/constants";
 
 const validate = (values) => {
@@ -27,18 +26,6 @@ const LoginForm = () => {
     const history = useHistory()
     const dispatch = useDispatch()
     const user = useSelector(state => state.users.user)
-    const [google, setGoogle] = useState(null)
-
-    useEffect(async () => {
-        await instance({
-            method: "GET",
-            url: "/auth"
-        }).then(({data}) => {
-            console.log(data)
-            setGoogle(data)
-        })
-    }, []);
-
     const formik = useFormik({
         initialValues: {
             email: '',
