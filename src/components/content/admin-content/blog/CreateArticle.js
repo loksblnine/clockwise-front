@@ -1,15 +1,15 @@
 import React, {useRef, useState} from 'react';
 import {toast} from "react-toastify";
-import {removePhoto, setPhotos} from "../../../../store/actions/userActions";
 import {useDispatch, useSelector} from "react-redux";
 import Article from "../../customer-content/Blog/Article";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {Editor} from '@tinymce/tinymce-react';
+import {ACTIONS} from "../../../../utils/constants";
 
 const CreateArticle = () => {
     const dispatch = useDispatch()
     const inputRef = useRef(null)
-    const photo = useSelector((state) => state.users.photo)
+    const photo = useSelector((state) => state.articles.photo) || ""
     const initArticle = {
         body: "<p>Начните писать свою статью</p>",
         header: ""
@@ -18,13 +18,13 @@ const CreateArticle = () => {
     const [article, setArticle] = useState(initArticle)
     const handleChooseFile = (e) => {
         if (e.target?.files[0]?.type.split('/')[0] === "image") {
-            if (photo.length) {
-                dispatch(removePhoto(0))
-            }
             const reader = new FileReader();
             reader.readAsDataURL(e.target.files[0]);
             reader.onloadend = () => {
-                dispatch(setPhotos(reader.result))
+                dispatch({
+                    type: ACTIONS.BLOG.SET_ARTICLE_PHOTO,
+                    payload: reader.result
+                })
                 e.target.value = ""
             };
         } else {
@@ -73,28 +73,23 @@ const CreateArticle = () => {
                                }}
                         />
                         <div className="row mb-5 w-60" key="show-preview">
-                            {
-                                photo?.length > 0 &&
-                                photo.map((item, i) => {
-                                    return (
-                                        <div
-                                            className={`d-flex align-items-start  col-md-3 m-3`}
-                                            key={i}>
-                                            <img
-                                                src={item}
-                                                alt="chosen"
-                                            />
-                                            <button className="btn" type="button"
-                                                    onClick={() => {
-                                                        dispatch(removePhoto(0))
-                                                    }}
-                                            >
-                                                <span>&times;</span>
-                                            </button>
-                                        </div>
-                                    )
-                                })
-                            }
+                            {photo && <div
+                                className="d-flex align-items-start  col-md-3 m-3"
+                                key="photo">
+                                <img
+                                    src={photo}
+                                    alt="chosen"
+                                />
+                                <button className="btn" type="button"
+                                        onClick={() => {
+                                            dispatch({
+                                                type: ACTIONS.BLOG.REMOVE_ARTICLE_PHOTO
+                                            })
+                                        }}
+                                >
+                                    <span>&times;</span>
+                                </button>
+                            </div>}
                         </div>
                         <label htmlFor="zag" className="m-2">Заголовок</label>
                         <input id="zag" name="header"
@@ -107,7 +102,7 @@ const CreateArticle = () => {
                         <label htmlFor="zag" className="m-2">Редактор контента</label>
                         <Editor
                             onInit={(evt, editor) => editorRef.current = editor}
-                            onChange={()=>{
+                            onChange={() => {
                                 setArticle(prevState => ({
                                     ...prevState,
                                     body: editorRef.current.getContent()

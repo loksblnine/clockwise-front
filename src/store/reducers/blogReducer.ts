@@ -4,7 +4,8 @@ type initialState = {
     isReady: boolean,
     items: any[],
     page: number,
-    loadNext: boolean
+    loadNext: boolean,
+    photo: string
 }
 
 const initialState: initialState = {
@@ -12,6 +13,7 @@ const initialState: initialState = {
     items: [],
     page: 0,
     loadNext: true,
+    photo: ""
 };
 
 const blogReducer = (state = initialState, action: { type: string; payload: any; }) => {
@@ -42,6 +44,18 @@ const blogReducer = (state = initialState, action: { type: string; payload: any;
             return {
                 ...state,
                 items: state.items.concat(action.payload),
+            }
+        }
+        case constants.ACTIONS.BLOG.SET_ARTICLE_PHOTO: {
+            return {
+                ...state,
+                photo: action.payload,
+            }
+        }
+        case constants.ACTIONS.BLOG.REMOVE_ARTICLE_PHOTO: {
+            return {
+                ...state,
+                photo: ""
             }
         }
         case constants.ACTIONS.BLOG.DELETE_ARTICLE: {
