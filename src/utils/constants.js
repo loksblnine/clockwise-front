@@ -15,6 +15,7 @@ import React from "react";
 import Blog from "../components/content/customer-content/Blog/Blog";
 import CreateArticle from "../components/content/admin-content/blog/CreateArticle";
 import RedirectingPage from "../components/content/customer-content/LoginForm/Redirect";
+import EditArticle from "../components/content/admin-content/blog/EditArticle";
 
 //todo remove this garbage =))
 //todo use ENUM with TS
@@ -128,6 +129,10 @@ export const authAdminRoutes = [
     {
         path: '/blog/create',
         Component: CreateArticle
+    },
+    {
+        path: '/blog/edit',
+        Component: EditArticle
     }
 ]
 

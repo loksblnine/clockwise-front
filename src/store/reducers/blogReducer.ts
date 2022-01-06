@@ -46,6 +46,24 @@ const blogReducer = (state = initialState, action: { type: string; payload: any;
                 items: state.items.concat(action.payload),
             }
         }
+        case constants.ACTIONS.BLOG.UPDATE_ARTICLE: {
+            const array = state.items.map((item: any) => {
+                if (item.article_id === action.payload.article_id)
+                    return action.payload
+                else return item
+            })
+            return {
+                ...state,
+                items: array,
+                isReady: true
+            };
+        }
+        case constants.ACTIONS.BLOG.DELETE_ARTICLE: {
+            return {
+                ...state,
+                items: state.items.filter((item: any) => item.article_id !== action.payload),
+            }
+        }
         case constants.ACTIONS.BLOG.SET_ARTICLE_PHOTO: {
             return {
                 ...state,
@@ -56,12 +74,6 @@ const blogReducer = (state = initialState, action: { type: string; payload: any;
             return {
                 ...state,
                 photo: ""
-            }
-        }
-        case constants.ACTIONS.BLOG.DELETE_ARTICLE: {
-            return {
-                ...state,
-                items: state.items.filter((item: any) => item.article_id !== action.payload),
             }
         }
         default:

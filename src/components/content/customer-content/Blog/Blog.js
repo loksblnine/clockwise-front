@@ -6,7 +6,6 @@ import {setArticles} from "../../../../store/actions/blogActions";
 const Blog = () => {
     const dispatch = useDispatch()
     const articles = useSelector((state) => state?.articles?.items)
-
     const {isReady, loadNext, page} = useSelector((state) => state?.articles)
 
     useEffect(() => {
@@ -21,8 +20,8 @@ const Blog = () => {
     }
 
     return (
-        <div className="container">
-            <div className="row">
+        <div>
+            <div className="d-flex row">
                 {
                     articles?.map(art =>
                         <ArticlePreview key={art.article_id} article={art}/>)
@@ -30,7 +29,7 @@ const Blog = () => {
             </div>
             {
                 loadNext &&
-                <div className="col text-center">
+                <div className="text-center mt-4">
                     <button className="btn btn-primary" onClick={(e) => handleNextArticles(e)} disabled={!isReady}> Еще...
                     </button>
                 </div>

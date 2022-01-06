@@ -21,21 +21,21 @@ export const setArticles = (page: number) => {
     }
 }
 
-export const updateArticle = (article:Article, id: number) => {
+export const updateArticle = (article: Article, id: number) => {
     return async (dispatch: any) => {
-        const {data} = await instance({
+        await instance({
             method: "PUT",
             data: article,
             url: `/blog/${id}`
         })
         dispatch({
             type: constants.ACTIONS.BLOG.UPDATE_ARTICLE,
-            payload: data
+            payload: article
         });
     }
 }
 
-export const addArticle= (article:Article) => {
+export const addArticle = (article: Article) => {
     return async (dispatch: any) => {
         const {data} = await instance({
             method: "POST",
@@ -59,6 +59,22 @@ export const deleteArticle = (id: number) => {
         dispatch({
             type: constants.ACTIONS.BLOG.DELETE_ARTICLE,
             payload: id
+        });
+    }
+}
+
+export const setArticlePhoto = (base64: string) => {
+    return async (dispatch: any) => {
+        dispatch({
+            type: constants.ACTIONS.BLOG.SET_ARTICLE_PHOTO,
+            payload: base64
+        });
+    }
+}
+export const removeArticlePhoto = () => {
+    return async (dispatch: any) => {
+        dispatch({
+            type: constants.ACTIONS.BLOG.REMOVE_ARTICLE_PHOTO,
         });
     }
 }

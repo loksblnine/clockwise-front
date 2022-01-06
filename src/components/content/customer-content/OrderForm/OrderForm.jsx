@@ -35,7 +35,7 @@ const validate = (values) => {
 };
 
 const orderPageStyle = {
-    margin: "5% 8%  auto 8%",
+    margin: "5% 8% auto 8%",
     background: "#fff",
     padding: "30px",
     borderRadius: "10px",
@@ -45,7 +45,6 @@ const orderPageStyle = {
 const OrderForm = () => {
     const history = useHistory()
     const location = useLocation()
-
     const cities = useSelector((state) => state.cities.items)
     const isReady = useSelector((state) => state.cities.isReady)
     const user = useSelector((state) => state.users.user)

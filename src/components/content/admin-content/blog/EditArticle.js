@@ -4,24 +4,26 @@ import {useDispatch, useSelector} from "react-redux";
 import Article from "../../customer-content/Blog/Article";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {Editor} from '@tinymce/tinymce-react';
-import {removeArticlePhoto, setArticlePhoto} from "../../../../store/actions/blogActions";
+import {removeArticlePhoto, setArticlePhoto, updateArticle} from "../../../../store/actions/blogActions";
+import {useHistory, useLocation, withRouter} from "react-router-dom";
 
-const CreateArticle = () => {
+const EditArticle = () => {
     const dispatch = useDispatch()
     const inputRef = useRef(null)
-    const photo = useSelector((state) => state.articles.photo) || ""
-    const initArticle = {
-        body: "<p>Начните писать свою статью</p>",
-        header: ""
-    }
     const editorRef = useRef(null);
-    const [article, setArticle] = useState(initArticle)
+    const location = useLocation()
+    const history = useHistory()
+    const [article, setArticle] = useState(location.state)
+
     const handleChooseFile = (e) => {
         if (e.target?.files[0]?.type.split('/')[0] === "image") {
             const reader = new FileReader();
             reader.readAsDataURL(e.target.files[0]);
             reader.onloadend = () => {
-                dispatch(setArticlePhoto(reader.result))
+                setArticle(prevState => ({
+                    ...prevState,
+                    photo: reader.result
+                }));
                 e.target.value = ""
             };
         } else {
@@ -39,20 +41,8 @@ const CreateArticle = () => {
     return (
         <div>
             <form onSubmit={() => {
-                setArticle((prevState => {
-                    return ({
-                        ...prevState,
-                        body: article?.body
-                    })
-                }))
-                instance({
-                    url: "/blog",
-                    data: {
-                        ...article,
-                        photo
-                    },
-                    method: "post",
-                })
+                dispatch(updateArticle({...article, body: editorRef.current.getContent()}, article.article_id))
+                history.push('/blog')
             }}>
                 <div className="m-4">
                     <div className="form-group">
@@ -63,23 +53,26 @@ const CreateArticle = () => {
                                onInput={e => handleChooseFile(e)}
                         />
                         <input type="text" className="form-control" readOnly
-                               value={photo.length === 0 ? "Добавить фото..." : "Изменить фото"}
+                               value={article?.photo ? "Добавить фото..." : "Изменить фото"}
                                onClick={(e) => {
                                    e.preventDefault()
                                    inputRef.current.click()
                                }}
                         />
                         <div className="row mb-5 w-60" key="show-preview">
-                            {photo && <div
+                            {article?.photo && <div
                                 className="d-flex align-items-start  col-md-3 m-3"
                                 key="photo">
                                 <img
-                                    src={photo}
+                                    src={article?.photo}
                                     alt="chosen"
                                 />
                                 <button className="btn" type="button"
                                         onClick={() => {
-                                            dispatch(removeArticlePhoto())
+                                            setArticle(prevState => ({
+                                                ...prevState,
+                                                photo: ""
+                                            }));
                                         }}
                                 >
                                     <span>&times;</span>
@@ -97,13 +90,7 @@ const CreateArticle = () => {
                         <label htmlFor="zag" className="m-2">Редактор контента</label>
                         <Editor
                             onInit={(evt, editor) => editorRef.current = editor}
-                            onChange={() => {
-                                setArticle(prevState => ({
-                                    ...prevState,
-                                    body: editorRef.current.getContent()
-                                }))
-                            }}
-                            initialValue="<p>Начните писать свою статью</p>"
+                            initialValue={article?.body}
                             init={{
                                 height: 500,
                                 menubar: false,
@@ -120,7 +107,6 @@ const CreateArticle = () => {
                             }}
                         />
                     </div>
-                    <Article article={{...article, photo}}/>
                     <button type="submit" className="btn btn-success m-4">
                         Опубликовать
                     </button>
@@ -130,4 +116,4 @@ const CreateArticle = () => {
     );
 };
 
-export default CreateArticle;
+export default withRouter(EditArticle);
