@@ -35,25 +35,25 @@
     .hatStyles {
         display: flex;
         position: absolute;
-        top: 16%;
-        right: -4%
+        top: 14%;
+        right: 3%
     }
 }
-@media screen and (max-width: 630px) and (min-width: 450px){
+@media screen and (max-width: 600px) and (min-width: 450px){
     /*600-450*/
     .hatStyles {
-        display: flex;
+        display: block;
         position: absolute;
-        top: 15%;
-        right: 5%
+        top: 14%;
+        right: 6%
     }
 }
-@media screen and (max-width: 800px) and (min-width: 630px){
+@media screen and (max-width: 800px) and (min-width: 600px){
     /*800-600*/
     .hatStyles {
         display: flex;
         position: absolute;
-        top: 16%;
+        top: 14.5%;
         right: 9%;
     }
 }
@@ -62,16 +62,25 @@
     .hatStyles {
         display: flex;
         position: absolute;
-        top: 17%;
+        top: 15%;
         right: 10%;
     }
 }
-@media screen and (max-width: 1440px) and (min-width: 1000px){
-    /*1440-1000*/
+@media screen and (max-width: 1200px) and (min-width: 1000px){
+    /*1200-1000*/
     .hatStyles {
         display: flex;
         position: absolute;
-        top: 18.5%;
+        top: 16%;
         right: 12%;
+    }
+}
+@media screen and (max-width: 1400px) and (min-width: 1200px){
+    /*1400-1200*/
+    .hatStyles {
+        display: flex;
+        position: absolute;
+        top: 17%;
+        right: 13%;
     }
 }
