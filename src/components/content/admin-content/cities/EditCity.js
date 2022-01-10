@@ -1,6 +1,7 @@
 import React, {Fragment, useCallback, useState} from "react";
 import {useDispatch} from "react-redux";
 import {updateCity} from "../../../../store/actions/cityActions";
+import {stringPattern} from "../../../../utils/constants";
 
 const EditCity = ({city}) => {
     const [city_name, setCityName] = useState(city.city_name)
@@ -36,7 +37,7 @@ const EditCity = ({city}) => {
                                 <input className="form-control" placeholder="Город" value={city_name}
                                        name="city_name"
                                        required onChange={e => setCityName(e.target.value)}
-                                       pattern="[A-ZА-Яa-zа-я -]+"/>
+                                       pattern={stringPattern}/>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal"

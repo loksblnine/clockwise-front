@@ -1,6 +1,7 @@
 import React, {useCallback, useState} from "react";
 import {useDispatch} from "react-redux";
 import {updateMaster} from "../../../../store/actions/masterActions";
+import {emailPattern, rankingPattern, stringPattern} from "../../../../utils/constants";
 
 const EditMaster = ({master}) => {
     const [master_name, setMasterName] = useState(master.master_name)
@@ -36,19 +37,19 @@ const EditMaster = ({master}) => {
                                 <label htmlFor="name">ФИО мастера</label>
                                 <input className="form-control" placeholder="Иван Иванович Иванов" value={master_name}
                                        name="name" onChange={e => setMasterName(e.target.value)}
-                                       pattern="[A-ZА-Яa-zа-я -]+"
+                                       pattern={stringPattern}
                                        required
                                 />
                                 <label htmlFor="email">e-mail</label>
                                 <input className="form-control" value={master_email} name="email" type="email"
                                        onChange={e => setMasterEmail(e.target.value)}
                                        required
-                                       pattern="[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]+"
+                                       pattern={emailPattern}
                                 />
                                 <label htmlFor="rating">Рейтинг</label>
                                 <input className="form-control" placeholder="5.0" value={ranking} name="rating"
                                        onChange={e => setRanking(e.target.value)}
-                                       required pattern="([1-5])|([1-4].[05])|(5.0)"
+                                       required pattern={rankingPattern}
                                 />
                             </div>
                             <div className="modal-footer">

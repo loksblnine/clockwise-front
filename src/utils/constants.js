@@ -228,3 +228,8 @@ export const ARROWS_SVG = {
 }
 
 export const SERVER_URL = process.env.NODE_ENV === "production" ? "https://enigmatic-spire-58695.herokuapp.com" : "http://localhost:5000"
+
+export const datePattern = "[0-9]{4}.[0-9]{2}.[0-9]{2}"
+export const stringPattern = "[A-ZА-Яa-zа-я -]+"
+export const emailPattern = "[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]+"
+export const rankingPattern = "([1-5])|([1-4].[05])|(5.0)"

@@ -1,6 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import {useDispatch} from "react-redux";
 import {updateUserData} from "../../../store/actions/userActions";
+import {emailPattern, stringPattern} from "../../../utils/constants";
 
 const EditProfileClient = ({master}) => {
     const [master_name, setMasterName] = useState(master.master_name)
@@ -35,11 +36,11 @@ const EditProfileClient = ({master}) => {
                                 <label htmlFor="city_name">Изменить имя</label>
                                 <input className="form-control" placeholder="Имя" value={master_name}
                                        required onChange={e => setMasterName(e.target.value)}
-                                       pattern="[A-ZА-Яa-zа-я -]+"/>
+                                       pattern={stringPattern}/>
                                 <label htmlFor="city_name">Изменить email</label>
                                 <input className="form-control" placeholder="Email" value={email}
                                        required onChange={e => setMasterEmail(e.target.value)}
-                                       pattern="[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]+"/>
+                                       pattern={emailPattern}/>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal"

@@ -9,6 +9,7 @@ import {Spinner} from "react-bootstrap";
 import {setCities} from "../../../../store/actions/cityActions";
 import {removePhoto, setPhotos} from "../../../../store/actions/userActions";
 import santaHat from "../../../../images/santashat.png";
+import {datePattern} from "../../../../utils/constants";
 
 const validate = (values) => {
     const errors = {};
@@ -147,7 +148,7 @@ const OrderForm = () => {
                         <label className="text" htmlFor="date">Введите дату заказа </label>
                         <input type="date" id="date" name="date" className="form-control react-datetime-picker"
                                min={constants.DATE_FROM} max={constants.DATE_TO} key="date"
-                               required pattern="[0-9]{4}.[0-9]{2}.[0-9]{2}"
+                               required pattern={datePattern}
                                value={formik.values.date}
                                onChange={formik.handleChange}/>
                     </div>
@@ -156,7 +157,7 @@ const OrderForm = () => {
                         <input type="time" name="time" className="form-control timepicker"
                                min={constants.TIME_FROM} max={constants.TIME_TO} key="time"
                                required step="3600" value={formik.values.time}
-                               pattern="([01]?[0-9]|2[0-3]):00" id="24h"
+                               id="24h"
                                onChange={formik.handleChange}/>
                         {formik.errors.time ? <div className="error">{formik.errors.time}</div> : null}
                     </div>

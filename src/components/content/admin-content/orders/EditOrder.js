@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
 import * as constants from "../../../../utils/constants";
+import {datePattern} from "../../../../utils/constants";
 import {useDispatch, useSelector} from "react-redux";
 import {updateOrder} from "../../../../store/actions/orderActions";
 import {instance} from "../../../../http/headerPlaceholder.instance";
@@ -102,14 +103,14 @@ const EditOrder = (initialOrder) => {
                                 <input type="date" name="date" value={order.date}
                                        className="form-control react-datetime-picker"
                                        min={constants.DATE_FROM} max={constants.DATE_TO}
-                                       required pattern="[0-9]{4}.[0-9]{2}.[0-9]{2}"
+                                       required pattern={datePattern}
                                        onChange={handleChange}/>
                                 <label className="text" htmlFor="time">Время заказа (8:00 - 17:00) </label>
                                 <input type="time" name="time" className="form-control timepicker"
                                        min={constants.TIME_FROM} max={constants.TIME_TO}
                                        value={order.time}
                                        required step="3600"
-                                       pattern="([01]?[0-9]|2[0-3]):[0][0]" id="24h"
+                                       id="24h"
                                        onChange={handleChange}/>
                                 <div className="form-group">
                                     {
@@ -117,7 +118,7 @@ const EditOrder = (initialOrder) => {
                                         photo.map((item, i) => {
                                             return (
                                                 <div
-                                                    className={`d-flex align-items-start col-1 m-3`}
+                                                    className="d-flex align-items-start col-1 m-3"
                                                     key={i}>
                                                     <img
                                                         src={item}

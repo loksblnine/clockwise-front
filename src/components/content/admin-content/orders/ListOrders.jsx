@@ -6,6 +6,7 @@ import {Spinner} from "react-bootstrap";
 import {deleteOrder, setOrdersAdmin} from "../../../../store/actions/orderActions";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {hasNumber, objectToQueryString} from "../../../../utils/utils";
+import {datePattern} from "../../../../utils/constants";
 
 const ListOrders = () => {
     const orders = useSelector(state => state.orders.items)
@@ -140,7 +141,7 @@ const ListOrders = () => {
                             <label className="text" htmlFor="date">С</label>
                             <input type="date" id="date" name="from"
                                    className="form-control react-datetime-range-picker"
-                                   key="date-from" required pattern="[0-9]{4}.[0-9]{2}.[0-9]{2}"
+                                   key="date-from" required pattern={datePattern}
                                    value={queryParams.from}
                                    onChange={handleChange}/>
                         </div>
@@ -150,7 +151,7 @@ const ListOrders = () => {
                             <input type="date" id="date" name="to"
                                    className="form-control react-datetime-range-picker"
                                    min={queryParams.from}
-                                   key="date-from" required pattern="[0-9]{4}.[0-9]{2}.[0-9]{2}"
+                                   key="date-from" required pattern={datePattern}
                                    value={queryParams.to}
                                    onChange={handleChange}/>
                         </div>
