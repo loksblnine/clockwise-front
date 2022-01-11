@@ -19,6 +19,7 @@ const DisplayMark = ({mark}) => {
 }
 
 const ModalApprove = ({order}) => {
+    const dispatch = useDispatch()
     const handleApproveOrder = (order) => {
         dispatch(approveOrder(order.order_id))
     }
@@ -118,7 +119,7 @@ const MasterPanel = () => {
                                         deps.map((d) => {
                                             return (
                                                 <div key={d}
-                                                     className={`col-md-4 p-2`}>
+                                                     className="col-md-4 p-2">
                                                     {cities?.find(c => c.city_id === d)?.city_name}
                                                     <button className="btn"
                                                             onClick={() => dispatch(deleteMasterCity({
