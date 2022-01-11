@@ -7,6 +7,7 @@ import users from './userReducer'
 import masters from './masterReducer'
 import articles from './blogReducer'
 import weather from './weatherReducer'
+import types from './typeReducer'
 
 const appReducer = combineReducers({
     cities,
@@ -15,7 +16,8 @@ const appReducer = combineReducers({
     users,
     masters,
     articles,
-    weather
+    weather,
+    types
 });
 
 const rootReducer = (state, action) => {

@@ -204,7 +204,14 @@ export const ACTIONS = {
     },
     WEATHER: {
         SET_WINTER: "SET_WINTER"
-    }
+    },
+    TYPES: {
+        SET_TYPES: "SET_TYPES",
+        SET_READY_TYPES: "SET_READY_TYPES",
+        DELETE_TYPE: "DELETE_TYPE",
+        UPDATE_TYPE: "UPDATE_TYPE",
+        ADD_TYPE: "ADD_TYPE"
+    },
 }
 
 export const PATH = [

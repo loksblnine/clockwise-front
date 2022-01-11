@@ -4,7 +4,6 @@ import {toast} from "react-toastify";
 //region send mails
 export const sendConfirmationOrder = (order, master, history, photos) => {
     toast.loading("Обработка заказа")
-    const text = `Спасибо за заказ ${order.name}, мастер ${master["master.master_name"]} будет у вас ${order.date} в ${order.time}`
     const T = order.date + "T" + order.time
     const orderBody = {
         master_id: master.master_id,
@@ -20,11 +19,13 @@ export const sendConfirmationOrder = (order, master, history, photos) => {
         data: orderBody,
         url: "/orders"
     })
-        .then(() => {
+        .then(({data}) => {
+            const text = `${order.name}, бронь прошла успешно, мастер ${master["master.master_name"]} будет у вас ${order.date} в ${order.time}. Оплатите заказ по ссылке или в своем кабинете.`
             const messageBody = {
                 email: orderBody.customer_email,
                 message: text,
-                order_time: orderBody.order_time
+                order_time: orderBody.order_time,
+                order_id: data.order_id
             }
             instance({
                 method: "POST",
@@ -34,7 +35,8 @@ export const sendConfirmationOrder = (order, master, history, photos) => {
                 .then(() => {
                     toast.dismiss()
                     toast("Письмо отправлено вам на почту")
-                    history.push('/')
+                    //todo create page /pay
+                    history.push(`/pay?order_id=${data.order_id}`)
                 })
         })
         .catch(() => {
