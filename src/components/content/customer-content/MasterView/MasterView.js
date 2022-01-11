@@ -101,7 +101,7 @@ const MasterView = () => {
                 <button type="submit" className="btn btn-primary"
                         onClick={(e) => {
                             e.preventDefault()
-                            window.location = `${SERVER_URL}/pay?type=${location.state.data.type}`
+                            window.location = `${SERVER_URL}/pay?order_id=${location.state.data.type}`
                         }}>
                     НА ПЕЙПАЛ!!!
                 </button>

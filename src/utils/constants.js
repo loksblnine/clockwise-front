@@ -16,6 +16,7 @@ import Blog from "../components/content/customer-content/Blog/Blog";
 import CreateArticle from "../components/content/admin-content/blog/CreateArticle";
 import RedirectingPage from "../components/content/customer-content/LoginForm/Redirect";
 import EditArticle from "../components/content/admin-content/blog/EditArticle";
+import PayPalRedirect from "../components/content/customer-content/Payment/PayPalRedirect";
 
 //todo remove this garbage =))
 //todo use ENUM with TS
@@ -86,6 +87,10 @@ export const customerRoutes = [
     {
         path: '/activate/:token',
         Component: SuccessActivate
+    },
+    {
+        path: '/pay',
+        Component: PayPalRedirect
     }
 ]
 export const authMasterRoutes = [
