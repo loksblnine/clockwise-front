@@ -1,15 +1,15 @@
-import React, {useCallback, useState} from "react";
-import * as constants from "../../../../constants";
+import React, {useCallback, useEffect, useState} from "react";
+import * as constants from "../../../../utils/constants";
 import {useDispatch, useSelector} from "react-redux";
 import {updateOrder} from "../../../../store/actions/orderActions";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 
 const EditOrder = (initialOrder) => {
-
     const cities = useSelector((state) => state.cities.items)
     const customers = useSelector((state) => state.customers.items)
     const masters = useSelector((state) => state.masters.items)
     const dispatch = useDispatch()
-
+    const [photo, setPhoto] = useState([])
     const inputRef = React.useRef(null)
 
     const [order, setOrder] = useState({
@@ -18,6 +18,12 @@ const EditOrder = (initialOrder) => {
         time: initialOrder.order?.order_time?.split('T')[1]?.split('.')[0]
     });
 
+    useEffect(() => {
+        instance({
+            url: `photo/show/${order.order_id}`
+        })
+            .then(({data}) => setPhoto(data))
+    }, [])
     const editOrder = useCallback((e) => {
         e.preventDefault()
         const body = {order}
@@ -35,16 +41,17 @@ const EditOrder = (initialOrder) => {
     };
     return (
         <div>
-            {order.date > constants.DATE_FROM ?
+            {order.isDone ?
+                <button type="button" className="btn btn-info" data-toggle="modal"
+                        data-target={`#id_see${order.order_id}`}>
+                    Посмотреть
+                </button>
+                :
                 <button type="button" className="btn btn-warning" data-toggle="modal"
                         data-target={`#id_edit${order.order_id}`}>
                     Редактировать
                 </button>
-                : <button type="button" className="btn btn-info" data-toggle="modal"
-                          data-target={`#id_see${order.order_id}`}>
-                    Посмотреть
-                </button>}
-
+            }
             <div className="modal fade" id={`id_edit${order.order_id}`} tabIndex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
@@ -101,11 +108,28 @@ const EditOrder = (initialOrder) => {
 
                                 <label className="text" htmlFor="time">Время заказа (8:00 - 17:00) </label>
                                 <input type="time" name="time" className="form-control timepicker"
-                                       min={constants.TIME_FROM} max={constants.TIME_TO}
                                        value={order.time}
                                        required step="3600"
                                        pattern="([01]?[0-9]|2[0-3]):[0][0]" id="24h"
                                        onChange={handleChange}/>
+                                <div className="form-group">
+                                    {
+                                        photo?.length > 0 &&
+                                        photo.map((item, i) => {
+                                            return (
+                                                <div
+                                                    className={`d-flex align-items-start col-1 m-3`}
+                                                    key={i}>
+                                                    <img
+                                                        src={item}
+                                                        alt="chosen"
+                                                        style={{height: '150px', width: '150px'}}
+                                                    />
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal"
@@ -155,9 +179,26 @@ const EditOrder = (initialOrder) => {
                                    disabled/>
                             <label className="text" htmlFor="time">Время заказа (8:00 - 17:00) </label>
                             <input type="time" name="time" className="form-control timepicker"
-                                   min={constants.TIME_FROM} max={constants.TIME_TO}
                                    value={order.time}
                                    disabled/>
+                            <div className="form-group">
+                                {
+                                    photo?.length > 0 &&
+                                    photo.map((item, i) => {
+                                        return (
+                                            <div
+                                                className={`d-flex align-items-start col-1   m-3`}
+                                                key={i}>
+                                                <img
+                                                    src={item}
+                                                    alt="chosen"
+                                                    style={{height: '150px', width: '150px'}}
+                                                />
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Закрыть

@@ -1,4 +1,4 @@
-import * as constants from "../../constants";
+import * as constants from "../../utils/constants";
 import {instance} from "../../http/headerPlaceholder.instance";
 
 type Order = {
@@ -11,15 +11,15 @@ type Order = {
     isDone: boolean
 }
 
-export const setOrdersAdmin = (page: number) => {
+export const setOrdersAdmin = (page: number, queryParams: string) => {
     return async (dispatch: any) => {
         const {data}: any = await instance({
             method: "get",
-            url: `/orders/offset/${page}`
+            url: `/orders/offset/${page}?${queryParams}`
         })
         dispatch({
             type: constants.ACTIONS.ORDERS.SET_ORDERS,
-            payload: data
+            payload: {data}
         });
     }
 }
@@ -31,8 +31,16 @@ export const setOrdersMaster = (page: number, id: number) => {
         })
         dispatch({
             type: constants.ACTIONS.ORDERS.SET_ORDERS,
-            payload: data
+            payload: {data}
         });
+    }
+}
+export const sortOrders = (param: string[]) => {
+    return (dispatch: any) => {
+        dispatch({
+            type: constants.ACTIONS.ORDERS.SORT,
+            payload: param
+        })
     }
 }
 export const setOrdersCustomer = (page: number, id: number) => {
@@ -43,7 +51,7 @@ export const setOrdersCustomer = (page: number, id: number) => {
         })
         dispatch({
             type: constants.ACTIONS.ORDERS.SET_ORDERS,
-            payload: data
+            payload: {page, data}
         });
     }
 }

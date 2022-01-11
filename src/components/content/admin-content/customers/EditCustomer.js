@@ -12,7 +12,7 @@ const EditCustomer = ({customer}) => {
         const body = {customer_name, customer_email}
         dispatch(updateCustomer(body, customer.customer_id))
         inputRef.current.click()
-    }, [customer_name, customer_email])
+    }, [dispatch, customer.customer_id, customer_name, customer_email])
     return (
         <div>
             <button type="button" className="btn btn-warning" data-toggle="modal"

@@ -23,7 +23,8 @@ export const sendConfirmationOrder = (order, master, history, photos) => {
         .then(() => {
             const messageBody = {
                 email: orderBody.customer_email,
-                message: text
+                message: text,
+                order_time: orderBody.order_time
             }
             instance({
                 method: "POST",

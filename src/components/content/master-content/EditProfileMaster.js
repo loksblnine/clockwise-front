@@ -13,15 +13,14 @@ const EditProfileClient = ({master}) => {
         const body = {master_name, email}
         dispatch(updateUserData("masters", body, master.master_id))
         inputRef.current.click()
-    }, [dispatch, master_name, email])
+    }, [dispatch, master_name, email, master.master_id])
 
     return (
         <div>
-            <button type="button" className="btn btn-warning" data-toggle="modal"
+            <button type="button" className="btn btn-warning m-5" data-toggle="modal"
                     data-target={`#id${master.master_id}`}>
                 Редактировать
             </button>
-
             <div className="modal fade" id={`id${master.master_id}`} tabIndex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">

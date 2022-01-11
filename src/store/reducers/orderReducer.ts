@@ -1,4 +1,4 @@
-import * as constants from "../../constants";
+import * as constants from "../../utils/constants";
 
 type initialState = {
     isReady: boolean,
@@ -16,18 +16,28 @@ const initialState: initialState = {
 const orderReducer = (state = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
         case constants.ACTIONS.ORDERS.SET_ORDERS: {
-            if (action.payload.length < 10) {
+            if (action.payload.data.length < 10) {
                 return {
                     ...state,
-                    items: state.items.concat(action.payload),
+                    items: state.items.concat(action.payload.data),
                     isReady: true,
                     loadNext: false
                 }
             }
+            if (state.items.length > 0 && action.payload.page === 0) {
+                return {
+                    ...state,
+                    items: action.payload.data,
+                    isReady: true,
+                    loadNext: true,
+                    page: 1
+                };
+            }
             return {
                 ...state,
-                items: state.items.concat(action.payload),
+                items: state.items.concat(action.payload.data),
                 isReady: true,
+                loadNext: true,
                 page: state.page + 1
             };
         }
@@ -49,6 +59,14 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
                 ...state,
                 items: array,
             };
+        }
+        case constants.ACTIONS.ORDERS.SET_PAGE: {
+            return {
+                ...state,
+                isReady: false,
+                items: [],
+                page: action.payload
+            }
         }
         case constants.ACTIONS.ORDERS.SET_READY_ORDERS: {
             return {
@@ -72,6 +90,21 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
             return {
                 ...state,
                 items: state.items.concat(action.payload),
+            }
+        }
+        case constants.ACTIONS.ORDERS.SORT: {
+            return {
+                ...state,
+                items: state.items.sort((i1: any, i2: any) => {
+                    console.log(i1[`${action.payload[0]}`])
+                    if (i1[`${action.payload[0]}`] < i2[`${action.payload[0]}`]) {
+                        return (-1 * (action.payload[1] === "ASC" ? 1 : -1))
+                    }
+                    if (i1[`${action.payload[0]}`] > i2[`${action.payload[0]}`]) {
+                        return (1 * (action.payload[1] === "ASC" ? 1 : -1))
+                    }
+                    return 0
+                }),
             }
         }
         case constants.ACTIONS.ORDERS.DELETE_ORDER: {

@@ -1,4 +1,4 @@
-import * as constants from "../../constants";
+import * as constants from "../../utils/constants";
 import {instance} from "../../http/headerPlaceholder.instance";
 
 type City = {

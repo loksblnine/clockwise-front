@@ -1,15 +1,18 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {setMarkOrder} from "../../../store/actions/orderActions";
 import {useDispatch} from "react-redux";
+import "./styles.css"
 
 const SetMarkDialog = ({order}) => {
     const dispatch = useDispatch()
     const inputRef = React.useRef(null)
     const [mark, setMark] = useState(5)
 
-    const handleSetMarkOrder = (order) => {
+    const handleSetMarkOrder = useCallback((e, order) => {
+        e.preventDefault()
+        inputRef.current.click()
         dispatch(setMarkOrder(order.order_id, mark))
-    }
+    }, [dispatch, mark])
     return (
         <div>
             <button className="btn btn-outline-success" data-toggle="modal"
@@ -22,7 +25,7 @@ const SetMarkDialog = ({order}) => {
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
-                        <form onSubmit={() => handleSetMarkOrder(order)}>
+                        <form onSubmit={(e) => handleSetMarkOrder(e, order)}>
                             <div className="modal-header">
                                 <h2 className="modal-title"
                                     id="exampleModalLabel">Поставить оценку
@@ -33,13 +36,21 @@ const SetMarkDialog = ({order}) => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <input className="form-control"
-                                       value={mark}
-                                       name="mark"
-                                       onChange={e => setMark(e.target.value)}
-                                       pattern="([1-5])|([1-4].[05])|(5.0)"
-                                       required
-                                />
+                                <div className="range-slider">
+                                    <input type="range" list="mark-list" id="rs-range-line"
+                                           value={mark} min={1} max={5} step={1} className="rs-range"
+                                           onChange={(e) => setMark(e.target.value)}
+                                           pattern="([1-5])|([1-4].[05])|(5.0)"
+                                           required
+                                    />
+                                    <datalist id="mark-list" className="d-flex justify-content-between">
+                                        <option value={1} label="1" className="col-md-2"/>
+                                        <option value={2} label="2" className="col-md-2"/>
+                                        <option value={3} label="3" className="col-md-2"/>
+                                        <option value={4} label="4" className="col-md-2"/>
+                                        <option value={5} label="5" className="col-md-2"/>
+                                    </datalist>
+                                </div>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary"

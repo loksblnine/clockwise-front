@@ -1,4 +1,4 @@
-import * as constants from "../../constants";
+import * as constants from "../../utils/constants";
 import {login} from "../../http/userAPI";
 import {instance} from "../../http/headerPlaceholder.instance";
 import jwt_decode from "jwt-decode";

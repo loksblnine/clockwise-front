@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {useFormik} from 'formik';
-import * as constants from "../../../../constants";
+import * as constants from "../../../../utils/constants";
 import {useHistory, useLocation, withRouter} from "react-router-dom";
 import './OrderStyles.css'
 import {toast} from "react-toastify";
@@ -27,6 +27,7 @@ const validate = (values) => {
     if (!values.city) {
         toast.info("На данный момент сервер недоступен, попробуйте перезагрузить страницу, если это не помогло обратитесь к нам на прямую admin@example.com")
     }
+
     return errors;
 };
 
@@ -42,12 +43,15 @@ const orderPageStyle = {
 const OrderForm = () => {
     const history = useHistory()
     const location = useLocation()
-
+    const inputRef = useRef()
     const cities = useSelector((state) => state.cities.items)
     const isReady = useSelector((state) => state.cities.isReady)
     const user = useSelector((state) => state.users.user)
+    const data = useSelector((state) => state.users.data)
     const photo = useSelector((state) => state.users.photo)
     const dispatch = useDispatch()
+
+    const times = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
     useEffect(() => {
         if (!isReady) {
             dispatch(setCities())
@@ -55,7 +59,7 @@ const OrderForm = () => {
     }, [dispatch, isReady])
 
     const handleChooseFile = useCallback((e) => {
-        if (e?.target?.files[0].size < constants.ONE_MEGABYTE) {
+        if (e?.target?.files[0]?.size < constants.ONE_MEGABYTE) {
             if (e.target?.files[0]?.type.split('/')[0] === "image") {
                 const reader = new FileReader();
                 reader.readAsDataURL(e.target.files[0]);
@@ -73,15 +77,15 @@ const OrderForm = () => {
         } else {
             toast.info("Файл неприлично много весит!")
         }
-    }, [photo.length])
+    }, [dispatch, photo.length])
 
     const handleRemovePhoto = useCallback((index) => {
         dispatch(removePhoto(index))
-    }, [])
+    }, [dispatch])
     const formik = useFormik({
         initialValues: useMemo(() => {
             return {
-                name: location?.state?.data?.name || '',
+                name: location?.state?.data?.name || data?.customer_name || data?.master?.master_name || '',
                 email: location?.state?.data?.email || user?.email || '',
                 city: location?.state?.data?.city || -1,
                 date: location?.state?.data?.date || constants.DATE_FROM,
@@ -97,22 +101,6 @@ const OrderForm = () => {
             })
         },
     });
-
-    const makeBeautiful = (length) => {
-        switch (length) {
-            case 1:
-            case 2:
-            case 3: {
-                return 3
-            }
-            case 4: {
-                return 4
-            }
-            case 5: {
-                return 3
-            }
-        }
-    }
 
     if (!isReady) {
         return <Spinner animation="grow"/>
@@ -160,11 +148,14 @@ const OrderForm = () => {
                 </div>
                 <div className="form-group">
                     <label className="text" htmlFor="time">Время заказа (8:00 - 17:00) </label>
-                    <input type="time" name="time" className="form-control timepicker"
-                           min={constants.TIME_FROM} max={constants.TIME_TO} key="time"
-                           required step="3600" value={formik.values.time}
-                           pattern="([01]?[0-9]|2[0-3]):[0][0]" id="24h"
-                           onChange={formik.handleChange}/>
+                    <select name="time" className="form-control"
+                            key="time"
+                            required value={formik.values.time}
+                            onChange={formik.handleChange}>
+                        {
+                            times.map(el => <option value={`${el}:00`}>{`${el}:00`}</option>)
+                        }
+                    </select>
                 </div>
                 <div className="form-group">
                     <label className="text" htmlFor="type"> Выберите тип поломки </label>
@@ -196,18 +187,23 @@ const OrderForm = () => {
                     </div>
                 </div>
                 <div className="form-group">
-                    <label>Прикрепите фото</label>
-                    <input type="file" className="form-control" onInput={e => handleChooseFile(e)}
-                           onChange={formik.handleChange} onBlur={formik.handleChange}
+                    <label>Прикрепите фото</label> <p>Не более 1 МБ, не более 5 штук, только форматы фотографий</p>
+                    <input type="file" className="form-control d-none" onInput={(e) => handleChooseFile(e)}
+                           onChange={formik.handleChange} onBlur={formik.handleChange} ref={inputRef}
                            id="file-input" key="file-input" disabled={photo.length >= 5}
                            accept="image/*"/>
+                    <input type="text" className="form-control" readOnly value="Добавьте фото" onClick={(event => {
+                        event.preventDefault()
+                        inputRef.current.click()
+                    })}
+                    />
                     <div className="row mb-5 w-60" key="show-preview">
                         {
                             photo?.length > 0 &&
-                            photo.map((item, i, array) => {
+                            photo.map((item, i) => {
                                 return (
                                     <div
-                                        className={`d-flex align-items-start col-${makeBeautiful(array.length)} col-md-${makeBeautiful(array.length)} m-3`}
+                                        className={`d-flex align-items-start  col-md-3 m-3`}
                                         key={i}>
                                         <img
                                             src={item}

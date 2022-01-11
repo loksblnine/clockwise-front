@@ -1,4 +1,4 @@
-import * as constants from "../../constants";
+import * as constants from "../../utils/constants";
 
 type initialState = {
     isReady: boolean,
@@ -54,8 +54,8 @@ const masterReducer = (state = initialState, action: { type: string; payload: an
         }
         case constants.ACTIONS.USER.ADMIN.APPROVE_MASTER: {
             const array = state.items.map((item: any) => {
-                if (item.master_id === action.payload) {
-                    item.isApproved = true
+                if (item.master_id === action.payload.id) {
+                    item.isApproved = action.payload.active
                 }
                 return item
             })

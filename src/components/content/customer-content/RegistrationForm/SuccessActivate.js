@@ -8,7 +8,7 @@ const SuccessRegister = () => {
     localStorage.setItem('token', token)
     useEffect(() => {
         dispatch(setActivate())
-    }, [])
+    }, [dispatch])
 
     return (
         <div className="router">

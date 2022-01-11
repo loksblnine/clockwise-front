@@ -2,7 +2,7 @@ import React, {useCallback, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addCityToMaster} from "../../../../store/actions/masterActions";
 
-const AddCityDependency = ({master}) => {
+const AddCity = ({master}) => {
     const inputRef = React.useRef(null)
     const [cityId, setCityId] = useState(-1)
     const cities = useSelector((state) => state.cities.items)
@@ -62,4 +62,4 @@ const AddCityDependency = ({master}) => {
         </div>
     )
 }
-export default AddCityDependency;
+export default AddCity;

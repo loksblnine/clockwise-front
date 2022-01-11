@@ -13,7 +13,7 @@ const InputCity = () => {
         const body = {city_name}
         dispatch(addCity(body))
         inputRef.current.click()
-    }, [city_name])
+    }, [dispatch, city_name])
     return (
         <div>
             <button type="button" className="btn btn-success mb-5" data-toggle="modal"

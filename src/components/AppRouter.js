@@ -1,6 +1,6 @@
 import React from 'react';
 import {Route, Switch} from "react-router-dom";
-import {authAdminRoutes, authMasterRoutes, customerRoutes, authClientRoutes} from "../constants";
+import {authAdminRoutes, authMasterRoutes, customerRoutes, authClientRoutes} from "../utils/constants";
 import NotFound from "../http/NotFound";
 import {useSelector} from "react-redux";
 
