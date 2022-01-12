@@ -33,7 +33,7 @@ const PaymentDetails = ({order}) => {
                         </div>
                         <div className="modal-body">
                             <p><b>id:</b> {data?.id}</p>
-                            <p><b>Время оплаты:</b> {Date(data?.update_time)}</p>
+                            <p><b>Время оплаты:</b> {data?.update_time.replace('T', ' ')}</p>
                             <p>
                                 <b>Оплатил:</b> {data?.payer?.payer_info?.first_name} {data?.payer?.payer_info?.last_name}
                             </p>
