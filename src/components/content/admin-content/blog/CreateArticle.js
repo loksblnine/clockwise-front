@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Article from "../../customer-content/Blog/Article";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {Editor} from '@tinymce/tinymce-react';
-import {removeArticlePhoto, setArticlePhoto} from "../../../../store/actions/blogActions";
+import {addArticle, removeArticlePhoto, setArticlePhoto} from "../../../../store/actions/blogActions";
 import * as constants from "../../../../utils/constants";
 
 const CreateArticle = () => {
@@ -50,14 +50,7 @@ const CreateArticle = () => {
                         body: article?.body
                     })
                 }))
-                instance({
-                    url: "/blog",
-                    data: {
-                        ...article,
-                        photo
-                    },
-                    method: "post",
-                })
+                dispatch(addArticle(article, photo))
             }}>
                 <div className="m-4">
                     <div className="form-group">

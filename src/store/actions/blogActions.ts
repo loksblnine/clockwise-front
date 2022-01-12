@@ -35,11 +35,11 @@ export const updateArticle = (article: Article, id: number) => {
     }
 }
 
-export const addArticle = (article: Article) => {
+export const addArticle = (article: Article, photo: string | "") => {
     return async (dispatch: any) => {
         const {data} = await instance({
             method: "post",
-            data: article,
+            data: {...article, photo},
             url: "/blog"
         })
         dispatch({
