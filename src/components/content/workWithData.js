@@ -35,8 +35,7 @@ export const sendConfirmationOrder = (order, master, history, photos) => {
                 .then(() => {
                     toast.dismiss()
                     toast("Письмо отправлено вам на почту")
-                    //todo create page /pay
-                    history.push(`/pay?order_id=${data.order_id}`)
+                    history.push(`/pay?order_id=${data.order_id}&type=${orderBody.work_id}`)
                 })
         })
         .catch(() => {

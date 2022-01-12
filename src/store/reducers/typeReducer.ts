@@ -12,16 +12,16 @@ const initialState: initialState = {
 
 const cityReducer = (state = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
-        case constants.ACTIONS.CITIES.SET_CITIES: {
+        case constants.ACTIONS.TYPES.SET_TYPES: {
             return {
                 ...state,
                 items: action.payload,
                 isReady: true
             };
         }
-        case constants.ACTIONS.CITIES.UPDATE_CITY: {
+        case constants.ACTIONS.TYPES.UPDATE_TYPE: {
             const array = state.items.map((item: any) => {
-                if (item.city_id === action.payload.city_id)
+                if (item.work_id === action.payload.work_id)
                     return action.payload
                 else return item
             })
@@ -31,19 +31,13 @@ const cityReducer = (state = initialState, action: { type: string; payload: any;
                 isReady: true
             };
         }
-        case constants.ACTIONS.CITIES.SET_READY_CITIES: {
-            return {
-                ...state,
-                isReady: action.payload
-            };
-        }
-        case constants.ACTIONS.CITIES.ADD_CITY: {
+        case constants.ACTIONS.TYPES.ADD_TYPE: {
             return {
                 items: state.items.concat(action.payload),
                 isReady: true
             }
         }
-        case constants.ACTIONS.CITIES.DELETE_CITY: {
+        case constants.ACTIONS.TYPES.DELETE_TYPE: {
             return {
                 items: state.items.filter((item: any) => item.city_id !== action.payload),
                 isReady: true

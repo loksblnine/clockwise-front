@@ -98,13 +98,6 @@ const MasterView = () => {
                 <button className="btn btn-primary m-1" onClick={handleBack}
                 >Назад
                 </button>
-                <button type="submit" className="btn btn-primary"
-                        onClick={(e) => {
-                            e.preventDefault()
-                            window.location = `${SERVER_URL}/pay?order_id=${location.state.data.type}`
-                        }}>
-                    НА ПЕЙПАЛ!!!
-                </button>
             </div>
         </div>
     );
