@@ -1,12 +1,12 @@
 import React, {useCallback, useEffect, useState} from "react";
-import EditOrder from "./EditOrder";
 import * as constants from "../../../../utils/constants";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import {deleteOrder, setOrdersAdmin} from "../../../../store/actions/orderActions";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {hasNumber, objectToQueryString} from "../../../../utils/utils";
-import {ARROWS_SVG, COLLAPSE_ARROWS, datePattern, EXPAND_ARROWS} from "../../../../utils/constants";
+import {COLLAPSE_ARROWS, datePattern, EXPAND_ARROWS} from "../../../../utils/constants";
+import PaymentDetails from "../../customer-content/Payment/PaymentDetails";
 
 const ListOrders = () => {
     const orders = useSelector(state => state.orders.items)
@@ -174,6 +174,7 @@ const ListOrders = () => {
                         <th scope="col">Время заказа</th>
                         <th scope="col">&nbsp;</th>
                         <th scope="col">&nbsp;</th>
+                        <th scope="col">Статус оплаты</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -187,12 +188,19 @@ const ListOrders = () => {
                                 <td>{constants.WORK_TYPES[order.work_id].key}</td>
                                 <td>{order.order_time.split('T')[0]}</td>
                                 <td>{order.order_time.split('T')[1].split('.')[0]}</td>
-                                <td><EditOrder order={order}/></td>
+                                <td>&nbsp;{/*<EditOrder order={order}/>*/}</td>
                                 <td>
                                     <button className="btn btn-danger"
                                             onClick={() => dispatch(deleteOrder(order.order_id))}
                                             disabled={!order.isDone || order.order_time.split('T')[0] <= constants.DATE_FROM}>Удалить
                                     </button>
+                                </td>
+                                <td>
+                                    {
+                                        !order?.isPaid ?
+                                            "Не оплачено"
+                                            : <PaymentDetails order={order}/>
+                                    }
                                 </td>
                             </tr>
                         ))}
