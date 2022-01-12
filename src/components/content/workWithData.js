@@ -25,7 +25,8 @@ export const sendConfirmationOrder = (order, master, history, photos) => {
                 email: orderBody.customer_email,
                 message: text,
                 order_time: orderBody.order_time,
-                order_id: data.order_id
+                order_id: data.order_id,
+                type: orderBody.work_id
             }
             instance({
                 method: "POST",

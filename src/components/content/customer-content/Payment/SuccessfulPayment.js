@@ -1,10 +1,17 @@
 import React from 'react';
+import {toast} from "react-toastify";
+import {Redirect} from "react-router-dom";
+import {Spinner} from "react-bootstrap";
 
 const SuccessfulPayment = () => {
-    //урла должна сождержать токен с бека что оплата валидна и после нее показывать тоаст месседж
+    const token = window.location.pathname.split('/')[1]
+    if (!token) {
+        return <Spinner animation="grow"/>
+    }
     return (
         <div>
-            Оплата прошла успешно!
+            {toast("Оплата прошла успешно!")}
+            <Redirect to={'/'}/>
         </div>
     );
 };
