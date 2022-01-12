@@ -4,7 +4,7 @@ import InputMaster from "./InputMaster";
 import {Spinner} from "react-bootstrap";
 import AddCity from "./AddCity";
 import {useDispatch, useSelector} from "react-redux";
-import {setMasters, deleteCityAtMaster, deleteMaster, activeMaster} from "../../../../store/actions/masterActions";
+import {activeMaster, deleteCityAtMaster, deleteMaster, setMasters} from "../../../../store/actions/masterActions";
 import {setCities} from "../../../../store/actions/cityActions";
 
 const WorkIn = ({master}) => {
@@ -29,7 +29,7 @@ const WorkIn = ({master}) => {
                     }
                 )}
             {master?.deps?.length !== cities.length &&
-                <AddCity master={master}/>}
+            <AddCity master={master}/>}
         </div>
     )
 }
@@ -92,10 +92,41 @@ const ListMasters = () => {
                                         Активировать
                                     </button>
                                     :
-                                    <button className="btn btn-outline-danger"
-                                            onClick={() => handleApproveMaster(master, false)}>
-                                        Деактивировать
-                                    </button>}</td>
+                                    <div>
+                                        <button className="btn btn-outline-danger" type="button"
+                                                data-toggle="modal" data-target={`#id_approve${master.master_id}`}
+                                        >
+                                            Деактивировать
+                                        </button>
+                                        <div className="modal fade" id={`id_approve${master.master_id}`} tabIndex="-1"
+                                             role="dialog"
+                                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div className="modal-dialog" role="document">
+                                                <div className="modal-content">
+                                                    <form>
+                                                        <div className="modal-header">
+                                                            <h3 className="modal-title"
+                                                                id="exampleModalLabel">Деактивировать мастера?</h3>
+                                                            <button type="button" className="btn-close"
+                                                                    data-dismiss="modal"
+                                                                    aria-label="Close"/>
+                                                        </div>
+                                                        <div className="modal-footer">
+                                                            <button type="button" className="btn btn-danger"
+                                                                    data-dismiss="modal"
+                                                            >Нет, отмена
+                                                            </button>
+                                                            <button type="button" className="btn btn-success"
+                                                                    data-dismiss="modal"
+                                                                    onClick={() => handleApproveMaster(master, false)}
+                                                            >Да!
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>}</td>
                             <td>
                                 <button className="btn btn-danger"
                                         onClick={() => dispatch(deleteMaster(master.master_id))}>Удалить

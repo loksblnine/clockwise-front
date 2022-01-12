@@ -26,6 +26,7 @@ const ClientPanel = () => {
 
     const initSortParams = {
         order_id: '',
+        order_time: '',
     }
     const [sortParams, setSortParams] = useState(initSortParams)
     useEffect(() => {
@@ -51,6 +52,13 @@ const ClientPanel = () => {
                 dispatch(sortOrders(["order_id", sortParams.order_id]))
                 break
             }
+            case "order_time": {
+                setSortParams(prevState => ({
+                    order_time: prevState.order_time === "ASC" ? "DESC" : "ASC"
+                }))
+                dispatch(sortOrders(["order_time", sortParams.order_time]))
+                break
+            }
             default: {
                 break
             }
@@ -74,7 +82,8 @@ const ClientPanel = () => {
                             <th scope="col"> Мастер</th>
                             <th scope="col"> Город</th>
                             <th scope="col"> Тип работы</th>
-                            <th scope="col"> Дата заказа</th>
+                            <th scope="col" onClick={(e) => handleSort(e, "order_time")}>
+                                Дата заказа {sortParams.order_time === "ASC" ? ARROWS_SVG.ASC : ARROWS_SVG.DESC}</th>
                             <th scope="col">Время начала</th>
                             <th scope="col">Время окончания</th>
                             <th scope="col"> Статус</th>

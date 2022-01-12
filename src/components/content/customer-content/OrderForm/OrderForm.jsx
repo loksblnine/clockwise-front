@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {useFormik} from 'formik';
 import * as constants from "../../../../utils/constants";
 import {useHistory, useLocation, withRouter} from "react-router-dom";
@@ -20,9 +20,6 @@ const validate = (values) => {
     }
     if (values.name === "Ян") {
         errors.name = 'Извините, станьте Яной)';
-    }
-    if (values.time.split(":")[1] !== "00") {
-        errors.time = 'Заказать ремонт можно только в целый час'
     }
     if (!values.email) {
         errors.email = 'Адрес электронный почты обязателен';
@@ -46,6 +43,7 @@ const orderPageStyle = {
 const OrderForm = () => {
     const history = useHistory()
     const location = useLocation()
+    const inputRef = useRef()
     const cities = useSelector((state) => state.cities.items)
     const isReady = useSelector((state) => state.cities.isReady)
     const user = useSelector((state) => state.users.user)
@@ -53,6 +51,8 @@ const OrderForm = () => {
     const photo = useSelector((state) => state.users.photo)
     const isWinter = useSelector((state) => state.weather.letItSnow)
     const dispatch = useDispatch()
+
+    const times = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
     useEffect(() => {
         if (!isReady) {
             dispatch(setCities())
@@ -86,7 +86,7 @@ const OrderForm = () => {
     const formik = useFormik({
         initialValues: useMemo(() => {
             return {
-                name: location?.state?.data?.name || data?.customer?.customer_name || data?.master?.master_name || '',
+                name: location?.state?.data?.name || data?.customer_name || data?.master?.master_name || '',
                 email: location?.state?.data?.email || user?.email || '',
                 city: location?.state?.data?.city || -1,
                 date: location?.state?.data?.date || constants.DATE_FROM,
