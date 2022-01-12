@@ -8,7 +8,6 @@ import {setUserData} from "../../../store/actions/userActions";
 import SetMarkDialog from "./SetMarkDialog";
 import EditProfileClient from "./EditProfileClient";
 import {useHistory} from "react-router-dom";
-import PaymentDetails from "../customer-content/Payment/PaymentDetails";
 
 const OrderMark = ({mark}) => {
     return (
