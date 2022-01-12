@@ -30,7 +30,7 @@ export const setReadyMasters = (isReady: boolean) => ({
 export const updateMaster = (master: Master, id: number) => {
     return async (dispatch: any) => {
         const {data} = await instance({
-            method: "PUT",
+            method: "put",
             data: master,
             url: `/masters/${id}`
         })
@@ -44,7 +44,7 @@ export const updateMaster = (master: Master, id: number) => {
 export const addMaster = (master: Master) => {
     return async (dispatch: any) => {
         const {data} = await instance({
-            method: "POST",
+            method: "post",
             data: master,
             url: "/masters"
         })
@@ -57,7 +57,7 @@ export const addMaster = (master: Master) => {
 export const activeMaster = (id: number, active: boolean) => {
     return async (dispatch: any) => {
         await instance({
-            method: "PUT",
+            method: "put",
             url: `/auth/approve-master/${id}?active=${active}`
         })
         dispatch({
@@ -82,7 +82,7 @@ export const addCityToMaster = (body: any) => {
 export const deleteCityAtMaster = (body: any) => {
     return async (dispatch: any) => {
         await instance({
-            method: "DELETE",
+            method: "delete",
             data: body,
             url: `/deps`
         })
@@ -108,7 +108,7 @@ export const approveOrder = (id: number) => {
 export const deleteMaster = (id: number) => {
     return async (dispatch: any) => {
         await instance({
-            method: "DELETE",
+            method: "delete",
             url: `/masters/${id}`
         })
         dispatch({

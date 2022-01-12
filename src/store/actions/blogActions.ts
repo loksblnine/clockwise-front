@@ -24,7 +24,7 @@ export const setArticles = (page: number) => {
 export const updateArticle = (article: Article, id: number) => {
     return async (dispatch: any) => {
         await instance({
-            method: "PUT",
+            method: "put",
             data: article,
             url: `/blog/${id}`
         })
@@ -38,7 +38,7 @@ export const updateArticle = (article: Article, id: number) => {
 export const addArticle = (article: Article) => {
     return async (dispatch: any) => {
         const {data} = await instance({
-            method: "POST",
+            method: "post",
             data: article,
             url: "/blog"
         })
@@ -53,7 +53,7 @@ export const addArticle = (article: Article) => {
 export const deleteArticle = (id: number) => {
     return async (dispatch: any) => {
         await instance({
-            method: "DELETE",
+            method: "delete",
             url: `/blog/${id}`
         })
         dispatch({

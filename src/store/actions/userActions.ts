@@ -71,7 +71,7 @@ export const setMasterNewCity = (body: any) => {
 export const deleteMasterCity = (body: any) => {
     return async (dispatch: any) => {
         await instance({
-            method: "DELETE",
+            method: "delete",
             data: body,
             url: `/deps`
         })

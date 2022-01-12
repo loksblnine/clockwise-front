@@ -57,7 +57,7 @@ const ListOrders = () => {
         const {name, value} = e.target;
         if (!hasNumber(value)) {
             instance({
-                method: "GET",
+                method: "get",
                 url: `masters/offset/0?name=${value}`
             }).then(({data}) => setMasters(data))
             setQueryParams(prevState => ({

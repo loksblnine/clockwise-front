@@ -154,12 +154,14 @@ const OrderForm = () => {
                     </div>
                     <div className="form-group">
                         <label className="text" htmlFor="time">Время заказа (8:00 - 17:00) </label>
-                        <input type="time" name="time" className="form-control timepicker"
-                               min={constants.TIME_FROM} max={constants.TIME_TO} key="time"
-                               required step="3600" value={formik.values.time}
-                               id="24h"
-                               onChange={formik.handleChange}/>
-                        {formik.errors.time ? <div className="error">{formik.errors.time}</div> : null}
+                        <select name="time" className="form-control"
+                                key="time"
+                                required value={formik.values.time}
+                                onChange={formik.handleChange}>
+                            {
+                                times.map(el => <option value={`${el}:00`}>{`${el}:00`}</option>)
+                            }
+                        </select>
                     </div>
                     <div className="form-group">
                         <label className="text" htmlFor="type"> Выберите тип поломки </label>
