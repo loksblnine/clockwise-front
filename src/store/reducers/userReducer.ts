@@ -1,5 +1,6 @@
 import * as constants from "../../utils/constants";
 import jwt_decode from "jwt-decode";
+import {instance} from "../../http/headerPlaceholder.instance";
 
 type User = {
     role: number,
@@ -48,7 +49,6 @@ const userReducer = (state = initialState, action: { type: string; payload: any;
             };
         }
         case constants.ACTIONS.USER.MASTER.DELETE_CITY: {
-
             return {
                 ...state,
                 data: action.payload
@@ -97,6 +97,10 @@ const userReducer = (state = initialState, action: { type: string; payload: any;
         }
         case constants.ACTIONS.USER.LOG_OUT: {
             localStorage.removeItem('token')
+            instance({
+                method: "get",
+                url: "/auth/google/logout"
+            })
             return {
                 ...state,
                 user: {},

@@ -11,7 +11,10 @@ import RegistrationForm from "../components/content/customer-content/Registratio
 import ClientPanel from "../components/content/client-content/ClientPanel";
 import SuccessRegister from "../components/content/customer-content/RegistrationForm/SuccessRegister";
 import SuccessActivate from "../components/content/customer-content/RegistrationForm/SuccessActivate";
-import React from "react";
+import Blog from "../components/content/customer-content/Blog/Blog";
+import CreateArticle from "../components/content/admin-content/blog/CreateArticle";
+import RedirectingPage from "../components/content/customer-content/LoginForm/Redirect";
+import EditArticle from "../components/content/admin-content/blog/EditArticle";
 
 //todo remove this garbage =))
 //todo use ENUM with TS
@@ -54,12 +57,20 @@ export const customerRoutes = [
         Component: OrderForm
     },
     {
+        path: '/blog',
+        Component: Blog
+    },
+    {
         path: '/masters_choosing',
         Component: MasterView
     },
     {
         path: '/login',
         Component: LoginForm
+    },
+    {
+        path: '/login/token/*',
+        Component: RedirectingPage
     },
     {
         path: '/registration',
@@ -111,6 +122,14 @@ export const authAdminRoutes = [
     {
         path: '/customers',
         Component: ListCustomers
+    },
+    {
+        path: '/blog/create',
+        Component: CreateArticle
+    },
+    {
+        path: '/blog/edit',
+        Component: EditArticle
     }
 ]
 
@@ -170,6 +189,18 @@ export const ACTIONS = {
         ADMIN: {
             APPROVE_MASTER: "ADMIN.APPROVE_MASTER"
         }
+    },
+    BLOG: {
+        SET_ARTICLES: "SET_ARTICLES",
+        SET_READY_ARTICLES: "SET_READY_ARTICLES",
+        DELETE_ARTICLE: "DELETE_ARTICLE",
+        UPDATE_ARTICLE: "UPDATE_ARTICLE",
+        ADD_ARTICLE: "ADD_ARTICLE",
+        SET_ARTICLE_PHOTO: "SET_ARTICLE_PHOTO",
+        REMOVE_ARTICLE_PHOTO: "REMOVE_ARTICLE_PHOTO"
+    },
+    WEATHER: {
+        SET_WINTER: "SET_WINTER"
     }
 }
 
@@ -179,16 +210,10 @@ export const PATH = [
     '/access_succeed_master',
     '/access_succeed_client'
 ]
-export const ARROWS_SVG = {
-    NO_SORT: null,
-    DESC: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-               className="bi bi-caret-down" viewBox="0 0 16 16">
-        <path
-            d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>
-    </svg>,
-    ASC: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-caret-up"
-              viewBox="0 0 16 16">
-        <path
-            d="M3.204 11h9.592L8 5.519 3.204 11zm-.753-.659 4.796-5.48a1 1 0 0 1 1.506 0l4.796 5.48c.566.647.106 1.659-.753 1.659H3.204a1 1 0 0 1-.753-1.659z"/>
-    </svg>
-}
+
+export const SERVER_URL = process.env.NODE_ENV === "production" ? "https://enigmatic-spire-58695.herokuapp.com" : "http://localhost:5000"
+
+export const datePattern = "[0-9]{4}.[0-9]{2}.[0-9]{2}"
+export const stringPattern = "[A-ZА-Яa-zа-я -]+"
+export const emailPattern = "[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]+"
+export const rankingPattern = "([1-5])|([1-4].[05])|(5.0)"

@@ -29,7 +29,7 @@ export const setReadyCustomers = () => (isReady: boolean) => ({
 export const updateCustomer = (customer: Customer, id: number) => {
     return async (dispatch: any) => {
         const {data} = await instance({
-            method: "PUT",
+            method: "put",
             data: customer,
             url: `/customers/${id}`
         })
@@ -43,7 +43,7 @@ export const updateCustomer = (customer: Customer, id: number) => {
 export const addCustomer = (customer: Customer) => {
     return async (dispatch: any) => {
         const {data} = await instance({
-            method: "POST",
+            method: "post",
             data: customer,
             url: "/customers"
         })
@@ -58,7 +58,7 @@ export const addCustomer = (customer: Customer) => {
 export const deleteCustomer = (id: number) => {
     return async (dispatch: any) => {
         await instance({
-            method: "DELETE",
+            method: "delete",
             url: `/customers/${id}`
         })
         dispatch({

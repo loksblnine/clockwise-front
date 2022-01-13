@@ -2,6 +2,7 @@ import React, {useCallback, useState} from 'react';
 import {setMarkOrder} from "../../../store/actions/orderActions";
 import {useDispatch} from "react-redux";
 import "./styles.css"
+import {rankingPattern} from "../../../utils/constants";
 
 const SetMarkDialog = ({order}) => {
     const dispatch = useDispatch()
@@ -40,7 +41,7 @@ const SetMarkDialog = ({order}) => {
                                     <input type="range" list="mark-list" id="rs-range-line"
                                            value={mark} min={1} max={5} step={1} className="rs-range"
                                            onChange={(e) => setMark(e.target.value)}
-                                           pattern="([1-5])|([1-4].[05])|(5.0)"
+                                           pattern={rankingPattern}
                                            required
                                     />
                                     <datalist id="mark-list" className="d-flex justify-content-between">

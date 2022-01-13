@@ -26,7 +26,7 @@ const ListCustomers = () => {
     }
 
     return (
-        <div className="router">
+        <div>
             <h2 className="text-left mt-5">Список покупателей</h2>
             <table className="table mt-5 text-justify">
                 <thead>

@@ -64,7 +64,7 @@ export const setReadyOrders = (isReady: boolean) => ({
 export const updateOrder = (order: Order, id: number) => {
     return async (dispatch: any) => {
         const {data} = await instance({
-            method: "PUT",
+            method: "put",
             data: order,
             url: `/orders/${id}`
         })
@@ -78,7 +78,7 @@ export const updateOrder = (order: Order, id: number) => {
 export const addOrder = (order: Order) => {
     return async (dispatch: any) => {
         const {data} = await instance({
-            method: "POST",
+            method: "post",
             data: order,
             url: "/orders"
         })
@@ -92,7 +92,7 @@ export const addOrder = (order: Order) => {
 export const deleteOrder = (id: number) => {
     return async (dispatch: any) => {
         await instance({
-            method: "DELETE",
+            method: "delete",
             url: `/orders/${id}`
         })
         dispatch({

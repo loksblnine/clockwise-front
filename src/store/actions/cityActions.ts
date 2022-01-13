@@ -28,7 +28,7 @@ export const setReadyCities = (bool: boolean) => (dispatch: any) => {
 export const updateCity = (city: City, city_id: number) => {
     return async (dispatch: any) => {
         const {data} = await instance({
-            method: "PUT",
+            method: "put",
             data: city,
             url: `/cities/${city_id}`
         })
@@ -42,7 +42,7 @@ export const updateCity = (city: City, city_id: number) => {
 export const addCity = (city: City) => {
     return async (dispatch: any) => {
         const {data} = await instance({
-            method: "POST",
+            method: "post",
             data: city,
             url: "/cities"
         })
@@ -56,7 +56,7 @@ export const addCity = (city: City) => {
 export const deleteCity = (id: number) => {
     return async (dispatch: any) => {
         await instance({
-            method: "DELETE",
+            method: "delete",
             url: `/cities/${id}`
         })
         dispatch({

@@ -26,7 +26,7 @@ const Header = () => {
     const history = useHistory()
     const dispatch = useDispatch()
     const user = useSelector(state => state.users.user)
-
+    const letItSnow = useSelector(state => state.weather.letItSnow)
     const logOut = () => {
         dispatch({
             type: constants.ACTIONS.USER.LOG_OUT
@@ -43,33 +43,65 @@ const Header = () => {
     }
 
     return (
-        <div className="router">
-            <Navbar>
-                <Container>
-                    <Logo/>
-                    {(user.role > 0) ?
-                        <Nav className="ml-auto" style={{color: 'white'}}>
-                            <button
-                                onClick={handleAccess}
+        <Navbar>
+            <Container>
+                <Logo/>
+                {(user.role > 0) ?
+                    <Nav className="ml-auto" style={{color: 'white'}}>
+                        <button type="button" className="btn btn-xl" id="weather"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    dispatch({
+                                        type: constants.ACTIONS.WEATHER.SET_WINTER,
+                                        payload: !letItSnow
+                                    })
+                                }}
+                        >{letItSnow ? "Зима" : "Лето"}
+                        </button>
+                        <button onClick={() => history.push('/blog')}
                                 className="btn btn-xl"
-                            >
-                                Панель
-                            </button>
-                            <button
-                                onClick={() => logOut()}
-                                className="btn btn-xl"
-                            >
-                                Выйти
-                            </button>
-                        </Nav>
-                        :
-                        <Nav className="ml-auto" style={{color: 'white'}}>
-                            <button className="btn btn-xl" onClick={() => history.push('/login')}>Авторизация</button>
-                        </Nav>
-                    }
-                </Container>
-            </Navbar>
-        </div>
+                        >
+                            Блог
+                        </button>
+                        <button
+                            onClick={handleAccess}
+                            className="btn btn-xl"
+                        >
+                            Панель
+                        </button>
+                        <button
+                            onClick={() => logOut()}
+                            className="btn btn-xl"
+                        >
+                            Выйти
+                        </button>
+                    </Nav>
+                    :
+                    <Nav className="ml-auto" style={{color: 'white'}}>
+                        <button type="button" className="btn btn-xl" data-toggle="toggle" id="weather"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    dispatch({
+                                        type: constants.ACTIONS.WEATHER.SET_WINTER,
+                                        payload: !letItSnow
+                                    })
+                                }}
+                        >{letItSnow ? "Зима" : "Лето"}
+                        </button>
+                        <button className="btn btn-xl"
+                                onClick={() => history.push('/blog')}
+                        >
+                            Блог
+                        </button>
+                        <button className="btn btn-xl"
+                                onClick={() => history.push('/login')}
+                        >
+                            Авторизация
+                        </button>
+                    </Nav>
+                }
+            </Container>
+        </Navbar>
     );
 }
 

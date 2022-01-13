@@ -1,6 +1,7 @@
 import React, {useCallback, useState} from "react";
 import {useDispatch} from "react-redux";
 import {updateCustomer} from "../../../../store/actions/customerActions";
+import {emailPattern, stringPattern} from "../../../../utils/constants";
 
 const EditCustomer = ({customer}) => {
     const dispatch = useDispatch()
@@ -36,13 +37,13 @@ const EditCustomer = ({customer}) => {
                                 <input className="form-control" placeholder="Иван Иванович Иванов" value={customer_name}
                                        name="name"
                                        onChange={e => setCustomerName(e.target.value)} required
-                                       pattern="[A-ZА-Яa-zа-я -]+"
+                                       pattern={stringPattern}
                                 />
                                 <label htmlFor="email">e-mail</label>
                                 <input className="form-control" value={customer_email} name="email" type="email"
                                        onChange={e => setCustomerEmail(e.target.value)}
                                        required
-                                       pattern="[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]+"
+                                       pattern={emailPattern}
                                 />
                             </div>
                             <div className="modal-footer">

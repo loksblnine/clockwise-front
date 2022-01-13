@@ -1,6 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import {useDispatch} from "react-redux";
 import {updateUserData} from "../../../store/actions/userActions";
+import {emailPattern, stringPattern} from "../../../utils/constants";
 
 const EditProfileClient = ({customer}) => {
     const [customer_name, setCustomerName] = useState(customer.customer_name)
@@ -21,7 +22,6 @@ const EditProfileClient = ({customer}) => {
                     data-target={`#id${customer.customer_id}`}>
                 Редактировать
             </button>
-
             <div className="modal fade" id={`id${customer.customer_id}`} tabIndex="-1" role="dialog"
                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog" role="document">
@@ -36,11 +36,11 @@ const EditProfileClient = ({customer}) => {
                                 <label htmlFor="city_name">Изменить имя</label>
                                 <input className="form-control" placeholder="Имя" value={customer_name}
                                        required onChange={e => setCustomerName(e.target.value)}
-                                       pattern="[A-ZА-Яa-zа-я -]+"/>
+                                       pattern={stringPattern}/>
                                 <label htmlFor="city_name">Изменить email</label>
                                 <input className="form-control" placeholder="Email" value={customer_email}
                                        required onChange={e => setCustomerEmail(e.target.value)}
-                                       pattern="[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]+"/>
+                                       pattern={emailPattern}/>
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-dismiss="modal"

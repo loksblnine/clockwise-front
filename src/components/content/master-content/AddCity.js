@@ -21,7 +21,7 @@ const AddCity = ({master}) => {
         return <Spinner animation="grow"/>
     }
     return (
-        <div>
+        <div className="col-4">
             <button type="button" className="btn btn-success m-3" data-toggle="modal"
                     data-target={`#id_see`}>
                 Добавить
