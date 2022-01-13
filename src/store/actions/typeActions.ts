@@ -26,7 +26,7 @@ export const updateType = (type: Type, work_id: number) => {
         const {data} = await instance({
             method: "PUT",
             data: type,
-            url: `/cities/${work_id}`
+            url: `/types/${work_id}`
         })
         dispatch({
             type: constants.ACTIONS.TYPES.UPDATE_TYPE,
@@ -49,7 +49,7 @@ export const addType = (type: Type) => {
     }
 }
 
-export const deleteCity = (id: number) => {
+export const deleteType = (id: number) => {
     return async (dispatch: any) => {
         await instance({
             method: "DELETE",

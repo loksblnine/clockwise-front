@@ -39,7 +39,7 @@ const cityReducer = (state = initialState, action: { type: string; payload: any;
         }
         case constants.ACTIONS.TYPES.DELETE_TYPE: {
             return {
-                items: state.items.filter((item: any) => item.city_id !== action.payload),
+                items: state.items.filter((item: any) => Number(item.work_id) !== Number(action.payload)),
                 isReady: true
             }
         }

@@ -18,6 +18,7 @@ import RedirectingPage from "../components/content/customer-content/LoginForm/Re
 import EditArticle from "../components/content/admin-content/blog/EditArticle";
 import PayPalRedirect from "../components/content/customer-content/Payment/PayPalRedirect";
 import SuccessfulPayment from "../components/content/customer-content/Payment/SuccessfulPayment";
+import ListTypes from "../components/content/admin-content/types/ListTypes";
 
 //todo remove this garbage =))
 //todo use ENUM with TS
@@ -123,6 +124,10 @@ export const authAdminRoutes = [
     {
         path: '/cities',
         Component: ListCities
+    },
+    {
+        path: '/types',
+        Component: ListTypes
     },
     {
         path: '/orders',
