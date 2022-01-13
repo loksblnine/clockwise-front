@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {SERVER_URL} from "../../../../utils/constants";
-import {Redirect, useHistory, useLocation, withRouter} from "react-router-dom";
+import {Redirect, useHistory, withRouter} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {setTypes} from "../../../../store/actions/typeActions";
 import {Spinner} from "react-bootstrap";
@@ -42,20 +42,20 @@ const PayPalRedirect = () => {
     }
     if (params.get('order_id') && params.get('type') && !isPaid)
         return (
-            <div className="d-flex justify-content-center">
-                <div>
+            <div>
+                <div className="m-3">
                     <h2>Вы хотите оплатить заказ сейчас?</h2>
-                    <h4>Вы всегда сможете оплатить заказ по ссылке в письме либо в своем кабинете</h4>
+                    <h4>Вы всегда сможете оплатить заказ по ссылке в письме либо в своем кабинете.</h4>
                 </div>
-                <div className="row d-grid justify-content-center">
-                    <button className="btn btn-primary"
+                <div className="justify-content-center m-3">
+                    <button className="btn btn-primary m-2"
                             onClick={(e) => {
                                 e.preventDefault()
                                 window.location = `${SERVER_URL}/pay?order_id=${params.get('order_id')}`
                             }}>Оплатить
                         сейчас {types.find(el => Number(el.work_id) === Number(params.get('type')))?.price} USD
                     </button>
-                    <button className="btn btn-outline-secondary"
+                    <button className="btn btn-outline-secondary m-2"
                             onClick={(e) => {
                                 e.preventDefault()
                                 history.push('/')

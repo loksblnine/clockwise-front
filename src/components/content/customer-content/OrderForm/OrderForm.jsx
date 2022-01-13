@@ -202,7 +202,7 @@ const OrderForm = () => {
                                 photo.map((item, i) => {
                                     return (
                                         <div
-                                            className={`d-flex align-items-start  col-md-3 m-3`}
+                                            className="d-flex align-items-start  col-md-3 m-3"
                                             key={i}>
                                             <img
                                                 src={item}
