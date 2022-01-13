@@ -5,8 +5,9 @@ import {Spinner} from "react-bootstrap";
 import {deleteOrder, setOrdersAdmin} from "../../../../store/actions/orderActions";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {hasNumber, objectToQueryString} from "../../../../utils/utils";
-import {COLLAPSE_ARROWS, datePattern, EXPAND_ARROWS} from "../../../../utils/constants";
+import {COLLAPSE_ARROWS, EXPAND_ARROWS} from "../../../../utils/svg_constants";
 import PaymentDetails from "../../customer-content/Payment/PaymentDetails";
+import {datePattern} from "../../../../utils/constants";
 
 const ListOrders = () => {
     const orders = useSelector(state => state.orders.items)
