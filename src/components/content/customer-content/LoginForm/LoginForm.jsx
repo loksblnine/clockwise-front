@@ -5,7 +5,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {LinkContainer} from "react-router-bootstrap";
 import {setUser} from "../../../../store/actions/userActions";
 import {toast} from "react-toastify";
-import {GOOGLE_SVG, SERVER_URL} from "../../../../utils/constants";
+import {SERVER_URL} from "../../../../utils/constants";
+import {GOOGLE_SVG} from "../../../../utils/svg_constants";
 
 const validate = (values) => {
     const errors = {};
