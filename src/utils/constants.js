@@ -15,6 +15,9 @@ import Blog from "../components/content/customer-content/Blog/Blog";
 import CreateArticle from "../components/content/admin-content/blog/CreateArticle";
 import RedirectingPage from "../components/content/customer-content/LoginForm/Redirect";
 import EditArticle from "../components/content/admin-content/blog/EditArticle";
+import PayPalRedirect from "../components/content/customer-content/Payment/PayPalRedirect";
+import SuccessfulPayment from "../components/content/customer-content/Payment/SuccessfulPayment";
+import ListTypes from "../components/content/admin-content/types/ListTypes";
 
 //todo remove this garbage =))
 //todo use ENUM with TS
@@ -83,6 +86,14 @@ export const customerRoutes = [
     {
         path: '/activate/:token',
         Component: SuccessActivate
+    },
+    {
+        path: '/pay',
+        Component: PayPalRedirect
+    },
+    {
+        path: '/payment/success',
+        Component: SuccessfulPayment
     }
 ]
 export const authMasterRoutes = [
@@ -110,6 +121,10 @@ export const authAdminRoutes = [
     {
         path: '/cities',
         Component: ListCities
+    },
+    {
+        path: '/types',
+        Component: ListTypes
     },
     {
         path: '/orders',
@@ -201,7 +216,14 @@ export const ACTIONS = {
     },
     WEATHER: {
         SET_WINTER: "SET_WINTER"
-    }
+    },
+    TYPES: {
+        SET_TYPES: "SET_TYPES",
+        SET_READY_TYPES: "SET_READY_TYPES",
+        DELETE_TYPE: "DELETE_TYPE",
+        UPDATE_TYPE: "UPDATE_TYPE",
+        ADD_TYPE: "ADD_TYPE"
+    },
 }
 
 export const PATH = [

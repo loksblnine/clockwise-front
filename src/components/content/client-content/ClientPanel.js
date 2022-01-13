@@ -7,6 +7,7 @@ import {setOrdersCustomer, sortOrders} from "../../../store/actions/orderActions
 import {setUserData} from "../../../store/actions/userActions";
 import SetMarkDialog from "./SetMarkDialog";
 import EditProfileClient from "./EditProfileClient";
+import {useHistory} from "react-router-dom";
 
 const OrderMark = ({mark}) => {
     return (
@@ -18,6 +19,7 @@ const OrderMark = ({mark}) => {
 
 const ClientPanel = () => {
     const dispatch = useDispatch()
+    const history = useHistory()
     const email = useSelector((state) => state.users.user.email)
     const isReady = useSelector((state) => state.users)
     const orders = useSelector((state) => state.orders.items)
@@ -87,6 +89,7 @@ const ClientPanel = () => {
                             <th scope="col">Время начала</th>
                             <th scope="col">Время окончания</th>
                             <th scope="col"> Статус</th>
+                            <th scope="col"> Статус оплаты</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -103,9 +106,19 @@ const ClientPanel = () => {
                                     {
                                         order?.isDone
                                             ? order?.mark
-                                            ? <OrderMark mark={order.mark}/>
-                                            : <SetMarkDialog order={order}/>
+                                                ? <OrderMark mark={order.mark}/>
+                                                : <SetMarkDialog order={order}/>
                                             : "Не готов"
+                                    }
+                                </td>
+                                <td>
+                                    {
+                                        order?.isPaid ?
+                                            "Оплачено"
+                                            : <button className="btn btn-outline-primary" onClick={(e) => {
+                                                e.preventDefault()
+                                                history.push(`/pay?order_id=${order.order_id}&type=${order.work_id}`)
+                                            }}>Оплатить</button>
                                     }
                                 </td>
                             </tr>

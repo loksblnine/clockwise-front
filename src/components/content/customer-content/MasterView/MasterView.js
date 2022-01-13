@@ -7,6 +7,8 @@ import {getFreeMasters} from "../../getData";
 import {sendConfirmationOrder} from "../../workWithData";
 import {useDispatch, useSelector} from "react-redux";
 import {clearPhotos} from "../../../../store/actions/userActions";
+import {SERVER_URL} from "../../../../utils/constants";
+import {setTypes} from "../../../../store/actions/typeActions";
 
 const MasterView = () => {
     const dispatch = useDispatch()
@@ -15,6 +17,7 @@ const MasterView = () => {
     const location = useLocation()
     const history = useHistory()
     const photo = useSelector((state) => state.users.photo)
+    const types = useSelector((state) => state.types.items)
     const order = location.state.data
     const T = order.date + "T" + order.time
     const orderBody = {
@@ -23,10 +26,14 @@ const MasterView = () => {
         work_id: order.type,
     }
     useEffect(() => {
+        if (types.length <= 0) {
+            dispatch(setTypes())
+        }
         getFreeMasters(orderBody, setMasters)
             .then(() =>
                 setLoading(false))
-    }, [location.state])
+
+    }, [dispatch, location.state])
 
     const handleBack = () => {
         history.push({
@@ -34,7 +41,6 @@ const MasterView = () => {
             state: location.state
         })
     }
-
     const handleClick = (master) => {
         sendConfirmationOrder(order, master, history, photo)
         dispatch(clearPhotos())
@@ -79,7 +85,7 @@ const MasterView = () => {
                                     <button className="btn btn-success" id={master.master_id}
                                             value={master.master_id}
                                             onClick={() => handleClick(master)}
-                                    >Выбрать
+                                    >Забронировать
                                     </button>
                                 </td>
                             </tr>
@@ -89,7 +95,7 @@ const MasterView = () => {
                 </div> :
                 <h4>Нет свободных мастеров</h4>}
             <div>
-                <button className="btn btn-primary" onClick={handleBack}
+                <button className="btn btn-primary m-1" onClick={handleBack}
                 >Назад
                 </button>
             </div>
