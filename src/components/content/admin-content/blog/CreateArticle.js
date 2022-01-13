@@ -4,7 +4,8 @@ import {useDispatch, useSelector} from "react-redux";
 import Article from "../../customer-content/Blog/Article";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {Editor} from '@tinymce/tinymce-react';
-import {removeArticlePhoto, setArticlePhoto} from "../../../../store/actions/blogActions";
+import {addArticle, removeArticlePhoto, setArticlePhoto} from "../../../../store/actions/blogActions";
+import * as constants from "../../../../utils/constants";
 
 const CreateArticle = () => {
     const dispatch = useDispatch()
@@ -17,15 +18,19 @@ const CreateArticle = () => {
     const editorRef = useRef(null);
     const [article, setArticle] = useState(initArticle)
     const handleChooseFile = (e) => {
-        if (e.target?.files[0]?.type.split('/')[0] === "image") {
-            const reader = new FileReader();
-            reader.readAsDataURL(e.target.files[0]);
-            reader.onloadend = () => {
-                dispatch(setArticlePhoto(reader.result))
-                e.target.value = ""
-            };
+        if (e?.target?.files[0]?.size < constants.ONE_MEGABYTE) {
+            if (e.target?.files[0]?.type.split('/')[0] === "image") {
+                const reader = new FileReader();
+                reader.readAsDataURL(e.target.files[0]);
+                reader.onloadend = () => {
+                    dispatch(setArticlePhoto(reader.result))
+                    e.target.value = ""
+                };
+            } else {
+                toast.info("Только фотографии")
+            }
         } else {
-            toast.info("Только фотографии")
+            toast.info("Файл неприлично много весит!")
         }
     }
     const handleChange = (e) => {
@@ -45,14 +50,7 @@ const CreateArticle = () => {
                         body: article?.body
                     })
                 }))
-                instance({
-                    url: "/blog",
-                    data: {
-                        ...article,
-                        photo
-                    },
-                    method: "post",
-                })
+                dispatch(addArticle(article, photo))
             }}>
                 <div className="m-4">
                     <div className="form-group">

@@ -107,7 +107,6 @@ const EditOrder = (initialOrder) => {
                                        onChange={handleChange}/>
                                 <label className="text" htmlFor="time">Время заказа (8:00 - 17:00) </label>
                                 <input type="time" name="time" className="form-control timepicker"
-                                       min={constants.TIME_FROM} max={constants.TIME_TO}
                                        value={order.time}
                                        required step="3600"
                                        id="24h"
@@ -179,7 +178,6 @@ const EditOrder = (initialOrder) => {
                                    disabled/>
                             <label className="text" htmlFor="time">Время заказа (8:00 - 17:00) </label>
                             <input type="time" name="time" className="form-control timepicker"
-                                   min={constants.TIME_FROM} max={constants.TIME_TO}
                                    value={order.time}
                                    disabled/>
                             <div className="form-group">

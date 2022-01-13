@@ -15,7 +15,7 @@ export const sendConfirmationOrder = (order, master, history, photos) => {
         data: photos
     }
     instance({
-        method: "POST",
+        method: "post",
         data: orderBody,
         url: "/orders"
     })
@@ -29,7 +29,7 @@ export const sendConfirmationOrder = (order, master, history, photos) => {
                 type: orderBody.work_id
             }
             instance({
-                method: "POST",
+                method: "post",
                 data: messageBody,
                 url: "/send/confirm-order"
             })
@@ -49,7 +49,7 @@ export const sendConfirmRegistrationMail = (email) => {
         email
     }
     instance({
-        method: "POST",
+        method: "post",
         data: messageBody,
         url: "/send/confirm-registration"
     })

@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import * as constants from "../../../utils/constants";
-import {COLLAPSE_ARROWS, EXPAND_ARROWS, STAR} from "../../../utils/constants";
+import {COLLAPSE_ARROWS, EXPAND_ARROWS, STAR} from "../../../utils/svg_constants";
 import {Spinner} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {setOrdersMaster} from "../../../store/actions/orderActions";
