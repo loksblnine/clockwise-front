@@ -20,7 +20,7 @@ export const sendConfirmationOrder = (order, master, history, photos) => {
         url: "/orders"
     })
         .then(({data}) => {
-            const text = `${order.name}, бронь прошла успешно, мастер ${master["master.master_name"]} будет у вас ${order.date} в ${order.time}. Оплатите заказ по ссылке или в своем кабинете.`
+            const text = `${order.name}, бронь прошла успешно, мастер ${master.master_name} будет у вас ${order.date} в ${order.time}. Оплатите заказ по ссылке или в своем кабинете.`
             const messageBody = {
                 email: orderBody.customer_email,
                 message: text,
