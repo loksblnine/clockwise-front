@@ -12,7 +12,7 @@ const initialState: initialState = {
     isReady: false,
     items: [],
     page: 0,
-    loadNext: true,
+    loadNext: false,
     photo: ""
 };
 

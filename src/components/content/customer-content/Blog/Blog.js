@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import ArticlePreview from "./ArticlePreview";
 import {useDispatch, useSelector} from "react-redux";
 import {setArticles} from "../../../../store/actions/blogActions";
+import {Spinner} from "react-bootstrap";
 
 const Blog = () => {
     const dispatch = useDispatch()
@@ -18,10 +19,13 @@ const Blog = () => {
         dispatch(setArticles(page))
         e.target.disabled = false
     }
+    if (!isReady) {
+        return <Spinner animation="grow"/>
+    }
 
     return (
         <div>
-            <div className="d-flex row">
+            <div className="card-columns row m-2">
                 {
                     articles?.map(art =>
                         <ArticlePreview key={art.article_id} article={art}/>)
@@ -30,7 +34,8 @@ const Blog = () => {
             {
                 loadNext &&
                 <div className="text-center mt-4">
-                    <button className="btn btn-primary" onClick={(e) => handleNextArticles(e)} disabled={!isReady}> Еще...
+                    <button className="btn btn-primary" onClick={(e) => handleNextArticles(e)}
+                            disabled={!isReady}> Еще...
                     </button>
                 </div>
             }

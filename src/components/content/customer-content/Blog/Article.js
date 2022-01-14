@@ -1,30 +1,31 @@
 import React from 'react';
 import ReactHtmlParser from "react-html-parser";
+import {useLocation, withRouter} from "react-router-dom";
 
-const Article = ({article}) => {
+const Article = () => {
+    const location = useLocation()
+    const article = location.state
     return (
-        <div key={article.article_id}>
-                <button type="button" className="btn btn-outline-secondary m-4" data-toggle="modal"
-                        data-target={`#id${article.article_id}`}>
-                    Смотреть
-                </button>
-                <div className="modal fade" id={`id${article.article_id}`} tabIndex="-1" role="dialog"
-                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div className="modal-dialog modal-lg" role="document">
-                        <div className="modal-content">
-                            <h3 className="m-5">{article.header}</h3>
-                            {
-                                article.photo &&
-                                <img className="m-3" src={article?.photo} alt="article-photo"/>
-                            }
-                            <div className="m-4" key={article.article_id}>
-                                {ReactHtmlParser(article.body)}
-                            </div>
+        <div key={article?.article_id}>
+            <div id={`id${article?.article_id}`}>
+                <div className="p-2">
+                    <h3 className="d-flex justify-content-center m-5">{article?.header}</h3>
+                    {
+                        article?.photo && <div className="m-3 d-flex justify-content-center">
+                            <img
+                                src={article?.photo}
+                                alt="article-photo"
+                                style={{width: "100%"}}
+                            />
                         </div>
+                    }
+                    <div className="d-flex m-4 justify-content-center" key={article?.article_id}>
+                        {ReactHtmlParser(article?.body)}
                     </div>
                 </div>
             </div>
+        </div>
     );
 };
 
-export default Article;
+export default withRouter(Article);

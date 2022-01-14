@@ -202,7 +202,7 @@ const OrderForm = () => {
                             event.preventDefault()
                             inputRef.current.click()
                         })}/>
-                        <div className="row mb-5 w-60" key="show-preview">
+                        <div className="row w-60" key="show-preview">
                             {
                                 photo?.length > 0 &&
                                 photo.map((item, i) => {
@@ -227,6 +227,7 @@ const OrderForm = () => {
                                 })
                             }
                         </div>
+                        {photo.length === 0 && <div className="error">Фото добавить обязательно</div>}
                     </div>
                     <div className="form-group">
                         <button type="submit" className="btn btn-primary"

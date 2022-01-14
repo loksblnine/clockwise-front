@@ -19,6 +19,7 @@ import PayPalRedirect from "../components/content/customer-content/Payment/PayPa
 import SuccessfulPayment from "../components/content/customer-content/Payment/SuccessfulPayment";
 import ListTypes from "../components/content/admin-content/types/ListTypes";
 import FailedPayment from "../components/content/customer-content/Payment/FailedPayment";
+import Article from "../components/content/customer-content/Blog/Article";
 
 //todo remove this garbage =))
 //todo use ENUM with TS
@@ -59,6 +60,10 @@ export const customerRoutes = [
     {
         path: '/',
         Component: OrderForm
+    },
+    {
+        path: '/article',
+        Component: Article
     },
     {
         path: '/blog',

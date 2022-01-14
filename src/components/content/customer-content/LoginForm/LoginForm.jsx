@@ -82,13 +82,14 @@ const LoginForm = () => {
                     <LinkContainer to='/registration'>
                         <button className="btn btn-primary-outline">Нет аккаунта? Зарегистрируйтесь!</button>
                     </LinkContainer>
-                    <div className="d-flex p-2">
-                        <button className="btn btn-primary-outline m-2"
+                    <div className="d-flex p-2 mt-3 d-flex justify-content-around">
+                        <button className="btn btn-primary-outline m-2 border-primary"
                                 onClick={(e) => {
                                     e.preventDefault()
                                     window.location = `${SERVER_URL}/auth/google`
                                 }}
                         >Войдите используя учетную запись &nbsp; {GOOGLE_SVG}
+
                         </button>
                     </div>
                 </div>

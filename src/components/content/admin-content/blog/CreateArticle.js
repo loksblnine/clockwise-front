@@ -2,7 +2,6 @@ import React, {useRef, useState} from 'react';
 import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 import Article from "../../customer-content/Blog/Article";
-import {instance} from "../../../../http/headerPlaceholder.instance";
 import {Editor} from '@tinymce/tinymce-react';
 import {addArticle, removeArticlePhoto, setArticlePhoto} from "../../../../store/actions/blogActions";
 import * as constants from "../../../../utils/constants";
@@ -74,6 +73,11 @@ const CreateArticle = () => {
                                 <img
                                     src={photo}
                                     alt="chosen"
+                                    style={{height: "100%"}}
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        window.open(article?.photo, '_blank')
+                                    }}
                                 />
                                 <button className="btn" type="button"
                                         onClick={() => {

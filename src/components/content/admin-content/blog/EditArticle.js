@@ -1,10 +1,8 @@
 import React, {useRef, useState} from 'react';
 import {toast} from "react-toastify";
-import {useDispatch, useSelector} from "react-redux";
-import Article from "../../customer-content/Blog/Article";
-import {instance} from "../../../../http/headerPlaceholder.instance";
+import {useDispatch} from "react-redux";
 import {Editor} from '@tinymce/tinymce-react';
-import {removeArticlePhoto, setArticlePhoto, updateArticle} from "../../../../store/actions/blogActions";
+import {updateArticle} from "../../../../store/actions/blogActions";
 import {useHistory, useLocation, withRouter} from "react-router-dom";
 
 const EditArticle = () => {
@@ -71,6 +69,11 @@ const EditArticle = () => {
                                 <img
                                     src={article?.photo}
                                     alt="chosen"
+                                    style={{width: "100%"}}
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        window.open(article?.photo, '_blank')
+                                    }}
                                 />
                                 <button className="btn" type="button"
                                         onClick={() => {
@@ -115,8 +118,8 @@ const EditArticle = () => {
                     <button type="submit" className="btn btn-success m-4">
                         Изменить
                     </button>
-                    <button className="btn btn-primary m-1" onClick={handleBack}
-                    >Назад
+                    <button className="btn btn-primary m-1" onClick={handleBack}>
+                        Отмена
                     </button>
 
                 </div>

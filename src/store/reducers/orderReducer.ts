@@ -11,7 +11,7 @@ const initialState: initialState = {
     isReady: false,
     items: [],
     page: 0,
-    loadNext: true,
+    loadNext: false,
 };
 const orderReducer = (state = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
