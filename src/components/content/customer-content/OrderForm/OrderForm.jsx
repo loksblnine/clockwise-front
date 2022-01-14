@@ -194,10 +194,14 @@ const OrderForm = () => {
                     </div>
                     <div className="form-group">
                         <label>Прикрепите фото</label> <p>Не более 1 МБ, не более 5 штук, только форматы фотографий</p>
-                        <input type="file" className="form-control" onInput={e => handleChooseFile(e)}
-                               onChange={formik.handleChange} onBlur={formik.handleChange}
+                        <input type="file" className="form-control d-none" onInput={(e) => handleChooseFile(e)}
+                               onChange={formik.handleChange} onBlur={formik.handleChange} ref={inputRef}
                                id="file-input" key="file-input" disabled={photo.length >= 5}
                                accept="image/*"/>
+                        <input type="text" className="form-control" readOnly value="Добавьте фото" onClick={(event => {
+                            event.preventDefault()
+                            inputRef.current.click()
+                        })}/>
                         <div className="row mb-5 w-60" key="show-preview">
                             {
                                 photo?.length > 0 &&

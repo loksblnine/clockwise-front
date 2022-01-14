@@ -30,6 +30,11 @@ const EditArticle = () => {
             toast.info("Только фотографии")
         }
     }
+    const handleBack = () => {
+        history.push({
+            pathname: '/blog',
+        })
+    }
     const handleChange = (e) => {
         const {name, value} = e.target;
         setArticle(prevState => ({
@@ -108,8 +113,12 @@ const EditArticle = () => {
                         />
                     </div>
                     <button type="submit" className="btn btn-success m-4">
-                        Опубликовать
+                        Изменить
                     </button>
+                    <button className="btn btn-primary m-1" onClick={handleBack}
+                    >Назад
+                    </button>
+
                 </div>
             </form>
         </div>
