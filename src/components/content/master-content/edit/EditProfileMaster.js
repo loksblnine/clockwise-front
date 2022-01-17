@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react';
 import {useDispatch} from "react-redux";
-import {updateUserData} from "../../../store/actions/userActions";
-import {emailPattern, stringPattern} from "../../../utils/constants";
+import {updateUserData} from "../../../../store/actions/userActions";
+import {emailPattern, stringPattern} from "../../../../utils/constants";
 
 const EditProfileClient = ({master}) => {
     const [master_name, setMasterName] = useState(master.master_name)

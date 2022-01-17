@@ -20,6 +20,10 @@ import SuccessfulPayment from "../components/content/customer-content/Payment/Su
 import ListTypes from "../components/content/admin-content/types/ListTypes";
 import FailedPayment from "../components/content/customer-content/Payment/FailedPayment";
 import Article from "../components/content/customer-content/Blog/Article";
+import ListMasterOrders from "../components/content/master-content/orders/ListOrders"
+import EditProfileMaster from "../components/content/master-content/edit/EditProfileMaster";
+import Profile from "../components/content/master-content/edit/Profile";
+import Calendar from "../components/content/master-content/calendar/Calendar";
 
 //todo remove this garbage =))
 //todo use ENUM with TS
@@ -110,7 +114,23 @@ export const authMasterRoutes = [
     {
         path: '/access_succeed_master',
         Component: MasterPanel
-    }
+    },
+    {
+        path: '/orders',
+        Component: ListMasterOrders
+    },
+    {
+        path: '/edit',
+        Component: EditProfileMaster
+    },
+    {
+        path: '/profile',
+        Component: Profile
+    },
+    {
+        path: '/calendar',
+        Component: Calendar,
+    },
     //todo
     // 3. see comments
 ]
