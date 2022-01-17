@@ -24,8 +24,8 @@ const ListOrders = () => {
     const ordersReady = useSelector((state) => state.orders.isReady)
     const orders = useSelector((state) => state.orders.items)
     const cities = useSelector((state) => state.cities.items)
-    const master = useSelector((state) => state.users.data?.master)
     const email = useSelector((state) => state.users.user.email)
+    const master = useSelector((state) => state.users.data?.master)
     const {loadNext, page} = useSelector((state) => state.orders)
 
     useEffect(() => {
