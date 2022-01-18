@@ -50,11 +50,11 @@ const DayModal = ({dayItem}) => {
                                     <div>
                                         {todayOrders.reverse()
                                             .map(o => (
-                                                <p data-toggle="modal" className={o.isDone ? "btn btn-success": "btn btn-danger"}
+                                                <p key={o.order_id} data-toggle="modal" className={o.isDone ? "btn btn-success": "btn btn-danger"}
                                                    data-target={`#id${o.order_id}`}>Заказ №{o.order_id}</p>
                                             ))}
                                     </div>
-                                    : "У вас нет сегодня заказов"
+                                    : "У вас нет заказов в этот день"
                             }
                         </div>
                     </div>

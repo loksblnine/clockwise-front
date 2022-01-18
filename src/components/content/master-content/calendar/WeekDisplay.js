@@ -9,7 +9,6 @@ import {ACTIONS, DAYS_RUS, MONTH_RUS} from "../../../../utils/constants";
 import {Spinner} from "react-bootstrap";
 import DayModal from "./DayModal";
 import {useHistory, useLocation, withRouter} from "react-router-dom";
-import {setTypes} from "../../../../store/actions/typeActions";
 
 const GridWrapper = styled.div`
   display: grid;
@@ -45,26 +44,21 @@ const EventListWrapper = styled('ul')`
   margin: 3% 10%;
 `;
 
-const Calendar = () => {
+const WeekDisplay = () => {
     const dispatch = useDispatch()
-    const location = useLocation()
     const history = useHistory()
-    const types = useSelector((state) => state.types.items)
+    const location = useLocation()
     const orders = useSelector((state) => state.orders.calendar)
     const master = useSelector((state) => state.users.data?.master)
     const email = useSelector((state) => state.users.user.email)
     const {isCalendarReady} = useSelector((state) => state.orders)
+
     const [stringDate, setStringDate] = useState(() => location?.state?.dayItem || new Date(new Date().setDate(12)).toString())
-
     let today = dayjs(stringDate);
-
-    let startDay = today.clone().startOf('month').startOf('week');
-    let endDay = today.clone().endOf('month').endOf('week');
+    let startDay = today.clone().startOf('week');
+    let endDay = today.clone().endOf('week');
 
     useEffect(() => {
-        if (types.length === 0) {
-            dispatch(setTypes())
-        }
         if (!master?.master_id) {
             dispatch(setUserData("masters", email))
         }
@@ -93,8 +87,8 @@ const Calendar = () => {
 
     const isSelectedMonth = (day) => today.isSame(day, 'month');
 
-    const reduceMonth = () => {
-        setStringDate(new Date(new Date(stringDate).setMonth(new Date(stringDate).getMonth() - 1)))
+    const reduceWeek = () => {
+        setStringDate(new Date(new Date(stringDate).setDate(new Date(stringDate).getDate() - 7)))
         startDay = today.clone().startOf('month').startOf('week');
         endDay = today.clone().endOf('month').endOf('week');
         dispatch({
@@ -102,8 +96,8 @@ const Calendar = () => {
         })
     }
 
-    const addMonth = () => {
-        setStringDate(new Date(new Date(stringDate).setMonth(new Date(stringDate).getMonth() + 1)))
+    const addWeek = () => {
+        setStringDate(new Date(new Date(stringDate).setDate(new Date(stringDate).getDate() + 7)))
         startDay = today.clone().startOf('month').startOf('week');
         endDay = today.clone().endOf('month').endOf('week');
         dispatch({
@@ -116,9 +110,9 @@ const Calendar = () => {
     return (
         <div className="m-2">
             <div className="row m-2">
-                <button className="btn col-sm-1" onClick={reduceMonth}>{"<<"}</button>
+                <button className="btn col-sm-1" onClick={reduceWeek}>{"<<"}</button>
                 <h3 className="d-flex justify-content-center p-2 col-md-3">{MONTH_RUS[new Date(stringDate).getMonth() + 1]}, {new Date(stringDate).getUTCFullYear()}</h3>
-                <button className="btn col-sm-1" onClick={addMonth}>{">>"}</button>
+                <button className="btn col-sm-1" onClick={addWeek}>{">>"}</button>
             </div>
             <GridWrapper isHeader>
                 {
@@ -139,20 +133,21 @@ const Calendar = () => {
             <GridWrapper>
                 {
                     daysMap.map((dayItem) => (
-                        <CellWrapper onDoubleClick={(e) => {
-                            e.preventDefault()
-                            history.push({
-                                pathname: '/calendar/weekly',
-                                state: {dayItem: dayItem.toString()}
-                            })
-                        }}
-                                     isWeekday={dayItem.day() === 6 || dayItem.day() === 0}
-                                     key={dayItem.unix()} isModal
-                                     isSelectedMonth={isSelectedMonth(dayItem)}
+                        <CellWrapper
+                            onDoubleClick={(e) => {
+                                e.preventDefault()
+                                history.push({
+                                    pathname: '/calendar',
+                                    state: {dayItem: dayItem.toString()}
+                                })
+                            }}
+                            isWeekday={dayItem.day() === 6 || dayItem.day() === 0}
+                            key={dayItem.unix()} isModal
+                            isSelectedMonth={isSelectedMonth(dayItem)}
                         >
                             <RowInCell justifyContent={'flex-end'}>
                                 <ShowDayWrapper>
-                                    <DayModal dayItem={dayItem} key={dayItem.unix()}/>
+                                    <DayModal dayItem={dayItem}/>
                                 </ShowDayWrapper>
                                 <EventListWrapper>
                                     {
@@ -173,4 +168,4 @@ const Calendar = () => {
     );
 };
 
-export default withRouter(Calendar);
+export default withRouter(WeekDisplay);

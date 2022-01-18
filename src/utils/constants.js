@@ -24,6 +24,7 @@ import ListMasterOrders from "../components/content/master-content/orders/ListOr
 import EditProfileMaster from "../components/content/master-content/edit/EditProfileMaster";
 import Profile from "../components/content/master-content/edit/Profile";
 import Calendar from "../components/content/master-content/calendar/Calendar";
+import WeekDisplay from "../components/content/master-content/calendar/WeekDisplay";
 
 //todo remove this garbage =))
 //todo use ENUM with TS
@@ -130,6 +131,10 @@ export const authMasterRoutes = [
     {
         path: '/calendar',
         Component: Calendar,
+    },
+    {
+        path: '/calendar/weekly',
+        Component: WeekDisplay,
     },
     //todo
     // 3. see comments

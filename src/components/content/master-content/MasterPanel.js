@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react';
 import {LinkContainer} from "react-router-bootstrap";
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch, withRouter} from "react-router-dom";
 import Calendar from "./calendar/Calendar";
 import ListOrders from "./orders/ListOrders";
 import Profile from "./edit/Profile";
 import {setUserData} from "../../../store/actions/userActions";
 import {useDispatch, useSelector} from "react-redux";
+import WeekDisplay from "./calendar/WeekDisplay";
 
 
 const MasterPanel = () => {
@@ -36,10 +37,11 @@ const MasterPanel = () => {
             <Switch>
                 <Route exact path='/orders' component={ListOrders}/>
                 <Route exact path='/calendar' component={Calendar}/>
+                <Route exact path='/calendar/weekly' component={WeekDisplay}/>
                 <Route exact path='/profile' component={Profile}/>
             </Switch>
         </Router>
     )
 }
 
-export default MasterPanel;
+export default withRouter(MasterPanel);

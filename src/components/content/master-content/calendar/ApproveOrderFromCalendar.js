@@ -1,8 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {approveOrder} from "../../../../store/actions/masterActions";
-import React, {useEffect} from "react";
+import React from "react";
 import styled from "styled-components";
-import {setTypes} from "../../../../store/actions/typeActions";
 import * as constants from "../../../../utils/constants";
 
 const EventItemWrapper = styled('button')`
@@ -23,11 +22,6 @@ const EventItemWrapper = styled('button')`
 const ApproveOrderFromCalendar = ({order}) => {
     const types = useSelector((state) => state.types.items)
     const dispatch = useDispatch()
-
-    useEffect(() => {
-        if (types.length <= 0)
-            dispatch(setTypes())
-    }, [dispatch])
 
     const handleApproveOrder = (order) => {
         dispatch(approveOrder(order.order_id))
