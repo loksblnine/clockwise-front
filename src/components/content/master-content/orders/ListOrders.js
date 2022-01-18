@@ -1,7 +1,6 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {COLLAPSE_ARROWS, EXPAND_ARROWS, STAR} from "../../../../utils/svg_constants";
-import {deleteMasterCity, setUserData} from "../../../../store/actions/userActions";
-import AddCity from "../edit/AddCity";
+import React, {useCallback, useEffect} from 'react';
+import {STAR} from "../../../../utils/svg_constants";
+import {setUserData} from "../../../../store/actions/userActions";
 import * as constants from "../../../../utils/constants";
 import ModalApprove from "./ModalApprove";
 import PaymentDetails from "../../customer-content/Payment/PaymentDetails";

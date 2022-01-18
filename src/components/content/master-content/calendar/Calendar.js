@@ -1,10 +1,13 @@
-import React, {useEffect} from "react";
-import moment from "moment";
+import React, {useEffect, useState} from "react";
 import styled from 'styled-components';
 import dayjs from "dayjs";
 import {useDispatch, useSelector} from "react-redux";
-import {setOrdersMaster} from "../../../../store/actions/orderActions";
 import {setUserData} from "../../../../store/actions/userActions";
+import ApproveOrderFromCalendar from "./ApproveOrderFromCalendar";
+import {instance} from "../../../../http/headerPlaceholder.instance";
+import {ACTIONS, DAYS_RUS, MONTH_RUS} from "../../../../utils/constants";
+import {Spinner} from "react-bootstrap";
+import DayModal from "./DayModal";
 
 const GridWrapper = styled.div`
   display: grid;
@@ -18,7 +21,7 @@ const CellWrapper = styled.div`
   border-radius: 6px;
   min-height: ${props => props.isHeader ? 24 : 80}px;
   min-width: 10%;
-  text-align: center;
+  text-align: ${props => props.isModal ? "left" : "center"};
   background-color: ${props => props.isWeekday ? 'rgba(217,83,79,0.32)' : 'rgba(104,168,158,0.27)'};
   color: ${props => !props.isSelectedMonth ? 'rgba(99,99,99,0.54)' : props.isWeekday ? '#d9534f' : '#000000'};
 `;
@@ -30,93 +33,87 @@ const RowInCell = styled.div`
   ${props => props.pr && `padding-right: ${props.pr * 8}px`}
 `;
 
-const DayWrapper = styled.div`
-  height: 31px;
-  width: 31px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 2px;
-  cursor: pointer;;`
 
-const CurrentDay = styled('div')`
-  height: 100%;
-  width: 100%;
-  background: #f7f7f7;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 
 const ShowDayWrapper = styled('div')`
   display: flex;
   justify-content: flex-end;
 `;
 
-
 const EventListWrapper = styled('ul')`
   margin: 3% 10%;
 `;
 
-const EventItemWrapper = styled('button')`
-  position: relative;
-  overflow: hidden;
-  white-space: nowrap;
-  width: 100%;
-  border: unset;
-  background: unset;
-  color: #18317d;
-  cursor: pointer;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-`;
-
-const Calendar = ({stringDate = '2022-01-12'}) => {
+const Calendar = () => {
     const dispatch = useDispatch()
-    const orders = useSelector((state) => state.orders.items)
+    const orders = useSelector((state) => state.orders.calendar)
     const master = useSelector((state) => state.users.data?.master)
     const email = useSelector((state) => state.users.user.email)
-    const {page} = useSelector((state) => state.orders)
+    const {isCalendarReady} = useSelector((state) => state.orders)
 
-    const calendar = [[], [], [], [], [], []]
+    const [stringDate, setStringDate] = useState(new Date(new Date().setDate(12)).toString())
     let today = dayjs(stringDate);
-    const startDay = today.clone().startOf('month').startOf('week');
-    const endDay = today.clone().endOf('month').endOf('week');
+    let startDay = today.clone().startOf('month').startOf('week');
+    let endDay = today.clone().endOf('month').endOf('week');
 
     useEffect(() => {
         if (!master?.master_id)
             dispatch(setUserData("masters", email))
-        if (orders.length <= 0)
-            dispatch(setOrdersMaster(page, master?.master_id))
-    }, [dispatch, master, master?.master_id]);
+        const fetchOrdersForDateRange = async () => {
+            return instance({
+                url: `/orders/master/${master?.master_id}/calendar?from=${startDay.toDate()}&to=${endDay.toDate()}`,
+                method: "get"
+            })
+        }
+        fetchOrdersForDateRange()
+            .then(({data}) => {
+                dispatch({
+                    type: ACTIONS.ORDERS.SET_CALENDAR,
+                    payload: data
+                })
+            })
+    }, [dispatch, master, master?.master_id, stringDate, setStringDate]);
 
     let day = startDay.clone().subtract(1, 'day');
-    let week = 0
-    let dayInWeek = 0
+
     const daysMap = []
     while (day.isBefore(endDay, 'day')) {
-        if (dayInWeek === 7) {
-            dayInWeek = 0
-            week++
-        }
-        calendar[week].push(
-            day.clone().add(1, 'day')
-        )
-        dayInWeek++
         day = day.add(1, 'day');
         daysMap.push(day)
     }
 
-    const isCurrentDay = (day) => moment().isSame(day, 'day');
     const isSelectedMonth = (day) => today.isSame(day, 'month');
-    console.log(dayjs(orders[0]?.order_time))
+
+    const reduceMonth = () => {
+        setStringDate(new Date(new Date(stringDate).setMonth(new Date(stringDate).getMonth() - 1)))
+        startDay = today.clone().startOf('month').startOf('week');
+        endDay = today.clone().endOf('month').endOf('week');
+        dispatch({
+            type: ACTIONS.ORDERS.SET_CALENDAR_READY
+        })
+    }
+
+    const addMonth = () => {
+        setStringDate(new Date(new Date(stringDate).setMonth(new Date(stringDate).getMonth() + 1)))
+        startDay = today.clone().startOf('month').startOf('week');
+        endDay = today.clone().endOf('month').endOf('week');
+        dispatch({
+            type: ACTIONS.ORDERS.SET_CALENDAR_READY
+        })
+    }
+    if (!isCalendarReady) {
+        return <Spinner animation="grow"/>
+    }
     return (
         <div className="m-2">
+            <div className="row m-2">
+                <button className="btn col-sm-1" onClick={reduceMonth}>{"<<"}</button>
+                <h3 className="d-flex justify-content-center p-2 col-md-3">{MONTH_RUS[new Date(stringDate).getMonth() + 1]}, {new Date(stringDate).getUTCFullYear()}</h3>
+                <button className="btn col-sm-1" onClick={addMonth}>{">>"}</button>
+            </div>
             <GridWrapper isHeader>
                 {
-                    ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"].map((name, i) => (
+                    DAYS_RUS.map((name, i) => (
                         <CellWrapper
                             isWeekday={i === 6 || i === 0}
                             key={i}
@@ -135,20 +132,12 @@ const Calendar = ({stringDate = '2022-01-12'}) => {
                     daysMap.map((dayItem) => (
                         <CellWrapper
                             isWeekday={dayItem.day() === 6 || dayItem.day() === 0}
-                            key={dayItem.unix()}
+                            key={dayItem.unix()} isModal
                             isSelectedMonth={isSelectedMonth(dayItem)}
                         >
                             <RowInCell justifyContent={'flex-end'}>
                                 <ShowDayWrapper>
-                                    <DayWrapper onClick={() => console.log(dayItem)}>
-                                        {
-                                            isCurrentDay(dayItem) ? (
-                                                <CurrentDay>{dayItem.format("D")}</CurrentDay>
-                                            ) : (
-                                                dayItem.format('D')
-                                            )
-                                        }
-                                    </DayWrapper>
+                                    <DayModal dayItem={dayItem}/>
                                 </ShowDayWrapper>
                                 <EventListWrapper>
                                     {
@@ -156,12 +145,7 @@ const Calendar = ({stringDate = '2022-01-12'}) => {
                                             .filter(o => dayjs(o.order_time.split('T')[0]).diff(dayItem, 'day') === 0)
                                             .reverse()
                                             .map(o => (
-                                                <li key={o.id}>
-                                                    {o.order_time.split('T')[1].split(".")[0]}
-                                                    <EventItemWrapper onDoubleClick={() => console.log(o.order_id)}>
-                                                        Заказ №{o.order_id}
-                                                    </EventItemWrapper>
-                                                </li>
+                                                <ApproveOrderFromCalendar key={o.order_id} order={o}/>
                                             ))
                                     }
                                 </EventListWrapper>
@@ -170,7 +154,6 @@ const Calendar = ({stringDate = '2022-01-12'}) => {
                     ))
                 }
             </GridWrapper>
-
         </div>
     );
 };

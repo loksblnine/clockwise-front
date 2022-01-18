@@ -2,28 +2,24 @@ import * as constants from "../../utils/constants";
 
 type initialState = {
     isReady: boolean,
-    items: any[]
+    items: any[],
+    calendar: any[],
+    isCalendarReady: boolean,
     page: number,
     loadNext: boolean
 }
 
 const initialState: initialState = {
     isReady: false,
+    isCalendarReady: false,
     items: [],
+    calendar: [],
     page: 0,
     loadNext: false,
 };
 const orderReducer = (state = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
         case constants.ACTIONS.ORDERS.SET_ORDERS: {
-            if (action.payload.data.length < 10) {
-                return {
-                    ...state,
-                    items: state.items.concat(action.payload.data),
-                    isReady: true,
-                    loadNext: false
-                }
-            }
             if (state.items.length > 0 && action.payload.page === 0) {
                 return {
                     ...state,
@@ -33,12 +29,34 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
                     page: 1
                 };
             }
+            if (action.payload.data.length < 10) {
+                return {
+                    ...state,
+                    items: state.items.concat(action.payload.data),
+                    isReady: true,
+                    loadNext: false
+                }
+            }
             return {
                 ...state,
                 items: state.items.concat(action.payload.data),
                 isReady: true,
                 loadNext: true,
                 page: state.page + 1
+            };
+        }
+        case constants.ACTIONS.ORDERS.SET_CALENDAR: {
+            return {
+                ...state,
+                calendar: action.payload,
+                isCalendarReady: true,
+            };
+        }
+        case constants.ACTIONS.ORDERS.SET_CALENDAR_READY: {
+            return {
+                ...state,
+                calendar: [],
+                isCalendarReady: false,
             };
         }
         case constants.ACTIONS.ORDERS.UPDATE_ORDER: {
@@ -55,9 +73,16 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
                 }
                 return item
             })
+            const calendar = state.calendar.map((item: any) => {
+                if (item.order_id === action.payload) {
+                    item.isDone = true
+                }
+                return item
+            })
             return {
                 ...state,
                 items: array,
+                calendar
             };
         }
         case constants.ACTIONS.ORDERS.SET_PAGE: {

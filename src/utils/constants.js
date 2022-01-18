@@ -205,6 +205,8 @@ export const ACTIONS = {
     },
     ORDERS: {
         SET_ORDERS: "SET_ORDERS",
+        SET_CALENDAR: "SET_CALENDAR",
+        SET_CALENDAR_READY: "SET_CALENDAR_READY",
         SET_READY_ORDERS: "SET_READY_ORDERS",
         SET_PAGE: "SET_PAGE",
         DELETE_ORDER: "DELETE_ORDER",
@@ -269,3 +271,5 @@ export const datePattern = "[0-9]{4}.[0-9]{2}.[0-9]{2}"
 export const stringPattern = "[A-ZА-Яa-zа-я -]+"
 export const emailPattern = "[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]+"
 export const rankingPattern = "([1-5])|([1-4].[05])|(5.0)"
+export const DAYS_RUS = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
+export const MONTH_RUS = ["Декабрь", "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
