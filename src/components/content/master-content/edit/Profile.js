@@ -36,34 +36,36 @@ const Profile = () => {
                             aria-controls="Filter"><span className="font-size:bigger">Ваш список городов: &nbsp;</span>
                         {!openFilter ? EXPAND_ARROWS : COLLAPSE_ARROWS}
                     </button>
-                    {openFilter &&
-                    <div id="Filter mt-4">
-                        <div className="form-group">
+                    {
+                        openFilter &&
+                        <div id="Filter mt-4">
                             <div className="form-group">
-                                <ul className="list-group-row">
-                                    {
-                                        deps.map((d) => {
-                                            return (
-                                                <div key={d}
-                                                     className="col-md-4 p-2">
-                                                    {cities?.find(c => c.city_id === d)?.city_name}
-                                                    <button className="btn"
-                                                            onClick={() => dispatch(deleteMasterCity({
-                                                                city_id: d,
-                                                                master_id: master.master_id
-                                                            }))}>
-                                                        <span>&times;</span>
-                                                    </button>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                </ul>
+                                <div className="form-group">
+                                    <ul className="list-group-row">
+                                        {
+                                            deps.map((d) => {
+                                                return (
+                                                    <div key={d}
+                                                         className="col-md-4 p-2">
+                                                        {cities?.find(c => c.city_id === d)?.city_name}
+                                                        <button className="btn"
+                                                                onClick={() => dispatch(deleteMasterCity({
+                                                                    city_id: d,
+                                                                    master_id: master.master_id
+                                                                }))}>
+                                                            <span>&times;</span>
+                                                        </button>
+                                                    </div>
+                                                )
+                                            })
+                                        }
+                                    </ul>
+                                </div>
                             </div>
+                            <AddCity master={master}/>
                         </div>
-                        <AddCity master={master}/>
-                    </div>
-                    }</div>
+                    }
+                </div>
                 : <div>
                     <h4 className="text-left mt-5">Ваш список городов пуст</h4>
                     <AddCity master={master}/>
