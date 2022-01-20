@@ -61,8 +61,9 @@ const Calendar = () => {
     let today = dayjs(stringDate);
 
     let startDay = today.clone().startOf('month').startOf('week');
+    startDay = startDay.clone().add(1, 'day');
     let endDay = today.clone().endOf('month').endOf('week');
-
+    endDay = endDay.clone().add(1, 'day');
     useEffect(() => {
         if (types.length === 0) {
             dispatch(setTypes())
@@ -126,7 +127,7 @@ const Calendar = () => {
                 {
                     DAYS_RUS.map((name, i) => (
                         <CellWrapper
-                            isWeekday={i === 6 || i === 0}
+                            isWeekday={i === 6 || i === 5}
                             key={i}
                             isSelectedMonth
                             isHeader
