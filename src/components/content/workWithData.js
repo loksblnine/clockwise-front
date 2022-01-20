@@ -1,5 +1,5 @@
-import {instance} from "../../http/headerPlaceholder.instance";
 import {toast} from "react-toastify";
+import {instance} from "../../http/headerPlaceholder.instance";
 
 //region send mails
 export const sendConfirmationOrder = (order, master, history, photos) => {

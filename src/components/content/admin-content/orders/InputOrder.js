@@ -1,9 +1,8 @@
 import React, {useCallback, useState} from "react";
-import * as constants from "../../../../utils/constants";
-import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
 import {addOrder} from "../../../../store/actions/orderActions";
-import {datePattern} from "../../../../utils/constants";
+import * as constants from "../../../../utils/constants";
 
 const InputOrder = () => {
     const inputRef = React.useRef(null)
@@ -102,12 +101,11 @@ const InputOrder = () => {
                                 <input type="date" name="date" value={order?.order_time?.split('T')[0]}
                                        className="form-control react-datetime-picker"
                                        min={constants.DATE_FROM} max={constants.DATE_TO}
-                                       required pattern={datePattern}
+                                       required pattern={constants.datePattern}
                                        onChange={handleChange}/>
 
                                 <label className="text" htmlFor="time">Время заказа (8:00 - 17:00) </label>
                                 <input type="time" name="time" className="form-control timepicker"
-                                       min={constants.TIME_FROM} max={constants.TIME_TO}
                                        value={order?.order_time?.split('T')[1]?.split('.')[0]}
                                        required step="3600"
                                        id="24h"

@@ -1,12 +1,13 @@
 import React, {useEffect} from 'react';
 import {LinkContainer} from "react-router-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
 import {BrowserRouter as Router, Route, Switch, withRouter} from "react-router-dom";
-import Calendar from "./calendar/Calendar";
+
 import ListOrders from "./orders/ListOrders";
 import Profile from "./edit/Profile";
-import {setUserData} from "../../../store/actions/userActions";
-import {useDispatch, useSelector} from "react-redux";
+import Calendar from "./calendar/Calendar";
 import WeekDisplay from "./calendar/WeekDisplay";
+import {setUserData} from "../../../store/actions/userActions";
 
 
 const MasterPanel = () => {

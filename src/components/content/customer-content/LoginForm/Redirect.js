@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import * as constants from "../../../../utils/constants";
 import {Redirect} from "react-router-dom";
+
+import * as constants from "../../../../utils/constants";
 
 const RedirectingPage = () => {
     const token = window.location.pathname.split('/')[3]

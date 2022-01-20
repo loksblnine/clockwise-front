@@ -1,9 +1,10 @@
 import React, {useCallback, useEffect} from "react";
+import {Spinner} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
+
 import EditMaster from "./EditMaster";
 import InputMaster from "./InputMaster";
-import {Spinner} from "react-bootstrap";
 import AddCity from "./AddCity";
-import {useDispatch, useSelector} from "react-redux";
 import {activeMaster, deleteCityAtMaster, deleteMaster, setMasters} from "../../../../store/actions/masterActions";
 import {setCities} from "../../../../store/actions/cityActions";
 

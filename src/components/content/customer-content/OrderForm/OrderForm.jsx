@@ -1,15 +1,18 @@
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {useFormik} from 'formik';
-import * as constants from "../../../../utils/constants";
-import {useHistory, useLocation, withRouter} from "react-router-dom";
-import './OrderStyles.css'
-import {toast} from "react-toastify";
-import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory, useLocation, withRouter} from "react-router-dom";
+import {toast} from "react-toastify";
+
 import {setCities} from "../../../../store/actions/cityActions";
 import {removePhoto, setPhotos} from "../../../../store/actions/userActions";
-import santaHat from "../../../../images/santashat.png";
+
+import * as constants from "../../../../utils/constants";
 import {datePattern} from "../../../../utils/constants";
+
+import santaHat from "../../../../images/santashat.png";
+import './OrderStyles.css'
 
 const validate = (values) => {
     const errors = {};

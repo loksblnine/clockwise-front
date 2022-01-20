@@ -1,13 +1,15 @@
 import React, {useCallback, useEffect} from 'react';
-import {STAR} from "../../../../utils/svg_constants";
-import {setUserData} from "../../../../store/actions/userActions";
-import * as constants from "../../../../utils/constants";
+import {useDispatch, useSelector} from "react-redux";
+import {Spinner} from "react-bootstrap";
+
 import ModalApprove from "./ModalApprove";
 import PaymentDetails from "../../customer-content/Payment/PaymentDetails";
-import {useDispatch, useSelector} from "react-redux";
+import {setUserData} from "../../../../store/actions/userActions";
 import {setOrdersMaster} from "../../../../store/actions/orderActions";
-import {Spinner} from "react-bootstrap";
 import {setCities} from "../../../../store/actions/cityActions";
+
+import {STAR} from "../../../../utils/svg_constants";
+import * as constants from "../../../../utils/constants";
 
 const DisplayMark = ({mark}) => {
     return (

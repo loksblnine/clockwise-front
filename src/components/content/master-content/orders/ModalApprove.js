@@ -1,6 +1,6 @@
+import React from "react";
 import {useDispatch} from "react-redux";
 import {approveOrder} from "../../../../store/actions/masterActions";
-import React from "react";
 
 const ModalApprove = ({order}) => {
     const dispatch = useDispatch()

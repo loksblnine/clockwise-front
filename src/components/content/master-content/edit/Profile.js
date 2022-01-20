@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import EditProfileMaster from "./EditProfileMaster";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteMasterCity, setUserData} from "../../../../store/actions/userActions";
-import {COLLAPSE_ARROWS, EXPAND_ARROWS} from "../../../../utils/svg_constants";
+
 import AddCity from "./AddCity";
+import EditProfileMaster from "./EditProfileMaster";
+import {deleteMasterCity, setUserData} from "../../../../store/actions/userActions";
 import {setCities} from "../../../../store/actions/cityActions";
+
+import {COLLAPSE_ARROWS, EXPAND_ARROWS} from "../../../../utils/svg_constants";
 
 const Profile = () => {
     const dispatch = useDispatch()

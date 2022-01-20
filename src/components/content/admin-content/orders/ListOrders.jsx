@@ -1,12 +1,13 @@
 import React, {useCallback, useEffect, useState} from "react";
-import * as constants from "../../../../utils/constants";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
-import {deleteOrder, setOrdersAdmin} from "../../../../store/actions/orderActions";
+
 import {instance} from "../../../../http/headerPlaceholder.instance";
+import PaymentDetails from "../../customer-content/Payment/PaymentDetails";
+import {deleteOrder, setOrdersAdmin} from "../../../../store/actions/orderActions";
 import {hasNumber, objectToQueryString} from "../../../../utils/utils";
 import {COLLAPSE_ARROWS, EXPAND_ARROWS} from "../../../../utils/svg_constants";
-import PaymentDetails from "../../customer-content/Payment/PaymentDetails";
+import * as constants from "../../../../utils/constants";
 import {datePattern} from "../../../../utils/constants";
 
 const ListOrders = () => {

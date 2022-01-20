@@ -1,9 +1,11 @@
 import React, {useRef, useState} from 'react';
 import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
-import Article from "../../customer-content/Blog/Article";
 import {Editor} from '@tinymce/tinymce-react';
+
+import Article from "../../customer-content/Blog/Article";
 import {addArticle, removeArticlePhoto, setArticlePhoto} from "../../../../store/actions/blogActions";
+
 import * as constants from "../../../../utils/constants";
 
 const CreateArticle = () => {

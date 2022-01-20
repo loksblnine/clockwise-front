@@ -1,13 +1,15 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import * as constants from "../../../utils/constants";
-import {ARROWS_SVG, STAR} from "../../../utils/svg_constants";
-import {Spinner} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
+import {Spinner} from "react-bootstrap";
+
 import {setOrdersCustomer, sortOrders} from "../../../store/actions/orderActions";
 import {setUserData} from "../../../store/actions/userActions";
 import SetMarkDialog from "./SetMarkDialog";
 import EditProfileClient from "./EditProfileClient";
-import {useHistory} from "react-router-dom";
+
+import * as constants from "../../../utils/constants";
+import {ARROWS_SVG, STAR} from "../../../utils/svg_constants";
 
 const OrderMark = ({mark}) => {
     return (

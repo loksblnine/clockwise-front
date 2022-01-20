@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactHtmlParser from "react-html-parser"
 import {useDispatch, useSelector} from "react-redux";
-import {deleteArticle} from "../../../../store/actions/blogActions";
 import {useHistory} from "react-router-dom";
+
+import {deleteArticle} from "../../../../store/actions/blogActions";
 
 const ArticlePreview = ({article}) => {
     const dispatch = useDispatch()

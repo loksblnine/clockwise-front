@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {setMasterNewCity} from "../../../../store/actions/userActions";
 import {Spinner} from "react-bootstrap";
+import {setMasterNewCity} from "../../../../store/actions/userActions";
 
 const AddCity = ({master}) => {
     const inputRef = React.useRef(null)

@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import * as constants from "../../../../utils/constants";
+import {useDispatch, useSelector} from "react-redux";
 import {Redirect, useHistory, useLocation} from 'react-router-dom'
-import '../../../App.css'
 import {Spinner} from "react-bootstrap";
+
 import {getFreeMasters} from "../../getData";
 import {sendConfirmationOrder} from "../../workWithData";
-import {useDispatch, useSelector} from "react-redux";
 import {clearPhotos} from "../../../../store/actions/userActions";
-import {SERVER_URL} from "../../../../utils/constants";
 import {setTypes} from "../../../../store/actions/typeActions";
+
+import * as constants from "../../../../utils/constants";
+import '../../../App.css'
 
 const MasterView = () => {
     const dispatch = useDispatch()

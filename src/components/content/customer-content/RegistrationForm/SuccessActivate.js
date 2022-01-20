@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import {setActivate} from "../../../../http/userAPI";
 import {useDispatch} from "react-redux";
+import {setActivate} from "../../../../http/userAPI";
 
 const SuccessRegister = () => {
     const token = window.location.pathname.split('/')[2]

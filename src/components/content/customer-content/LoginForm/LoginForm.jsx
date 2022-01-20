@@ -3,8 +3,10 @@ import {useFormik} from 'formik';
 import {useHistory, withRouter} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {LinkContainer} from "react-router-bootstrap";
-import {setUser} from "../../../../store/actions/userActions";
 import {toast} from "react-toastify";
+
+import {setUser} from "../../../../store/actions/userActions";
+
 import {SERVER_URL} from "../../../../utils/constants";
 import {GOOGLE_SVG} from "../../../../utils/svg_constants";
 

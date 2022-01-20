@@ -4,13 +4,13 @@ import {BrowserRouter as Router} from "react-router-dom";
 import {checkAuth} from "../http/userAPI";
 import {Spinner} from "react-bootstrap";
 import Snowfall from 'react-snowfall'
+import {ToastContainer} from "react-toastify";
+import {useDispatch, useSelector} from "react-redux";
 //css
 import 'react-toastify/dist/ReactToastify.css';
 //components
 import Header from "./header/Header";
 import AppRouter from "./AppRouter";
-import {ToastContainer} from "react-toastify";
-import {useDispatch, useSelector} from "react-redux";
 import Footer from "./footer/Footer";
 
 const App = () => {

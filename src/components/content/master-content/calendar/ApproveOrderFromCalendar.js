@@ -1,7 +1,9 @@
-import {useDispatch, useSelector} from "react-redux";
-import {approveOrder} from "../../../../store/actions/masterActions";
 import React from "react";
+import {useDispatch, useSelector} from "react-redux";
 import styled from "styled-components";
+
+import {approveOrder} from "../../../../store/actions/masterActions";
+
 import * as constants from "../../../../utils/constants";
 
 const EventItemWrapper = styled('button')`

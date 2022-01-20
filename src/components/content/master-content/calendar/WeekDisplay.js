@@ -1,14 +1,16 @@
 import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory, useLocation, withRouter} from "react-router-dom";
 import styled from 'styled-components';
 import dayjs from "dayjs";
-import {useDispatch, useSelector} from "react-redux";
-import {setUserData} from "../../../../store/actions/userActions";
-import ApproveOrderFromCalendar from "./ApproveOrderFromCalendar";
-import {instance} from "../../../../http/headerPlaceholder.instance";
-import {ACTIONS, DAYS_RUS, MONTH_RUS} from "../../../../utils/constants";
 import {Spinner} from "react-bootstrap";
+
+import ApproveOrderFromCalendar from "./ApproveOrderFromCalendar";
+import {setUserData} from "../../../../store/actions/userActions";
+import {instance} from "../../../../http/headerPlaceholder.instance";
 import DayModal from "./DayModal";
-import {useHistory, useLocation, withRouter} from "react-router-dom";
+
+import {ACTIONS, DAYS_RUS, MONTH_RUS} from "../../../../utils/constants";
 
 const GridWrapper = styled.div`
   display: grid;

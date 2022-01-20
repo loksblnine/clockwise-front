@@ -1,8 +1,9 @@
 import React, {useCallback, useState} from 'react';
-import {setMarkOrder} from "../../../store/actions/orderActions";
 import {useDispatch} from "react-redux";
-import "./styles.css"
+
+import {setMarkOrder} from "../../../store/actions/orderActions";
 import {rankingPattern} from "../../../utils/constants";
+import "./styles.css"
 
 const SetMarkDialog = ({order}) => {
     const dispatch = useDispatch()
