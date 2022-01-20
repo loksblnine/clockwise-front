@@ -58,8 +58,9 @@ const WeekDisplay = () => {
     const [stringDate, setStringDate] = useState(() => location?.state?.dayItem || new Date(new Date().setDate(12)).toString())
     let today = dayjs(stringDate);
     let startDay = today.clone().startOf('week');
+    startDay = startDay.clone().add(1, 'day');
     let endDay = today.clone().endOf('week');
-
+    endDay = endDay.clone().add(1, 'day');
     useEffect(() => {
         if (!master?.master_id) {
             dispatch(setUserData("masters", email))
@@ -120,7 +121,7 @@ const WeekDisplay = () => {
                 {
                     DAYS_RUS.map((name, i) => (
                         <CellWrapper
-                            isWeekday={i === 6 || i === 0}
+                            isWeekday={i === 6 || i === 5}
                             key={i}
                             isSelectedMonth
                             isHeader
