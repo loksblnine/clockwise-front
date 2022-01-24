@@ -118,10 +118,18 @@ const Calendar = () => {
     }
     return (
         <div className="m-2">
-            <div className="row m-2">
+            <div className="d-flex row m-2 justify-content-center">
                 <button className="btn col-sm-1" onClick={reduceMonth}>{"<<"}</button>
-                <h3 className="d-flex justify-content-center p-2 col-md-3">{MONTH_RUS[new Date(stringDate).getMonth() + 1]}, {new Date(stringDate).getUTCFullYear()}</h3>
+                <h3 className="d-flex justify-content-center p-2 col-md-3">{MONTH_RUS[new Date(stringDate).getMonth() + 1]}, {new Date(stringDate).getFullYear()}</h3>
                 <button className="btn col-sm-1" onClick={addMonth}>{">>"}</button>
+                <button className="btn col-sm-1" onClick={(e) => {
+                    e.preventDefault()
+                    history.push({
+                        pathname: '/calendar/weekly',
+                        state: {dayItem: today.clone().startOf('month').toString()}
+                    })
+                }}>Неделя
+                </button>
             </div>
             <GridWrapper isHeader>
                 {
@@ -162,9 +170,19 @@ const Calendar = () => {
                                         orders
                                             .filter(o => dayjs(o.order_time.split('T')[0]).diff(dayItem, 'day') === 0)
                                             .reverse()
-                                            .map(o => (
-                                                <ApproveOrderFromCalendar key={o.order_id} order={o}/>
-                                            ))
+                                            .map((o, i, array) => {
+                                                if (i < 2) {
+                                                    return <ApproveOrderFromCalendar key={o.order_id} order={o}/>
+                                                } else {
+                                                    return (
+                                                        <p className="text text-dark underline"
+                                                           data-toggle="modal"
+                                                           data-target={`#id${dayItem.unix()}`}><u>
+                                                            И ещё +{array.length - 2}</u>
+                                                        </p>
+                                                    )
+                                                }
+                                            })
                                     }
                                 </EventListWrapper>
                             </RowInCell>

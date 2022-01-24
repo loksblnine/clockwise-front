@@ -112,61 +112,72 @@ const WeekDisplay = () => {
     }
     return (
         <div className="m-2">
-            <div className="row m-2">
+            <div className="d-flex row m-2 justify-content-center">
                 <button className="btn col-sm-1" onClick={reduceWeek}>{"<<"}</button>
-                <h3 className="d-flex justify-content-center p-2 col-md-3">{MONTH_RUS[new Date(stringDate).getMonth() + 1]}, {new Date(stringDate).getUTCFullYear()}</h3>
+                <h3 className="d-flex justify-content-center p-2 col-md-3">{MONTH_RUS[new Date(stringDate).getMonth() + 1]}, {new Date(stringDate).getFullYear()}</h3>
                 <button className="btn col-sm-1" onClick={addWeek}>{">>"}</button>
+                <button className="btn col-sm-1" onClick={(e) => {
+                    e.preventDefault()
+                    history.push({
+                        pathname: '/calendar',
+                        state: {dayItem: today.clone().startOf('month').toString()}
+                    })
+                }}>Месяц
+                </button>
+
             </div>
-            <GridWrapper isHeader>
-                {
-                    DAYS_RUS.map((name, i) => (
-                        <CellWrapper
-                            isWeekday={i === 6 || i === 5}
-                            key={i}
-                            isSelectedMonth
-                            isHeader
-                        >
-                            <RowInCell justifyContent={'flex-end'} pr={1}>
-                                {name}
-                            </RowInCell>
-                        </CellWrapper>
-                    ))
-                }
-            </GridWrapper>
-            <GridWrapper>
-                {
-                    daysMap.map((dayItem) => (
-                        <CellWrapper
-                            onDoubleClick={(e) => {
-                                e.preventDefault()
-                                history.push({
-                                    pathname: '/calendar',
-                                    state: {dayItem: dayItem.toString()}
-                                })
-                            }}
-                            isWeekday={dayItem.day() === 6 || dayItem.day() === 0}
-                            key={dayItem.unix()} isModal
-                            isSelectedMonth={isSelectedMonth(dayItem)}
-                        >
-                            <RowInCell justifyContent={'flex-end'}>
-                                <ShowDayWrapper>
-                                    <DayModal dayItem={dayItem}/>
-                                </ShowDayWrapper>
-                                <EventListWrapper>
-                                    {
-                                        orders
-                                            .filter(o => dayjs(o.order_time.split('T')[0]).diff(dayItem, 'day') === 0)
-                                            .reverse()
-                                            .map(o => (
-                                                <ApproveOrderFromCalendar key={o.order_id} order={o}/>
-                                            ))
-                                    }
-                                </EventListWrapper>
-                            </RowInCell>
-                        </CellWrapper>
-                    ))
-                }
-            </GridWrapper>
+            <div className="m-2">
+                <GridWrapper isHeader>
+                    {
+                        DAYS_RUS.map((name, i) => (
+                            <CellWrapper
+                                isWeekday={i === 6 || i === 5}
+                                key={i}
+                                isSelectedMonth
+                                isHeader
+                            >
+                                <RowInCell justifyContent={'flex-end'} pr={1}>
+                                    {name}
+                                </RowInCell>
+                            </CellWrapper>
+                        ))
+                    }
+                </GridWrapper>
+                <GridWrapper>
+                    {
+                        daysMap.map((dayItem) => (
+                            <CellWrapper
+                                onDoubleClick={(e) => {
+                                    e.preventDefault()
+                                    history.push({
+                                        pathname: '/calendar',
+                                        state: {dayItem: dayItem.toString()}
+                                    })
+                                }}
+                                isWeekday={dayItem.day() === 6 || dayItem.day() === 0}
+                                key={dayItem.unix()} isModal
+                                isSelectedMonth={isSelectedMonth(dayItem)}
+                            >
+                                <RowInCell justifyContent={'flex-end'}>
+                                    <ShowDayWrapper>
+                                        <DayModal dayItem={dayItem}/>
+                                    </ShowDayWrapper>
+                                    <EventListWrapper>
+                                        {
+                                            orders
+                                                .filter(o => dayjs(o.order_time.split('T')[0]).diff(dayItem, 'day') === 0)
+                                                .reverse()
+                                                .map(o => (
+                                                    <ApproveOrderFromCalendar key={o.order_id} order={o}/>
+                                                ))
+                                        }
+                                    </EventListWrapper>
+                                </RowInCell>
+                            </CellWrapper>
+                        ))
+                    }
+                </GridWrapper>
+            </div>
         </div>
     );
 };

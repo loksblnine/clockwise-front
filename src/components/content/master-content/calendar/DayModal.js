@@ -50,9 +50,13 @@ const DayModal = ({dayItem}) => {
                                     <div>
                                         {todayOrders.reverse()
                                             .map(o => (
-                                                <p key={o.order_id} data-toggle="modal" className={o.isDone ? "btn btn-success": "btn btn-danger"}
-                                                   data-target={`#id${o.order_id}`}>Заказ №{o.order_id}</p>
-                                            ))}
+                                                <div key={o.order_id}>
+                                                    <li>{Number(o.order_time.split("T")[1].split(':')[0])+":00"}</li>
+                                                    <button key={o.order_id} data-toggle="modal"
+                                                            className={o.isDone ? "btn btn-success m-2" : "btn btn-danger m-2"}
+                                                            data-target={`#id${o.order_id}`}>Заказ
+                                                        №{o.order_id}</button>
+                                                </div>))}
                                     </div>
                                     : "У вас нет заказов в этот день"
                             }
