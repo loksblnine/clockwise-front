@@ -5,9 +5,9 @@ import {Spinner} from "react-bootstrap";
 import {deleteOrder, setOrdersAdmin} from "../../../../store/actions/orderActions";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {hasNumber, objectToQueryString} from "../../../../utils/utils";
-import {COLLAPSE_ARROWS, EXPAND_ARROWS} from "../../../../utils/svg_constants";
+import {COLLAPSE_ARROWS, EXCEL_SVG, EXPAND_ARROWS} from "../../../../utils/svg_constants";
 import PaymentDetails from "../../customer-content/Payment/PaymentDetails";
-import {datePattern} from "../../../../utils/constants";
+import {datePattern, SERVER_URL} from "../../../../utils/constants";
 
 const ListOrders = () => {
     const orders = useSelector(state => state.orders.items)
@@ -80,15 +80,22 @@ const ListOrders = () => {
     }
     return (
         <div>
-            <h2 className="text-left mt-5">Список заказов</h2>
-            <button className="btn" type="button" data-toggle="collapse"
-                    data-target="#Filter" onClick={(e) => {
-                e.preventDefault()
-                setOpenFilter(!openFilter)
-            }}
-                    aria-controls="Filter">Фильтрация &nbsp;
-                {!openFilter ? EXPAND_ARROWS : COLLAPSE_ARROWS}
-            </button>
+            <h2 className="text-left">Список заказов</h2>
+            <div className="d-flex mt-5 justify-content-between">
+                <button className="btn" type="button" data-toggle="collapse"
+                        data-target="#Filter" onClick={(e) => {
+                    e.preventDefault()
+                    setOpenFilter(!openFilter)
+                }}
+                        aria-controls="Filter">Фильтрация &nbsp;
+                    {!openFilter ? EXPAND_ARROWS : COLLAPSE_ARROWS}
+                </button>
+                <button className="btn" onClick={(e) => {
+                    e.preventDefault()
+                    window.open(SERVER_URL+"/download/excel?"+objectToQueryString(queryParams), '_blank').focus();
+                }}>Экспорт в {EXCEL_SVG}
+                </button>
+            </div>
             {openFilter && <div id="Filter">
                 <div className="form-group">
                     <div className="form-group">
