@@ -36,3 +36,4 @@ export const STAR =
     </svg>
 export const GOOGLE_SVG = <img src="https://img.icons8.com/color/24/000000/google-logo.png"/>
 export const EXCEL_SVG = <img src="https://img.icons8.com/color/22/000000/microsoft-excel-2019--v1.png"/>
+export const PDF_SVG = <img src="https://img.icons8.com/color/22/000000/pdf.png"/>

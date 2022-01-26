@@ -1,13 +1,15 @@
 import React, {useCallback, useEffect, useState} from "react";
 import * as constants from "../../../../utils/constants";
+import {datePattern, SERVER_URL} from "../../../../utils/constants";
+import PaymentDetails from "../../customer-content/Payment/PaymentDetails";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import {deleteOrder, setOrdersAdmin} from "../../../../store/actions/orderActions";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {hasNumber, objectToQueryString} from "../../../../utils/utils";
-import {COLLAPSE_ARROWS, EXCEL_SVG, EXPAND_ARROWS} from "../../../../utils/svg_constants";
-import PaymentDetails from "../../customer-content/Payment/PaymentDetails";
-import {datePattern, SERVER_URL} from "../../../../utils/constants";
+import {COLLAPSE_ARROWS, EXCEL_SVG, EXPAND_ARROWS, PDF_SVG} from "../../../../utils/svg_constants";
+import {saveAs} from "file-saver";
+
 
 const ListOrders = () => {
     const orders = useSelector(state => state.orders.items)
@@ -52,7 +54,12 @@ const ListOrders = () => {
         })
         dispatch(setOrdersAdmin(0, objectToQueryString(queryParams)))
     }
-
+    const saveFile = () => {
+        saveAs(
+            `${SERVER_URL}/download/excel?${objectToQueryString(queryParams)}`,
+            "Отчёт.xlsx"
+        );
+    };
     const handleMasterInput = useCallback((e) => {
         e.preventDefault()
         const {name, value} = e.target;
@@ -90,11 +97,14 @@ const ListOrders = () => {
                         aria-controls="Filter">Фильтрация &nbsp;
                     {!openFilter ? EXPAND_ARROWS : COLLAPSE_ARROWS}
                 </button>
-                <button className="btn" onClick={(e) => {
-                    e.preventDefault()
-                    window.open(SERVER_URL+"/download/excel?"+objectToQueryString(queryParams), '_blank').focus();
-                }}>Экспорт в {EXCEL_SVG}
-                </button>
+                <div>
+                    <button className="btn" onClick={saveFile}>
+                        Экспорт в {EXCEL_SVG}
+                    </button>
+                    <button className="btn">
+                        Экспорт в {PDF_SVG}
+                    </button>
+                </div>
             </div>
             {openFilter && <div id="Filter">
                 <div className="form-group">
