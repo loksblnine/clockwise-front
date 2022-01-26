@@ -1,19 +1,21 @@
 import React, {useCallback, useEffect, useState} from "react";
 import * as constants from "../../../../utils/constants";
-import {datePattern, SERVER_URL} from "../../../../utils/constants";
-import PaymentDetails from "../../customer-content/Payment/PaymentDetails";
+import {datePattern} from "../../../../utils/constants";
+import EditOrder from "./EditOrder";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import {deleteOrder, setOrdersAdmin} from "../../../../store/actions/orderActions";
-import {instance} from "../../../../http/headerPlaceholder.instance";
-import {hasNumber, objectToQueryString} from "../../../../utils/utils";
+import {handleMasterInput, objectToQueryString, saveFile} from "../../../../utils/utils";
 import {COLLAPSE_ARROWS, EXCEL_SVG, EXPAND_ARROWS, PDF_SVG} from "../../../../utils/svg_constants";
-import {saveAs} from "file-saver";
+import {setCities} from "../../../../store/actions/cityActions";
+import {setMasters} from "../../../../store/actions/masterActions";
 
 
 const ListOrders = () => {
     const orders = useSelector(state => state.orders.items)
-    const [masters, setMasters] = useState([])
+    const cities = useSelector(state => state.cities.items)
+    const masters = useSelector(state => state.masters.items)
+    const [mastersList, setMastersList] = useState([])
     const {isReady, loadNext, page} = useSelector(state => state.orders)
     const [openFilter, setOpenFilter] = useState(false)
     const dispatch = useDispatch()
@@ -28,8 +30,15 @@ const ListOrders = () => {
     }
     const [queryParams, setQueryParams] = useState(initialState);
     useEffect(() => {
-        if (orders.length <= 0)
+        if (orders.length <= 0) {
             dispatch(setOrdersAdmin(page, objectToQueryString(queryParams)))
+        }
+        if (cities.length <= 0) {
+            dispatch(setCities())
+        }
+        if (masters.length <= 0) {
+            dispatch(setMasters(0))
+        }
     }, [dispatch])
 
     const handleNextOrders = useCallback((e) => {
@@ -54,34 +63,7 @@ const ListOrders = () => {
         })
         dispatch(setOrdersAdmin(0, objectToQueryString(queryParams)))
     }
-    const saveFile = () => {
-        saveAs(
-            `${SERVER_URL}/download/excel?${objectToQueryString(queryParams)}`,
-            "Отчёт.xlsx"
-        );
-    };
-    const handleMasterInput = useCallback((e) => {
-        e.preventDefault()
-        const {name, value} = e.target;
-        if (!hasNumber(value)) {
-            instance({
-                method: "get",
-                url: `masters/offset/0?name=${value}`
-            }).then(({data}) => setMasters(data))
-            setQueryParams(prevState => ({
-                ...prevState,
-                [name]: "",
-                master_name: value
-            }))
-        } else {
-            setQueryParams(prevState => ({
-                ...prevState,
-                [name]: value.split("|")[0],
-                master_name: value.split("|")[1]
-            }))
-            e.target.value = value.replace(/[0-9|]/g, '')
-        }
-    }, [setQueryParams])
+
     if (!isReady) {
         return <Spinner animation="grow"/>
     }
@@ -98,7 +80,7 @@ const ListOrders = () => {
                     {!openFilter ? EXPAND_ARROWS : COLLAPSE_ARROWS}
                 </button>
                 <div>
-                    <button className="btn" onClick={saveFile}>
+                    <button className="btn" onClick={() => saveFile(queryParams)}>
                         Экспорт в {EXCEL_SVG}
                     </button>
                     <button className="btn">
@@ -131,11 +113,11 @@ const ListOrders = () => {
                         <label>Выбрать мастера</label>
                         <input className="form-control" list="datalistOptions" name="master_id" autoComplete="on"
                                type="text" value={queryParams.master_name}
-                               placeholder="Type to search..." onChange={(e) => handleMasterInput(e)}
+                               placeholder="Type to search..." onChange={(e) => handleMasterInput(e, setQueryParams, setMastersList)}
                         />
                         <datalist id="datalistOptions">
                             <option key="1" value="">---Выбрать мастера---</option>
-                            {masters?.map(master => {
+                            {mastersList?.map(master => {
                                 return (
                                     <option key={master.master_id}
                                             value={master.master_id + "|" + master.master_name}
@@ -192,7 +174,7 @@ const ListOrders = () => {
                         <th scope="col">Время заказа</th>
                         <th scope="col">&nbsp;</th>
                         <th scope="col">&nbsp;</th>
-                        <th scope="col">Статус оплаты</th>
+                        <th scope="col">Показать полностью</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -214,11 +196,7 @@ const ListOrders = () => {
                                     </button>
                                 </td>
                                 <td>
-                                    {
-                                        !order?.isPaid ?
-                                            "Не оплачено"
-                                            : <PaymentDetails order={order}/>
-                                    }
+                                    <EditOrder order={order}/>
                                 </td>
                             </tr>
                         ))}

@@ -33,8 +33,13 @@ const masterReducer = (state = initialState, action: { type: string; payload: an
             };
         }
         case constants.ACTIONS.MASTERS.UPDATE_MASTER: {
-            //todo rewrite
-            const array = state.items.filter((item: any) => item.master_id !== action.payload.master_id).concat(action.payload)
+            const array = state.items.map((item: any) => {
+                if (item.master_id === action.payload.master_id) {
+                    return action.payload
+                } else {
+                    return item
+                }
+            })
             return {
                 ...state,
                 items: array,

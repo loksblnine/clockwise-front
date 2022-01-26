@@ -42,7 +42,14 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
             };
         }
         case constants.ACTIONS.ORDERS.UPDATE_ORDER: {
-            const array = state.items.filter((item: any) => item.order_id !== action.payload.order_id).concat(action.payload)
+            const array = state.items.map((item: any) => {
+                if(item.order_id === action.payload.order_id){
+                    return action.payload
+                }
+                else {
+                    return item
+                }
+            })
             return {
                 ...state,
                 items: array,

@@ -89,7 +89,6 @@ const LoginForm = () => {
                                     window.location = `${SERVER_URL}/auth/google`
                                 }}
                         >Войдите используя учетную запись &nbsp; {GOOGLE_SVG}
-
                         </button>
                     </div>
                 </div>
