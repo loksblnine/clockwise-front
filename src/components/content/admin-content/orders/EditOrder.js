@@ -26,12 +26,14 @@ const EditOrder = (initialOrder) => {
             url: `photo/show/${order.order_id}`
         })
             .then(({data}) => setPhoto(data))
-        instance({
-            method: "get",
-            url: `pay/order/${order.order_id}`
-        }).then(({data}) => {
-            setData(data)
-        })
+        if (order.isPaid) {
+            instance({
+                method: "get",
+                url: `pay/order/${order.order_id}`
+            }).then(({data}) => {
+                setData(data)
+            })
+        }
     }, [])
     const editOrder = useCallback((e) => {
         e.preventDefault()
@@ -63,7 +65,8 @@ const EditOrder = (initialOrder) => {
                     <div className="modal-content">
                         <form onSubmit={(e) => editOrder(e)}>
                             <div className="modal-header">
-                                <h2 className="modal-title" id="exampleModalLabel">Редактировать заказ #{order.order_id}</h2>
+                                <h2 className="modal-title" id="exampleModalLabel">Редактировать заказ
+                                    #{order.order_id}</h2>
                                 <button type="button" className="close" data-dismiss="modal">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -205,7 +208,7 @@ const EditOrder = (initialOrder) => {
                                     photo.map((item, i) => {
                                         return (
                                             <div
-                                                className={`d-flex align-items-start col-1   m-3`}
+                                                className="d-flex align-items-start col-1 m-3"
                                                 key={i}>
                                                 <img
                                                     src={item}

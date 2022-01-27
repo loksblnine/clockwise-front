@@ -26,10 +26,16 @@ export const objectToQueryString = (object) => {
 export const hasNumber = (myString) => {
     return /\d/.test(myString);
 }
-export const saveFile = (queryParams) => {
+export const saveExcelFile = (queryParams) => {
     saveAs(
         `${SERVER_URL}/download/excel?${objectToQueryString(queryParams)}`,
         "Отчёт.xlsx"
+    );
+};
+export const savePDFile = (id, token) => {
+    saveAs(
+        `${SERVER_URL}/download/pdf/${id}?token=${token}`,
+        `Чек${id}.pdf`
     );
 };
 export const handleMasterInput = (e, setQueryParams, setMastersList) => {

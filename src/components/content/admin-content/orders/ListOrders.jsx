@@ -5,8 +5,8 @@ import EditOrder from "./EditOrder";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import {deleteOrder, setOrdersAdmin} from "../../../../store/actions/orderActions";
-import {handleMasterInput, objectToQueryString, saveFile} from "../../../../utils/utils";
-import {COLLAPSE_ARROWS, EXCEL_SVG, EXPAND_ARROWS, PDF_SVG} from "../../../../utils/svg_constants";
+import {handleMasterInput, objectToQueryString, saveExcelFile} from "../../../../utils/utils";
+import {COLLAPSE_ARROWS, EXCEL_SVG, EXPAND_ARROWS} from "../../../../utils/svg_constants";
 import {setCities} from "../../../../store/actions/cityActions";
 import {setMasters} from "../../../../store/actions/masterActions";
 
@@ -80,11 +80,8 @@ const ListOrders = () => {
                     {!openFilter ? EXPAND_ARROWS : COLLAPSE_ARROWS}
                 </button>
                 <div>
-                    <button className="btn" onClick={() => saveFile(queryParams)}>
+                    <button className="btn" onClick={() => saveExcelFile(queryParams)}>
                         Экспорт в {EXCEL_SVG}
-                    </button>
-                    <button className="btn">
-                        Экспорт в {PDF_SVG}
                     </button>
                 </div>
             </div>
@@ -188,7 +185,7 @@ const ListOrders = () => {
                                 <td>{constants.WORK_TYPES[order.work_id].key}</td>
                                 <td>{order.order_time.split('T')[0]}</td>
                                 <td>{order.order_time.split('T')[1].split('.')[0]}</td>
-                                <td>&nbsp;{/*<EditOrder order={order}/>*/}</td>
+                                <td>&nbsp;</td>
                                 <td>
                                     <button className="btn btn-danger"
                                             onClick={() => dispatch(deleteOrder(order.order_id))}
