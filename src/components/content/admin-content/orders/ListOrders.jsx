@@ -1,17 +1,21 @@
 import React, {useCallback, useEffect, useState} from "react";
 import * as constants from "../../../../utils/constants";
+import {datePattern} from "../../../../utils/constants";
+import EditOrder from "./EditOrder";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import {deleteOrder, setOrdersAdmin} from "../../../../store/actions/orderActions";
-import {instance} from "../../../../http/headerPlaceholder.instance";
-import {hasNumber, objectToQueryString} from "../../../../utils/utils";
-import {COLLAPSE_ARROWS, EXPAND_ARROWS} from "../../../../utils/svg_constants";
-import PaymentDetails from "../../customer-content/Payment/PaymentDetails";
-import {datePattern} from "../../../../utils/constants";
+import {handleMasterInput, objectToQueryString, saveExcelFile} from "../../../../utils/utils";
+import {COLLAPSE_ARROWS, EXCEL_SVG, EXPAND_ARROWS} from "../../../../utils/svg_constants";
+import {setCities} from "../../../../store/actions/cityActions";
+import {setMasters} from "../../../../store/actions/masterActions";
+
 
 const ListOrders = () => {
     const orders = useSelector(state => state.orders.items)
-    const [masters, setMasters] = useState([])
+    const cities = useSelector(state => state.cities.items)
+    const masters = useSelector(state => state.masters.items)
+    const [mastersList, setMastersList] = useState([])
     const {isReady, loadNext, page} = useSelector(state => state.orders)
     const [openFilter, setOpenFilter] = useState(false)
     const dispatch = useDispatch()
@@ -26,8 +30,15 @@ const ListOrders = () => {
     }
     const [queryParams, setQueryParams] = useState(initialState);
     useEffect(() => {
-        if (orders.length <= 0)
+        if (orders.length <= 0) {
             dispatch(setOrdersAdmin(page, objectToQueryString(queryParams)))
+        }
+        if (cities.length <= 0) {
+            dispatch(setCities())
+        }
+        if (masters.length <= 0) {
+            dispatch(setMasters(0))
+        }
     }, [dispatch])
 
     const handleNextOrders = useCallback((e) => {
@@ -53,42 +64,27 @@ const ListOrders = () => {
         dispatch(setOrdersAdmin(0, objectToQueryString(queryParams)))
     }
 
-    const handleMasterInput = useCallback((e) => {
-        e.preventDefault()
-        const {name, value} = e.target;
-        if (!hasNumber(value)) {
-            instance({
-                method: "get",
-                url: `masters/offset/0?name=${value}`
-            }).then(({data}) => setMasters(data))
-            setQueryParams(prevState => ({
-                ...prevState,
-                [name]: "",
-                master_name: value
-            }))
-        } else {
-            setQueryParams(prevState => ({
-                ...prevState,
-                [name]: value.split("|")[0],
-                master_name: value.split("|")[1]
-            }))
-            e.target.value = value.replace(/[0-9|]/g, '')
-        }
-    }, [setQueryParams])
     if (!isReady) {
         return <Spinner animation="grow"/>
     }
     return (
         <div>
-            <h2 className="text-left mt-5">Список заказов</h2>
-            <button className="btn" type="button" data-toggle="collapse"
-                    data-target="#Filter" onClick={(e) => {
-                e.preventDefault()
-                setOpenFilter(!openFilter)
-            }}
-                    aria-controls="Filter">Фильтрация &nbsp;
-                {!openFilter ? EXPAND_ARROWS : COLLAPSE_ARROWS}
-            </button>
+            <h2 className="text-left">Список заказов</h2>
+            <div className="d-flex mt-5 justify-content-between">
+                <button className="btn" type="button" data-toggle="collapse"
+                        data-target="#Filter" onClick={(e) => {
+                    e.preventDefault()
+                    setOpenFilter(!openFilter)
+                }}
+                        aria-controls="Filter">Фильтрация &nbsp;
+                    {!openFilter ? EXPAND_ARROWS : COLLAPSE_ARROWS}
+                </button>
+                <div>
+                    <button className="btn" onClick={() => saveExcelFile(queryParams)}>
+                        Экспорт в {EXCEL_SVG}
+                    </button>
+                </div>
+            </div>
             {openFilter && <div id="Filter">
                 <div className="form-group">
                     <div className="form-group">
@@ -114,11 +110,11 @@ const ListOrders = () => {
                         <label>Выбрать мастера</label>
                         <input className="form-control" list="datalistOptions" name="master_id" autoComplete="on"
                                type="text" value={queryParams.master_name}
-                               placeholder="Type to search..." onChange={(e) => handleMasterInput(e)}
+                               placeholder="Type to search..." onChange={(e) => handleMasterInput(e, setQueryParams, setMastersList)}
                         />
                         <datalist id="datalistOptions">
                             <option key="1" value="">---Выбрать мастера---</option>
-                            {masters?.map(master => {
+                            {mastersList?.map(master => {
                                 return (
                                     <option key={master.master_id}
                                             value={master.master_id + "|" + master.master_name}
@@ -175,7 +171,7 @@ const ListOrders = () => {
                         <th scope="col">Время заказа</th>
                         <th scope="col">&nbsp;</th>
                         <th scope="col">&nbsp;</th>
-                        <th scope="col">Статус оплаты</th>
+                        <th scope="col">Показать полностью</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -189,7 +185,7 @@ const ListOrders = () => {
                                 <td>{constants.WORK_TYPES[order.work_id].key}</td>
                                 <td>{order.order_time.split('T')[0]}</td>
                                 <td>{order.order_time.split('T')[1].split('.')[0]}</td>
-                                <td>&nbsp;{/*<EditOrder order={order}/>*/}</td>
+                                <td>&nbsp;</td>
                                 <td>
                                     <button className="btn btn-danger"
                                             onClick={() => dispatch(deleteOrder(order.order_id))}
@@ -197,11 +193,7 @@ const ListOrders = () => {
                                     </button>
                                 </td>
                                 <td>
-                                    {
-                                        !order?.isPaid ?
-                                            "Не оплачено"
-                                            : <PaymentDetails order={order}/>
-                                    }
+                                    <EditOrder order={order}/>
                                 </td>
                             </tr>
                         ))}

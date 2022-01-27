@@ -1,11 +1,11 @@
 import React from 'react';
 import {useFormik} from 'formik';
-import {useHistory, withRouter} from "react-router-dom";
+import {Redirect, useHistory, withRouter} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {LinkContainer} from "react-router-bootstrap";
 import {setUser} from "../../../../store/actions/userActions";
 import {toast} from "react-toastify";
-import {SERVER_URL} from "../../../../utils/constants";
+import {PATH, SERVER_URL} from "../../../../utils/constants";
 import {GOOGLE_SVG} from "../../../../utils/svg_constants";
 
 const validate = (values) => {
@@ -49,6 +49,9 @@ const LoginForm = () => {
         borderRadius: "10px",
         boxShadow: "0px 0px 10px 10px rgba(0,0,0,0.15)",
     };
+    if(user.role>1){
+        return <Redirect to={PATH[user.role]}/>
+    }
     return (
         <div style={loginPageStyle}>
             <form onSubmit={formik.handleSubmit} className="form">
@@ -89,7 +92,6 @@ const LoginForm = () => {
                                     window.location = `${SERVER_URL}/auth/google`
                                 }}
                         >Войдите используя учетную запись &nbsp; {GOOGLE_SVG}
-
                         </button>
                     </div>
                 </div>
