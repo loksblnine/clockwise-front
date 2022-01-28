@@ -80,7 +80,7 @@ const ListOrders = () => {
                     {!openFilter ? EXPAND_ARROWS : COLLAPSE_ARROWS}
                 </button>
                 <div>
-                    <button className="btn" onClick={() => saveExcelFile(queryParams)}>
+                    <button className="btn" onClick={() => saveExcelFile(queryParams, localStorage.getItem('token'))}>
                         Экспорт в {EXCEL_SVG}
                     </button>
                 </div>

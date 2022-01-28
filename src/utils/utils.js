@@ -26,9 +26,9 @@ export const objectToQueryString = (object) => {
 export const hasNumber = (myString) => {
     return /\d/.test(myString);
 }
-export const saveExcelFile = (queryParams) => {
+export const saveExcelFile = (queryParams, token) => {
     saveAs(
-        `${SERVER_URL}/download/excel?${objectToQueryString(queryParams)}`,
+        `${SERVER_URL}/download/excel?${objectToQueryString(queryParams)}&token=${token}`,
         "Отчёт.xlsx"
     );
 };
