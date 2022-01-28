@@ -1,4 +1,4 @@
-import * as constants from "../../utils/constants";
+import {ACTIONS} from "../../utils/constants";
 
 type initialState = {
     isReady: boolean,
@@ -32,7 +32,7 @@ const masterReducer = (state = initialState, action: { type: string; payload: an
                 page: state.page + 1
             };
         }
-        case constants.ACTIONS.MASTERS.UPDATE_MASTER: {
+        case ACTIONS.MASTERS.UPDATE_MASTER: {
             const array = state.items.map((item: any) => {
                 if (item.master_id === action.payload.master_id) {
                     return action.payload

@@ -1,12 +1,9 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
-import PaymentDetails from "../../customer-content/Payment/PaymentDetails";
 import EditOrder from "./EditOrder";
 
-import {instance} from "../../../../http/headerPlaceholder.instance";
-import {hasNumber, objectToQueryString} from "../../../../utils/utils";
-import {datePattern, ACTIONS, DATE_FROM, datePattern, WORK_TYPES} from "../../../../utils/constants";
+import {ACTIONS, DATE_FROM, datePattern, WORK_TYPES} from "../../../../utils/constants";
 import {deleteOrder, setOrdersAdmin} from "../../../../store/actions/orderActions";
 import {handleMasterInput, objectToQueryString, saveExcelFile} from "../../../../utils/utils";
 import {COLLAPSE_ARROWS, EXCEL_SVG, EXPAND_ARROWS} from "../../../../utils/svg_constants";

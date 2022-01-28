@@ -8,8 +8,9 @@ import {setUserData} from "../../../../store/actions/userActions";
 import {setOrdersMaster} from "../../../../store/actions/orderActions";
 import {setCities} from "../../../../store/actions/cityActions";
 
-import {STAR} from "../../../../utils/svg_constants";
+import {PDF_SVG, STAR} from "../../../../utils/svg_constants";
 import {WORK_TYPES} from "../../../../utils/constants";
+import {savePDFile} from "../../../../utils/utils";
 
 const DisplayMark = ({mark}) => {
     return (
@@ -63,6 +64,7 @@ const ListOrders = () => {
                             <th scope="col">Время конца</th>
                             <th scope="col">Статус заказа</th>
                             <th scope="col">Статус оплаты</th>
+                            <th scope="col">Чек</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -89,6 +91,9 @@ const ListOrders = () => {
                                             : <PaymentDetails order={order}/>
                                     }
                                 </td>
+                                <td onClick={() =>
+                                    savePDFile(order.order_id, localStorage.getItem('token'))
+                                }>{PDF_SVG}</td>
                             </tr>
                         ))}
                         </tbody>
