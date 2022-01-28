@@ -9,7 +9,7 @@ import {setOrdersMaster} from "../../../../store/actions/orderActions";
 import {setCities} from "../../../../store/actions/cityActions";
 
 import {STAR} from "../../../../utils/svg_constants";
-import * as constants from "../../../../utils/constants";
+import {WORK_TYPES} from "../../../../utils/constants";
 
 const DisplayMark = ({mark}) => {
     return (
@@ -71,7 +71,7 @@ const ListOrders = () => {
                                 <th scope="row"> {order?.order_id}</th>
                                 <td>{order?.customer?.customer_name}</td>
                                 <td>{order?.city?.city_name}</td>
-                                <td>{constants.WORK_TYPES[order.work_id].key}</td>
+                                <td>{WORK_TYPES[order.work_id].key}</td>
                                 <td>{order?.order_time?.split('T')[0]}</td>
                                 <td>{Number(order?.order_time?.split('T')[1].split(':')[0]) + ":" + order.order_time.split('T')[1].split(':')[1]}</td>
                                 <td>{Number(order?.order_time?.split('T')[1].split(':')[0]) + Number(order.work_id) + ":" + order.order_time.split('T')[1].split(':')[1]}</td>

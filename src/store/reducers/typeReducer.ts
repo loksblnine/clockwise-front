@@ -1,4 +1,4 @@
-import * as constants from "../../utils/constants";
+import {ACTIONS} from "../../utils/constants";
 
 type initialState = {
     isReady: boolean,
@@ -12,14 +12,14 @@ const initialState: initialState = {
 
 const cityReducer = (state = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
-        case constants.ACTIONS.TYPES.SET_TYPES: {
+        case ACTIONS.TYPES.SET_TYPES: {
             return {
                 ...state,
                 items: action.payload,
                 isReady: true
             };
         }
-        case constants.ACTIONS.TYPES.UPDATE_TYPE: {
+        case ACTIONS.TYPES.UPDATE_TYPE: {
             const array = state.items.map((item: any) => {
                 if (item.work_id === action.payload.work_id)
                     return action.payload
@@ -31,13 +31,13 @@ const cityReducer = (state = initialState, action: { type: string; payload: any;
                 isReady: true
             };
         }
-        case constants.ACTIONS.TYPES.ADD_TYPE: {
+        case ACTIONS.TYPES.ADD_TYPE: {
             return {
                 items: state.items.concat(action.payload),
                 isReady: true
             }
         }
-        case constants.ACTIONS.TYPES.DELETE_TYPE: {
+        case ACTIONS.TYPES.DELETE_TYPE: {
             return {
                 items: state.items.filter((item: any) => Number(item.work_id) !== Number(action.payload)),
                 isReady: true

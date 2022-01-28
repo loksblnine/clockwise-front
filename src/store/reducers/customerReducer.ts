@@ -1,4 +1,4 @@
-import * as constants from "../../utils/constants";
+import {ACTIONS} from "../../utils/constants";
 
 type initialState = {
     isReady: boolean,
@@ -16,7 +16,7 @@ const initialState: initialState = {
 
 const customerReducer = (state = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
-        case constants.ACTIONS.CUSTOMERS.SET_CUSTOMERS: {
+        case ACTIONS.CUSTOMERS.SET_CUSTOMERS: {
             if (action.payload.length < 10) {
                 return {
                     ...state,
@@ -32,26 +32,26 @@ const customerReducer = (state = initialState, action: { type: string; payload: 
                 page: state.page + 1
             };
         }
-        case constants.ACTIONS.CUSTOMERS.UPDATE_CUSTOMER: {
+        case ACTIONS.CUSTOMERS.UPDATE_CUSTOMER: {
             const array = state.items.filter((item: any) => item.customer_id !== action.payload.customer_id).concat(action.payload)
             return {
                 ...state,
                 items: array,
             };
         }
-        case constants.ACTIONS.CUSTOMERS.SET_READY_CUSTOMERS: {
+        case ACTIONS.CUSTOMERS.SET_READY_CUSTOMERS: {
             return {
                 ...state,
                 isReady: action.payload
             };
         }
-        case constants.ACTIONS.CUSTOMERS.ADD_CUSTOMER: {
+        case ACTIONS.CUSTOMERS.ADD_CUSTOMER: {
             return {
                 ...state,
                 items: state.items.concat(action.payload),
             }
         }
-        case constants.ACTIONS.CUSTOMERS.DELETE_CUSTOMER: {
+        case ACTIONS.CUSTOMERS.DELETE_CUSTOMER: {
             return {
                 ...state,
                 items: state.items.filter((item: any) => item.customer_id !== action.payload),

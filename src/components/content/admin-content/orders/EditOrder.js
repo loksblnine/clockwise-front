@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {updateOrder} from "../../../../store/actions/orderActions";
 import {instance} from "../../../../http/headerPlaceholder.instance";
-import * as constants from "../../../../utils/constants";
+import {DATE_FROM, DATE_TO, datePattern} from "../../../../utils/constants";
 
 const EditOrder = (initialOrder) => {
     const cities = useSelector((state) => state.cities.items)
@@ -101,8 +101,8 @@ const EditOrder = (initialOrder) => {
                                 <label className="text" htmlFor="date">Введите дату заказа </label>
                                 <input type="date" name="date" value={order.date}
                                        className="form-control react-datetime-picker"
-                                       min={constants.DATE_FROM} max={constants.DATE_TO}
-                                       required pattern={constants.datePattern}
+                                       min={DATE_FROM} max={DATE_TO}
+                                       required pattern={datePattern}
                                        onChange={handleChange}/>
                                 <label className="text" htmlFor="time">Время заказа (8:00 - 17:00) </label>
                                 <input type="time" name="time" className="form-control timepicker"

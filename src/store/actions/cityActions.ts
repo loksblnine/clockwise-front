@@ -1,4 +1,4 @@
-import * as constants from "../../utils/constants";
+import {ACTIONS} from "../../utils/constants";
 import {instance} from "../../http/headerPlaceholder.instance";
 
 type City = {
@@ -13,14 +13,14 @@ export const setCities = () => {
             url: "/cities"
         })
         dispatch({
-            type: constants.ACTIONS.CITIES.SET_CITIES,
+            type: ACTIONS.CITIES.SET_CITIES,
             payload: data
         })
     }
 }
 export const setReadyCities = (bool: boolean) => (dispatch: any) => {
     dispatch({
-        type: constants.ACTIONS.CITIES.SET_READY_CITIES,
+        type: ACTIONS.CITIES.SET_READY_CITIES,
         payload: bool
     });
 }
@@ -33,7 +33,7 @@ export const updateCity = (city: City, city_id: number) => {
             url: `/cities/${city_id}`
         })
         dispatch({
-            type: constants.ACTIONS.CITIES.UPDATE_CITY,
+            type: ACTIONS.CITIES.UPDATE_CITY,
             payload: data
         });
     }
@@ -47,7 +47,7 @@ export const addCity = (city: City) => {
             url: "/cities"
         })
         dispatch({
-            type: constants.ACTIONS.CITIES.ADD_CITY,
+            type: ACTIONS.CITIES.ADD_CITY,
             payload: data
         });
     }
@@ -60,7 +60,7 @@ export const deleteCity = (id: number) => {
             url: `/cities/${id}`
         })
         dispatch({
-            type: constants.ACTIONS.CITIES.DELETE_CITY,
+            type: ACTIONS.CITIES.DELETE_CITY,
             payload: id
         });
     }

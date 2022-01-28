@@ -4,7 +4,6 @@ import styled from "styled-components";
 
 import {approveOrder} from "../../../../store/actions/masterActions";
 
-import * as constants from "../../../../utils/constants";
 
 const EventItemWrapper = styled('button')`
   position: relative;
@@ -57,7 +56,7 @@ const ApproveOrderFromCalendar = ({order}) => {
                             <div>
                                 <label htmlFor="type">Тип работы</label>
                                 <input className="form-control" disabled
-                                       value={constants.WORK_TYPES[order.work_id].key}
+                                       value={WORK_TYPES[order.work_id].key}
                                 />
                             </div>
                             <div>

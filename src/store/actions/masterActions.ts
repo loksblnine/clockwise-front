@@ -1,4 +1,4 @@
-import * as constants from "../../utils/constants";
+import {ACTIONS} from "../../utils/constants";
 import {instance} from "../../http/headerPlaceholder.instance";
 
 type Master = {
@@ -16,14 +16,14 @@ export const setMasters = (page: number) => {
             url: `/masters/offset/${page}`
         })
         dispatch({
-            type: constants.ACTIONS.MASTERS.SET_MASTERS,
+            type: ACTIONS.MASTERS.SET_MASTERS,
             payload: data
         });
     }
 }
 
 export const setReadyMasters = (isReady: boolean) => ({
-    type: constants.ACTIONS.MASTERS.SET_READY_MASTERS,
+    type: ACTIONS.MASTERS.SET_READY_MASTERS,
     payload: isReady
 });
 
@@ -35,7 +35,7 @@ export const updateMaster = (master: Master, id: number) => {
             url: `/masters/${id}`
         })
         dispatch({
-            type: constants.ACTIONS.MASTERS.UPDATE_MASTER,
+            type: ACTIONS.MASTERS.UPDATE_MASTER,
             payload: data
         });
     }
@@ -49,7 +49,7 @@ export const addMaster = (master: Master) => {
             url: "/masters"
         })
         dispatch({
-            type: constants.ACTIONS.MASTERS.ADD_MASTER,
+            type: ACTIONS.MASTERS.ADD_MASTER,
             payload: data
         });
     }
@@ -61,7 +61,7 @@ export const activeMaster = (id: number, active: boolean) => {
             url: `/auth/approve-master/${id}?active=${active}`
         })
         dispatch({
-            type: constants.ACTIONS.USER.ADMIN.APPROVE_MASTER,
+            type: ACTIONS.USER.ADMIN.APPROVE_MASTER,
             payload: {id, active}
         });
     }
@@ -74,7 +74,7 @@ export const addCityToMaster = (body: any) => {
             url: '/deps'
         })
         dispatch({
-            type: constants.ACTIONS.MASTERS.ADD_CITY_AT_MASTER,
+            type: ACTIONS.MASTERS.ADD_CITY_AT_MASTER,
             payload: data
         });
     }
@@ -87,7 +87,7 @@ export const deleteCityAtMaster = (body: any) => {
             url: `/deps`
         })
         dispatch({
-            type: constants.ACTIONS.MASTERS.DELETE_CITY_AT_MASTER,
+            type: ACTIONS.MASTERS.DELETE_CITY_AT_MASTER,
             payload: body
         });
     }
@@ -99,7 +99,7 @@ export const approveOrder = (id: number) => {
             url: `/auth/approve-order/${id}`
         })
         dispatch({
-            type: constants.ACTIONS.MASTERS.APPROVE_ORDER,
+            type: ACTIONS.MASTERS.APPROVE_ORDER,
             payload: id
         });
     }
@@ -112,7 +112,7 @@ export const deleteMaster = (id: number) => {
             url: `/masters/${id}`
         })
         dispatch({
-            type: constants.ACTIONS.MASTERS.DELETE_MASTER,
+            type: ACTIONS.MASTERS.DELETE_MASTER,
             payload: id
         });
     }

@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import * as constants from "../../utils/constants";
 import './Header.css'
 import imageSrc from "../../images/logo.png"
+import {ACTIONS, PATH} from "../../utils/constants";
 
 const Logo = () => {
     const history = useHistory()
@@ -30,7 +31,7 @@ const Header = () => {
     const letItSnow = useSelector(state => state.weather.letItSnow)
     const logOut = () => {
         dispatch({
-            type: constants.ACTIONS.USER.LOG_OUT
+            type: ACTIONS.USER.LOG_OUT
         })
         history.push(
             {pathname: '/'}
@@ -39,7 +40,7 @@ const Header = () => {
 
     const handleAccess = () => {
         history.push(
-            {pathname: constants.PATH[user.role]}
+            {pathname: PATH[user.role]}
         )
     }
 
@@ -53,7 +54,7 @@ const Header = () => {
                                 onClick={(e) => {
                                     e.preventDefault()
                                     dispatch({
-                                        type: constants.ACTIONS.WEATHER.SET_WINTER,
+                                        type: ACTIONS.WEATHER.SET_WINTER,
                                         payload: !letItSnow
                                     })
                                 }}
@@ -83,7 +84,7 @@ const Header = () => {
                                 onClick={(e) => {
                                     e.preventDefault()
                                     dispatch({
-                                        type: constants.ACTIONS.WEATHER.SET_WINTER,
+                                        type: ACTIONS.WEATHER.SET_WINTER,
                                         payload: !letItSnow
                                     })
                                 }}

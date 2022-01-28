@@ -1,4 +1,5 @@
 import * as constants from "../../utils/constants";
+import {ACTIONS} from "../../utils/constants";
 
 type initialState = {
     isReady: boolean,
@@ -18,7 +19,7 @@ const initialState: initialState = {
 
 const blogReducer = (state = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
-        case constants.ACTIONS.BLOG.SET_ARTICLES: {
+        case ACTIONS.BLOG.SET_ARTICLES: {
             if (action.payload.length < 10) {
                 return {
                     ...state,
@@ -34,19 +35,19 @@ const blogReducer = (state = initialState, action: { type: string; payload: any;
                 page: state.page + 1
             };
         }
-        case constants.ACTIONS.BLOG.SET_READY_ARTICLES: {
+        case ACTIONS.BLOG.SET_READY_ARTICLES: {
             return {
                 ...state,
                 isReady: action.payload
             };
         }
-        case constants.ACTIONS.BLOG.ADD_ARTICLE: {
+        case ACTIONS.BLOG.ADD_ARTICLE: {
             return {
                 ...state,
                 items: state.items.concat(action.payload),
             }
         }
-        case constants.ACTIONS.BLOG.UPDATE_ARTICLE: {
+        case ACTIONS.BLOG.UPDATE_ARTICLE: {
             const array = state.items.map((item: any) => {
                 if (item.article_id === action.payload.article_id)
                     return action.payload
@@ -58,19 +59,19 @@ const blogReducer = (state = initialState, action: { type: string; payload: any;
                 isReady: true
             };
         }
-        case constants.ACTIONS.BLOG.DELETE_ARTICLE: {
+        case ACTIONS.BLOG.DELETE_ARTICLE: {
             return {
                 ...state,
                 items: state.items.filter((item: any) => item.article_id !== action.payload),
             }
         }
-        case constants.ACTIONS.BLOG.SET_ARTICLE_PHOTO: {
+        case ACTIONS.BLOG.SET_ARTICLE_PHOTO: {
             return {
                 ...state,
                 photo: action.payload,
             }
         }
-        case constants.ACTIONS.BLOG.REMOVE_ARTICLE_PHOTO: {
+        case ACTIONS.BLOG.REMOVE_ARTICLE_PHOTO: {
             return {
                 ...state,
                 photo: ""

@@ -1,5 +1,5 @@
-import * as constants from "../../utils/constants";
 import {instance} from "../../http/headerPlaceholder.instance";
+import {ACTIONS} from "../../utils/constants";
 
 type Type = {
     work_id: number,
@@ -15,7 +15,7 @@ export const setTypes = () => {
             url: "/types"
         })
         dispatch({
-            type: constants.ACTIONS.TYPES.SET_TYPES,
+            type: ACTIONS.TYPES.SET_TYPES,
             payload: data
         })
     }
@@ -29,7 +29,7 @@ export const updateType = (type: Type, work_id: number) => {
             url: `/types/${work_id}`
         })
         dispatch({
-            type: constants.ACTIONS.TYPES.UPDATE_TYPE,
+            type: ACTIONS.TYPES.UPDATE_TYPE,
             payload: data
         });
     }
@@ -43,7 +43,7 @@ export const addType = (type: Type) => {
             url: "/types"
         })
         dispatch({
-            type: constants.ACTIONS.TYPES.ADD_TYPE,
+            type: ACTIONS.TYPES.ADD_TYPE,
             payload: data
         });
     }
@@ -56,7 +56,7 @@ export const deleteType = (id: number) => {
             url: `/types/${id}`
         })
         dispatch({
-            type: constants.ACTIONS.TYPES.DELETE_TYPE,
+            type: ACTIONS.TYPES.DELETE_TYPE,
             payload: id
         });
     }

@@ -8,8 +8,8 @@ import {sendConfirmationOrder} from "../../workWithData";
 import {clearPhotos} from "../../../../store/actions/userActions";
 import {setTypes} from "../../../../store/actions/typeActions";
 
-import * as constants from "../../../../utils/constants";
 import '../../../App.css'
+import {WORK_TYPES} from "../../../../utils/constants";
 
 const MasterView = () => {
     const dispatch = useDispatch()
@@ -65,7 +65,7 @@ const MasterView = () => {
             <div>
                 <h3>Выбор мастера</h3>
                 <p>Вы заказали
-                    ремонт {constants.WORK_TYPES[location.state.data.type].message} на {location.state.data.date} в {location.state.data.time}</p>
+                    ремонт {WORK_TYPES[location.state.data.type].message} на {location.state.data.date} в {location.state.data.time}</p>
             </div>
             {masters.length > 0 ?
                 <div>

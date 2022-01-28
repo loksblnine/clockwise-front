@@ -1,18 +1,18 @@
-import * as constants from "../../utils/constants";
 import {login} from "../../http/userAPI";
 import {instance} from "../../http/headerPlaceholder.instance";
 import jwt_decode from "jwt-decode";
 import {toast} from "react-toastify";
+import {ACTIONS, PATH} from "../../utils/constants";
 
 export const setUser = (email: string, password: string, history: any) => {
     return async (dispatch: any) => {
         login(email, password).then(({token}) => {
             dispatch({
-                type: constants.ACTIONS.USER.SET_USER,
+                type: ACTIONS.USER.SET_USER,
                 payload: {token}
             })
             // @ts-ignore
-            history.push(constants.PATH[jwt_decode(token).role])
+            history.push(PATH[jwt_decode(token).role])
         })
             .catch(() =>
                 toast("Проверьте логин или пароль")
@@ -27,7 +27,7 @@ export const setUserData = (type: string, email: string) => {
             url: `/${type}/email/${email}`
         })
         dispatch({
-            type: constants.ACTIONS.USER.SET_DATA,
+            type: ACTIONS.USER.SET_DATA,
             payload: data
         })
     }
@@ -35,7 +35,7 @@ export const setUserData = (type: string, email: string) => {
 export const setPhotos = (photo: string) => {
     return async (dispatch: any) => {
         dispatch({
-            type: constants.ACTIONS.USER.ADD_PHOTO,
+            type: ACTIONS.USER.ADD_PHOTO,
             payload: photo
         })
     }
@@ -43,7 +43,7 @@ export const setPhotos = (photo: string) => {
 export const removePhoto = (id: number) => {
     return async (dispatch: any) => {
         dispatch({
-            type: constants.ACTIONS.USER.REMOVE_PHOTO,
+            type: ACTIONS.USER.REMOVE_PHOTO,
             payload: id
         })
     }
@@ -51,7 +51,7 @@ export const removePhoto = (id: number) => {
 export const clearPhotos = () => {
     return async (dispatch: any) => {
         dispatch({
-            type: constants.ACTIONS.USER.CLEAR_PHOTOS,
+            type: ACTIONS.USER.CLEAR_PHOTOS,
         })
     }
 }
@@ -63,7 +63,7 @@ export const setMasterNewCity = (body: any) => {
             url: `/deps`
         })
         dispatch({
-            type: constants.ACTIONS.USER.MASTER.ADD_CITY,
+            type: ACTIONS.USER.MASTER.ADD_CITY,
             payload: data
         })
     }
@@ -76,13 +76,13 @@ export const deleteMasterCity = (body: any) => {
             url: `/deps`
         })
         dispatch({
-            type: constants.ACTIONS.USER.MASTER.DELETE_CITY,
+            type: ACTIONS.USER.MASTER.DELETE_CITY,
             payload: body
         });
     }
 }
 export const setReadyUser = (bool: boolean) => ({
-    type: constants.ACTIONS.USER.SET_READY_USER,
+    type: ACTIONS.USER.SET_READY_USER,
     payload: bool
 });
 
@@ -96,14 +96,14 @@ export const updateUserData = (type: string, body: any, id: number) => {
         switch (type) {
             case "customers": {
                 dispatch({
-                    type: constants.ACTIONS.USER.SET_DATA,
+                    type: ACTIONS.USER.SET_DATA,
                     payload: data
                 })
                 break
             }
             case "masters": {
                 dispatch({
-                    type: constants.ACTIONS.USER.SET_DATA,
+                    type: ACTIONS.USER.SET_DATA,
                     payload: data
                 })
                 break

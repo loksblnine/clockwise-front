@@ -1,4 +1,4 @@
-import * as constants from "../../utils/constants";
+import {ACTIONS} from "../../utils/constants";
 
 type initialState = {
     isReady: boolean,
@@ -19,7 +19,7 @@ const initialState: initialState = {
 };
 const orderReducer = (state = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
-        case constants.ACTIONS.ORDERS.SET_ORDERS: {
+        case ACTIONS.ORDERS.SET_ORDERS: {
             if (state.items.length > 0 && action.payload.page === 0) {
                 return {
                     ...state,
@@ -45,28 +45,28 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
                 page: state.page + 1
             };
         }
-        case constants.ACTIONS.ORDERS.SET_CALENDAR: {
+        case ACTIONS.ORDERS.SET_CALENDAR: {
             return {
                 ...state,
                 calendar: action.payload,
                 isCalendarReady: true,
             };
         }
-        case constants.ACTIONS.ORDERS.SET_CALENDAR_READY: {
+        case ACTIONS.ORDERS.SET_CALENDAR_READY: {
             return {
                 ...state,
                 calendar: [],
                 isCalendarReady: false,
             };
         }
-        case constants.ACTIONS.ORDERS.UPDATE_ORDER: {
+        case ACTIONS.ORDERS.UPDATE_ORDER: {
             const array = state.items.filter((item: any) => item.order_id !== action.payload.order_id).concat(action.payload)
             return {
                 ...state,
                 items: array,
             };
         }
-        case constants.ACTIONS.MASTERS.APPROVE_ORDER: {
+        case ACTIONS.MASTERS.APPROVE_ORDER: {
             const array = state.items.map((item: any) => {
                 if (item.order_id === action.payload) {
                     item.isDone = true
@@ -85,7 +85,7 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
                 calendar
             };
         }
-        case constants.ACTIONS.ORDERS.SET_PAGE: {
+        case ACTIONS.ORDERS.SET_PAGE: {
             return {
                 ...state,
                 isReady: false,
@@ -93,13 +93,13 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
                 page: action.payload
             }
         }
-        case constants.ACTIONS.ORDERS.SET_READY_ORDERS: {
+        case ACTIONS.ORDERS.SET_READY_ORDERS: {
             return {
                 ...state,
                 isReady: action.payload
             };
         }
-        case constants.ACTIONS.USER.CUSTOMER.SET_MARK: {
+        case ACTIONS.USER.CUSTOMER.SET_MARK: {
             const array = state.items.map(order => {
                 if (order.order_id === action.payload.id) {
                     order.mark = action.payload.mark
@@ -111,13 +111,13 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
                 items: array,
             };
         }
-        case constants.ACTIONS.ORDERS.ADD_ORDER: {
+        case ACTIONS.ORDERS.ADD_ORDER: {
             return {
                 ...state,
                 items: state.items.concat(action.payload),
             }
         }
-        case constants.ACTIONS.ORDERS.SORT: {
+        case ACTIONS.ORDERS.SORT: {
             return {
                 ...state,
                 items: state.items.sort((i1: any, i2: any) => {
@@ -131,7 +131,7 @@ const orderReducer = (state = initialState, action: { type: string; payload: any
                 }),
             }
         }
-        case constants.ACTIONS.ORDERS.DELETE_ORDER: {
+        case ACTIONS.ORDERS.DELETE_ORDER: {
             return {
                 ...state,
                 items: state.items.filter((item: any) => item.order_id !== action.payload),
