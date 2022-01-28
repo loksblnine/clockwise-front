@@ -1,8 +1,8 @@
 import React from 'react';
 import {useFormik} from 'formik';
 import {useHistory} from "react-router-dom";
-import {registration} from "../../../../http/userAPI";
 import {LinkContainer} from "react-router-bootstrap";
+import {registration} from "../../../../http/userAPI";
 
 const validate = (values) => {
     const errors = {};

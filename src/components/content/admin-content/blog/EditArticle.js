@@ -2,8 +2,9 @@ import React, {useRef, useState} from 'react';
 import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
 import {Editor} from '@tinymce/tinymce-react';
-import {updateArticle} from "../../../../store/actions/blogActions";
 import {useHistory, useLocation, withRouter} from "react-router-dom";
+
+import {updateArticle} from "../../../../store/actions/blogActions";
 
 const EditArticle = () => {
     const dispatch = useDispatch()

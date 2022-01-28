@@ -20,6 +20,11 @@ import SuccessfulPayment from "../components/content/customer-content/Payment/Su
 import ListTypes from "../components/content/admin-content/types/ListTypes";
 import FailedPayment from "../components/content/customer-content/Payment/FailedPayment";
 import Article from "../components/content/customer-content/Blog/Article";
+import ListMasterOrders from "../components/content/master-content/orders/ListOrders"
+import EditProfileMaster from "../components/content/master-content/edit/EditProfileMaster";
+import Profile from "../components/content/master-content/edit/Profile";
+import Calendar from "../components/content/master-content/calendar/Calendar";
+import WeekDisplay from "../components/content/master-content/calendar/WeekDisplay";
 
 //todo remove this garbage =))
 //todo use ENUM with TS
@@ -110,7 +115,27 @@ export const authMasterRoutes = [
     {
         path: '/access_succeed_master',
         Component: MasterPanel
-    }
+    },
+    {
+        path: '/orders',
+        Component: ListMasterOrders
+    },
+    {
+        path: '/edit',
+        Component: EditProfileMaster
+    },
+    {
+        path: '/profile',
+        Component: Profile
+    },
+    {
+        path: '/calendar',
+        Component: Calendar,
+    },
+    {
+        path: '/calendar/weekly',
+        Component: WeekDisplay,
+    },
     //todo
     // 3. see comments
 ]
@@ -185,6 +210,8 @@ export const ACTIONS = {
     },
     ORDERS: {
         SET_ORDERS: "SET_ORDERS",
+        SET_CALENDAR: "SET_CALENDAR",
+        SET_CALENDAR_READY: "SET_CALENDAR_READY",
         SET_READY_ORDERS: "SET_READY_ORDERS",
         SET_PAGE: "SET_PAGE",
         DELETE_ORDER: "DELETE_ORDER",
@@ -249,3 +276,5 @@ export const datePattern = "[0-9]{4}.[0-9]{2}.[0-9]{2}"
 export const stringPattern = "[A-ZА-Яa-zа-я -]+"
 export const emailPattern = "[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]+"
 export const rankingPattern = "([1-5])|([1-4].[05])|(5.0)"
+export const DAYS_RUS = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
+export const MONTH_RUS = ["Декабрь", "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]

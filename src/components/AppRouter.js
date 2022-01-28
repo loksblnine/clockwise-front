@@ -1,9 +1,10 @@
 import React from 'react';
-import {Route, Switch} from "react-router-dom";
-import {authAdminRoutes, authMasterRoutes, customerRoutes, authClientRoutes} from "../utils/constants";
-import NotFound from "../http/NotFound";
 import {useSelector} from "react-redux";
+import {Route, Switch} from "react-router-dom";
+
+import NotFound from "../http/NotFound";
 import Blog from "./content/customer-content/Blog/Blog";
+import {authAdminRoutes, authMasterRoutes, customerRoutes, authClientRoutes} from "../utils/constants";
 
 const AppRouter = () => {
     const role = useSelector(state => state.users.user.role)

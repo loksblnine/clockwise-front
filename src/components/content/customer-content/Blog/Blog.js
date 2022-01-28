@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react';
-import ArticlePreview from "./ArticlePreview";
-import {useDispatch, useSelector} from "react-redux";
-import {setArticles} from "../../../../store/actions/blogActions";
 import {Spinner} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
+
+import ArticlePreview from "./ArticlePreview";
+import {setArticles} from "../../../../store/actions/blogActions";
 
 const Blog = () => {
     const dispatch = useDispatch()

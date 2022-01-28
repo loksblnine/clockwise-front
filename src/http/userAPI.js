@@ -1,5 +1,5 @@
 import {instance} from "./headerPlaceholder.instance";
-import * as constants from "../utils/constants";
+import {ACTIONS} from "../utils/constants";
 
 export const registration = async (email, password, role) => {
     const body = {email, password, role}
@@ -28,13 +28,13 @@ export const checkAuth = () => {
         })
             .then(({data}) => {
                 dispatch({
-                    type: constants.ACTIONS.USER.SET_USER,
+                    type: ACTIONS.USER.SET_USER,
                     payload: data
                 })
             })
             .catch(() => {
                 dispatch({
-                    type: constants.ACTIONS.USER.LOG_OUT
+                    type: ACTIONS.USER.LOG_OUT
                 })
             })
 
@@ -48,13 +48,13 @@ export const setActivate = () => {
         })
             .then(({data}) => {
                 dispatch({
-                    type: constants.ACTIONS.USER.SET_USER,
+                    type: ACTIONS.USER.SET_USER,
                     payload: data
                 })
             })
             .catch(() => {
                 dispatch({
-                    type: constants.ACTIONS.USER.LOG_OUT
+                    type: ACTIONS.USER.LOG_OUT
                 })
             })
 

@@ -1,4 +1,4 @@
-import * as constants from "../../utils/constants";
+import {ACTIONS} from "../../utils/constants";
 import {instance} from "../../http/headerPlaceholder.instance";
 
 type Customer = {
@@ -15,14 +15,14 @@ export const setCustomers = (page: number) => {
             url: `/customers/offset/${page}`
         })
         dispatch({
-            type: constants.ACTIONS.CUSTOMERS.SET_CUSTOMERS,
+            type: ACTIONS.CUSTOMERS.SET_CUSTOMERS,
             payload: data
         });
     }
 }
 
 export const setReadyCustomers = () => (isReady: boolean) => ({
-    type: constants.ACTIONS.CUSTOMERS.SET_READY_CUSTOMERS,
+    type: ACTIONS.CUSTOMERS.SET_READY_CUSTOMERS,
     payload: isReady
 });
 
@@ -34,7 +34,7 @@ export const updateCustomer = (customer: Customer, id: number) => {
             url: `/customers/${id}`
         })
         dispatch({
-            type: constants.ACTIONS.CUSTOMERS.UPDATE_CUSTOMER,
+            type: ACTIONS.CUSTOMERS.UPDATE_CUSTOMER,
             payload: data
         });
     }
@@ -48,7 +48,7 @@ export const addCustomer = (customer: Customer) => {
             url: "/customers"
         })
         dispatch({
-            type: constants.ACTIONS.CUSTOMERS.ADD_CUSTOMER,
+            type: ACTIONS.CUSTOMERS.ADD_CUSTOMER,
             payload: data
         })
 
@@ -62,7 +62,7 @@ export const deleteCustomer = (id: number) => {
             url: `/customers/${id}`
         })
         dispatch({
-            type: constants.ACTIONS.CUSTOMERS.DELETE_CUSTOMER,
+            type: ACTIONS.CUSTOMERS.DELETE_CUSTOMER,
             payload: id
         });
     }

@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {SERVER_URL} from "../../../../utils/constants";
 import {Redirect, useHistory, withRouter} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {setTypes} from "../../../../store/actions/typeActions";
 import {Spinner} from "react-bootstrap";
 import {toast} from "react-toastify";
+
+import {setTypes} from "../../../../store/actions/typeActions";
 import {instance} from "../../../../http/headerPlaceholder.instance";
+
+import {SERVER_URL} from "../../../../utils/constants";
 
 const PayPalRedirect = () => {
     const history = useHistory()

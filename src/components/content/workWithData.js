@@ -1,5 +1,5 @@
-import {instance} from "../../http/headerPlaceholder.instance";
 import {toast} from "react-toastify";
+import {instance} from "../../http/headerPlaceholder.instance";
 
 //region send mails
 export const sendConfirmationOrder = (order, master, history, photos) => {
@@ -39,9 +39,13 @@ export const sendConfirmationOrder = (order, master, history, photos) => {
                     history.push(`/pay?order_id=${data.order_id}&type=${orderBody.work_id}`)
                 })
         })
-        .catch(() => {
+        .catch((err) => {
             toast.dismiss()
-            toast.info("Возникли трудности c сервером")
+            if (err.toString().split("code ")[1] === "405") {
+                toast.info("Мастер только что перестал быть свободным, обновите страницу и/или выберете нового мастера")
+            } else {
+                toast.info("Возникли трудности c сервером")
+            }
         })
 }
 export const sendConfirmRegistrationMail = (email) => {

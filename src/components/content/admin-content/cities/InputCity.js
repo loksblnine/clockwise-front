@@ -34,7 +34,7 @@ const InputCity = () => {
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <label htmlFor={`name`}>Название города</label>
+                                <label htmlFor="name">Название города</label>
                                 <input className="form-control" placeholder="Город" value={city_name} name={`name`}
                                        onChange={e => setCityName(e.target.value)} required
                                        pattern={stringPattern}/>

@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import * as constants from "../../../../utils/constants";
 import {Redirect} from "react-router-dom";
+import {ACTIONS} from "../../../../utils/constants";
+
 
 const RedirectingPage = () => {
     const token = window.location.pathname.split('/')[3]
@@ -9,7 +10,7 @@ const RedirectingPage = () => {
     const user = useSelector((state) => state.users.user)
     useEffect(() => {
         dispatch({
-            type: constants.ACTIONS.USER.SET_USER,
+            type: ACTIONS.USER.SET_USER,
             payload: {token}
         })
     }, [dispatch])

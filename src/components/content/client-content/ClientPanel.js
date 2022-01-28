@@ -1,13 +1,16 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import * as constants from "../../../utils/constants";
-import {ARROWS_SVG, STAR} from "../../../utils/svg_constants";
-import {Spinner} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
+import {Spinner} from "react-bootstrap";
+
 import {setOrdersCustomer, sortOrders} from "../../../store/actions/orderActions";
 import {setUserData} from "../../../store/actions/userActions";
 import SetMarkDialog from "./SetMarkDialog";
 import EditProfileClient from "./EditProfileClient";
-import {useHistory} from "react-router-dom";
+
+import * as constants from "../../../utils/constants";
+import {ARROWS_SVG, STAR} from "../../../utils/svg_constants";
+import {WORK_TYPES} from "../../../utils/constants";
 
 const OrderMark = ({mark}) => {
     return (
@@ -98,7 +101,7 @@ const ClientPanel = () => {
                                 <th scope="row"> {order?.order_id}</th>
                                 <td>{order?.master?.master_name}</td>
                                 <td>{order?.city?.city_name}</td>
-                                <td>{constants.WORK_TYPES[order?.work_id].key}</td>
+                                <td>{WORK_TYPES[order?.work_id].key}</td>
                                 <td>{order?.order_time?.split('T')[0]}</td>
                                 <td>{order?.order_time?.split('T')[1].split('.')[0]}</td>
                                 <td>{Number(order?.order_time?.split('T')[1]?.split(':')[0]) + Number(order?.work_id) + ":00:00"}</td>

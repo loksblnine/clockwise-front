@@ -1,5 +1,5 @@
-import * as constants from "../../utils/constants";
 import {instance} from "../../http/headerPlaceholder.instance";
+import {ACTIONS} from "../../utils/constants";
 
 type Article = {
     article_id: number,
@@ -15,7 +15,7 @@ export const setArticles = (page: number) => {
             url: `/blog/offset/${page}`
         })
         dispatch({
-            type: constants.ACTIONS.BLOG.SET_ARTICLES,
+            type: ACTIONS.BLOG.SET_ARTICLES,
             payload: data
         });
     }
@@ -29,7 +29,7 @@ export const updateArticle = (article: Article, id: number) => {
             url: `/blog/${id}`
         })
         dispatch({
-            type: constants.ACTIONS.BLOG.UPDATE_ARTICLE,
+            type: ACTIONS.BLOG.UPDATE_ARTICLE,
             payload: article
         });
     }
@@ -43,7 +43,7 @@ export const addArticle = (article: Article, photo: string | "") => {
             url: "/blog"
         })
         dispatch({
-            type: constants.ACTIONS.BLOG.ADD_ARTICLE,
+            type: ACTIONS.BLOG.ADD_ARTICLE,
             payload: data
         })
 
@@ -57,7 +57,7 @@ export const deleteArticle = (id: number) => {
             url: `/blog/${id}`
         })
         dispatch({
-            type: constants.ACTIONS.BLOG.DELETE_ARTICLE,
+            type: ACTIONS.BLOG.DELETE_ARTICLE,
             payload: id
         });
     }
@@ -66,7 +66,7 @@ export const deleteArticle = (id: number) => {
 export const setArticlePhoto = (base64: string) => {
     return async (dispatch: any) => {
         dispatch({
-            type: constants.ACTIONS.BLOG.SET_ARTICLE_PHOTO,
+            type: ACTIONS.BLOG.SET_ARTICLE_PHOTO,
             payload: base64
         });
     }
@@ -74,7 +74,7 @@ export const setArticlePhoto = (base64: string) => {
 export const removeArticlePhoto = () => {
     return async (dispatch: any) => {
         dispatch({
-            type: constants.ACTIONS.BLOG.REMOVE_ARTICLE_PHOTO,
+            type: ACTIONS.BLOG.REMOVE_ARTICLE_PHOTO,
         });
     }
 }

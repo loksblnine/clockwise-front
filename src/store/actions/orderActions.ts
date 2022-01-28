@@ -1,5 +1,5 @@
-import * as constants from "../../utils/constants";
 import {instance} from "../../http/headerPlaceholder.instance";
+import {ACTIONS} from "../../utils/constants";
 
 type Order = {
     order_id: number,
@@ -18,7 +18,7 @@ export const setOrdersAdmin = (page: number, queryParams: string) => {
             url: `/orders/offset/${page}?${queryParams}`
         })
         dispatch({
-            type: constants.ACTIONS.ORDERS.SET_ORDERS,
+            type: ACTIONS.ORDERS.SET_ORDERS,
             payload: {data}
         });
     }
@@ -30,7 +30,7 @@ export const setOrdersMaster = (page: number, id: number) => {
             url: `/orders/master/${id}/offset/${page}`
         })
         dispatch({
-            type: constants.ACTIONS.ORDERS.SET_ORDERS,
+            type: ACTIONS.ORDERS.SET_ORDERS,
             payload: {data}
         });
     }
@@ -38,7 +38,7 @@ export const setOrdersMaster = (page: number, id: number) => {
 export const sortOrders = (param: string[]) => {
     return (dispatch: any) => {
         dispatch({
-            type: constants.ACTIONS.ORDERS.SORT,
+            type: ACTIONS.ORDERS.SORT,
             payload: param
         })
     }
@@ -50,14 +50,14 @@ export const setOrdersCustomer = (page: number, id: number) => {
             url: `/orders/customer/${id}/offset/${page}`
         })
         dispatch({
-            type: constants.ACTIONS.ORDERS.SET_ORDERS,
+            type: ACTIONS.ORDERS.SET_ORDERS,
             payload: {page, data}
         });
     }
 }
 
 export const setReadyOrders = (isReady: boolean) => ({
-    type: constants.ACTIONS.ORDERS.SET_READY_ORDERS,
+    type: ACTIONS.ORDERS.SET_READY_ORDERS,
     payload: isReady
 });
 
@@ -69,7 +69,7 @@ export const updateOrder = (order: Order, id: number) => {
             url: `/orders/${id}`
         })
         dispatch({
-            type: constants.ACTIONS.ORDERS.UPDATE_ORDER,
+            type: ACTIONS.ORDERS.UPDATE_ORDER,
             payload: data
         });
     }
@@ -83,7 +83,7 @@ export const addOrder = (order: Order) => {
             url: "/orders"
         })
         dispatch({
-            type: constants.ACTIONS.ORDERS.ADD_ORDER,
+            type: ACTIONS.ORDERS.ADD_ORDER,
             payload: data
         });
     }
@@ -96,7 +96,7 @@ export const deleteOrder = (id: number) => {
             url: `/orders/${id}`
         })
         dispatch({
-            type: constants.ACTIONS.ORDERS.DELETE_ORDER,
+            type: ACTIONS.ORDERS.DELETE_ORDER,
             payload: id
         });
     }
@@ -110,7 +110,7 @@ export const setMarkOrder = (id: number, mark: number) => {
             url: `/auth/set-mark/${id}`
         })
         dispatch({
-            type: constants.ACTIONS.USER.CUSTOMER.SET_MARK,
+            type: ACTIONS.USER.CUSTOMER.SET_MARK,
             payload: {mark, id}
         });
     }

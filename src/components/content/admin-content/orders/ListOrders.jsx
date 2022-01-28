@@ -1,9 +1,12 @@
 import React, {useCallback, useEffect, useState} from "react";
-import * as constants from "../../../../utils/constants";
-import {datePattern} from "../../../../utils/constants";
-import EditOrder from "./EditOrder";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
+import PaymentDetails from "../../customer-content/Payment/PaymentDetails";
+import EditOrder from "./EditOrder";
+
+import {instance} from "../../../../http/headerPlaceholder.instance";
+import {hasNumber, objectToQueryString} from "../../../../utils/utils";
+import {datePattern, ACTIONS, DATE_FROM, datePattern, WORK_TYPES} from "../../../../utils/constants";
 import {deleteOrder, setOrdersAdmin} from "../../../../store/actions/orderActions";
 import {handleMasterInput, objectToQueryString, saveExcelFile} from "../../../../utils/utils";
 import {COLLAPSE_ARROWS, EXCEL_SVG, EXPAND_ARROWS} from "../../../../utils/svg_constants";
@@ -58,7 +61,7 @@ const ListOrders = () => {
     const handleSearch = (e) => {
         e.preventDefault()
         dispatch({
-            type: constants.ACTIONS.ORDERS.SET_PAGE,
+            type: ACTIONS.ORDERS.SET_PAGE,
             payload: 0
         })
         dispatch(setOrdersAdmin(0, objectToQueryString(queryParams)))
@@ -182,14 +185,14 @@ const ListOrders = () => {
                                 <td>{order.master.master_name}</td>
                                 <td>{order.customer.customer_name}</td>
                                 <td>{order.city.city_name}</td>
-                                <td>{constants.WORK_TYPES[order.work_id].key}</td>
+                                <td>{WORK_TYPES[order.work_id].key}</td>
                                 <td>{order.order_time.split('T')[0]}</td>
                                 <td>{order.order_time.split('T')[1].split('.')[0]}</td>
                                 <td>&nbsp;</td>
                                 <td>
                                     <button className="btn btn-danger"
                                             onClick={() => dispatch(deleteOrder(order.order_id))}
-                                            disabled={!order.isDone || order.order_time.split('T')[0] <= constants.DATE_FROM}>Удалить
+                                            disabled={!order.isDone || order.order_time.split('T')[0] <= DATE_FROM}>Удалить
                                     </button>
                                 </td>
                                 <td>

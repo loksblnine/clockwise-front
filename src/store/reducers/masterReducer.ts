@@ -16,7 +16,7 @@ const initialState: initialState = {
 
 const masterReducer = (state = initialState, action: { type: string; payload: any; }) => {
     switch (action.type) {
-        case constants.ACTIONS.MASTERS.SET_MASTERS: {
+        case ACTIONS.MASTERS.SET_MASTERS: {
             if (action.payload.length < 10) {
                 return {
                     ...state,
@@ -45,19 +45,19 @@ const masterReducer = (state = initialState, action: { type: string; payload: an
                 items: array,
             };
         }
-        case constants.ACTIONS.MASTERS.SET_READY_MASTERS: {
+        case ACTIONS.MASTERS.SET_READY_MASTERS: {
             return {
                 ...state,
                 isReady: action.payload
             };
         }
-        case constants.ACTIONS.MASTERS.ADD_MASTER: {
+        case ACTIONS.MASTERS.ADD_MASTER: {
             return {
                 ...state,
                 items: state.items.concat(action.payload),
             }
         }
-        case constants.ACTIONS.USER.ADMIN.APPROVE_MASTER: {
+        case ACTIONS.USER.ADMIN.APPROVE_MASTER: {
             const array = state.items.map((item: any) => {
                 if (item.master_id === action.payload.id) {
                     item.isApproved = action.payload.active
@@ -69,20 +69,20 @@ const masterReducer = (state = initialState, action: { type: string; payload: an
                 items: array,
             };
         }
-        case constants.ACTIONS.MASTERS.DELETE_MASTER: {
+        case ACTIONS.MASTERS.DELETE_MASTER: {
             return {
                 ...state,
                 items: state.items.filter((item: any) => item.master_id !== action.payload),
             }
         }
-        case constants.ACTIONS.MASTERS.DELETE_CITY_AT_MASTER: {
+        case ACTIONS.MASTERS.DELETE_CITY_AT_MASTER: {
             state.items.find(item => item.master_id === action.payload.master_id).deps.splice(state.items.find(item => item.master_id === action.payload.master_id).deps.indexOf(action.payload.city_id), 1)
             return {
                 ...state,
                 items: state.items
             }
         }
-        case constants.ACTIONS.MASTERS.ADD_CITY_AT_MASTER: {
+        case ACTIONS.MASTERS.ADD_CITY_AT_MASTER: {
             state.items.find(item => item.master_id === action.payload.master_id).deps.push(action.payload.city_id)
             return {
                 ...state,

@@ -1,8 +1,9 @@
 import React, {useCallback, useEffect} from "react";
-import EditCustomer from "./EditCustomer";
-import InputCustomer from "./InputCustomer";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
+
+import EditCustomer from "./EditCustomer";
+import InputCustomer from "./InputCustomer";
 import {deleteCustomer, setCustomers} from "../../../../store/actions/customerActions";
 
 const ListCustomers = () => {

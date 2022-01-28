@@ -1,14 +1,14 @@
 import React, {useCallback, useEffect, useState} from "react";
-import * as constants from "../../../../utils/constants";
-import {datePattern} from "../../../../utils/constants";
 import {useDispatch, useSelector} from "react-redux";
 import {updateOrder} from "../../../../store/actions/orderActions";
 import {instance} from "../../../../http/headerPlaceholder.instance";
+import {DATE_FROM, DATE_TO, datePattern} from "../../../../utils/constants";
 import {setMasters} from "../../../../store/actions/masterActions";
 
 const EditOrder = (initialOrder) => {
     const [data, setData] = useState(null)
     const cities = useSelector((state) => state.cities.items)
+    const customers = useSelector((state) => state.customers.items)
     const masters = useSelector((state) => state.masters.items)
     const dispatch = useDispatch()
     const {loadNext, page} = useSelector((state) => state.masters)
@@ -50,8 +50,7 @@ const EditOrder = (initialOrder) => {
             ...prevState,
             [name]: value
         }));
-    }
-
+    };
     return (
         <div>
             <button type="button" className="btn btn-info" data-toggle="modal"
@@ -109,7 +108,7 @@ const EditOrder = (initialOrder) => {
                                 <label className="text" htmlFor="date">Введите дату заказа </label>
                                 <input type="date" name="date" value={order.date}
                                        className="form-control react-datetime-picker"
-                                       min={constants.DATE_FROM} max={constants.DATE_TO}
+                                       min={DATE_FROM} max={DATE_TO}
                                        required pattern={datePattern}
                                        onChange={handleChange}/>
                                 <label className="text" htmlFor="time">Время заказа (8:00 - 17:00) </label>

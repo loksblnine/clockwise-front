@@ -1,15 +1,17 @@
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {useFormik} from 'formik';
-import * as constants from "../../../../utils/constants";
-import {useHistory, useLocation, withRouter} from "react-router-dom";
-import './OrderStyles.css'
-import {toast} from "react-toastify";
-import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory, useLocation, withRouter} from "react-router-dom";
+import {toast} from "react-toastify";
+
 import {setCities} from "../../../../store/actions/cityActions";
 import {removePhoto, setPhotos} from "../../../../store/actions/userActions";
+
+import {DATE_FROM, DATE_TO, datePattern, ONE_MEGABYTE} from "../../../../utils/constants";
+
 import santaHat from "../../../../images/santashat.png";
-import {datePattern} from "../../../../utils/constants";
+import './OrderStyles.css'
 
 const validate = (values) => {
     const errors = {};
@@ -60,7 +62,7 @@ const OrderForm = () => {
     }, [dispatch, isReady])
 
     const handleChooseFile = useCallback((e) => {
-        if (e?.target?.files[0]?.size < constants.ONE_MEGABYTE) {
+        if (e?.target?.files[0]?.size < ONE_MEGABYTE) {
             if (e.target?.files[0]?.type.split('/')[0] === "image") {
                 const reader = new FileReader();
                 reader.readAsDataURL(e.target.files[0]);
@@ -89,7 +91,7 @@ const OrderForm = () => {
                 name: location?.state?.data?.name || data?.customer_name || data?.master?.master_name || '',
                 email: location?.state?.data?.email || user?.email || '',
                 city: location?.state?.data?.city || -1,
-                date: location?.state?.data?.date || constants.DATE_FROM,
+                date: location?.state?.data?.date || DATE_FROM,
                 time: location?.state?.data?.time || "08:00",
                 type: location?.state?.data?.type || "1",
             }
@@ -147,7 +149,7 @@ const OrderForm = () => {
                     <div className="form-group">
                         <label className="text" htmlFor="date">Введите дату заказа </label>
                         <input type="date" id="date" name="date" className="form-control react-datetime-picker"
-                               min={constants.DATE_FROM} max={constants.DATE_TO} key="date"
+                               min={DATE_FROM} max={DATE_TO} key="date"
                                required pattern={datePattern}
                                value={formik.values.date}
                                onChange={formik.handleChange}/>

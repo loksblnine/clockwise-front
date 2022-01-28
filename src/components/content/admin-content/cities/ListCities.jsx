@@ -1,8 +1,8 @@
 import React, {useEffect} from "react";
-import EditCity from "./EditCity";
-import InputCity from "./InputCity";
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
+import InputCity from "./InputCity";
+import EditCity from "./EditCity";
 import {deleteCity, setCities} from "../../../../store/actions/cityActions";
 
 const ListCities = () => {
