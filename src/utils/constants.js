@@ -25,6 +25,7 @@ import EditProfileMaster from "../components/content/master-content/edit/EditPro
 import Profile from "../components/content/master-content/edit/Profile";
 import Calendar from "../components/content/master-content/calendar/Calendar";
 import WeekDisplay from "../components/content/master-content/calendar/WeekDisplay";
+import ChartMenu from "../components/content/admin-content/charts/ChartMenu";
 
 //todo remove this garbage =))
 //todo use ENUM with TS
@@ -152,6 +153,10 @@ export const authAdminRoutes = [
     {
         path: '/access_succeed_admin',
         Component: AdminPanel
+    },
+    {
+        path: '/charts',
+        Component: ChartMenu
     },
     {
         path: '/cities',
