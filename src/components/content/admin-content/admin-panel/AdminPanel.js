@@ -10,10 +10,10 @@ import CreateArticle from "../blog/CreateArticle";
 import ListTypes from "../types/ListTypes";
 import ChartMenu from "../charts/ChartMenu";
 const AdminPanel = () => {
-    // const inputRef = React.useRef(null)
+    const inputRef = React.useRef(null)
 
     useEffect(() => {
-        // inputRef.current.click()
+        inputRef.current.click()
     }, []);
 
     return (
@@ -31,7 +31,7 @@ const AdminPanel = () => {
                         <button className="btn btn-xl">Покупатели</button>
                     </LinkContainer>
                     <LinkContainer to='/orders'>
-                        <button className="btn btn-xl" id="btn-orders" /*ref={inputRef}*/>Заказы</button>
+                        <button className="btn btn-xl" id="btn-orders" >Заказы</button>
                     </LinkContainer>
                     <LinkContainer to='/blog/create'>
                         <button className="btn btn-xl">Создать статью</button>
@@ -40,7 +40,7 @@ const AdminPanel = () => {
                         <button className="btn btn-xl">Услуги</button>
                     </LinkContainer>
                     <LinkContainer to='/charts'>
-                        <button className="btn btn-xl">Диаграммы</button>
+                        <button className="btn btn-xl" ref={inputRef}>Диаграммы</button>
                     </LinkContainer>
                 </div>
                 <Switch>
