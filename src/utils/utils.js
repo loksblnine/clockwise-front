@@ -74,3 +74,10 @@ export const handleMasterInput = (e, setQueryParams, setMastersList, dispatch) =
         e.target.value = value.replace(/[0-9|]/g, '')
     }
 }
+export const masterIdsArrayToQueryString = (array) => {
+    let string = ""
+    for (let i = 0; i < array.length; i++) {
+        string += "master_array=" + array[i] + "&"
+    }
+    return string
+}

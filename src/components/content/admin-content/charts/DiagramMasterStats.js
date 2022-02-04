@@ -1,15 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
 import {instance} from "../../../../http/headerPlaceholder.instance";
-import {handleMasterInput, objectToQueryString} from "../../../../utils/utils";
-import {datePattern} from "../../../../utils/constants";
+import {handleMasterInput, masterIdsArrayToQueryString, objectToQueryString} from "../../../../utils/utils";
+import {datePattern, WORK_TYPES} from "../../../../utils/constants";
 import {useDispatch, useSelector} from "react-redux";
 import {setMasters} from "../../../../store/actions/masterActions";
+import {ARROWS_SVG} from "../../../../utils/svg_constants";
+import {sortOrders} from "../../../../store/actions/orderActions";
+import SetMarkDialog from "../../client-content/SetMarkDialog";
 
 const DiagramMasterStats = () => {
     const dispatch = useDispatch()
     const masters = useSelector((state) => state.masters.items)
-
+    const initSortParams = {
+        money: '',
+        count: '',
+        ranking: ''
+    }
+    const [sortParams, setSortParams] = useState(initSortParams)
     const [data, setData] = useState([])
     const [mastersList, setMastersList] = useState([])
     const initialState = {
@@ -21,13 +29,6 @@ const DiagramMasterStats = () => {
         to: '',
     }
     const [queryParams, setQueryParams] = useState(initialState);
-    const masterIdsArrayToQueryString = (array) => {
-        let string = ""
-        for (let i = 0; i < array.length; i++) {
-            string += "master_array=" + array[i] + "&"
-        }
-        return string
-    }
     const handleChange = (e) => {
         e.preventDefault();
         const {name, value} = e.target;
@@ -47,6 +48,46 @@ const DiagramMasterStats = () => {
             }).then(({data}) => setData(data))
         }
     }, [queryParams.master_id, queryParams.masters.length])
+    const sortMasters = (type, str) => {
+        setData(data.sort((i1, i2) => {
+            if (i1[`${type}`] < i2[`${type}`]) {
+                return (-1 * (str === "ASC" ? 1 : -1))
+            }
+            if (i1[`${type}`] > i2[`${type}`]) {
+                return (1 * (str === "ASC" ? 1 : -1))
+            }
+            return 0
+        }))
+    }
+    const handleSort = (e, paramName) => {
+        e.preventDefault()
+        switch (paramName) {
+            case "Заработал, USD": {
+                setSortParams(prevState => ({
+                    money: prevState.money === "ASC" ? "DESC" : "ASC"
+                }))
+                sortMasters("Заработал USD", sortParams.money)
+                break
+            }
+            case "Количество": {
+                setSortParams(prevState => ({
+                    count: prevState.count === "ASC" ? "DESC" : "ASC"
+                }))
+                sortMasters("Количество", sortParams.count)
+                break
+            }
+            case "Рейтинг": {
+                setSortParams(prevState => ({
+                    ranking: prevState.ranking === "ASC" ? "DESC" : "ASC"
+                }))
+                sortMasters("Рейтинг", sortParams.ranking)
+                break
+            }
+            default: {
+                break
+            }
+        }
+    }
     return (
         <div className="border border-dark rounded p-3 m-3">
             <h4>Персональный анализ мастера</h4>
@@ -108,6 +149,42 @@ const DiagramMasterStats = () => {
                 </div>
             </div>
             <div className="m-2">
+                <h2 className="text-left mt-5">Ваш список заказов</h2>
+                <table className="table mt-5 text-justify">
+                    <thead>
+                    <tr>
+                        <th scope="col">Имя мастера</th>
+                        <th scope="col" onClick={(e) => handleSort(e, "Заработал, USD")}> Заработал
+                            денег {sortParams.money === "ASC" ? ARROWS_SVG.ASC : ARROWS_SVG.DESC}</th>
+                        <th scope="col" onClick={(e) => handleSort(e, "Количество")}> Количество
+                            заказов {sortParams.count === "ASC" ? ARROWS_SVG.ASC : ARROWS_SVG.DESC}</th>
+                        <th scope="col"> Завершил</th>
+                        <th scope="col"> Ждут выполнения</th>
+                        <th scope="col">Маленькие часы</th>
+                        <th scope="col">Средние часы</th>
+                        <th scope="col">Большие часы</th>
+                        <th scope="col" onClick={(e) => handleSort(e, "Рейтинг")}>Рейтинг
+                            {sortParams.ranking === "ASC" ? ARROWS_SVG.ASC : ARROWS_SVG.DESC}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {data?.map(d => (
+                        <tr key={d["Количество"]}>
+                            <th scope="row"> {d["Мастер"]}</th>
+                            <th scope="row"> {d["Заработал USD"]}</th>
+                            <th scope="row"> {d["Количество"]}</th>
+                            <th scope="row"> {d["Завершенные"]}</th>
+                            <th scope="row"> {d["Ждут выполнения"]}</th>
+                            <th scope="row"> {d["Маленькие часы"]}</th>
+                            <th scope="row"> {d["Средние часы"]}</th>
+                            <th scope="row"> {d["Большие часы"]}</th>
+                            <th scope="row"> {d["Рейтинг"]}</th>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            </div>
+            <div className="m-2">
                 <BarChart
                     width={500}
                     height={400}
@@ -119,7 +196,7 @@ const DiagramMasterStats = () => {
                     <Tooltip/>
                     <Legend/>
                     <Bar className="d-none" dataKey="Мастер"/>
-                    <Bar dataKey="Заработал" fill="#094d74"/>
+                    <Bar dataKey="Заработал USD" fill="#094d74"/>
                     <Bar dataKey="Количество" fill="#759cd8"/>
                     <Bar dataKey="Завершенные" fill="#9cb9d1"/>
                     <Bar dataKey="Ждут выполнения" fill="#9cb9d1"/>
