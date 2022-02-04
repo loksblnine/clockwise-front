@@ -4,7 +4,7 @@ import {instance} from "../../../../http/headerPlaceholder.instance";
 import {handleMasterInput, objectToQueryString} from "../../../../utils/utils";
 import {datePattern} from "../../../../utils/constants";
 
-const Diagram4 = () => {
+const DiagramMasterStats = () => {
     const [data, setData] = useState([])
     const [mastersList, setMastersList] = useState([])
     const initialState = {
@@ -95,4 +95,4 @@ const Diagram4 = () => {
     );
 };
 
-export default Diagram4;
+export default DiagramMasterStats;

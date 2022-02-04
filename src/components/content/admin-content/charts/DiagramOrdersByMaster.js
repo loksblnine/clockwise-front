@@ -3,21 +3,22 @@ import {Pie, PieChart, Tooltip} from 'recharts';
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {datePattern} from "../../../../utils/constants";
 
-const ChartMenu = () => {
+
+const DiagramOrdersByMaster = () => {
     const [data, setData] = useState([])
     const [to, setTo] = useState(new Date())
     const [from, setFrom] = useState(new Date());
-
     useEffect(() => {
+
         instance({
-            url: `/charts/2?to=${to}&from=${from}`,
+            url: `/charts/3?to=${to}&from=${from}`,
             method: "get"
         }).then(({data}) => setData(data))
     }, [to, from])
 
     return (
         <div className="border border-dark rounded p-3 m-3">
-            <h4>Количество заказов по городам (ТОП-3)</h4>
+            <h4>Количество заказов по мастерам (ТОП-3)</h4>
             <div className="form-group d-flex">
                 <div className="col col-5">
                     <label className="text" htmlFor="date">Дата С</label>
@@ -42,9 +43,6 @@ const ChartMenu = () => {
                 <PieChart
                     width={500}
                     height={500}
-                    margin={{
-                        top: 5, right: 30, left: 20, bottom: 5,
-                    }}
                 >
                     <Tooltip/>
                     <Pie
@@ -77,7 +75,7 @@ const ChartMenu = () => {
                                     textAnchor={x > cx ? "start" : "end"}
                                     dominantBaseline="central"
                                 >
-                                    {data[index].name} ({value})
+                                    {index === 3 ? `Другое (${value})` : `id ${data[index].id} (${value})`}
                                 </text>
                             );
                         }}
@@ -93,4 +91,4 @@ const ChartMenu = () => {
     );
 };
 
-export default ChartMenu;
+export default DiagramOrdersByMaster;

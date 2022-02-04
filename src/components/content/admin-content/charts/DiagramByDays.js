@@ -3,7 +3,7 @@ import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recha
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {datePattern} from "../../../../utils/constants";
 
-const ChartMenu = () => {
+const DiagramByDays = () => {
     const [data, setData] = useState([])
     const [to, setTo] = useState(new Date())
     const [from, setFrom] = useState(new Date());
@@ -65,4 +65,4 @@ const ChartMenu = () => {
     );
 };
 
-export default ChartMenu;
+export default DiagramByDays;
