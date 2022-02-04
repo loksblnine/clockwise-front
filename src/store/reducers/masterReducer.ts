@@ -57,6 +57,12 @@ const masterReducer = (state = initialState, action: { type: string; payload: an
                 items: state.items.concat(action.payload),
             }
         }
+        case ACTIONS.MASTERS.ADD_MASTERS_ARRAY: {
+            return {
+                ...state,
+                items: state.items.concat(action.payload),
+            }
+        }
         case ACTIONS.USER.ADMIN.APPROVE_MASTER: {
             const array = state.items.map((item: any) => {
                 if (item.master_id === action.payload.id) {

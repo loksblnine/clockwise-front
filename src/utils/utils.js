@@ -1,4 +1,4 @@
-import {SERVER_URL} from "./constants";
+import {ACTIONS, SERVER_URL} from "./constants";
 import {saveAs} from "file-saver";
 import {instance} from "../http/headerPlaceholder.instance";
 
@@ -38,14 +38,21 @@ export const savePDFile = (id, token) => {
         `Чек${id}.pdf`
     );
 };
-export const handleMasterInput = (e, setQueryParams, setMastersList) => {
+export const handleMasterInput = (e, setQueryParams, setMastersList, dispatch) => {
     e.preventDefault()
     const {name, value} = e.target;
     if (!hasNumber(value)) {
         instance({
             method: "get",
             url: `masters/offset/0?name=${value}`
-        }).then(({data}) => setMastersList(data))
+        }).then(({data}) => {
+                setMastersList(data)
+                dispatch({
+                    type: ACTIONS.MASTERS.ADD_MASTERS_ARRAY,
+                    payload: data
+                })
+            }
+        )
         setQueryParams(prevState => ({
             ...prevState,
             [name]: "",
@@ -55,7 +62,14 @@ export const handleMasterInput = (e, setQueryParams, setMastersList) => {
         setQueryParams(prevState => ({
             ...prevState,
             [name]: value.split("|")[0],
-            master_name: value.split("|")[1]
+            master_name: value.split("|")[1],
+            masters: [...prevState.masters, value.split("|")[0]]
+        }))
+        setQueryParams(prevState => ({
+            ...prevState,
+            masters: prevState.masters.sort().filter(function (item, pos, ary) {
+                return !pos || item != ary[pos - 1];
+            })
         }))
         e.target.value = value.replace(/[0-9|]/g, '')
     }

@@ -10,7 +10,7 @@ const DiagramOrdersByCity = () => {
 
     useEffect(() => {
         instance({
-            url: `/charts/2?to=${to}&from=${from}`,
+            url: `/charts/orders-city?to=${to}&from=${from}`,
             method: "get"
         }).then(({data}) => setData(data))
     }, [to, from])

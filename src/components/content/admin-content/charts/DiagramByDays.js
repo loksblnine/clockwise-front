@@ -10,7 +10,7 @@ const DiagramByDays = () => {
 
     useEffect(() => {
         instance({
-            url: `/charts/1?to=${to}&from=${from}`,
+            url: `/charts/orders-day?to=${to}&from=${from}`,
             method: "get"
         }).then(({data}) => setData(data))
     }, [to, from])

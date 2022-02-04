@@ -9,9 +9,8 @@ const DiagramOrdersByMaster = () => {
     const [to, setTo] = useState(new Date())
     const [from, setFrom] = useState(new Date());
     useEffect(() => {
-
         instance({
-            url: `/charts/3?to=${to}&from=${from}`,
+            url: `/charts/orders-master?to=${to}&from=${from}`,
             method: "get"
         }).then(({data}) => setData(data))
     }, [to, from])
