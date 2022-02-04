@@ -90,7 +90,7 @@ const DiagramMasterStats = () => {
     }
     return (
         <div className="border border-dark rounded p-3 m-3">
-            <h4>Персональный анализ мастера</h4>
+            <h4>Сравнительный анализ мастеров</h4>
             <div className="form-group d-flex">
                 <div className="col col-5">
                     <label className="text" htmlFor="date">Дата С</label>
@@ -150,7 +150,7 @@ const DiagramMasterStats = () => {
             </div>
             <div className="m-2">
                 <h2 className="text-left mt-5">Ваш список заказов</h2>
-                <table className="table mt-5 text-justify">
+                {data.length && <table className="table mt-5 text-justify">
                     <thead>
                     <tr>
                         <th scope="col">Имя мастера</th>
@@ -182,7 +182,7 @@ const DiagramMasterStats = () => {
                         </tr>
                     ))}
                     </tbody>
-                </table>
+                </table>}
             </div>
             <div className="m-2">
                 <BarChart
