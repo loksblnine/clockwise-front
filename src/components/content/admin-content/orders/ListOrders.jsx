@@ -110,7 +110,8 @@ const ListOrders = () => {
                         <label>Выбрать мастера</label>
                         <input className="form-control" list="datalistOptions" name="master_id" autoComplete="on"
                                type="text" value={queryParams.master_name}
-                               placeholder="Type to search..." onChange={(e) => handleMasterInput(e, setQueryParams, setMastersList)}
+                               placeholder="Type to search..."
+                               onChange={(e) => handleMasterInput(e, setQueryParams, setMastersList, dispatch)}
                         />
                         <datalist id="datalistOptions">
                             <option key="1" value="">---Выбрать мастера---</option>

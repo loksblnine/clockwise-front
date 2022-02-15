@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
+import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis, ResponsiveContainer, LabelList} from "recharts";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {datePattern} from "../../../../utils/constants";
 
@@ -38,24 +38,23 @@ const DiagramByDays = () => {
                            onChange={(e) => setTo(e.target.value)}/>
                 </div>
             </div>
-            {data.length > 1 ?
-                <BarChart
-                    data={data}
-                    width={500}
-                    height={500}
-                    margin={{
-                        top: 5, right: 30, left: 20, bottom: 5,
-                    }}
-                >
-                    <CartesianGrid strokeDasharray="3 3"/>
-                    <XAxis dataKey="date"/>
-                    <YAxis/>
-                    <Tooltip/>
-                    <Legend/>
-                    <Bar dataKey="Количество" fill="#094d74"/>
-                </BarChart>
-                : <p>Данных недостаточно</p>
-            }
+            <div className="d-flex justify-content-center mt-3">
+                {data.length >= 1 ?
+                    <ResponsiveContainer width="95%" height={400}>
+                        <BarChart
+                            data={data}
+                        >
+                            <CartesianGrid strokeDasharray="3 3"/>
+                            <XAxis dataKey="date"/>
+                            <YAxis/>
+                            <Tooltip/>
+                            <Legend/>
+                            <Bar dataKey="Количество" fill="#094d74" style={{font: "#fff"}}><LabelList dataKey="Количество" position="top"/></Bar>
+                        </BarChart>
+                    </ResponsiveContainer>
+                    : <p>Данных недостаточно</p>
+                }
+            </div>
             <button className="btn btn-outline-secondary m-2" onClick={() => {
                 setTo(new Date())
                 setFrom(new Date())

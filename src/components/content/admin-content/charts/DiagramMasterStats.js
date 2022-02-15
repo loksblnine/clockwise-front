@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Bar, BarChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
+import {Bar, BarChart, CartesianGrid, LabelList, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {handleMasterInput, masterIdsArrayToQueryString, objectToQueryString} from "../../../../utils/utils";
-import {datePattern, WORK_TYPES} from "../../../../utils/constants";
+import {datePattern} from "../../../../utils/constants";
 import {useDispatch, useSelector} from "react-redux";
 import {setMasters} from "../../../../store/actions/masterActions";
 import {ARROWS_SVG} from "../../../../utils/svg_constants";
-import {sortOrders} from "../../../../store/actions/orderActions";
-import SetMarkDialog from "../../client-content/SetMarkDialog";
 
 const DiagramMasterStats = () => {
     const dispatch = useDispatch()
@@ -148,99 +146,130 @@ const DiagramMasterStats = () => {
                     }
                 </div>
             </div>
-            <div className="m-2">
-                <h2 className="text-left mt-5">Ваш список заказов</h2>
-                {data.length && <table className="table mt-5 text-justify">
-                    <thead>
-                    <tr>
-                        <th scope="col">Имя мастера</th>
-                        <th scope="col" onClick={(e) => handleSort(e, "Заработал, USD")}> Заработал
-                            денег {sortParams.money === "ASC" ? ARROWS_SVG.ASC : ARROWS_SVG.DESC}</th>
-                        <th scope="col" onClick={(e) => handleSort(e, "Количество")}> Количество
-                            заказов {sortParams.count === "ASC" ? ARROWS_SVG.ASC : ARROWS_SVG.DESC}</th>
-                        <th scope="col"> Завершил</th>
-                        <th scope="col"> Ждут выполнения</th>
-                        <th scope="col">Маленькие часы</th>
-                        <th scope="col">Средние часы</th>
-                        <th scope="col">Большие часы</th>
-                        <th scope="col" onClick={(e) => handleSort(e, "Рейтинг")}>Рейтинг
-                            {sortParams.ranking === "ASC" ? ARROWS_SVG.ASC : ARROWS_SVG.DESC}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {data?.map(d => (
-                        <tr key={d["Количество"]}>
-                            <th scope="row"> {d["Мастер"]}</th>
-                            <th scope="row"> {d["Заработал USD"]}</th>
-                            <th scope="row"> {d["Количество"]}</th>
-                            <th scope="row"> {d["Завершенные"]}</th>
-                            <th scope="row"> {d["Ждут выполнения"]}</th>
-                            <th scope="row"> {d["Маленькие часы"]}</th>
-                            <th scope="row"> {d["Средние часы"]}</th>
-                            <th scope="row"> {d["Большие часы"]}</th>
-                            <th scope="row"> {d["Рейтинг"]}</th>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>}
-            </div>
-            <div className="m-2">
-                <BarChart
-                    width={500}
-                    height={400}
-                    data={data}
-                >
-                    <CartesianGrid strokeDasharray="3 3"/>
-                    <XAxis dataKey="name"/>
-                    <YAxis/>
-                    <Tooltip/>
-                    <Legend/>
-                    <Bar className="d-none" dataKey="Мастер"/>
-                    <Bar dataKey="Заработал USD" fill="#094d74"/>
-                    <Bar dataKey="Количество" fill="#759cd8"/>
-                    <Bar dataKey="Завершенные" fill="#9cb9d1"/>
-                    <Bar dataKey="Ждут выполнения" fill="#9cb9d1"/>
-                </BarChart>
-            </div>
-            <div className="m-2">
-                <BarChart
-                    width={500}
-                    height={400}
-                    data={data}
-                >
-                    <CartesianGrid strokeDasharray="30 3"/>
-                    <XAxis dataKey="name"/>
-                    <YAxis/>
-                    <Tooltip/>
-                    <Legend/>
-                    <Bar className="d-none" dataKey="Мастер"/>
-                    <Bar dataKey="Количество" fill="#759cd8"/>
-                    <Bar dataKey="Маленькие часы" fill="#9cb9d1"/>
-                    <Bar dataKey="Средние часы" fill="#9cb9d1"/>
-                    <Bar dataKey="Большие часы" fill="#9cb9d1"/>
-                </BarChart>
-            </div>
-            <div className="m-2">
-                <BarChart
-                    width={500}
-                    height={400}
-                    data={data}
-                >
-                    <CartesianGrid strokeDasharray="1 1"/>
-                    <XAxis dataKey="name"/>
-                    <YAxis/>
-                    <Tooltip/>
-                    <Legend/>
-                    <Bar className="d-none" dataKey="Мастер"/>
-                    <Bar dataKey="Рейтинг" fill="#77bdb3"/>
-                </BarChart>
-            </div>
+            {data.length >= 1 ?
+                <div>
+                    <div className="m-2">
+                        <h3 className="text-left mt-5">Сравнительная характеристика</h3>
+                        <table className="table mt-5 text-justify">
+                            <thead>
+                            <tr>
+                                <th scope="col">Имя мастера</th>
+                                <th scope="col" onClick={(e) => handleSort(e, "Заработал, USD")}> Заработал
+                                    денег {sortParams.money === "ASC" ? ARROWS_SVG.ASC : ARROWS_SVG.DESC}</th>
+                                <th scope="col" onClick={(e) => handleSort(e, "Количество")}> Количество
+                                    заказов {sortParams.count === "ASC" ? ARROWS_SVG.ASC : ARROWS_SVG.DESC}</th>
+                                <th scope="col"> Завершил</th>
+                                <th scope="col"> Ждут выполнения</th>
+                                <th scope="col">Маленькие часы</th>
+                                <th scope="col">Средние часы</th>
+                                <th scope="col">Большие часы</th>
+                                <th scope="col" onClick={(e) => handleSort(e, "Рейтинг")}>Рейтинг
+                                    {sortParams.ranking === "ASC" ? ARROWS_SVG.ASC : ARROWS_SVG.DESC}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {data?.map(d => (
+                                <tr key={d["Количество"]}>
+                                    <th scope="row"> {d["Мастер"]}</th>
+                                    <td scope="row"> {d["Заработал USD"]}</td>
+                                    <td scope="row"> {d["Количество"]}</td>
+                                    <td scope="row"> {d["Завершенные"]}</td>
+                                    <td scope="row"> {d["Ждут выполнения"]}</td>
+                                    <td scope="row"> {d["Маленькие часы"]}</td>
+                                    <td scope="row"> {d["Средние часы"]}</td>
+                                    <td scope="row"> {d["Большие часы"]}</td>
+                                    <td scope="row"> {d["Рейтинг"]}</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div className="m-2">
+                        <h3>Сравнение по количеству заработанных денег</h3>
+                        <ResponsiveContainer width="95%" height={400}>
+                            <BarChart
+                                data={data}
+                            >
+                                <CartesianGrid strokeDasharray="3 3"/>
+                                <XAxis dataKey="name"/>
+                                <YAxis/>
+                                <Tooltip/>
+                                <Legend/>
+                                <Bar className="d-none" dataKey="Мастер"/>
+                                <Bar dataKey="Заработал USD" fill="#094d74">
+                                    <LabelList dataKey="Заработал USD"
+                                               position="top"/></Bar>
+                                <Bar dataKey="Количество" fill="#759cd8">
+                                    <LabelList dataKey="Количество"
+                                               position="top"/></Bar>
+                                <Bar dataKey="Завершенные" fill="#9cb9d1">
+                                    <LabelList dataKey="Завершенные"
+                                               position="top"/></Bar>
+                                <Bar dataKey="Ждут выполнения" fill="#9cb9d1">
+                                    <LabelList dataKey="Ждут выполнения"
+                                               position="top"/></Bar>
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                    <div className="m-2">
+                        <h3>Сравнение по количеству заказов и типам</h3>
+                        <ResponsiveContainer width="95%" height={400}>
+                            <BarChart
+                                width={500}
+                                height={400}
+                                data={data}
+                            >
+                                <CartesianGrid strokeDasharray="3 3"/>
+                                <XAxis dataKey="name"/>
+                                <YAxis/>
+                                <Tooltip/>
+                                <Legend/>
+                                <Bar className="d-none" dataKey="Мастер"/>
+                                <Bar dataKey="Количество" fill="#759cd8">
+                                    <LabelList dataKey="Количество"
+                                               position="top"/></Bar>
+                                <Bar dataKey="Маленькие часы" fill="#9cb9d1">
+                                    <LabelList dataKey="Маленькие часы"
+                                               position="top"/></Bar>
+                                <Bar dataKey="Средние часы" fill="#9cb9d1">
+                                    <LabelList dataKey="Средние часы"
+                                               position="top"/></Bar>
+                                <Bar dataKey="Большие часы" fill="#9cb9d1">
+                                    <LabelList dataKey="Большие часы"
+                                               position="top"/></Bar>
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                    <div className="m-2">
+                        <h3>Сравнение рейтингов</h3>
+                        <ResponsiveContainer width="95%" height={400}>
+                            <BarChart
+                                width={500}
+                                height={400}
+                                data={data}
+                            >
+                                <CartesianGrid strokeDasharray="3 3"/>
+                                <XAxis dataKey="name"/>
+                                <YAxis/>
+                                <Tooltip/>
+                                <Legend/>
+                                <Bar className="d-none" dataKey="Мастер"/>
+                                <Bar dataKey="Рейтинг" fill="#77bdb3"><LabelList dataKey="Рейтинг"
+                                                                                 position="top"/></Bar>
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+                : <p>Данных недостаточно</p>
+            }
             <button className="btn btn-outline-secondary m-2" onClick={() => {
+                setData([])
                 setQueryParams(initialState)
             }}>Очистить данные
             </button>
         </div>
     );
-};
+}
+
 
 export default DiagramMasterStats;
