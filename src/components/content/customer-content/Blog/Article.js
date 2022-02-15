@@ -15,7 +15,7 @@ const Article = () => {
                             <img
                                 src={article?.photo}
                                 alt="article-photo"
-                                style={{maxWidth: "30%", maxHeight: "15%"}}
+                                style={{maxWidth: "50%", maxHeight: "35vh"}}
                             />
                         </div>
                     }
