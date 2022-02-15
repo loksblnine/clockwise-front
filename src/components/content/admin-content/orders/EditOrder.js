@@ -8,7 +8,6 @@ import {setMasters} from "../../../../store/actions/masterActions";
 const EditOrder = (initialOrder) => {
     const [data, setData] = useState(null)
     const cities = useSelector((state) => state.cities.items)
-    const customers = useSelector((state) => state.customers.items)
     const masters = useSelector((state) => state.masters.items)
     const dispatch = useDispatch()
     const {loadNext, page} = useSelector((state) => state.masters)
@@ -54,7 +53,11 @@ const EditOrder = (initialOrder) => {
     return (
         <div>
             <button type="button" className="btn btn-info" data-toggle="modal"
-                    data-target={order.isDone ? `#id_see${order.order_id}` : `#id_edit${order.order_id}`}>
+                    data-target={
+                        (order.isDone && Number(new Date(order.order_time)) > Number(new Date()))
+                            ? `#id_see${order.order_id}`
+                            : `#id_edit${order.order_id}`}
+            >
                 Посмотреть
             </button>
 

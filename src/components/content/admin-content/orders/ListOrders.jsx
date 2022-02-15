@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import EditOrder from "./EditOrder";
 
-import {ACTIONS, DATE_FROM, datePattern, WORK_TYPES} from "../../../../utils/constants";
+import {ACTIONS, datePattern, WORK_TYPES} from "../../../../utils/constants";
 import {deleteOrder, setOrdersAdmin} from "../../../../store/actions/orderActions";
 import {handleMasterInput, objectToQueryString, saveExcelFile} from "../../../../utils/utils";
 import {COLLAPSE_ARROWS, EXCEL_SVG, EXPAND_ARROWS} from "../../../../utils/svg_constants";
@@ -107,7 +107,7 @@ const ListOrders = () => {
                         <select className="form-control" value={queryParams.work_id} name="work_id"
                                 onChange={handleChange}>
                             <option value="">---Выбрать тип работы---</option>
-                            {types?.map((item)=>{
+                            {types?.map((item) => {
                                 return (
                                     <option key={item.work_id} value={item.work_id}>{item.description}</option>
                                 )
@@ -198,7 +198,8 @@ const ListOrders = () => {
                                 <td>
                                     <button className="btn btn-danger"
                                             onClick={() => dispatch(deleteOrder(order.order_id))}
-                                            disabled={!order.isDone || order.order_time.split('T')[0] <= DATE_FROM}>Удалить
+                                            disabled={(order?.isPaid?.length || order.isDone || Number(new Date(order.order_time)) < Number(new Date()))
+                                            }>Удалить
                                     </button>
                                 </td>
                                 <td>
