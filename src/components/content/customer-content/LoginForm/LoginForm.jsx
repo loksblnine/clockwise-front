@@ -1,14 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useFormik} from 'formik';
 import {Redirect, useHistory, withRouter} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {LinkContainer} from "react-router-bootstrap";
 import {toast} from "react-toastify";
-import {PATH, SERVER_URL} from "../../../../utils/constants";
 
 import {setUser} from "../../../../store/actions/userActions";
 
 import {GOOGLE_SVG} from "../../../../utils/svg_constants";
+import {PATH, SERVER_URL} from "../../../../utils/constants";
 
 const validate = (values) => {
     const errors = {};
@@ -28,6 +28,7 @@ const validate = (values) => {
 const LoginForm = () => {
     const history = useHistory()
     const dispatch = useDispatch()
+    const [type, setType] = useState('password')
     const user = useSelector(state => state.users.user)
     const formik = useFormik({
         initialValues: {
@@ -51,7 +52,7 @@ const LoginForm = () => {
         borderRadius: "10px",
         boxShadow: "0px 0px 10px 10px rgba(0,0,0,0.15)",
     };
-    if(user.role>1){
+    if (user.role > 1) {
         return <Redirect to={PATH[user.role]}/>
     }
     return (
@@ -73,11 +74,34 @@ const LoginForm = () => {
                     <input
                         id="password"
                         name="password"
-                        type="password"
                         className="form-control"
+                        type={type}
                         value={formik.values.password}
                         onChange={formik.handleChange}
                     />
+                    <span
+                        style={{cursor: "pointer"}}
+                        onClick={(e) => {
+                            e.preventDefault()
+                            if (type !== 'text') {
+                                setType('text')
+                            } else {
+                                setType('password')
+                            }
+                        }}>
+                        {
+                            type === 'password' ?
+                                <img src="https://img.icons8.com/ios-filled/20/000000/closed-eye.png"/> :
+                                <img src="https://img.icons8.com/ios-glyphs/20/000000/visible--v1.png"/>
+                        }
+                        &nbsp;
+                        {
+                            type === 'password' ?
+                                "Посмотреть пароль" :
+                                "Скрыть пароль"
+                        }
+                    </span>
+
                     {formik.errors.password ? <div className="error">{formik.errors.password}</div> : null}
                 </div>
                 <div className="form-group form-group-inline">
