@@ -12,6 +12,7 @@ import {DATE_FROM, DATE_TO, datePattern, ONE_MEGABYTE} from "../../../../utils/c
 
 import santaHat from "../../../../images/santashat.png";
 import './OrderStyles.css'
+import {setTypes} from "../../../../store/actions/typeActions";
 
 const validate = (values) => {
     const errors = {};
@@ -47,6 +48,7 @@ const OrderForm = () => {
     const location = useLocation()
     const inputRef = useRef()
     const cities = useSelector((state) => state.cities.items)
+    const types = useSelector((state) => state.types.items)
     const isReady = useSelector((state) => state.cities.isReady)
     const user = useSelector((state) => state.users.user)
     const data = useSelector((state) => state.users.data)
@@ -58,6 +60,7 @@ const OrderForm = () => {
     useEffect(() => {
         if (!isReady) {
             dispatch(setCities())
+            dispatch(setTypes())
         }
     }, [dispatch, isReady])
 
@@ -168,30 +171,18 @@ const OrderForm = () => {
                     <div className="form-group">
                         <label className="text" htmlFor="type"> Выберите тип поломки </label>
                         <div role="group" aria-labelledby="my-radio-group" className="radio-toolbar">
-                            <label className="miro-radiobutton">
-                                <input type="radio" value="1" name="type"
-                                       id="radio1"
-                                       key="radio1"
-                                       checked={formik.values.type === "1"}
-                                       onChange={formik.handleChange}/>
-                                <span>Маленькие часы </span>
-                            </label>
-                            <label className="miro-radiobutton">
-                                <input type="radio" value="2" name="type"
-                                       id="radio2"
-                                       key="radio2"
-                                       checked={formik.values.type === "2"}
-                                       onChange={formik.handleChange}/>
-                                <span>Средние часы </span>
-                            </label>
-                            <label className="miro-radiobutton">
-                                <input type="radio" value="3" name="type"
-                                       id="radio3"
-                                       key="radio3"
-                                       checked={formik.values.type === "3"}
-                                       onChange={formik.handleChange}/>
-                                <span>Большие часы </span>
-                            </label>
+                            {types.map(item=>{
+                                return(
+                                    <label className="miro-radiobutton">
+                                        <input type="radio" value={item.work_id} name="type"
+                                               id={`radio${item.work_id}`}
+                                               key={`radio${item.work_id}`}
+                                               checked={Number(formik.values.type) === Number(item.work_id)}
+                                               onChange={formik.handleChange}/>
+                                        <span>{item.description}</span>
+                                    </label>
+                                )
+                            })}
                         </div>
                     </div>
                     <div className="form-group">
