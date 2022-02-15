@@ -63,6 +63,7 @@ export const handleMasterInput = (e, setQueryParams, setMastersList, dispatch) =
             ...prevState,
             [name]: value.split("|")[0],
             master_name: value.split("|")[1],
+            master_id: value.split("|")[0],
             masters: [...prevState.masters, value.split("|")[0]]
         }))
         setQueryParams(prevState => ({

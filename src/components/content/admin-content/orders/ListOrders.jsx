@@ -9,12 +9,14 @@ import {handleMasterInput, objectToQueryString, saveExcelFile} from "../../../..
 import {COLLAPSE_ARROWS, EXCEL_SVG, EXPAND_ARROWS} from "../../../../utils/svg_constants";
 import {setCities} from "../../../../store/actions/cityActions";
 import {setMasters} from "../../../../store/actions/masterActions";
+import {setTypes} from "../../../../store/actions/typeActions";
 
 
 const ListOrders = () => {
     const orders = useSelector(state => state.orders.items)
     const cities = useSelector(state => state.cities.items)
     const masters = useSelector(state => state.masters.items)
+    const types = useSelector(state => state.types.items)
     const [mastersList, setMastersList] = useState([])
     const {isReady, loadNext, page} = useSelector(state => state.orders)
     const [openFilter, setOpenFilter] = useState(false)
@@ -23,6 +25,7 @@ const ListOrders = () => {
         master_name: "",
         master_id: -1,
         city_id: -1,
+        masters: [],
         work_id: "",
         isDone: "",
         from: '',
@@ -32,6 +35,9 @@ const ListOrders = () => {
     useEffect(() => {
         if (orders.length <= 0) {
             dispatch(setOrdersAdmin(page, objectToQueryString(queryParams)))
+        }
+        if (types.length <= 0) {
+            dispatch(setTypes())
         }
         if (cities.length <= 0) {
             dispatch(setCities())
@@ -101,9 +107,11 @@ const ListOrders = () => {
                         <select className="form-control" value={queryParams.work_id} name="work_id"
                                 onChange={handleChange}>
                             <option value="">---Выбрать тип работы---</option>
-                            <option key="1" value="1">Маленькие часы</option>
-                            <option key="2" value="2">Средние часы</option>
-                            <option key="3" value="3">Большие часы</option>
+                            {types?.map((item)=>{
+                                return (
+                                    <option key={item.work_id} value={item.work_id}>{item.description}</option>
+                                )
+                            })}
                         </select>
                     </div>
                     <div className="form-group">
