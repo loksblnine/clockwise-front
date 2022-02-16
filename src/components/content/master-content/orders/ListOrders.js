@@ -9,7 +9,6 @@ import {setOrdersMaster} from "../../../../store/actions/orderActions";
 import {setCities} from "../../../../store/actions/cityActions";
 
 import {PDF_SVG, STAR} from "../../../../utils/svg_constants";
-import {WORK_TYPES} from "../../../../utils/constants";
 import {savePDFile} from "../../../../utils/utils";
 
 const DisplayMark = ({mark}) => {
