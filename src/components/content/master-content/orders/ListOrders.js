@@ -1,23 +1,16 @@
 import React, {useCallback, useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
-
-import ModalApprove from "./ModalApprove";
 import PaymentDetails from "../../customer-content/Payment/PaymentDetails";
 import {setUserData} from "../../../../store/actions/userActions";
 import {setOrdersMaster} from "../../../../store/actions/orderActions";
 import {setCities} from "../../../../store/actions/cityActions";
 
-import {PDF_SVG, STAR} from "../../../../utils/svg_constants";
+import {PDF_SVG} from "../../../../utils/svg_constants";
 import {savePDFile} from "../../../../utils/utils";
+import ModalSeeOrder from "./ModalSeeOrder";
+import {setTypes} from "../../../../store/actions/typeActions";
 
-const DisplayMark = ({mark}) => {
-    return (
-        <div>
-            {mark} &nbsp; {STAR}
-        </div>
-    )
-}
 
 const ListOrders = () => {
     const dispatch = useDispatch()
@@ -31,6 +24,9 @@ const ListOrders = () => {
     const {loadNext, page} = useSelector((state) => state.orders)
 
     useEffect(() => {
+        if (types.length <= 0) {
+            dispatch(setTypes())
+        }
         if (!master?.master_id)
             dispatch(setUserData("masters", email))
         if (cities.length <= 0)
@@ -62,9 +58,7 @@ const ListOrders = () => {
                             <th scope="col">Дата заказа</th>
                             <th scope="col">Время начала</th>
                             <th scope="col">Время конца</th>
-                            <th scope="col">Статус заказа</th>
-                            <th scope="col">Статус оплаты</th>
-                            <th scope="col">Чек</th>
+                            <th scope="col">Полный заказ</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -73,27 +67,11 @@ const ListOrders = () => {
                                 <th scope="row"> {order?.order_id}</th>
                                 <td>{order?.customer?.customer_name}</td>
                                 <td>{order?.city?.city_name}</td>
-                                <td>{types.filter(t=> Number(t.work_id) === Number(order?.work_id))[0].description}</td>
+                                <td>{types.filter(t => Number(t.work_id) === Number(order?.work_id))[0].description}</td>
                                 <td>{order?.order_time?.split('T')[0]}</td>
                                 <td>{Number(order?.order_time?.split('T')[1].split(':')[0]) + ":" + order.order_time.split('T')[1].split(':')[1]}</td>
                                 <td>{Number(order?.order_time?.split('T')[1].split(':')[0]) + Number(order.work_id) + ":" + order.order_time.split('T')[1].split(':')[1]}</td>
-                                <td>{
-                                    !order.isDone ?
-                                        <ModalApprove order={order}/>
-                                        : order.mark ?
-                                        <DisplayMark mark={order.mark}/>
-                                        : "Готово"}
-                                </td>
-                                <td>
-                                    {
-                                        !order?.isPaid ?
-                                            "Не оплачено"
-                                            : <PaymentDetails order={order}/>
-                                    }
-                                </td>
-                                <td onClick={() =>
-                                    savePDFile(order.order_id, localStorage.getItem('token'))
-                                }>{PDF_SVG}</td>
+                                <td><ModalSeeOrder order={order}/></td>
                             </tr>
                         ))}
                         </tbody>

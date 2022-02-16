@@ -9,7 +9,7 @@ const ModalApprove = ({order}) => {
     }
     return (
         <div>
-            <button type="button" className="btn btn-outline-success"
+            <button type="button" className="btn btn-outline-success m-3"
                     data-toggle="modal"
                     data-target={`#id${order.order_id}`}>
                 Заказ выполнен!
