@@ -1,16 +1,21 @@
 import React, {useCallback, useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
-import PaymentDetails from "../../customer-content/Payment/PaymentDetails";
 import {setUserData} from "../../../../store/actions/userActions";
 import {setOrdersMaster} from "../../../../store/actions/orderActions";
 import {setCities} from "../../../../store/actions/cityActions";
-
-import {PDF_SVG} from "../../../../utils/svg_constants";
-import {savePDFile} from "../../../../utils/utils";
 import ModalSeeOrder from "./ModalSeeOrder";
 import {setTypes} from "../../../../store/actions/typeActions";
+import ModalApprove from "./ModalApprove";
+import {STAR} from "../../../../utils/svg_constants";
 
+const DisplayMark = ({mark}) => {
+    return (
+        <div>
+            {mark} &nbsp; {STAR}
+        </div>
+    )
+}
 
 const ListOrders = () => {
     const dispatch = useDispatch()
@@ -58,6 +63,7 @@ const ListOrders = () => {
                             <th scope="col">Дата заказа</th>
                             <th scope="col">Время начала</th>
                             <th scope="col">Время конца</th>
+                            <th scope="col">Статус заказа</th>
                             <th scope="col">Полный заказ</th>
                         </tr>
                         </thead>
@@ -71,6 +77,13 @@ const ListOrders = () => {
                                 <td>{order?.order_time?.split('T')[0]}</td>
                                 <td>{Number(order?.order_time?.split('T')[1].split(':')[0]) + ":" + order.order_time.split('T')[1].split(':')[1]}</td>
                                 <td>{Number(order?.order_time?.split('T')[1].split(':')[0]) + Number(order.work_id) + ":" + order.order_time.split('T')[1].split(':')[1]}</td>
+                                <td>{
+                                    !order.isDone ?
+                                        <ModalApprove order={order}/>
+                                        : order.mark ?
+                                        <DisplayMark mark={order.mark}/>
+                                        : "Готово"
+                                }</td>
                                 <td><ModalSeeOrder order={order}/></td>
                             </tr>
                         ))}

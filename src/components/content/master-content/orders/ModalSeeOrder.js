@@ -1,17 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {instance} from "../../../../http/headerPlaceholder.instance";
 import {PDF_SVG, STAR} from "../../../../utils/svg_constants";
 import {savePDFile} from "../../../../utils/utils";
-import ModalApprove from "./ModalApprove";
 
-const DisplayMark = ({mark}) => {
-    return (
-        <div>
-            {mark} &nbsp; {STAR}
-        </div>
-    )
-}
 
 const EditOrder = (initialOrder) => {
     const [data, setData] = useState(null)
@@ -114,15 +106,6 @@ const EditOrder = (initialOrder) => {
                                         <p><b>Email: </b>{data?.payer?.payer_info?.email}</p>
                                     </div>
                                 </div>
-                            }
-                            <label className="text" htmlFor="time">Статус заказа</label>
-                            {
-                                !order.isDone ?
-                                    <ModalApprove order={order}/>
-                                    : order.mark ?
-                                    <DisplayMark mark={order.mark}/>
-                                    : <input className="form-control" value="Готово" name="city_id"
-                                             disabled/>
                             }
                             <div className="form-control mt-4" style={{cursor: "pointer"}}
                                  onClick={() =>
