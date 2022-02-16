@@ -257,7 +257,7 @@ export const SERVER_URL = process.env.NODE_ENV === "production" ? "https://enigm
 
 export const datePattern = "[0-9]{4}.[0-9]{2}.[0-9]{2}"
 export const stringPattern = "[A-ZА-Яa-zа-я -]+"
-export const emailPattern = "[A-Za-z0-9._%+-]+@[A-Za-z]+\.[A-Za-z]+"
+export const emailPattern = "[A-Za-z0-9._%+-]+@[A-Za-z]+.[A-Za-z]+"
 export const rankingPattern = "([1-5])|([1-4].[05])|(5.0)"
 export const DAYS_RUS = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
 export const MONTH_RUS = ["Декабрь", "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]

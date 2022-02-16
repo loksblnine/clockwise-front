@@ -8,9 +8,8 @@ import {setUserData} from "../../../store/actions/userActions";
 import SetMarkDialog from "./SetMarkDialog";
 import EditProfileClient from "./EditProfileClient";
 
-import * as constants from "../../../utils/constants";
 import {ARROWS_SVG, STAR} from "../../../utils/svg_constants";
-import {WORK_TYPES} from "../../../utils/constants";
+import {setTypes} from "../../../store/actions/typeActions";
 
 const OrderMark = ({mark}) => {
     return (
@@ -24,6 +23,7 @@ const ClientPanel = () => {
     const dispatch = useDispatch()
     const history = useHistory()
     const email = useSelector((state) => state.users.user.email)
+    const types = useSelector((state) => state.types.items)
     const isReady = useSelector((state) => state.users)
     const orders = useSelector((state) => state.orders.items)
     const customer = useSelector((state) => state.users.data)
@@ -35,6 +35,9 @@ const ClientPanel = () => {
     }
     const [sortParams, setSortParams] = useState(initSortParams)
     useEffect(() => {
+        if (types.length <= 0) {
+            dispatch(setTypes())
+        }
         if (!customer?.customer_id)
             dispatch(setUserData("customers", email))
         if (customer?.customer_id && orders.length <= 0)
@@ -101,7 +104,7 @@ const ClientPanel = () => {
                                 <th scope="row"> {order?.order_id}</th>
                                 <td>{order?.master?.master_name}</td>
                                 <td>{order?.city?.city_name}</td>
-                                <td>{WORK_TYPES[order?.work_id].key}</td>
+                                <td>{types.filter(t=> Number(t.work_id) === Number(order?.work_id))[0].description}</td>
                                 <td>{order?.order_time?.split('T')[0]}</td>
                                 <td>{order?.order_time?.split('T')[1].split('.')[0]}</td>
                                 <td>{Number(order?.order_time?.split('T')[1]?.split(':')[0]) + Number(order?.work_id) + ":00:00"}</td>
@@ -109,8 +112,8 @@ const ClientPanel = () => {
                                     {
                                         order?.isDone
                                             ? order?.mark
-                                                ? <OrderMark mark={order.mark}/>
-                                                : <SetMarkDialog order={order}/>
+                                            ? <OrderMark mark={order.mark}/>
+                                            : <SetMarkDialog order={order}/>
                                             : "Не готов"
                                     }
                                 </td>

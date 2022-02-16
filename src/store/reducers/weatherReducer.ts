@@ -1,4 +1,3 @@
-import * as constants from "../../utils/constants";
 import {ACTIONS} from "../../utils/constants";
 
 type initialState = {

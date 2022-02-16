@@ -25,6 +25,7 @@ const ListOrders = () => {
     const ordersReady = useSelector((state) => state.orders.isReady)
     const orders = useSelector((state) => state.orders.items)
     const cities = useSelector((state) => state.cities.items)
+    const types = useSelector((state) => state.types.items)
     const email = useSelector((state) => state.users.user.email)
     const master = useSelector((state) => state.users.data?.master)
     const {loadNext, page} = useSelector((state) => state.orders)
@@ -72,7 +73,7 @@ const ListOrders = () => {
                                 <th scope="row"> {order?.order_id}</th>
                                 <td>{order?.customer?.customer_name}</td>
                                 <td>{order?.city?.city_name}</td>
-                                <td>{WORK_TYPES[order.work_id].key}</td>
+                                <td>{types.filter(t=> Number(t.work_id) === Number(order?.work_id))[0].description}</td>
                                 <td>{order?.order_time?.split('T')[0]}</td>
                                 <td>{Number(order?.order_time?.split('T')[1].split(':')[0]) + ":" + order.order_time.split('T')[1].split(':')[1]}</td>
                                 <td>{Number(order?.order_time?.split('T')[1].split(':')[0]) + Number(order.work_id) + ":" + order.order_time.split('T')[1].split(':')[1]}</td>

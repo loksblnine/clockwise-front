@@ -101,7 +101,7 @@ const RegistrationForm = () => {
                            onChange={formik.handleChange}
                     />
                     <p>Я принимаю условия&nbsp;
-                        <a href='#' className="primary-link" data-toggle="modal" data-target="#show-agreement">Пользовательского
+                         <a href='#' className="primary-link" data-toggle="modal" data-target="#show-agreement">Пользовательского
                             соглашения</a>
                     </p>
                     <input type="checkbox" className="form-check-input" id="master-check"

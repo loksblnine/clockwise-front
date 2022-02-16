@@ -3,8 +3,6 @@ import {useDispatch, useSelector} from "react-redux";
 import styled from "styled-components";
 
 import {approveOrder} from "../../../../store/actions/masterActions";
-import {WORK_TYPES} from "../../../../utils/constants";
-
 
 const EventItemWrapper = styled('button')`
   position: relative;
@@ -57,7 +55,7 @@ const ApproveOrderFromCalendar = ({order}) => {
                             <div>
                                 <label htmlFor="type">Тип работы</label>
                                 <input className="form-control" disabled
-                                       value={WORK_TYPES[order.work_id].key}
+                                       value={types.filter(t => Number(t.work_id) === Number(order?.work_id))[0].description}
                                 />
                             </div>
                             <div>

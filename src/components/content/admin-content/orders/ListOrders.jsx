@@ -3,14 +3,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {Spinner} from "react-bootstrap";
 import EditOrder from "./EditOrder";
 
-import {ACTIONS, datePattern, WORK_TYPES} from "../../../../utils/constants";
+import {ACTIONS, datePattern} from "../../../../utils/constants";
 import {deleteOrder, setOrdersAdmin} from "../../../../store/actions/orderActions";
 import {handleMasterInput, objectToQueryString, saveExcelFile} from "../../../../utils/utils";
 import {COLLAPSE_ARROWS, EXCEL_SVG, EXPAND_ARROWS} from "../../../../utils/svg_constants";
 import {setCities} from "../../../../store/actions/cityActions";
 import {setMasters} from "../../../../store/actions/masterActions";
 import {setTypes} from "../../../../store/actions/typeActions";
-
 
 const ListOrders = () => {
     const orders = useSelector(state => state.orders.items)
@@ -191,7 +190,7 @@ const ListOrders = () => {
                                 <td>{order.master.master_name}</td>
                                 <td>{order.customer.customer_name}</td>
                                 <td>{order.city.city_name}</td>
-                                <td>{types.filter(t=> Number(t.work_id) === Number(location.state.data.type))[0].description}</td>
+                                <td>{types.filter(t=> Number(t.work_id) === Number(order?.work_id))[0].description}</td>
                                 <td>{order.order_time.split('T')[0]}</td>
                                 <td>{order.order_time.split('T')[1].split('.')[0]}</td>
                                 <td>&nbsp;</td>
