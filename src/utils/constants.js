@@ -27,29 +27,6 @@ import Calendar from "../components/content/master-content/calendar/Calendar";
 import WeekDisplay from "../components/content/master-content/calendar/WeekDisplay";
 import ChartMenu from "../components/content/admin-content/charts/ChartMenu";
 
-//todo remove this garbage =))
-//todo use ENUM with TS
-export const WORK_TYPES = {
-    1: {
-        key: "маленькие",
-        id: "1",
-        message: "маленьких часов ",
-        value: "1"
-    },
-    2: {
-        key: "средние",
-        id: "2",
-        message: "средних часов ",
-        value: "2"
-    },
-    3: {
-        key: "большие",
-        id: "3",
-        message: "больших часов ",
-        value: "3"
-    },
-}
-
 function nowDate() {
     return new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 2).toISOString().split('T')[0]
 }

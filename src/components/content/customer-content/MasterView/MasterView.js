@@ -9,7 +9,6 @@ import {clearPhotos} from "../../../../store/actions/userActions";
 import {setTypes} from "../../../../store/actions/typeActions";
 
 import '../../../App.css'
-import {WORK_TYPES} from "../../../../utils/constants";
 
 const MasterView = () => {
     const dispatch = useDispatch()
@@ -65,7 +64,7 @@ const MasterView = () => {
             <div>
                 <h3>Выбор мастера</h3>
                 <p>Вы заказали
-                    ремонт {WORK_TYPES[location.state.data.type].message} на {location.state.data.date} в {location.state.data.time}</p>
+                    ремонт типа "{types.filter(t=> Number(t.work_id) === Number(location.state.data.type))[0].description}" на {location.state.data.date} в {location.state.data.time}</p>
             </div>
             {masters.length > 0 ?
                 <div>
