@@ -191,7 +191,7 @@ const ListOrders = () => {
                                 <td>{order.master.master_name}</td>
                                 <td>{order.customer.customer_name}</td>
                                 <td>{order.city.city_name}</td>
-                                <td>{WORK_TYPES[order.work_id].key}</td>
+                                <td>{types.filter(t=> Number(t.work_id) === Number(location.state.data.type))[0].description}</td>
                                 <td>{order.order_time.split('T')[0]}</td>
                                 <td>{order.order_time.split('T')[1].split('.')[0]}</td>
                                 <td>&nbsp;</td>
