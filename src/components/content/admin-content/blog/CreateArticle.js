@@ -1,14 +1,15 @@
 import React, {useRef, useState} from 'react';
 import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
 import {Editor} from '@tinymce/tinymce-react';
 
 import Article from "../../customer-content/Blog/Article";
 import {addArticle, removeArticlePhoto, setArticlePhoto} from "../../../../store/actions/blogActions";
-
 import {ONE_MEGABYTE} from "../../../../utils/constants";
 
 const CreateArticle = () => {
+    const history = useHistory()
     const dispatch = useDispatch()
     const inputRef = useRef(null)
     const photo = useSelector((state) => state.articles.photo) || ""
@@ -44,14 +45,10 @@ const CreateArticle = () => {
 
     return (
         <div>
-            <form onSubmit={() => {
-                setArticle((prevState => {
-                    return ({
-                        ...prevState,
-                        body: article?.body
-                    })
-                }))
-                dispatch(addArticle(article, photo))
+            <form onSubmit={(e) => {
+                e.preventDefault()
+                dispatch(addArticle({...article, body: editorRef.current.getContent()}, photo))
+                history.push('/blog')
             }}>
                 <div className="m-4">
                     <div className="form-group">

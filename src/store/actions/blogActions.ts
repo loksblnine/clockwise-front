@@ -3,7 +3,7 @@ import {ACTIONS} from "../../utils/constants";
 
 type Article = {
     article_id: number,
-    article_header: string,
+    header: string,
     body: string,
     photo: string
 }
@@ -39,7 +39,9 @@ export const addArticle = (article: Article, photo: string | "") => {
     return async (dispatch: any) => {
         const {data} = await instance({
             method: "post",
-            data: {...article, photo},
+            data: {
+                header: article.header, body: article.body, photo
+            },
             url: "/blog"
         })
         dispatch({

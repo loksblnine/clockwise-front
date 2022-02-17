@@ -44,7 +44,8 @@ const EditArticle = () => {
 
     return (
         <div>
-            <form onSubmit={() => {
+            <form onSubmit={(e) => {
+                e.preventDefault()
                 dispatch(updateArticle({...article, body: editorRef.current.getContent()}, article.article_id))
                 history.push('/blog')
             }}>

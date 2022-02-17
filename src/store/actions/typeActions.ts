@@ -38,7 +38,7 @@ export const updateType = (type: Type, work_id: number) => {
 export const addType = (type: Type) => {
     return async (dispatch: any) => {
         const {data} = await instance({
-            method: "POST",
+            method: "post",
             data: type,
             url: "/types"
         })
