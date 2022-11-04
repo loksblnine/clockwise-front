@@ -1,0 +1,57 @@
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 453px;
+    height: 184px;
+}
+
+.modal-content {
+    width: 453px !important;
+    height: 184px !important;
+    margin-top: 50%;
+}
+
+.modal-approve-heading {
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.modal-btns {
+    display: flex;
+    gap: 30px;
+}
+
+.modal-approve-btn {
+    width: 110px !important;
+    padding: 9px 0;
+    border: 1px solid #47C0C1;
+    border-radius: 4px;
+    color: #47C0C1;
+    text-align: center;
+    cursor: pointer;
+}
+
+.modal-approve-btn:hover {
+    background-color: #47C0C1;
+    color: #ffffff;
+    transition: 0.2s ease-in-out;
+}
+
+.modal-delete-btn {
+    width: 110px !important;
+    padding: 9px 0;
+    border: 1px solid #C14847;
+    border-radius: 4px;
+    background: #C14847;
+    color: #FFFFFF;
+    text-align: center;
+    cursor: pointer;
+}
+
+.active-time {
+    color: #FFFFFF !important;
+    background: #47C0C1
+}

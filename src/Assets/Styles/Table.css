@@ -1,0 +1,129 @@
+.table-heading {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 0 16px 20px 16px;
+    height: unset;
+}
+
+.table-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 114px;
+    background: none !important;
+    border: none !important;
+    border-bottom: 1px solid #AAABBA !important;
+}
+
+.table-row:first-child {
+    border-top: 1px solid #AAABBA !important;
+    border-bottom: 1px solid #AAABBA !important;
+}
+
+.table-row:last-child {
+    border-bottom: none !important;
+}
+
+.table-col {
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 10px;
+    width: 142px;
+}
+
+.table-col-user {
+    display: flex;
+    align-items: center;
+    width: 202px;
+}
+
+.table-col-user img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.table-col-category, .table-col-date {
+    position: relative;
+}
+
+/*.table-col-category::after {*/
+/*    content: url("https://res.cloudinary.com/loksblnine/image/upload/v1663757246/PatientApp/assets_front/arrow_down_vd5hmu.svg");*/
+/*    position: absolute;*/
+/*    width: 12px;*/
+/*    right: 55px;*/
+/*    cursor: pointer;*/
+/*}*/
+
+.table-col-date::after {
+    content: url("https://res.cloudinary.com/loksblnine/image/upload/v1663757246/PatientApp/assets_front/arrow_down_vd5hmu.svg");
+    position: absolute;
+    width: 12px;
+    left: 45px;
+    cursor: pointer;
+}
+
+.table-col-notice {
+    flex-direction: row !important;
+    width: 190px !important;
+}
+
+.table-col-notice .table-dropdown {
+    width: 20px !important;
+}
+
+.table-col-feedback {
+    max-width: 668px !important;
+    width: 100% !important;
+}
+
+.table-col-clinic {
+    width: 148px !important;
+}
+
+.table-row-btns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.table-col-btns {
+    max-width: 111px;
+}
+
+.table-requests-btn {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+}
+
+.table-requests-btn::after {
+    content: url("https://res.cloudinary.com/loksblnine/image/upload/v1663757246/PatientApp/assets_front/arrow_down_vd5hmu.svg");
+    position: absolute;
+    width: 12px;
+    right: 6px;
+    cursor: pointer;
+}
+
+.table-dropdown {
+    width: 100% !important;
+}
+
+.table-link {
+    text-decoration: none;
+    color: #343760 !important;
+    font-weight: 400 !important;
+}
+
+.accordion {
+    margin-bottom: 36px;
+}

@@ -1,0 +1,50 @@
+.manage-form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    gap: 25px;
+    max-width: 1200px;
+    margin-top: 25px;
+    margin-bottom: 20px;
+}
+
+.manage-img {
+    position: relative;
+    width: fit-content;
+}
+
+.manage-avatar {
+    width: 124px;
+    height: 124px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.manage-form-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 500px;
+    gap: 25px;
+}
+
+.manage-btn {
+    width: 100%;
+    margin-top: 25px;
+}
+
+.manage-upload_file {
+    position: relative;
+    width: 100%;
+}
+
+.manage-upload_file::after {
+    content: url("https://res.cloudinary.com/loksblnine/image/upload/v1663757696/PatientApp/assets_front/upload_photo_b1uqfs.svg");
+    position: absolute;
+    right: -12px;
+    bottom: 12px;
+    cursor: pointer;
+}

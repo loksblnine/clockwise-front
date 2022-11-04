@@ -1,0 +1,32 @@
+.manage-office-heading {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.manage-office-comment {
+    text-align: left;
+    font-weight: 700;
+    font-size: 16px;
+    margin-top: 50px;
+}
+
+.manage-office-panel {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 25px;
+    max-width: 1200px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.manage-office-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 500px;
+    width: 100%;
+}

@@ -1,9 +1,45 @@
 import axios from "axios";
 
-export const instance = axios.create({baseURL: process.env.NODE_ENV === "development" ? "http://localhost:5000" : "https://enigmatic-spire-58695.herokuapp.com"})
+const baseURL = "https://patient-app-dev-server.herokuapp.com/"
 
-instance.interceptors.request.use((config) => {
-    const token = localStorage.getItem("token");
+export const apiGet = axios.create({baseURL});
+export const apiPost = axios.create({baseURL});
+export const apiDelete = axios.create({baseURL});
+export const apiPut = axios.create({baseURL});
+
+apiGet.interceptors.request.use((config) => {
+    config.method = "get";
+    const token = localStorage.getItem("accessToken");
+    if (token)
+        config.headers = {
+            Authorization: "Bearer " + token,
+        };
+    return config;
+});
+
+apiPost.interceptors.request.use((config) => {
+    config.method = "post";
+    const token = localStorage.getItem("accessToken");
+    if (token)
+        config.headers = {
+            Authorization: "Bearer " + token,
+        };
+    return config;
+});
+
+apiDelete.interceptors.request.use((config) => {
+    config.method = "delete";
+    const token = localStorage.getItem("accessToken");
+    if (token)
+        config.headers = {
+            Authorization: "Bearer " + token,
+        };
+    return config;
+});
+
+apiPut.interceptors.request.use((config) => {
+    config.method = "put";
+    const token = localStorage.getItem("accessToken");
     if (token)
         config.headers = {
             Authorization: "Bearer " + token,

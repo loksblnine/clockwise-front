@@ -1,0 +1,13 @@
+.no-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    padding-top: 50px;
+    text-align: center;
+}
+
+.no-found p {
+    font-size: 20px;
+}

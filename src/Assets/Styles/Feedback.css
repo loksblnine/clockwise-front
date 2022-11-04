@@ -1,0 +1,119 @@
+.feedback-buttons {
+    max-width: 366px !important;
+    margin-top: 0 !important;
+}
+
+.feedback {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 50px 40px 115px;
+    margin-top: 25px;
+    background: #FFFFFF;
+    border-radius: 16px;
+    color: #343760;
+}
+
+.feedback-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 100px;
+    width: 100%;
+}
+
+.feedback-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 45px;
+    width: 100%;
+}
+
+.feedback-form p {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.feedback-form div:first-child {
+    text-align: left;
+}
+
+.feedback-rating {
+    display: flex;
+    gap: 15px;
+}
+
+.feedback-textarea {
+    height: 313px !important;
+    width: 100% !important;
+    padding: 40px !important;
+}
+
+.feedback-btn {
+    width: 100%;
+    padding: 13px 0;
+    background: #47C0C1;
+    border: 1px solid #47C0C1;
+    border-radius: 4px;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+.feedback-success-sect {
+    min-height: calc(100vh - 100px);
+    justify-content: center !important;
+    color: #343760;
+}
+
+.feedback-success {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 80px;
+    width: 100%;
+    padding: 50px 0 115px;
+    background: #FFFFFF;
+    border-radius: 16px;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.feedback-success-btn {
+    max-width: 612px;
+    width: 100%;
+    padding: 13px 0;
+    background: #47C0C1;
+    border-radius: 4px;
+    text-align: center;
+    text-decoration: none !important;
+    color: #FFFFFF !important;
+    font-weight: 400 !important;
+    cursor: pointer;
+}
+
+.star-btn {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.on {
+    color: #47C0C1;
+    font-size: 40px;
+}
+
+.off {
+    background-image: url("https://res.cloudinary.com/loksblnine/image/upload/v1663757537/PatientApp/assets_front/star_iwaczc.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    color: rgba(0,0,0,0);
+    font-size: 36px;
+}
+
+.feedback-heading {
+    text-align: center;
+}

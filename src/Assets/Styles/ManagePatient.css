@@ -1,0 +1,88 @@
+.manage-patient-sect {
+    position: relative;
+    min-height: calc(100vh - 100px);
+}
+
+.manage-patient-heading {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.manage-patient-buttons {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    max-width: 169px;
+    width: 100%;
+    padding: 6px 8px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-size: 16px;
+    font-weight: 400;
+    color: #AAABBA;
+}
+
+.manage-patient-btn {
+    box-sizing: border-box;
+    text-align: center;
+    padding: 4px 8px;
+    width: 50%;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.manage-patient-add-btn {
+    background: #47C0C1;
+    padding: 20px 25px;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(97, 124, 124, 0.51);
+    border-radius: 33px;
+    color: #FFFFFF !important;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.active-btn {
+    background-color: #47C0C1;
+    color: #ffffff;
+}
+
+.label-notice {
+    color: #343760;
+    margin: 0 0 4px 2px !important;
+}
+
+.manage-patient-table {
+    width: 100%;
+    margin-top: 50px;
+    margin-bottom: 36px;
+}
+
+.css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+    border-radius: 8px !important;
+    width: 100% !important;
+}
+
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+    padding: 10px !important;
+}
+
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+    color: #343760 !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+.MuiInputBase-root,
+.MuiOutlinedInput-root,
+.MuiInputBase-colorPrimary,
+.Mui-focused,
+.MuiInputBase-formControl,
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+    border-radius: 8px !important;
+    background: #EEFBF9;
+}
+

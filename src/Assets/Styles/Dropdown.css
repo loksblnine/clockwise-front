@@ -1,0 +1,74 @@
+#dropdown-basic {
+    background: none !important;
+    border: none !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    color: #47C0C1 !important;
+    padding: 0 !important;
+}
+
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+.dropdown-item {
+    display: flex !important;
+    flex-direction: column;
+}
+
+.dropdown-item:hover {
+    background: none !important;
+}
+
+.dropdown-reject {
+    padding: 20px !important;
+    gap: 20px;
+}
+
+.dropdown-reject-btn {
+    align-self: flex-end;
+    max-width: fit-content !important;
+    width: 100%;
+    padding: 7px 0;
+    border: 1px solid #C14847 !important;
+    border-radius: 4px;
+    background: none !important;
+    text-align: center;
+    color: #C14847 !important;
+}
+
+.dropdown-message {
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 16px;
+    color: #343760;
+}
+
+.dropdown-choose-date {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+}
+
+.dropdown-date-item {
+    width: 72px;
+    border: 1px solid #47C0C1;
+    border-radius: 8px;
+    text-align: center;
+    color: #343760;
+}
+
+.dropdown-date-item:hover {
+    color: #ffffff;
+    background-color: #47C0C1;
+    transition: 0.2s ease-in-out;
+}
+
+.dropdown-notice {
+    max-width: 240px !important;
+    align-items: center !important;
+}
+
+.dropdown-notice .select-btn {
+    align-self: center !important;
+}
