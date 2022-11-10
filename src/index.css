@@ -223,6 +223,7 @@ button:focus:not(:focus-visible) {
     font-weight: 400 !important;
     background: #47C0C1 !important;
     border-radius: 4px;
+    border: #47C0C1;
 }
 
 .select-btn:hover {
@@ -273,4 +274,12 @@ button:focus:not(:focus-visible) {
     background: #EEFBF9 !important;
     margin-bottom: 15px !important;
     border-radius: 8px;
+}
+
+.status-approved {
+    color: #36B37E;
+}
+
+.status-rejected {
+    color: #C14847;
 }

@@ -1,28 +1,30 @@
 import "../../Assets/Styles/ManageProfile.css";
 import {useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Formik, Form, Field, ErrorMessage} from "formik";
+import {ThemeProvider} from "@mui/material/styles";
+import Alert from "@mui/material/Alert";
+import {ACTIONS, theme} from "../../Utils/constants";
 import {DoctorsSignInSchema} from "../../Utils/ValidationSchemas";
 import Header from "../../Layouts/Header/Header";
-import {signUp} from "../../Store/actions/userActions";
+import Loading from "../../Layouts/Loading/Loading";
 import {getClinicsList} from "../../Store/actions/clinicActions";
 import {getSpecialtiesList} from "../../Store/actions/specialtyActions";
+import {registerDoctor} from "../../Store/actions/doctorActions";
 
 export default function AddDoctor() {
-    const navigate = useNavigate();
-
     const dispatch = useDispatch();
 
+    const {role} = useSelector(state => state.userReducer.user);
     const clinicsList = useSelector(state => state.clinicReducer.items);
     const specialtiesList = useSelector(state => state.specialtyReducer.items);
     const managerClinic = useSelector(state => state.userReducer.user?.clinic_id_clinics_managerToClinics);
+    const {message} = useSelector(state => state.messageReducer);
 
     const [matches, setMatches] = useState(
         window.matchMedia("(max-width: 1200px)").matches
     );
-    const [passwordType, setPasswordType] = useState("password");
-    const [confirmPasswordType, setConfirmPasswordType] = useState("password");
+    const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
         window
@@ -33,25 +35,22 @@ export default function AddDoctor() {
         dispatch(getSpecialtiesList());
     }, []);
 
+    useEffect(() => {
+        if (message) {
+            setShowAlert(true);
 
-    const togglePassword = () => {
-        if (passwordType === "password") {
-            setPasswordType("text");
-            return;
+            setTimeout(() => {
+                setShowAlert(false);
+                dispatch({
+                    type: ACTIONS.MESSAGE.SET_MESSAGE,
+                    payload: null
+                })
+            }, 2000);
         }
-        setPasswordType("password");
-    };
+    })
 
-    const toggleConfirmPassword = () => {
-        if (confirmPasswordType === "password") {
-            setConfirmPasswordType("text");
-            return;
-        }
-        setConfirmPasswordType("password");
-    };
-
-    if (!managerClinic) {
-        return <></>
+    if (role !== 1 && !managerClinic) {
+        return <Loading/>
     }
 
     return (
@@ -59,8 +58,15 @@ export default function AddDoctor() {
             <Header/>
             <main>
                 <section className={"sect"}>
+                    {showAlert ?
+                        <ThemeProvider theme={theme}>
+                            <Alert variant="outlined" severity="success" id="alert">{message}</Alert>
+                        </ThemeProvider>
+                        :
+                        null
+                    }
                     <h1>Add Doctor</h1>
-                    <div className={"manage-form"}>
+                    <div className="manage-form">
                         <Formik
                             initialValues={{
                                 first_name: "",
@@ -68,27 +74,33 @@ export default function AddDoctor() {
                                 birthDate: "",
                                 primarySpecialty: "",
                                 secondarySpecialty: "",
-                                clinic: managerClinic[0]?.id,
+                                clinic: role === 1 ? "" : managerClinic[0]?.id,
                                 location: "",
                                 telephone: "",
                                 email: "",
-                                password: "",
-                                confirmPassword: "",
-                                checkmark: false
                             }}
                             validationSchema={DoctorsSignInSchema}
                             onSubmit={values => {
-                                dispatch(
-                                    signUp(
-                                        values,
-                                        3,
-                                        navigate
-                                    )
-                                )
+                                const data = {
+                                    first_name: values.first_name,
+                                    last_name: values.last_name,
+                                    birthDate: values.birthDate,
+                                    primarySpecialty: values.primarySpecialty,
+                                    clinic: values.clinic,
+                                    location: values.location,
+                                    telephone: values.telephone,
+                                    email: values.email,
+                                };
+
+                                if (values.secondarySpecialty === "") {
+                                    dispatch(registerDoctor(data))
+                                } else {
+                                    dispatch(registerDoctor(values))
+                                }
                             }}
                         >
                             {({values}) => (
-                                <Form>
+                                <Form className="manage-form-col">
                                     <div className="input-container">
                                         <label>First Name</label>
                                         <Field
@@ -186,7 +198,6 @@ export default function AddDoctor() {
                                             type="tel"
                                             name="telephone"
                                             placeholder="+49 888 888 88 88"
-                                            pattern="^[+]{1}[0-9]{2} [0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}$"
                                             maxLength="20" required
                                             style={matches ? {maxWidth: "unset"} : {maxWidth: "500px"}}
                                         />
@@ -206,57 +217,8 @@ export default function AddDoctor() {
                                             <ErrorMessage name="email"/>
                                         </span>
                                     </div>
-                                    <div className="input-container">
-                                        <label>Password</label>
-                                        <Field
-                                            type={passwordType}
-                                            name="password"
-                                            maxLength="40" required
-                                            style={matches ? {maxWidth: "unset"} : {maxWidth: "500px"}}
-                                        />
-                                        <img alt="show_pw"
-                                             src="https://res.cloudinary.com/loksblnine/image/upload/v1663757663/PatientApp/assets_front/view_password_cbpq1d.svg"
-                                             className="auth-password_img" onClick={togglePassword}/>
-                                        <span className="error">
-                                            <ErrorMessage name="password"/>
-                                        </span>
-                                    </div>
-                                    <div className="input-container">
-                                        <label>Confirm Password</label>
-                                        <Field
-                                            type={confirmPasswordType}
-                                            name="confirmPassword"
-                                            maxLength="40" required
-                                            style={matches ? {maxWidth: "unset"} : {maxWidth: "500px"}}
-                                        />
-                                        <img alt="show_pw"
-                                             src="https://res.cloudinary.com/loksblnine/image/upload/v1663757663/PatientApp/assets_front/view_password_cbpq1d.svg"
-                                             className="auth-password_img" onClick={toggleConfirmPassword}/>
-                                        <span className="error">
-                                            <ErrorMessage name="confirmPassword"/>
-                                        </span>
-                                    </div>
-                                    <div className="input-container">
-                                        <label className="auth-checkbox">
-                                            <Field type="checkbox" name="checkmark"/>
-                                            <span className="checkmark"/>
-                                        </label>
-                                        <p className="auth-agree">
-                                            I agree to the <Link to="#">Terms of Service</Link>
-                                            {` and `}<Link to="#">Privacy Policy</Link>
-                                        </p>
-                                        <span className="error">
-                                            <ErrorMessage name="checkmark"/>
-                                        </span>
-                                    </div>
-                                    <div className="button-container">
-                                        <button
-                                            className="auth-btn"
-                                            type="submit"
-                                            disabled={!values.checkmark}
-                                        >
-                                            Create Account
-                                        </button>
+                                    <div className="button-container manage-btn">
+                                        <input type="submit" value="Create Account"/>
                                     </div>
                                 </Form>
                             )}

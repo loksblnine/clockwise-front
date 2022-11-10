@@ -1,49 +1,42 @@
 import "../../Assets/Styles/ManagePatient.css";
 import {useCallback, useEffect} from "react";
 import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
-import NoFound from "../../Layouts/NoFound/NoFound";
-import {useDispatch, useSelector} from "react-redux";
-import {editNotice, editStatus, getAppointmentsList} from "../../Store/actions/appointmentActions";
 import Moment from "moment";
-import {ACTIONS, appointmentsTypes} from "../../Utils/constants";
-import Dropdown from "react-bootstrap/Dropdown";
+import {getAppointmentsList} from "../../Store/actions/appointmentActions";
+import {ACTIONS} from "../../Utils/constants";
+import NoFound from "../../Layouts/NoFound/NoFound";
 
 export default function ManagePatientDone(props) {
     const dispatch = useDispatch();
 
-    const {filteredItems, page, loadNext} = useSelector(state => state.appointmentReducer);
+    const {items, page, loadNext, isReady} = useSelector(state => state.appointmentReducer.done);
 
     useEffect(() => {
         if (props.status === "done") {
             dispatch({
-                type: ACTIONS.APPOINTMENT.CLEAR_FILTERED_ARRAY
+                type: ACTIONS.APPOINTMENT.CLEAR_ARRAY
             })
         }
     }, []);
 
     useEffect(() => {
-        if (props.query !== "") {
-            dispatch(getAppointmentsList(props.query, 0, "1,2"))
+        if (!isReady) {
+            dispatch(getAppointmentsList(page, "1,2"));
         }
-    }, [props.query]);
-
-    useEffect(() => {
-        if (!filteredItems.length && !props.query) {
-            dispatch(getAppointmentsList('', page, "1,2"));
-        }
-    }, [filteredItems, props.query]);
+    }, [isReady]);
 
     const handleNextAppointments = useCallback(() => {
-        dispatch(getAppointmentsList("", page, "1,2"));
+        dispatch(getAppointmentsList(page, "1,2"));
     }, [page]);
 
     return (
         <>
             <div
                 className="table-heading"
-                style={!filteredItems.length ? {borderBottom: "1px solid #343760"} : {border: "none"}}
+                style={!items.length ? {borderBottom: "1px solid #343760"} : {border: "none"}}
             >
                 <div className="table-col-user">Patient</div>
                 <div className="table-col table-col-category">Category</div>
@@ -53,12 +46,12 @@ export default function ManagePatientDone(props) {
                 <div className="table-col">Phone</div>
                 <div className="table-col table-col-btns">Status</div>
             </div>
-            {!filteredItems.length ?
+            {!items.length ?
                 <NoFound/>
                 :
                 <Accordion>
-                    {filteredItems.map((item, i) =>
-                        <Card>
+                    {items.map((item, i) =>
+                        <Card key={`/patients/${item?.user_id}${i}`}>
                             <Card.Header>
                                 <Link to={`/patients/${item?.user_id}`} className="table-link">
                                     <div className="table-col-user">
@@ -67,7 +60,8 @@ export default function ManagePatientDone(props) {
                                                  "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
                                                  :
                                                  item?.user.photo_url
-                                             }/>
+                                             }
+                                        />
                                         <div className="table-col">
                                             <div>{`${item?.user.firstName} ${item?.user.lastName}`}</div>
                                             <div>{Moment(new Date(item?.user.birth_date)).format("DD.MM.YYYY")}</div>
@@ -80,7 +74,9 @@ export default function ManagePatientDone(props) {
                                 <div className="table-col">
                                     {item?.drugToOrders ?
                                         item?.drugToOrders.map(value =>
-                                            <div>{`${value?.drug.description}: ${value?.number}`}</div>
+                                            <div key={`drugToOrders${value?.drug.description}: ${value?.number}`}>
+                                                {`${value?.drug.description}: ${value?.number}`}
+                                            </div>
                                         )
                                         :
                                         null
@@ -100,9 +96,9 @@ export default function ManagePatientDone(props) {
                                 <div className="table-col">{item?.user.telephone}</div>
                                 <div className="table-col table-col-btns">
                                     {item?.status_id === 1 ?
-                                        <div className="success-btn btn">Approved</div>
+                                        <div className="status-approved">✓ Approved</div>
                                         :
-                                        <div className="warning-btn btn">Rejected</div>
+                                        <div className="status-rejected">X Rejected</div>
                                     }
                                 </div>
                             </Card.Header>
@@ -111,7 +107,7 @@ export default function ManagePatientDone(props) {
                 </Accordion>
             }
 
-            {filteredItems.length && loadNext ?
+            {items.length && loadNext ?
                 <div className="pagination" onClick={() => handleNextAppointments()}>
                     <img alt="load_more"
                          src="https://res.cloudinary.com/loksblnine/image/upload/v1665474445/PatientApp/assets_front/load_more_mg9qmt.svg"/>

@@ -1,6 +1,7 @@
 import {toast} from "react-toastify";
 import {apiGet, apiPost, apiPut} from "../../http/headerPlaceholder.instance";
 import {ACTIONS} from "../../Utils/constants";
+import {addDoctorSpecialty, removeDoctorSpecialty} from "./doctorActions";
 
 export const login = (email, password, navigate) => {
     return async (dispatch) => {
@@ -59,9 +60,6 @@ export const checkAuth = () => {
                 dispatch({
                     type: ACTIONS.USER.LOG_OUT
                 });
-                if (window.location.pathname !== "/login") {
-                    window.location = "/login";
-                }
             });
     };
 };
@@ -97,14 +95,10 @@ export const signUp = (data, role, navigate) => {
             }
         })
             .then(({data}) => {
-                if (role === 3) {
-
-                } else {
-                    dispatch({
-                        type: ACTIONS.USER.SET_TOKENS,
-                        payload: data
-                    });
-                }
+                dispatch({
+                    type: ACTIONS.USER.SET_TOKENS,
+                    payload: data
+                });
                 navigate("/");
             })
             .catch(() => {
@@ -133,7 +127,7 @@ export const getUserInfo = (id) => {
     }
 }
 
-export const updateUserInfo = (userId, first_name, last_name, birth_date, location, telephone) => {
+export const updateUserInfo = (userId, first_name, last_name, birth_date, location, telephone, prevPrimarySpecialty, primarySpecialty, prevSecondarySpecialty, secondarySpecialty, role) => {
     return async (dispatch) => {
         await apiPut({
             url: "/users/update-user-info",
@@ -146,17 +140,30 @@ export const updateUserInfo = (userId, first_name, last_name, birth_date, locati
                 telephone
             }
         })
-            .then(({data}) => {
-                dispatch({
-                    type: ACTIONS.USER.SET_USER,
-                    payload: data
-                });
-                dispatch({
-                    type: ACTIONS.MESSAGE.SET_MESSAGE,
-                    payload: "success"
-                });
-                dispatch(getUserInfo(userId));
-            })
+          .then(() => {
+              if (role === 3 && prevPrimarySpecialty && Number(prevPrimarySpecialty) !== Number(primarySpecialty)) {
+                  dispatch(removeDoctorSpecialty(userId, prevPrimarySpecialty));
+              }
+          })
+          .then(() => {
+              if (role === 3 && prevSecondarySpecialty && Number(prevSecondarySpecialty) !== Number(secondarySpecialty)) {
+                  dispatch(removeDoctorSpecialty(userId, prevSecondarySpecialty));
+              }
+          })
+          .then(() => {
+              if (role === 3 && primarySpecialty && Number(prevPrimarySpecialty) !== Number(primarySpecialty))  {
+                  dispatch(addDoctorSpecialty(userId, Number(primarySpecialty), true));
+              }
+          })
+          .then(() => {
+              if (role === 3 && secondarySpecialty !== "-1" && Number(prevSecondarySpecialty) !== Number(secondarySpecialty)) {
+                  dispatch(addDoctorSpecialty(userId, Number(secondarySpecialty), false));
+              }
+          })
+          .then(() => {
+              toast.success("Updated!")
+              dispatch(getUserInfo(userId))
+          })
             .catch((e) => {
                 if (e.response.status === 401) {
                     dispatch(checkAuth())
@@ -220,7 +227,7 @@ export const sendRecoverPwEmail = (data, navigate) => {
 
 export const updatePassword = (newPassword, navigate) => {
     return async () => {
-        apiPost({
+        apiPut({
             url: "/users/update-password",
             data: {
                 newPassword

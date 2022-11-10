@@ -31,9 +31,48 @@ export const setReadyDoctors = (isReady) => ({
   payload: isReady
 });
 
+export const registerDoctor = (data) => {
+  const {
+    email,
+    birthDate,
+    first_name,
+    last_name,
+    location,
+    telephone,
+    clinic,
+    primarySpecialty,
+    secondarySpecialty
+  } = data;
+  return async (dispatch) => {
+    await apiPost({
+      url: "/manager/register-doctor",
+      data: {
+        email,
+        birthDate,
+        firstName: first_name,
+        lastName: last_name,
+        location,
+        telephone,
+        clinicId: clinic,
+        primarySpecialty,
+        secondarySpecialty
+      }
+    })
+      .then(({data}) => {
+        dispatch({
+          type: ACTIONS.MESSAGE.SET_MESSAGE,
+          payload: "Success!"
+        });
+      })
+      .catch(() => {
+        toast.error("Something went wrong");
+      });
+  };
+};
+
 export const getDoctorById = (id) => {
   return async (dispatch) => {
-    apiPost({
+    await apiPost({
       url: `/doctors/all?doctorId=${id}`
     })
       .then(({data}) => {
@@ -51,7 +90,7 @@ export const getDoctorById = (id) => {
   };
 };
 
-export const editDoctorInfo = (values, userId) => {
+export const editDoctorInfo = (values, userId, prevPrimarySpecialty, prevSecondarySpecialty) => {
   const {
     first_name,
     last_name,
@@ -59,11 +98,10 @@ export const editDoctorInfo = (values, userId) => {
     location,
     telephone,
     primarySpecialty,
-    secondarySpecialty,
-    clinic
+    secondarySpecialty = ""
   } = values;
   return async (dispatch) => {
-    apiPut({
+    await apiPut({
       url: `users/update-by-manager`,
       data: {
         userId,
@@ -71,18 +109,38 @@ export const editDoctorInfo = (values, userId) => {
         firstName: first_name,
         lastName: last_name,
         location,
-        telephone,
-        primarySpecialty,
-        secondarySpecialty,
-        clinic
+        telephone
       }
     })
       .then(() => {
-        dispatch(getDoctorById(userId));
+        if (prevPrimarySpecialty && Number(prevPrimarySpecialty) !== Number(primarySpecialty)) {
+          dispatch(removeDoctorSpecialty(userId, prevPrimarySpecialty));
+        }
+      })
+      .then(() => {
+        if (prevSecondarySpecialty && Number(prevSecondarySpecialty) !== Number(secondarySpecialty)) {
+          dispatch(removeDoctorSpecialty(userId, prevSecondarySpecialty));
+        }
+      })
+      .then(() => {
+        if (primarySpecialty && Number(prevPrimarySpecialty) !== Number(primarySpecialty))  {
+          dispatch(addDoctorSpecialty(userId, Number(primarySpecialty), true));
+        }
+      })
+      .then(() => {
+        if (secondarySpecialty !== "-1" && Number(prevSecondarySpecialty) !== Number(secondarySpecialty)) {
+          dispatch(addDoctorSpecialty(userId, Number(secondarySpecialty), false));
+        }
+      })
+      .then(async () => {
+        toast.success("Updated!")
+        const {data} = await apiPost({
+          url: `/doctors/all?doctorId=${userId}`
+        })
         dispatch({
-          type: ACTIONS.MESSAGE.SET_MESSAGE,
-          payload: "Success!"
-        });
+          type: ACTIONS.DOCTOR.UPDATE_DOCTOR,
+          payload: data[0]
+        })
       })
       .catch((e) => {
         dispatch({
@@ -94,25 +152,9 @@ export const editDoctorInfo = (values, userId) => {
   };
 };
 
-export const deleteDoctor = (id, handleClose, navigate) => {
-  return async () => {
-    apiDelete({
-      url: `/doctors/${id}`,
-      data: {id}
-    })
-      .then(({data}) => {
-        handleClose();
-        navigate("/");
-      })
-      .catch((e) => {
-        toast.error("Something went wrong");
-      });
-  };
-};
-
 export const updateDoctorPhoto = (userId, data) => {
   return async (dispatch) => {
-    apiPut({
+    await apiPut({
       url: "/manager/update-photo",
       data: {
         userId,
@@ -136,3 +178,56 @@ export const updateDoctorPhoto = (userId, data) => {
       });
   };
 };
+
+export const addDoctorSpecialty = (doctorId, specialtyId, isMain) => {
+  return async (dispatch) => {
+    return await apiPost({
+      url: `/doctors/${doctorId}/add-specialties`,
+      data: {
+        specialties: [{id: specialtyId, isMain}]
+      }
+    })
+      .catch((e) => {
+        if (e.response.status === 401) {
+          dispatch(checkAuth());
+        }
+        toast.error("Something went wrong");
+      });
+  };
+};
+
+export const removeDoctorSpecialty = (doctorId, specialtyId) => {
+  return async (dispatch) => {
+    return await apiDelete({
+      url: `/doctors/${doctorId}/remove-specialty`,
+      data: {
+        doctorId,
+        specialtyId
+      }
+    })
+      .catch((e) => {
+        if (e.response.status === 401) {
+          dispatch(checkAuth());
+        }
+        toast.error("Something went wrong");
+      });
+  };
+};
+
+export const deleteDoctor = (id, handleClose, navigate) => {
+  return async () => {
+    await apiDelete({
+      url: `/doctors/${id}`,
+      data: {id}
+    })
+      .then(({data}) => {
+        handleClose();
+        navigate("/");
+      })
+      .catch((e) => {
+        toast.error("Something went wrong");
+      });
+  };
+};
+
+

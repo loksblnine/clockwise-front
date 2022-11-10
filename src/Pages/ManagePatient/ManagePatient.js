@@ -1,16 +1,10 @@
 import "../../Assets/Styles/ManagePatient.css";
-import {useMemo, useState} from "react";
+import {useState} from "react";
 import Header from "../../Layouts/Header/Header";
 import ManagePatientPending from "./ManagePatientPending";
 import ManagePatientDone from "./ManagePatientDone";
-import {ACTIONS} from "../../Utils/constants";
-import {useDispatch} from "react-redux";
-import debounce from "lodash.debounce";
 
 export default function ManagePatient() {
-    const dispatch = useDispatch();
-
-    const [query, setQuery] = useState("");
     const [table, setTable] = useState("pending");
 
     const activeBtn = event => {
@@ -20,19 +14,6 @@ export default function ManagePatient() {
         }
         event.currentTarget.classList.add("active-btn");
     }
-
-    const changeHandler = (event) => {
-        if (!event.target.value) {
-            dispatch({
-                type: ACTIONS.APPOINTMENT.CLEAR_FILTERED_ARRAY
-            })
-        }
-        return setQuery(event.target.value.toLowerCase());
-    };
-
-    const debouncedChangeHandler = useMemo(() => {
-        return debounce(changeHandler, 300);
-    }, []);
 
     return (
         <>
@@ -71,9 +52,9 @@ export default function ManagePatient() {
                     <div className="manage-patient-table">
                         {
                             table === "pending" ?
-                                <ManagePatientPending query={query} status={table}/>
+                                <ManagePatientPending status={table}/>
                                 :
-                                <ManagePatientDone query={query} status={table}/>
+                                <ManagePatientDone status={table}/>
                         }
                     </div>
                 </section>

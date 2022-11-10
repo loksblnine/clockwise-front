@@ -19,14 +19,15 @@ export default function ToggleSwitch(props) {
     };
 
     return (
-      <>
-          <label className="toggle-label">
-              <div>{props.element.description}</div>
-              <Switch onChange={(e) => handleChange(e)} checked={props.checked}
-                      onColor={"#47C0C1"} offColor={"#fff"}
-                      offHandleColor={"#47C0C1"}
-                      checkedIcon={false} uncheckedIcon={false}/>
-          </label>
-      </>
+        <>
+            <label className="toggle-label">
+                <div>{props.element.description}</div>
+                <Switch onChange={(e) => handleChange(e)} checked={props.checked}
+                        onColor={"#47C0C1"} offColor={"#fff"}
+                        offHandleColor={"#47C0C1"}
+                        checkedIcon={false} uncheckedIcon={false}
+                />
+            </label>
+        </>
     );
 }

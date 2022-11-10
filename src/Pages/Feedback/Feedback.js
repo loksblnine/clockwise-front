@@ -1,9 +1,9 @@
 import "../../Assets/Styles/ManagePatient.css";
 import "../../Assets/Styles/Feedback.css";
 import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import Header from "../../Layouts/Header/Header";
 import FeedbackSuccess from "./FeedbackSuccess";
-import {useDispatch, useSelector} from "react-redux";
 import {postFeedback} from "../../Store/actions/feedbackActions";
 
 export default function Feedback() {

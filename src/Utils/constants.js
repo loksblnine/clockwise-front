@@ -15,6 +15,7 @@ export const ACTIONS = {
         SET_FILTERED_ARRAY: "SET_FILTERED_ARRAY",
         CLEAR_FILTERED_ARRAY: "CLEAR_FILTERED_ARRAY",
         SET_READY_DOCTORS: "SET_READY_DOCTORS",
+        UPDATE_DOCTOR: "UPDATE_DOCTOR",
         SET_DOCTOR: "SET_DOCTOR",
         ADD_DOCTOR: "ADD_DOCTOR",
         EDIT_DOCTOR: "EDIT_DOCTOR",
@@ -32,17 +33,22 @@ export const ACTIONS = {
         SET_SPECIALTiES: "SET_SPECIALTiES",
     },
     FEEDBACK: {
-        SET_DOCTORS_FEEDBACK_LIST: "SET_DOCTORS_FEEDBACK_LIST",
-        SET_PATIENTS_FEEDBACK_LIST: "SET_PATIENTS_FEEDBACK_LIST",
+        SET_FEEDBACKS: "SET_FEEDBACKS",
+        SET_FILTERED_ARRAY: "SET_FILTERED_ARRAY",
+        CLEAR_ARRAY: "CLEAR_ARRAY",
+        SET_OLD_ITEMS: "SET_OLD_ITEMS",
+        SET_PAGE: "SET_PAGE"
     },
     APPOINTMENT: {
-        SET_APPOINTMENTS: "SET_APPOINTMENTS",
+        SET_DONE_APPOINTMENTS: "SET_DONE_APPOINTMENTS",
+        SET_PENDING_APPOINTMENTS: "SET_PENDING_APPOINTMENTS",
         SET_PAGE: "SET_PAGE",
         SET_FILTERED_ARRAY: "SET_FILTERED_ARRAY",
-        CLEAR_FILTERED_ARRAY: "CLEAR_FILTERED_ARRAY",
+        CLEAR_ARRAY: "CLEAR_ARRAY",
         UPDATE_NOTICE: "UPDATE_NOTICE",
         UPDATE_TIME: "UPDATE_DATE",
-        UPDATE_STATUS: "UPDATE_STATUS"
+        UPDATE_STATUS: "UPDATE_STATUS",
+        SET_PATIENT: "SET_PATIENT"
     },
     MESSAGE: {
         SET_MESSAGE: "SET_MESSAGE",
@@ -50,7 +56,7 @@ export const ACTIONS = {
     }
 }
 
-export const LIMIT_ITEM_PER_PAGE = 5;
+export const LIMIT_ITEM_PER_PAGE = 15;
 
 export const calculateOffset = (page) => {
     return page * LIMIT_ITEM_PER_PAGE;
@@ -69,7 +75,7 @@ export const theme = createTheme({
         primary: {
             main: '#47C0C1',
             light: '#47C0C1',
-            dark: '#343760',
+            dark: '#47C0C1',
             contrastText: '#fff',
         },
     },
@@ -79,4 +85,22 @@ export const appointmentsTypes = {
     "drug order": "drug-orders",
     "appointment": "appointments",
     "doctor transfer": "transfers"
+}
+
+export const timeBlocks = {
+    1: {
+        heading: "Morning Block",
+        time: "08:00",
+        message: "Choose time from 8:00 to 11:30"
+    },
+    2: {
+        heading: "Afternoon Block",
+        time: "13:00",
+        message: "Choose time from 13:00 to 15:30"
+    },
+    3: {
+        heading: "Evening Block",
+        time: "16:00",
+        message: "Choose time from 16:00 to 19:30"
+    },
 }

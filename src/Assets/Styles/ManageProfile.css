@@ -13,6 +13,7 @@
 .manage-img {
     position: relative;
     width: fit-content;
+    margin-top: 30px;
 }
 
 .manage-avatar {

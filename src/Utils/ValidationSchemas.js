@@ -13,10 +13,11 @@ export const SignInSchema = Yup.object().shape({
         .required('Please, choose your role.'),
     birthDate: Yup.string()
         .required('Please, enter your birth date.'),
-    primarySpecialty: Yup.string()
-        .required('Please, enter your specialty.'),
+    primarySpecialty: Yup.string(),
     secondarySpecialty: Yup.string()
-        .required('Please, enter your specialty.'),
+        .when(["primarySpecialty"], (primarySpecialty, schema) => {
+            return schema.notOneOf([primarySpecialty], "The two specialties should not be equal");
+        }),
     clinic: Yup.string()
         .required('Please, enter your specialty.'),
     location: Yup.string()
@@ -24,7 +25,6 @@ export const SignInSchema = Yup.object().shape({
         .max(40, 'Too Long!')
         .required('Please, enter your postal code.'),
     telephone: Yup.string()
-        // .matches(new RegExp('^[+]{1}[0-9]{2} [0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}$'), 'Please enter your phone number matches to +49 888 888 88 88')
         .required('Please, enter your phone number.'),
     email: Yup.string()
         .email('Invalid email')
@@ -51,9 +51,15 @@ export const DoctorsSignInSchema = Yup.object().shape({
     birthDate: Yup.string()
         .required('Please, enter your birth date.'),
     primarySpecialty: Yup.string()
-        .required('Please, enter your specialty.'),
+        .required(),
     secondarySpecialty: Yup.string()
-        .required('Please, enter your specialty.'),
+        .when("secondarySpecialty", (val, schema) => {
+            if(val?.length > 0) {
+                return Yup.string().notOneOf([Yup.ref('primarySpecialty'), null], 'The two specialties should not be equal');
+            } else {
+                return Yup.string().notRequired();
+            }
+        }),
     clinic: Yup.string()
         .required('Please, enter your specialty.'),
     location: Yup.string()
@@ -61,20 +67,13 @@ export const DoctorsSignInSchema = Yup.object().shape({
         .max(40, 'Too Long!')
         .required('Please, enter your postal code.'),
     telephone: Yup.string()
-        // .matches(new RegExp('^[+]{1}[0-9]{2} [0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}$'), 'Please enter your phone number matches to +49 888 888 88 88')
         .required('Please, enter your phone number.'),
     email: Yup.string()
         .email('Invalid email')
         .required('Please, enter your email.'),
-    password: Yup.string()
-        .required('Please, enter your password.'),
-    confirmPassword: Yup.string()
-        .required('Please, confirm your password.')
-        .oneOf([Yup.ref('password'), null], 'Passwords must match'),
-    checkmark: Yup.boolean()
-        .oneOf([true], "You must accept the terms and conditions")
-        .default(false)
-});
+},
+    ["secondarySpecialty", "secondarySpecialty"]
+);
 
 export const SignupSchema = Yup.object().shape({
     email: Yup.string()
@@ -95,12 +94,16 @@ export const EditUserSchema = Yup.object().shape({
         .required('Please, enter your Last Name.'),
     birthDate: Yup.string()
         .required('Please, enter your birth date.'),
-    // primarySpecialty: Yup.string()
-    //     .required('Please, enter your specialty.'),
-    // secondarySpecialty: Yup.string()
-    //     .required('Please, enter your specialty.'),
-    // clinic: Yup.string()
-    //     .required('Please, enter your specialty.'),
+    primarySpecialty: Yup.string()
+        .notRequired(),
+    secondarySpecialty: Yup.string()
+        .when("secondarySpecialty", (val, schema) => {
+            if(val?.length > 0) {
+                return Yup.string().notOneOf([Yup.ref('primarySpecialty'), null], 'The two specialties should not be equal');
+            } else {
+                return Yup.string().notRequired();
+            }
+        }),
     location: Yup.string()
         .min(2, 'Too Short!')
         .max(40, 'Too Long!')
@@ -111,7 +114,9 @@ export const EditUserSchema = Yup.object().shape({
     email: Yup.string()
         .email('Invalid email')
         .required('Please, enter your email.'),
-});
+},
+    ["secondarySpecialty", "secondarySpecialty"]
+);
 
 export const ResetPasswordSchema = Yup.object().shape({
     email: Yup.string()

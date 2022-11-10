@@ -44,24 +44,9 @@
     color: #343760;
 }
 
-.dropdown-choose-date {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 10px;
-}
-
 .dropdown-date-item {
-    width: 72px;
-    border: 1px solid #47C0C1;
-    border-radius: 8px;
-    text-align: center;
     color: #343760;
-}
-
-.dropdown-date-item:hover {
-    color: #ffffff;
-    background-color: #47C0C1;
-    transition: 0.2s ease-in-out;
+    margin: 15px 0 4px 2px !important;
 }
 
 .dropdown-notice {
@@ -71,4 +56,13 @@
 
 .dropdown-notice .select-btn {
     align-self: center !important;
+}
+
+.dropdown-approve-btn {
+    align-self: flex-end;
+    margin-top: 20px;
+}
+
+.css-1iezzy6-MuiFormControl-root-MuiTextField-root {
+    width: 100% !important;
 }

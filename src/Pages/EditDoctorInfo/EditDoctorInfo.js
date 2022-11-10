@@ -8,11 +8,17 @@ import Alert from '@mui/material/Alert';
 import {ThemeProvider} from '@mui/material/styles';
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import {EditUserSchema} from "../../Utils/ValidationSchemas";
-import Header from "../../Layouts/Header/Header";
-import {deleteDoctor, editDoctorInfo, getDoctorById, updateDoctorPhoto} from "../../Store/actions/doctorActions";
+import {
+    deleteDoctor,
+    editDoctorInfo,
+    getDoctorById,
+    updateDoctorPhoto
+} from "../../Store/actions/doctorActions";
 import {getClinicsList} from "../../Store/actions/clinicActions";
 import {getSpecialtiesList} from "../../Store/actions/specialtyActions";
 import {ACTIONS, theme} from "../../Utils/constants";
+import Header from "../../Layouts/Header/Header";
+import Loading from "../../Layouts/Loading/Loading";
 
 export default function EditDoctorInfo() {
     const {id} = useParams();
@@ -21,6 +27,7 @@ export default function EditDoctorInfo() {
 
     const dispatch = useDispatch();
 
+    const {role} = useSelector(state => state.userReducer.user);
     const doctorInfo = useSelector(state => state.doctorReducer.doctorToEdit);
     const clinicsList = useSelector(state => state.clinicReducer.items);
     const specialtiesList = useSelector(state => state.specialtyReducer.items);
@@ -62,16 +69,14 @@ export default function EditDoctorInfo() {
 
     useEffect(() => {
         dispatch(getDoctorById(id));
-    }, [id]);
+    }, [doctorInfo]);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     if (!doctorInfo?.user.birth_date || !secondarySpecialty) {
-        return <></>;
+        return <Loading/>;
     }
-
-    console.log(doctorInfo)
 
     return (
         <>
@@ -116,16 +121,16 @@ export default function EditDoctorInfo() {
                                 first_name: doctorInfo?.user.firstName,
                                 last_name: doctorInfo?.user.lastName,
                                 birthDate: formatDate,
-                                primarySpecialty: primarySpecialty?.id,
-                                secondarySpecialty: secondarySpecialty[0]?.id,
-                                clinic: doctorInfo?.clinicToDoctors?.clinic_id,
+                                primarySpecialty: primarySpecialty?.specialty?.id,
+                                secondarySpecialty: secondarySpecialty[0]?.specialty?.id || "-1",
+                                clinic: role === 1 ? "" : doctorInfo?.clinicToDoctors?.clinic_id,
                                 location: doctorInfo?.user.location,
                                 telephone: doctorInfo?.user.telephone,
                                 email: doctorInfo?.user.email
                             }}
                             validationSchema={EditUserSchema}
                             onSubmit={values => {
-                                dispatch(editDoctorInfo(values, id))
+                              dispatch(editDoctorInfo(values, id, Number(primarySpecialty?.specialty?.id), Number(secondarySpecialty[0]?.specialty?.id)));
                             }}
                         >
                             {() => (
@@ -187,6 +192,7 @@ export default function EditDoctorInfo() {
                                     <div className="input-container">
                                         <label>Secondary Specialty</label>
                                         <Field as="select" name="secondarySpecialty">
+                                            <option value="-1"/>
                                             {specialtiesList.map(item =>
                                                 <option
                                                     value={item.id}
@@ -217,8 +223,8 @@ export default function EditDoctorInfo() {
                                              className="auth-password_img"
                                         />
                                         <span className="error">
-                                        <ErrorMessage name="clinic"/>
-                                    </span>
+                                            <ErrorMessage name="clinic"/>
+                                        </span>
                                     </div>
                                     <div className="input-container">
                                         <label>Postal Code</label>

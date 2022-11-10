@@ -1,40 +1,66 @@
 import "../../Assets/Styles/ManagePatient.css";
 import "../../Assets/Styles/Feedback.css";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import Moment from "moment";
+import debounce from "lodash.debounce";
 import Header from "../../Layouts/Header/Header";
 import NoFound from "../../Layouts/NoFound/NoFound";
-import {getDoctorsFeedbackList, getPatientsFeedbackList} from "../../Store/actions/feedbackActions";
+import {ACTIONS} from "../../Utils/constants";
+import {getFeedbackList} from "../../Store/actions/feedbackActions";
 
 export default function ListOfFeedbacks() {
     const dispatch = useDispatch();
-    const {isReady, doctorsFeedbacks, patientsFeedbacks} = useSelector(state => state.feedbackReducer);
+    const {filteredItems, page, loadNext} = useSelector(state => state.feedbackReducer);
 
     const [query, setQuery] = useState("");
-    const [colHeading, setColHeading] = useState("Doctor");
-    const [feedbackList, setFeedbackList] = useState([]);
+    const [colHeading, setColHeading] = useState("doctor-feedbacks");
+    const [order, setOrder] = useState("ASC");
 
-    const filteredData = feedbackList.filter((feedback) => {
-        if (query === '') {
-            return feedback;
+    const changeHandler = (event) => {
+        if (!event.target.value) {
+            dispatch({
+                type: ACTIONS.FEEDBACK.SET_OLD_ITEMS
+            });
         } else {
-            return (feedback.user.firstName.toLowerCase().includes(query) || feedback.user.lastName.toLowerCase().includes(query))
+            dispatch({
+                type: ACTIONS.FEEDBACK.SET_PAGE,
+                payload: 0
+            });
         }
-    });
+        setQuery(event.target.value.trim().toLowerCase());
+    };
+
+    const debouncedChangeHandler = useMemo(() => {
+        return debounce(changeHandler, 300);
+    }, []);
 
     useEffect(() => {
-        if (isReady === false) {
-            dispatch(getDoctorsFeedbackList());
-            dispatch(getPatientsFeedbackList());
+        if (query !== "") {
+            dispatch({
+                type: ACTIONS.FEEDBACK.CLEAR_ARRAY
+            });
+            dispatch(getFeedbackList(colHeading, order, query, 0));
+            setTimeout(() => {
+                dispatch(getFeedbackList(colHeading, order, query, 1));
+            }, 150);
         }
+    }, [colHeading, order, query]);
 
-        if (colHeading === "Doctor") {
-            setFeedbackList(doctorsFeedbacks)
+    useEffect(() => {
+        if (!filteredItems.length && query === "") {
+            dispatch(getFeedbackList(colHeading, order, query, 0));
+            setTimeout(() => {
+                dispatch(getFeedbackList(colHeading, order, query, 1));
+            }, 150);
         }
-    })
+    }, [colHeading, order, query]);
+
+    const handleNextFeedbacks = useCallback(() => {
+        dispatch(getFeedbackList(colHeading, order, query, page));
+    }, [query, order, page]);
 
     const activeBtn = (event) => {
         const elements = document.getElementsByClassName("active-btn");
@@ -55,8 +81,13 @@ export default function ListOfFeedbacks() {
                                 id="Doctors_Feedbacks"
                                 className="manage-patient-btn active-btn"
                                 onClick={(event) => {
-                                    setFeedbackList(doctorsFeedbacks)
-                                    setColHeading("Doctor");
+                                    if (order === "DESC") {
+                                        setOrder("ASC")
+                                    }
+                                    setColHeading("doctor-feedbacks");
+                                    dispatch({
+                                        type: ACTIONS.FEEDBACK.CLEAR_ARRAY
+                                    });
                                     activeBtn(event);
                                 }}
                             >
@@ -66,8 +97,13 @@ export default function ListOfFeedbacks() {
                                 id="Patients_Feedbacks"
                                 className="manage-patient-btn"
                                 onClick={(event) => {
-                                    setFeedbackList(patientsFeedbacks)
-                                    setColHeading("Application");
+                                    if (order === "DESC") {
+                                        setOrder("ASC")
+                                    }
+                                    setColHeading("feedbacks");
+                                    dispatch({
+                                        type: ACTIONS.FEEDBACK.CLEAR_ARRAY
+                                    });
                                     activeBtn(event);
                                 }}
                             >
@@ -76,25 +112,33 @@ export default function ListOfFeedbacks() {
                         </div>
                         <div className="search">
                             <input className="search-input" placeholder="Search" maxLength="30"
-                                   onChange={event => setQuery(event.target.value.toLowerCase())}
+                                   onChange={debouncedChangeHandler}
                             />
                         </div>
                     </div>
                     <div className="manage-patient-table">
                         <div
                             className="table-heading"
-                            style={filteredData.length < 1 ? {borderBottom: "1px solid #343760"} : {border: "none"}}
+                            style={!filteredItems.length ? {borderBottom: "1px solid #343760"} : {border: "none"}}
                         >
-                            <div className="table-col-user">{colHeading}</div>
+                            <div className="table-col-user">User</div>
                             <div className="table-col table-col-feedback">Feedback</div>
-                            <div className="table-col table-col-date">Date</div>
+                            <div
+                                className="table-col table-col-date"
+                                onClick={() => {
+                                    order === "ASC" ? setOrder("DESC") : setOrder("ASC");
+                                    dispatch({
+                                        type: ACTIONS.FEEDBACK.CLEAR_ARRAY
+                                    });
+                                }}
+                            >
+                                Date
+                            </div>
                         </div>
-                        {filteredData.length < 1 ?
-                            <NoFound/>
-                            :
+                        {!filteredItems.length ? <NoFound/> :
                             <Accordion>
-                                {filteredData.map((item, i) =>
-                                    <Card>
+                                {filteredItems.map((item, i) =>
+                                    <Card key={`${item.id} ${item?.date}`}>
                                         <Card.Header>
                                             {/*<Link to={`/patients/${patient.id}`} className={"table-link"}>*/}
                                             <div className="table-col-user">
@@ -132,10 +176,15 @@ export default function ListOfFeedbacks() {
                             </Accordion>
                         }
                     </div>
-                    {/*<div className="pagination">*/}
-                    {/*    <img alt="load_more" src="https://res.cloudinary.com/loksblnine/image/upload/v1665474445/PatientApp/assets_front/load_more_mg9qmt.svg"/>*/}
-                    {/*    Load More*/}
-                    {/*</div>*/}
+                    {filteredItems.length && loadNext ?
+                        <div className="pagination" onMouseEnter={() => handleNextFeedbacks()}>
+                            <img alt="load_more"
+                                 src="https://res.cloudinary.com/loksblnine/image/upload/v1665474445/PatientApp/assets_front/load_more_mg9qmt.svg"/>
+                            Load More
+                        </div>
+                        :
+                        null
+                    }
                 </section>
             </main>
         </>

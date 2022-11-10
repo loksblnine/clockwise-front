@@ -1,47 +1,30 @@
 import {toast} from "react-toastify";
 import {apiGet, apiPost} from "../../http/headerPlaceholder.instance";
-import {ACTIONS} from "../../Utils/constants";
+import {ACTIONS, calculateOffset, LIMIT_ITEM_PER_PAGE} from "../../Utils/constants";
 import {checkAuth} from "./userActions";
 
-export const getDoctorsFeedbackList = () => {
+export const getFeedbackList = (type, order = "ASC", value = '', page = 0) => {
     return async (dispatch) => {
-        await apiGet({
-            url: `/doctor-feedbacks/all`
-        })
-            .then(({data}) => {
+        try {
+            const {data} = await apiGet({
+                url: `/${type}/all?text=${value}&order=${order}&limit=${LIMIT_ITEM_PER_PAGE}&offset=${calculateOffset(page)}`
+            });
+            if (value) {
                 dispatch({
-                    type: ACTIONS.FEEDBACK.SET_DOCTORS_FEEDBACK_LIST,
+                    type: ACTIONS.FEEDBACK.SET_FILTERED_ARRAY,
                     payload: data
-                })
-            })
-            .catch((e) => {
-                // if (e.response.status === 401) {
-                //     dispatch(checkAuth())
-                // }
-                toast.error("Something went wrong");
-            })
-    }
-}
-
-export const getPatientsFeedbackList = () => {
-    return async (dispatch) => {
-        await apiGet({
-            url: `/feedbacks/all`
-        })
-            .then(({data}) => {
+                });
+            } else {
                 dispatch({
-                    type: ACTIONS.FEEDBACK.SET_PATIENTS_FEEDBACK_LIST,
+                    type: ACTIONS.FEEDBACK.SET_FEEDBACKS,
                     payload: data
-                })
-            })
-            .catch((e) => {
-                // if (e.response.status === 401) {
-                //     dispatch(checkAuth())
-                // }
-                toast.error("Something went wrong");
-            })
-    }
-}
+                });
+            }
+        } catch (e) {
+            toast.error("Something went wrong");
+        }
+    };
+};
 
 export const postFeedback = (userId, message, stars) => {
     return async (dispatch) => {

@@ -7,11 +7,13 @@ import Alert from '@mui/material/Alert';
 import {ThemeProvider} from '@mui/material/styles';
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import {EditUserSchema} from "../../Utils/ValidationSchemas";
-import {ACTIONS} from "../../Utils/constants";
+import {ACTIONS, theme} from "../../Utils/constants";
 import Header from "../../Layouts/Header/Header";
+import Loading from "../../Layouts/Loading/Loading";
 import {updateUserInfo, updateUserPhoto} from "../../Store/actions/userActions";
-import {theme} from "../../Utils/constants";
 import {getClinicsList} from "../../Store/actions/clinicActions";
+import {getSpecialtiesList} from "../../Store/actions/specialtyActions";
+import {addDoctorSpecialty, removeDoctorSpecialty} from "../../Store/actions/doctorActions";
 
 export default function ManageProfile() {
     const [matches, setMatches] = useState(
@@ -25,8 +27,11 @@ export default function ManageProfile() {
     const userInfo = useSelector(state => state.userReducer.user);
     const {message} = useSelector(state => state.messageReducer);
     const clinicsList = useSelector(state => state.clinicReducer.items);
+    const specialtiesList = useSelector(state => state.specialtyReducer.items);
 
     const {firstName, lastName, location, telephone, email, birth_date, photo_url, role} = userInfo;
+    const primarySpecialty = userInfo?.doctor?.specialty_id_specialties.find(item => item?.SpecialtyToDoctor?.is_main);
+    const secondarySpecialty = userInfo?.doctor?.specialty_id_specialties.find(item => !item?.SpecialtyToDoctor?.is_main);
     const formatDate = Moment(new Date(birth_date)).format("MM/DD/YYYY");
 
     useEffect(() => {
@@ -49,6 +54,7 @@ export default function ManageProfile() {
 
     useEffect(() => {
         dispatch(getClinicsList());
+        dispatch(getSpecialtiesList());
     }, []);
 
     const forgotPw = () => {
@@ -57,7 +63,7 @@ export default function ManageProfile() {
     };
 
     if (!userInfo.firstName) {
-        return <></>;
+        return <Loading/>;
     }
 
     return (
@@ -103,7 +109,8 @@ export default function ManageProfile() {
                                 first_name: firstName,
                                 last_name: lastName,
                                 birthDate: formatDate,
-                                // specialty: input.specialty,
+                                primarySpecialty: primarySpecialty?.id,
+                                secondarySpecialty: secondarySpecialty?.id || "",
                                 clinic: userInfo?.doctor?.clinic_id_clinics_clinicToDoctors[0].id,
                                 location: location,
                                 telephone: telephone,
@@ -124,8 +131,13 @@ export default function ManageProfile() {
                                     last_name,
                                     birthDate,
                                     location,
-                                    telephone
-                                ))
+                                    telephone,
+                                    primarySpecialty?.id,
+                                    values.primarySpecialty,
+                                    secondarySpecialty?.id,
+                                    values.secondarySpecialty,
+                                    role
+                                ));
                             }}
                         >
                             {() => (
@@ -140,8 +152,8 @@ export default function ManageProfile() {
                                             style={matches ? {maxWidth: "unset"} : {maxWidth: "500px"}}
                                         />
                                         <span className="error">
-                                        <ErrorMessage name="first_name"/>
-                                    </span>
+                                            <ErrorMessage name="first_name"/>
+                                        </span>
                                     </div>
                                     <div className="input-container">
                                         <label>Last Name</label>
@@ -168,19 +180,45 @@ export default function ManageProfile() {
                                             <ErrorMessage name="birthDate"/>
                                         </span>
                                     </div>
-                                    {/*<div className="input-container">*/}
-                                    {/*    <label>Specialty</label>*/}
-                                    {/*    <Field as="select" name="specialty">*/}
-                                    {/*        <option selected hidden/>*/}
-                                    {/*        <option value="manager">Manager</option>*/}
-                                    {/*        <option value="General Practitioner">General Practitioner</option>*/}
-                                    {/*        <option value="Cardiologist">Cardiologist</option>*/}
-                                    {/*        <option value="Urologist">Urologist</option>*/}
-                                    {/*    </Field>*/}
-                                    {/*    <span className="error">*/}
-                                    {/*    <ErrorMessage name="specialty"/>*/}
-                                    {/*</span>*/}
-                                    {/*</div>*/}
+                                    {role === 3 ?
+                                        <>
+                                            <div className="input-container">
+                                                <label>Primary Specialty</label>
+                                                <Field as="select" name="primarySpecialty">
+                                                    {specialtiesList.map(item =>
+                                                        <option
+                                                            value={item.id}
+                                                            key={`${item.id}${item.description}`}
+                                                        >
+                                                            {item.description}
+                                                        </option>
+                                                    )}
+                                                </Field>
+                                                <span className="error">
+                                                    <ErrorMessage name="primarySpecialty"/>
+                                                </span>
+                                            </div>
+                                            <div className="input-container">
+                                                <label>Secondary Specialty</label>
+                                                <Field as="select" name="secondarySpecialty">
+                                                    <option value="-1"/>
+                                                    {specialtiesList.map(item =>
+                                                        <option
+                                                            value={item.id}
+                                                            key={`${item.id}${item.description}`}
+                                                        >
+                                                            {item.description}
+                                                        </option>
+                                                    )}
+                                                </Field>
+                                                <span className="error">
+                                                    <ErrorMessage name="secondarySpecialty"/>
+                                                </span>
+                                            </div>
+                                        </>
+                                        :
+                                        null
+                                    }
                                     {role !== 1 ?
                                         <div className="input-container">
                                             <label>Clinic</label>
@@ -195,8 +233,8 @@ export default function ManageProfile() {
                                                  className="auth-password_img"
                                             />
                                             <span className="error">
-                                            <ErrorMessage name="clinic"/>
-                                        </span>
+                                                <ErrorMessage name="clinic"/>
+                                            </span>
                                         </div>
                                         :
                                         null

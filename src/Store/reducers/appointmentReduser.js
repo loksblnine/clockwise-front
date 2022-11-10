@@ -1,62 +1,107 @@
 import {ACTIONS, LIMIT_ITEM_PER_PAGE} from "../../Utils/constants";
 
 const initialState = {
-    isReady: false,
-    items: [],
-    filteredItems: [],
-    page: 0,
-    loadNext: true
+    pending: {
+        items: [],
+        page: 0,
+        loadNext: true,
+        isReady: false
+    },
+    done: {
+        items: [],
+        page: 0,
+        loadNext: true,
+        isReady: false
+    },
+    patient: null,
 };
 
 
 const appointmentReducer = (state = initialState, action) => {
     switch (action.type) {
-        case ACTIONS.APPOINTMENT.SET_APPOINTMENTS: {
+        case ACTIONS.APPOINTMENT.SET_PENDING_APPOINTMENTS: {
             if (action.payload.length < LIMIT_ITEM_PER_PAGE) {
                 return {
                     ...state,
-                    items: state.items.concat(action.payload),
-                    filteredItems: state.filteredItems.concat(action.payload),
-                    isReady: true,
-                    loadNext: false
+                    pending: {
+                        items: state.pending.items.concat(action.payload),
+                        isReady: true,
+                        loadNext: false
+                    }
                 }
             }
             return {
                 ...state,
-                items: state.items.concat(action.payload),
-                filteredItems: state.filteredItems.concat(action.payload),
-                isReady: true,
-                loadNext: true,
-                page: state.page + 1
+                pending: {
+                    items: state.pending.items.concat(action.payload),
+                    isReady: true,
+                    loadNext: true,
+                    page: state.pending.page + 1
+                }
+            }
+        }
+        case ACTIONS.APPOINTMENT.SET_DONE_APPOINTMENTS: {
+            if (action.payload.length < LIMIT_ITEM_PER_PAGE) {
+                return {
+                    ...state,
+                    done: {
+                        items: state.done.items.concat(action.payload),
+                        isReady: true,
+                        loadNext: false
+                    }
+                }
+            }
+            return {
+                ...state,
+                done: {
+                    items: state.done.items.concat(action.payload),
+                    isReady: true,
+                    loadNext: true,
+                    page: state.done.page + 1
+                }
             }
         }
         case ACTIONS.APPOINTMENT.SET_PAGE: {
-            return {
-                ...state,
-                page: action.payload
-            }
-        }
-        case ACTIONS.APPOINTMENT.SET_FILTERED_ARRAY: {
-            if (action.payload.length < LIMIT_ITEM_PER_PAGE) {
+            if (action.payload.type === 'pending') {
                 return {
                     ...state,
-                    filteredItems: action.payload,
-                    loadNext: false
+                    pending: {
+                        ...state.pending,
+                        page: action.payload.value
+                    }
                 }
             }
             return {
                 ...state,
-                filteredItems: action.payload,
-                page: state.page + 1,
-                loadNext: true,
+                done: {
+                    ...state.done,
+                    page: action.payload.value
+                }
             }
         }
-        case ACTIONS.APPOINTMENT.CLEAR_FILTERED_ARRAY: {
+        case ACTIONS.APPOINTMENT.SET_PATIENT: {
             return {
                 ...state,
-                filteredItems: [],
-                page: 0
-            };
+                patient: action.payload
+            }
+        }
+        case ACTIONS.APPOINTMENT.CLEAR_ARRAY: {
+            return {
+                ...state,
+                pending: {
+                    items: [],
+                    page: 0,
+                    loadNext: true,
+                    isReady: false
+                },
+                done: {
+                    items: [],
+                    page: 0,
+                    loadNext: true,
+                    isReady: false
+                },
+                patient: null,
+            }
         }
 
         default:

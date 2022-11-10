@@ -19,14 +19,21 @@ export default function Header() {
         <header>
             <Link to="/">
                 <img alt="logo"
-                     src="https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/Logo_agpgeb.svg"/>
+                     src="https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/Logo_agpgeb.svg"
+                />
             </Link>
             <div className="header-actions">
                 {
-                    userInfo.role !== 2 ?
+                    userInfo.role === 3 ?
                         <Link to="/feedbacks">Submit Feedback</Link>
                         :
-                        <Link to="/feedbacks">All Feedbacks</Link>
+                        userInfo.role === 2 ?
+                            <div className="header-actions-items">
+                                <Link to="/requests">All Requests</Link>
+                                <Link to="/feedbacks">All Feedbacks</Link>
+                            </div>
+                            :
+                            <Link to="/feedbacks">All Feedbacks</Link>
                 }
                 <Dropdown className="header-dropdown">
                     <Dropdown.Toggle id="dropdown-basic">
@@ -36,13 +43,14 @@ export default function Header() {
                                      "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
                                      :
                                      userInfo.photo_url
-                             }/>
+                             }
+                        />
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         <Dropdown.Item href="#/action-1">
                             <Link to={`/profile/edit`}>Manage Profile</Link>
                             {
-                                userInfo.role !== 3 ?
+                                userInfo.role === 2 ?
                                     <Link to="/office/edit">Manage Office</Link>
                                     :
                                     null

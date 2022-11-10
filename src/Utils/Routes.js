@@ -37,10 +37,37 @@ export const GuestRoutes = [
     },
 ];
 
+export const AdminRoutes = [
+    {
+        path: '/',
+        Component: <ManageDoctors/>
+    },
+    {
+        path: '/profile/edit',
+        Component: <ManageProfile/>
+    },
+    {
+        path: '/doctors/add',
+        Component: <AddDoctor/>
+    },
+    {
+        path: '/doctors/:id/edit',
+        Component: <EditDoctorInfo/>
+    },
+    {
+        path: '/feedbacks',
+        Component: <ListOfFeedbacks/>
+    },
+]
+
 export const ManagerRoutes = [
     {
         path: '/',
         Component: <ManageDoctors/>
+    },
+    {
+        path: '/requests',
+        Component: <ManagePatient/>
     },
     {
         path: '/profile/edit',
