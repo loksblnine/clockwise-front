@@ -235,6 +235,7 @@ export const updatePassword = (newPassword, navigate) => {
         })
             .then(({data}) => {
                 navigate("/login");
+                toast.success("Your password was updated!")
             })
             .catch((e) => {
                 toast.error("Something went wrong");

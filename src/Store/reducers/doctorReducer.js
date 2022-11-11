@@ -28,6 +28,7 @@ const doctorReducer = (state = initialState, action) => {
             })
             return {
                 ...state,
+                doctorToEdit: null,
                 items: arr,
                 filteredItems: filtArr
             }

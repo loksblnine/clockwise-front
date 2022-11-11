@@ -68,13 +68,15 @@ export default function EditDoctorInfo() {
     })
 
     useEffect(() => {
+      if (!doctorInfo) {
         dispatch(getDoctorById(id));
+      }
     }, [doctorInfo]);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    if (!doctorInfo?.user.birth_date || !secondarySpecialty) {
+    if (!primarySpecialty) {
         return <Loading/>;
     }
 
