@@ -139,13 +139,7 @@ export const editDoctorInfo = (values, userId, prevPrimarySpecialty, prevSeconda
       })
       .then(async () => {
         toast.success("Updated!")
-        const {data} = await apiPost({
-          url: `/doctors/all?doctorId=${userId}`
-        })
-        dispatch({
-          type: ACTIONS.DOCTOR.UPDATE_DOCTOR,
-          payload: data[0]
-        })
+        dispatch(getDoctorById(userId))
       })
       .catch((e) => {
         dispatch({

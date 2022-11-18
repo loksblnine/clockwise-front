@@ -25,14 +25,14 @@ export default function PatientInfo() {
 
     const appointmentsList = useSelector(state => state.appointmentReducer?.patient);
     const patientInfo = appointmentsList ? appointmentsList[0].user : null;
-    const formatDate = Moment(new Date(patientInfo?.birth_date)).format("MMM DD YYYY");
+    const formatDate = Moment(new Date(patientInfo?.birth_date)).format("DD MMM YYYY");
     const age = ((new Date().getTime() - new Date(patientInfo?.birth_date)) / (24 * 3600 * 365.25 * 1000)) | 0;
 
     const [rejectMessage, setRejectMessage] = useState("");
     const [notice, setNotice] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
-    const [pickDate, setPickDate] = useState(null);
-    const [newDate, setNewDate] = useState(null);
+    const [date, setDate] = useState(null);
+    const [time, setTime] = useState(null);
 
     useEffect(() => {
         dispatch(getPatientInfo(id))
@@ -138,12 +138,12 @@ export default function PatientInfo() {
                                         <div className="table-col">
                                             {item?.status_id !== 3 ?
                                                 <>
-                                                    <div>{Moment(new Date(item?.date)).format("DD/MM/YYYY")}</div>
+                                                    <div>{Moment(new Date(item?.date)).format("DD.MM.YYYY")}</div>
                                                     <div>{Moment(new Date(item?.date)).format("HH:mm")}</div>
                                                 </>
                                                 :
                                                 <>
-                                                    <div>{Moment(new Date(item?.date)).format("MM/DD/YYYY")}</div>
+                                                    <div>{Moment(new Date(item?.date)).format("DD.MM.YYYY")}</div>
                                                     <div>{timeBlocks[item?.day_block_id].heading}</div>
                                                 </>
                                             }
@@ -161,8 +161,8 @@ export default function PatientInfo() {
                                                             autoClose={showDropdown}
                                                             drop="down"
                                                             onToggle={() => {
-                                                                setPickDate(new Date(item?.date));
-                                                                setNewDate(false);
+                                                                setDate(new Date(item?.date));
+                                                                setTime(timeBlocks[item?.day_block_id].time);
 
                                                                 if (showDropdown === true) {
                                                                     setShowDropdown(false);
@@ -180,11 +180,10 @@ export default function PatientInfo() {
                                                                         <ThemeProvider theme={theme}>
                                                                             <DatePicker
                                                                                 views={['day']}
-                                                                                value={pickDate}
+                                                                                inputFormat="DD.MM.yyyy"
+                                                                                value={date}
                                                                                 onChange={(value) => {
-                                                                                    const hours = new Date(item?.date).getHours();
-                                                                                    const min = new Date(item?.date).getMinutes()
-                                                                                    setPickDate(new Date(value._d).setHours(hours, min));
+                                                                                    setDate(new Date(value._d));
                                                                                 }}
                                                                                 renderInput={(params) =>
                                                                                     <TextField {...params}
@@ -200,7 +199,7 @@ export default function PatientInfo() {
                                                                         <TextField
                                                                             id="time"
                                                                             type="time"
-                                                                            defaultValue={timeBlocks[item?.day_block_id].time}
+                                                                            defaultValue={time}
                                                                             InputLabelProps={{
                                                                                 shrink: true,
                                                                             }}
@@ -209,28 +208,25 @@ export default function PatientInfo() {
                                                                             }}
                                                                             sx={{width: 150}}
                                                                             onChange={(event) => {
-                                                                                const hours = event.target.value.slice(0, 2);
-                                                                                const min = event.target.value.slice(3);
-                                                                                if (!pickDate) {
-                                                                                    setNewDate(new Date(item?.date).setHours(hours, min));
-                                                                                } else {
-                                                                                    setNewDate(new Date(pickDate).setHours(hours, min));
-                                                                                }
+                                                                                setTime(event.target.value);
                                                                             }}
                                                                         />
                                                                     </ThemeProvider>
                                                                     <button
                                                                         className="success-btn btn dropdown-approve-btn"
-                                                                        disabled={!newDate}
                                                                         onClick={(event) => {
                                                                             event.preventDefault();
 
-                                                                            dispatch(editTime(appointmentsTypes[item?.type], item?.id, new Date(newDate).toISOString()));
+                                                                            const hours = time.slice(0, 2);
+                                                                            const min = time.slice(3);
+
+                                                                            const newDate = new Date(date);
+                                                                            newDate.setHours(hours, min);
+
+                                                                            dispatch(editTime(appointmentsTypes[item?.type], item?.id, newDate), id);
                                                                             setTimeout(() => {
                                                                                 dispatch(editStatus(appointmentsTypes[item?.type], item?.id, 1, id));
                                                                             }, 150);
-
-                                                                            setShowDropdown(true);
                                                                         }}
                                                                     >
                                                                         Approve

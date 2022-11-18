@@ -25,6 +25,7 @@ export default function AddDoctor() {
         window.matchMedia("(max-width: 1200px)").matches
     );
     const [showAlert, setShowAlert] = useState(false);
+    const [disableClinic, setDisableClinic] = useState(true);
 
     useEffect(() => {
         window
@@ -47,7 +48,15 @@ export default function AddDoctor() {
                 })
             }, 2000);
         }
-    })
+    });
+
+    useEffect(() => {
+        if (role === 1) {
+            setDisableClinic(false)
+        } else {
+            setDisableClinic(true)
+        }
+    }, []);
 
     if (role !== 1 && !managerClinic) {
         return <Loading/>
@@ -131,7 +140,7 @@ export default function AddDoctor() {
                                             type="text"
                                             name="birthDate"
                                             maxLength="10" required
-                                            placeholder="MM/DD/YYYY"
+                                            placeholder="DD/MM/YYYY"
                                             style={matches ? {maxWidth: "unset"} : {maxWidth: "500px"}}
                                         />
                                         <span className="error">
@@ -166,16 +175,25 @@ export default function AddDoctor() {
                                     </div>
                                     <div className="input-container">
                                         <label>Clinic</label>
-                                        <Field as="select" name="clinic" disabled>
+                                        <Field as="select" name="clinic" disabled={disableClinic}>
+                                            {role === 1 ?
+                                                <option value=""/>
+                                                :
+                                                null
+                                            }
                                             {clinicsList.map(item =>
                                                 <option value={item.id}
                                                         key={`${item.id}${item.name}`}>{item.name}</option>
                                             )}
                                         </Field>
-                                        <img alt="show_pw"
-                                             src="https://res.cloudinary.com/loksblnine/image/upload/v1666939698/PatientApp/assets_front/disabled_input_pxhxmp.svg"
-                                             className="auth-password_img"
-                                        />
+                                        {role !== 1 ?
+                                            <img alt="show_pw"
+                                                 src="https://res.cloudinary.com/loksblnine/image/upload/v1666939698/PatientApp/assets_front/disabled_input_pxhxmp.svg"
+                                                 className="auth-password_img"
+                                            />
+                                            :
+                                            null
+                                        }
                                         <span className="error">
                                             <ErrorMessage name="clinic"/>
                                         </span>
@@ -218,7 +236,7 @@ export default function AddDoctor() {
                                         </span>
                                     </div>
                                     <div className="button-container manage-btn">
-                                        <input type="submit" value="Create Account"/>
+                                        <input type="submit" value="Create Account" className="input-submit"/>
                                     </div>
                                 </Form>
                             )}

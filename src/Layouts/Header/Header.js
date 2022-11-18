@@ -25,15 +25,20 @@ export default function Header() {
             <div className="header-actions">
                 {
                     userInfo.role === 3 ?
-                        <Link to="/feedbacks">Submit Feedback</Link>
+                        <Link to="/feedbacks" className="header-actions-item">Submit Feedback</Link>
                         :
                         userInfo.role === 2 ?
                             <div className="header-actions-items">
-                                <Link to="/requests">All Requests</Link>
-                                <Link to="/feedbacks">All Feedbacks</Link>
+                                <Link to="/" className="header-actions-item">All Doctors</Link>
+                                <Link to="/requests" className="header-actions-item">All Requests</Link>
+                                <Link to="/feedbacks" className="header-actions-item">All Feedbacks</Link>
                             </div>
                             :
-                            <Link to="/feedbacks">All Feedbacks</Link>
+                            <div className="header-actions-items">
+                                <Link to="/" className="header-actions-item">All Managers</Link>
+                                <Link to="/doctors" className="header-actions-item">All Doctors</Link>
+                                <Link to="/feedbacks" className="header-actions-item">All Feedbacks</Link>
+                            </div>
                 }
                 <Dropdown className="header-dropdown">
                     <Dropdown.Toggle id="dropdown-basic">
@@ -48,15 +53,14 @@ export default function Header() {
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         <Dropdown.Item href="#/action-1">
-                            <Link to={`/profile/edit`}>Manage Profile</Link>
+                            <Link to={`/profile/edit`} className="header-dropdown-item">Manage Profile</Link>
                             {
                                 userInfo.role === 2 ?
-                                    <Link to="/office/edit">Manage Office</Link>
+                                    <Link to="/office/edit" className="header-dropdown-item">Manage Office</Link>
                                     :
                                     null
                             }
-                            <Link to="#">FAQ</Link>
-                            <div onClick={logout}>Log Out</div>
+                            <div onClick={logout} className="header-dropdown-item">Log Out</div>
                         </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
