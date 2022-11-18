@@ -45,7 +45,12 @@
 .manage-upload_file::after {
     content: url("https://res.cloudinary.com/loksblnine/image/upload/v1663757696/PatientApp/assets_front/upload_photo_b1uqfs.svg");
     position: absolute;
-    right: -12px;
+    right: 0;
     bottom: 12px;
     cursor: pointer;
+}
+
+.manage-upload_file:hover {
+    transform: scale(1.05);
+    transition: 0.2s ease-in-out;
 }

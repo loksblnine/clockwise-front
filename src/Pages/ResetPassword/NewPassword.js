@@ -115,7 +115,7 @@ export default function NewPassword() {
                                 </span>
                             </div>
                             <div className="button-container">
-                                <input type="submit" value="Reset Password"/>
+                                <input type="submit" value="Reset Password" className="input-submit"/>
                             </div>
                         </Form>
                     )}

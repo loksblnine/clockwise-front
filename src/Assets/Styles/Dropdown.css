@@ -11,6 +11,11 @@
     display: none !important;
 }
 
+.dropdown-toggle:hover img {
+    transform: scale(1.1);
+    transition: 0.2s ease-in-out;
+}
+
 .dropdown-item {
     display: flex !important;
     flex-direction: column;
@@ -18,6 +23,7 @@
 
 .dropdown-item:hover {
     background: none !important;
+    transition: 0.2s ease-in-out;
 }
 
 .dropdown-reject {
@@ -37,11 +43,21 @@
     color: #C14847 !important;
 }
 
+.dropdown-reject-btn:hover {
+    transform: scale(1.05);
+    transition: 0.2s ease-in-out;
+}
+
 .dropdown-message {
     cursor: pointer;
     font-weight: 400;
     font-size: 16px;
     color: #343760;
+}
+
+.dropdown-message:hover {
+    transform: scale(1.02);
+    transition: 0.2s ease-in-out;
 }
 
 .dropdown-date-item {

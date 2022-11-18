@@ -62,7 +62,7 @@ export default function ResetPassword() {
                                 </span>
                             </div>
                             <div className="button-container">
-                                <input type="submit" value="Recover"/>
+                                <input type="submit" value="Recover" className="input-submit"/>
                             </div>
                         </Form>
                     )}

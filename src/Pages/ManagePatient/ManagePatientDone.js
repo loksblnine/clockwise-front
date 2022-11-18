@@ -2,7 +2,6 @@ import "../../Assets/Styles/ManagePatient.css";
 import {useCallback, useEffect} from "react";
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import Moment from "moment";
 import {getAppointmentsList} from "../../Store/actions/appointmentActions";
@@ -36,7 +35,7 @@ export default function ManagePatientDone(props) {
         <>
             <div
                 className="table-heading"
-                style={!items.length ? {borderBottom: "1px solid #343760"} : {border: "none"}}
+                style={!items.length ? {borderBottom: "1px solid rgba(0, 0, 0, 0.175)"} : {border: "none"}}
             >
                 <div className="table-col-user">Patient</div>
                 <div className="table-col table-col-category">Category</div>
@@ -49,62 +48,60 @@ export default function ManagePatientDone(props) {
             {!items.length ?
                 <NoFound/>
                 :
-                <Accordion>
-                    {items.map((item, i) =>
-                        <Card key={`/patients/${item?.user_id}${i}`}>
-                            <Card.Header>
-                                <Link to={`/patients/${item?.user_id}`} className="table-link">
-                                    <div className="table-col-user">
-                                        <img alt="avatar"
-                                             src={!item?.user.photo_url ?
-                                                 "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
-                                                 :
-                                                 item?.user.photo_url
-                                             }
-                                        />
-                                        <div className="table-col">
-                                            <div>{`${item?.user.firstName} ${item?.user.lastName}`}</div>
-                                            <div>{Moment(new Date(item?.user.birth_date)).format("DD.MM.YYYY")}</div>
-                                        </div>
+                items.map((item, i) =>
+                    <Card key={`/patients/${item?.user_id}${i}`}>
+                        <Card.Header>
+                            <Link to={`/patients/${item?.user_id}`} className="table-link">
+                                <div className="table-col-user">
+                                    <img alt="avatar"
+                                         src={!item?.user.photo_url ?
+                                             "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
+                                             :
+                                             item?.user.photo_url
+                                         }
+                                    />
+                                    <div className="table-col">
+                                        <div>{`${item?.user.firstName} ${item?.user.lastName}`}</div>
+                                        <div>{Moment(new Date(item?.user.birth_date)).format("DD.MM.YYYY")}</div>
                                     </div>
-                                </Link>
-                                <div className="table-col">
-                                    {`${item?.type} #${item?.id}`}
                                 </div>
-                                <div className="table-col">
-                                    {item?.drugToOrders ?
-                                        item?.drugToOrders.map(value =>
-                                            <div key={`drugToOrders${value?.drug.description}: ${value?.number}`}>
-                                                {`${value?.drug.description}: ${value?.number}`}
-                                            </div>
-                                        )
-                                        :
-                                        null
-                                    }
-                                </div>
-                                <div className="table-col table-col-notice">
-                                    {(!item?.notice || item?.notice === "") ?
-                                        "Without notice"
-                                        :
-                                        item?.notice
-                                    }
-                                </div>
-                                <div className="table-col">
-                                    <div>{Moment(new Date(item?.date)).format("DD/MM/YYYY")}</div>
-                                    <div>{Moment(new Date(item?.date)).format("HH:mm")}</div>
-                                </div>
-                                <div className="table-col">{item?.user.telephone}</div>
-                                <div className="table-col table-col-btns">
-                                    {item?.status_id === 1 ?
-                                        <div className="status-approved">✓ Approved</div>
-                                        :
-                                        <div className="status-rejected">X Rejected</div>
-                                    }
-                                </div>
-                            </Card.Header>
-                        </Card>
-                    )}
-                </Accordion>
+                            </Link>
+                            <div className="table-col">
+                                {`${item?.type} #${item?.id}`}
+                            </div>
+                            <div className="table-col">
+                                {item?.drugToOrders ?
+                                    item?.drugToOrders.map(value =>
+                                        <div key={`drugToOrders${value?.drug.description}: ${value?.number}`}>
+                                            {`${value?.drug.description}: ${value?.number}`}
+                                        </div>
+                                    )
+                                    :
+                                    null
+                                }
+                            </div>
+                            <div className="table-col table-col-notice">
+                                {(!item?.notice || item?.notice === "") ?
+                                    "Without notice"
+                                    :
+                                    item?.notice
+                                }
+                            </div>
+                            <div className="table-col">
+                                <div>{Moment(new Date(item?.date)).format("DD.MM.YYYY")}</div>
+                                <div>{Moment(new Date(item?.date)).format("HH:mm")}</div>
+                            </div>
+                            <div className="table-col">{item?.user.telephone}</div>
+                            <div className="table-col table-col-btns">
+                                {item?.status_id === 1 ?
+                                    <div className="status-approved">✓ Approved</div>
+                                    :
+                                    <div className="status-rejected">X Rejected</div>
+                                }
+                            </div>
+                        </Card.Header>
+                    </Card>
+                )
             }
 
             {items.length && loadNext ?

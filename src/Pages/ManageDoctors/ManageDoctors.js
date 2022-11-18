@@ -2,13 +2,12 @@ import "../../Assets/Styles/ManagePatient.css";
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import debounce from "lodash.debounce";
 import Header from "../../Layouts/Header/Header";
 import NoFound from "../../Layouts/NoFound/NoFound";
 import Loading from "../../Layouts/Loading/Loading";
-import {getDoctorsList, setReadyDoctors} from "../../Store/actions/doctorActions";
+import {getDoctorsList} from "../../Store/actions/doctorActions";
 import {ACTIONS} from "../../Utils/constants";
 
 export default function ManageDoctors() {
@@ -24,8 +23,7 @@ export default function ManageDoctors() {
             });
         } else {
             dispatch({
-                type: ACTIONS.DOCTOR.SET_PAGE,
-                payload: 0
+                type: ACTIONS.DOCTOR.SET_PAGE, payload: 0
             });
         }
         setQuery(event.target.value.trim().toLowerCase());
@@ -36,7 +34,7 @@ export default function ManageDoctors() {
     }, []);
 
     useEffect(() => {
-        if (query !== "") {
+        if (query) {
             dispatch({
                 type: ACTIONS.DOCTOR.CLEAR_FILTERED_ARRAY
             });
@@ -48,16 +46,15 @@ export default function ManageDoctors() {
     }, [query]);
 
     useEffect(() => {
-        if (!isReady && query === "") {
+        if (!isReady && !query) {
             dispatch(getDoctorsList(query, 0));
             setTimeout(() => {
                 dispatch(getDoctorsList(query, 1));
             }, 150);
         }
-    }, [isReady]);
+    }, [isReady, query]);
 
     const handleNextDoctors = useCallback(() => {
-        dispatch(setReadyDoctors(false));
         dispatch(getDoctorsList(query, page));
     }, [query, page]);
 
@@ -77,78 +74,71 @@ export default function ManageDoctors() {
                     <div className="manage-patient-table">
                         <div
                             className="table-heading"
-                            style={!filteredItems.length ? {borderBottom: "1px solid #343760"} : {border: "none"}}
+                            style={!filteredItems.length ? {borderBottom: "1px solid rgba(0, 0, 0, 0.175)"} : {border: "none"}}
                         >
                             <div className="table-col-user">Doctor</div>
                             <div className="table-col">Specialization</div>
                             <div className="table-col table-col-clinic">Clinic</div>
                             <div className="table-col">Phone</div>
                         </div>
-                        <Accordion>
-                            {isReady ?
-                                !filteredItems.length ?
-                                    <NoFound/>
-                                    :
-                                    filteredItems.map((doctor, i) =>
-                                        <Card key={`doctorCard ${i}`}>
-                                            <Card.Header>
-                                                <Link to={`/doctors/${doctor?.user_id}/edit`} className="table-link">
-                                                    <div className="table-col-user">
-                                                        <img alt="avatar"
-                                                             src={!doctor.user.photo_url ?
-                                                                 "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
-                                                                 :
-                                                                 doctor.user.photo_url
-                                                             }
-                                                        />
-                                                        <div className={"table-col"}>
-                                                            <div>{`${doctor?.user.firstName} ${doctor?.user.lastName}`}</div>
-                                                            <div>{`${doctor?.publicName}`}</div>
-                                                        </div>
-                                                    </div>
-                                                </Link>
-                                                <div className="table-col">
-                                                    {doctor?.specialtyToDoctors.map((item) =>
-                                                        <div
-                                                            key={`${item?.specialty.id} ${item?.specialty.description}`}>
-                                                            {item?.specialty.description}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                <div className="table-col table-col-clinic">
-                                                    {doctor?.clinicToDoctors.map((item) =>
-                                                        <div key={`${item?.clinic.name} ${item?.clinic_id}`}>
-                                                            {item?.clinic.name}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                <div className="table-col">
-                                                    {doctor?.clinicToDoctors.map((item) =>
-                                                        <div key={`${item?.clinic_id} ${item?.clinic.name}`}>
-                                                            {doctor?.user.telephone}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            </Card.Header>
-                                        </Card>
-                                    )
+                        {isReady ?
+                            !filteredItems.length ?
+                                <NoFound/>
                                 :
-                                <Loading/>
-                            }
-                        </Accordion>
+                                filteredItems.map((doctor, i) =>
+                                    <Card key={`doctorCard ${i}`}>
+                                        <Card.Header>
+                                            <Link to={`/doctors/${doctor?.user_id}/edit`} className="table-link">
+                                                <div className="table-col-user">
+                                                    <img alt="avatar"
+                                                         src={!doctor.user.photo_url ?
+                                                             "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
+                                                             :
+                                                             doctor.user.photo_url
+                                                         }
+                                                    />
+                                                    <div className={"table-col"}>
+                                                        <div>{`${doctor?.user.firstName} ${doctor?.user.lastName}`}</div>
+                                                        <div>{`${doctor?.publicName}`}</div>
+                                                    </div>
+                                                </div>
+                                            </Link>
+                                            <div className="table-col">
+                                                {doctor?.specialtyToDoctors.map((item) =>
+                                                    <div
+                                                        key={`${item?.specialty.id} ${item?.specialty.description}`}>
+                                                        {item?.specialty.description}
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div className="table-col table-col-clinic">
+                                                {doctor?.clinicToDoctors.map((item) =>
+                                                    <div key={`${item?.clinic.name} ${item?.clinic_id}`}>
+                                                        {item?.clinic.name}
+                                                    </div>
+                                                )}
+                                            </div>
+                                            <div className="table-col">
+                                                {doctor?.clinicToDoctors.map((item) =>
+                                                    <div key={`${item?.clinic_id} ${item?.clinic.name}`}>
+                                                        {doctor?.user.telephone}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </Card.Header>
+                                    </Card>
+                                )
+                            :
+                            <Loading/>
+                        }
                     </div>
 
-                    {filteredItems.length && loadNext ?
-                        <div className="pagination" onClick={() => handleNextDoctors()}>
-                            <img alt="load_more"
-                                 src="https://res.cloudinary.com/loksblnine/image/upload/v1665474445/PatientApp/assets_front/load_more_mg9qmt.svg"/>
-                            Load More
-                        </div>
-                        :
-                        null
-                    }
+                    {filteredItems.length && loadNext ? <div className="pagination" onClick={() => handleNextDoctors()}>
+                        <img alt="load_more"
+                             src="https://res.cloudinary.com/loksblnine/image/upload/v1665474445/PatientApp/assets_front/load_more_mg9qmt.svg"/>
+                        Load More
+                    </div> : null}
                 </section>
             </main>
-        </>
-    );
+        </>);
 }

@@ -7,39 +7,24 @@ import Moment from "moment";
 import Alert from '@mui/material/Alert';
 import {ThemeProvider} from '@mui/material/styles';
 import {Formik, Form, Field, ErrorMessage} from "formik";
-import {EditUserSchema} from "../../Utils/ValidationSchemas";
-import {
-    deleteDoctor,
-    editDoctorInfo,
-    getDoctorById,
-    updateDoctorPhoto
-} from "../../Store/actions/doctorActions";
+import {ManagerSignInSchema} from "../../Utils/ValidationSchemas";
 import {getClinicsList} from "../../Store/actions/clinicActions";
-import {getSpecialtiesList} from "../../Store/actions/specialtyActions";
 import {ACTIONS, theme} from "../../Utils/constants";
 import Header from "../../Layouts/Header/Header";
 import Loading from "../../Layouts/Loading/Loading";
+import {deleteUser, editManagerInfo, getManagerById, updateManagerPhoto} from "../../Store/actions/adminActions";
 
-export default function EditDoctorInfo() {
+export default function EditManagersInfo() {
     const {id} = useParams();
-
-    const navigate = useNavigate();
-
+    const navigate = useNavigate()
     const dispatch = useDispatch();
 
-    const {role} = useSelector(state => state.userReducer.user);
-    const doctorInfo = useSelector(state => state.doctorReducer.doctorToEdit);
+    const managerInfo = useSelector(state => state.adminReducer.managerToEdit);
     const clinicsList = useSelector(state => state.clinicReducer.items);
-    const specialtiesList = useSelector(state => state.specialtyReducer.items);
     const isClinicsReady = useSelector(state => state.clinicReducer.isReady);
-    const isSpecialtiesReady = useSelector(state => state.specialtyReducer.isReady);
-
     const {message} = useSelector(state => state.messageReducer);
 
-    const formatDate = Moment(new Date(doctorInfo?.user.birth_date)).format("DD/MM/YYYY");
-
-    const primarySpecialty = doctorInfo?.specialtyToDoctors.find(item => item.is_main);
-    const secondarySpecialty = doctorInfo?.specialtyToDoctors.filter(item => !item.is_main);
+    const formatDate = Moment(new Date(managerInfo?.birth_date)).format("DD/MM/YYYY");
 
     const [matches, setMatches] = useState(
         window.matchMedia("(max-width: 1200px)").matches
@@ -53,9 +38,6 @@ export default function EditDoctorInfo() {
             .addEventListener('change', e => setMatches(e.matches));
         if (!isClinicsReady) {
             dispatch(getClinicsList());
-        }
-        if (!isSpecialtiesReady) {
-            dispatch(getSpecialtiesList());
         }
     }, []);
 
@@ -74,13 +56,13 @@ export default function EditDoctorInfo() {
     })
 
     useEffect(() => {
-        dispatch(getDoctorById(id));
+        dispatch(getManagerById(id));
     }, []);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    if (!primarySpecialty) {
+    if (!managerInfo) {
         return <Loading/>;
     }
 
@@ -96,13 +78,13 @@ export default function EditDoctorInfo() {
                         :
                         null
                     }
-                    <h1>Doctor Profile</h1>
+                    <h1>Manager Profile</h1>
                     <div className="manage-img">
                         <img className="manage-avatar" alt="avatar"
-                             src={!doctorInfo?.user.photo_url ?
+                             src={!managerInfo?.photo_url ?
                                  "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
                                  :
-                                 doctorInfo?.user.photo_url
+                                 managerInfo?.photo_url
                              }
                         />
                         <label htmlFor="files" className="manage-upload_file"/>
@@ -116,7 +98,7 @@ export default function EditDoctorInfo() {
                                 const reader = new FileReader();
                                 reader.readAsDataURL(e.target.files[0]);
                                 reader.onloadend = () => {
-                                    dispatch(updateDoctorPhoto(doctorInfo?.user_id, reader.result))
+                                    dispatch(updateManagerPhoto(id, reader.result))
                                 }
                             }}
                         />
@@ -124,24 +106,22 @@ export default function EditDoctorInfo() {
                     <div className="manage-form">
                         <Formik
                             initialValues={{
-                                first_name: doctorInfo?.user.firstName,
-                                last_name: doctorInfo?.user.lastName,
+                                first_name: managerInfo?.firstName,
+                                last_name: managerInfo?.lastName,
                                 birthDate: formatDate,
-                                primarySpecialty: primarySpecialty?.specialty?.id,
-                                secondarySpecialty: secondarySpecialty[0]?.specialty?.id || "-1",
-                                clinic: role === 1 ? "" : doctorInfo?.clinicToDoctors?.clinic_id,
-                                location: doctorInfo?.user.location,
-                                telephone: doctorInfo?.user.telephone,
-                                email: doctorInfo?.user.email
+                                clinic: managerInfo?.clinic_id,
+                                location: managerInfo?.location,
+                                telephone: managerInfo?.telephone,
+                                email: managerInfo?.email
                             }}
-                            validationSchema={EditUserSchema}
+                            validationSchema={ManagerSignInSchema}
                             onSubmit={values => {
-                              dispatch(editDoctorInfo(values, id, Number(primarySpecialty?.specialty?.id), Number(secondarySpecialty[0]?.specialty?.id)));
+                                dispatch(editManagerInfo(values, id));
                             }}
                         >
                             {() => (
                                 <Form className="manage-form-col">
-                                    <h2>{`${doctorInfo?.user.firstName} ${doctorInfo?.user.lastName}`}</h2>
+                                    <h2>{`${managerInfo?.firstName} ${managerInfo?.lastName}`}</h2>
                                     <div className="input-container">
                                         <label>First Name</label>
                                         <Field
@@ -180,39 +160,6 @@ export default function EditDoctorInfo() {
                                         </span>
                                     </div>
                                     <div className="input-container">
-                                        <label>Primary Specialty</label>
-                                        <Field as="select" name="primarySpecialty">
-                                            {specialtiesList.map(item =>
-                                                <option
-                                                    value={item.id}
-                                                    key={`${item.id}${item.description}`}
-                                                >
-                                                    {item.description}
-                                                </option>
-                                            )}
-                                        </Field>
-                                        <span className="error">
-                                            <ErrorMessage name="primarySpecialty"/>
-                                        </span>
-                                    </div>
-                                    <div className="input-container">
-                                        <label>Secondary Specialty</label>
-                                        <Field as="select" name="secondarySpecialty">
-                                            <option value="-1"/>
-                                            {specialtiesList.map(item =>
-                                                <option
-                                                    value={item.id}
-                                                    key={`${item.id}${item.description}`}
-                                                >
-                                                    {item.description}
-                                                </option>
-                                            )}
-                                        </Field>
-                                        <span className="error">
-                                            <ErrorMessage name="secondarySpecialty"/>
-                                        </span>
-                                    </div>
-                                    <div className="input-container">
                                         <label>Clinic</label>
                                         <Field as="select" name="clinic" disabled>
                                             {clinicsList.map(item =>
@@ -224,10 +171,6 @@ export default function EditDoctorInfo() {
                                                 </option>
                                             )}
                                         </Field>
-                                        <img alt="show_pw"
-                                             src="https://res.cloudinary.com/loksblnine/image/upload/v1666939698/PatientApp/assets_front/disabled_input_pxhxmp.svg"
-                                             className="auth-password_img"
-                                        />
                                         <span className="error">
                                             <ErrorMessage name="clinic"/>
                                         </span>
@@ -296,7 +239,7 @@ export default function EditDoctorInfo() {
                     <div className="modal-btns">
                         <div className="modal-approve-btn" onClick={handleClose}>Cancel</div>
                         <div className="modal-delete-btn" onClick={() => {
-                            dispatch(deleteDoctor(id, handleClose, navigate))
+                            dispatch(deleteUser(id, navigate))
                         }}>
                             Delete
                         </div>

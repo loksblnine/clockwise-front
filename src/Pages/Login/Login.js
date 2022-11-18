@@ -125,10 +125,10 @@ export default function Login() {
                                     <input type="checkbox" name="remember_me" onClick={(e) => handleRememberMe(e)}/>
                                     <span className="checkmark"/>
                                 </label>
-                                <Link to="/reset/password">Forgot password</Link>
+                                <Link to="/reset/password" className="link">Forgot password</Link>
                             </div>
                             <div className="button-container">
-                                <input type="submit" value="Sign in"/>
+                                <input type="submit" value="Sign in" className="input-submit"/>
                             </div>
                         </Form>
                     )}

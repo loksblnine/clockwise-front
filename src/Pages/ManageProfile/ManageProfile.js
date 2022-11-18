@@ -28,11 +28,13 @@ export default function ManageProfile() {
     const {message} = useSelector(state => state.messageReducer);
     const clinicsList = useSelector(state => state.clinicReducer.items);
     const specialtiesList = useSelector(state => state.specialtyReducer.items);
+    const isClinicsReady = useSelector(state => state.clinicReducer.isReady);
+    const isSpecialtiesReady = useSelector(state => state.specialtyReducer.isReady);
 
     const {firstName, lastName, location, telephone, email, birth_date, photo_url, role} = userInfo;
     const primarySpecialty = userInfo?.doctor?.specialty_id_specialties.find(item => item?.SpecialtyToDoctor?.is_main);
     const secondarySpecialty = userInfo?.doctor?.specialty_id_specialties.find(item => !item?.SpecialtyToDoctor?.is_main);
-    const formatDate = Moment(new Date(birth_date)).format("MM/DD/YYYY");
+    const formatDate = Moment(new Date(birth_date)).format("DD/MM/YYYY");
 
     useEffect(() => {
         window
@@ -53,8 +55,12 @@ export default function ManageProfile() {
     });
 
     useEffect(() => {
-        dispatch(getClinicsList());
-        dispatch(getSpecialtiesList());
+        if (!isClinicsReady) {
+            dispatch(getClinicsList());
+        }
+        if (!isSpecialtiesReady) {
+            dispatch(getSpecialtiesList());
+        }
     }, []);
 
     const forgotPw = () => {
@@ -173,7 +179,7 @@ export default function ManageProfile() {
                                             type="text"
                                             name="birthDate"
                                             maxLength="10" required
-                                            placeholder="MM/DD/YYYY"
+                                            placeholder="DD/MM/YYYY"
                                             style={matches ? {maxWidth: "unset"} : {maxWidth: "500px"}}
                                         />
                                         <span className="error">
@@ -282,7 +288,7 @@ export default function ManageProfile() {
                                     </div>
                                     <p className="link" onClick={forgotPw}>Forgot password</p>
                                     <div className="button-container manage-btn">
-                                        <input type="submit" value="Save Changes"/>
+                                        <input type="submit" value="Save Changes" className="input-submit"/>
                                     </div>
                                 </Form>
                             )}

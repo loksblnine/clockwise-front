@@ -15,7 +15,8 @@
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;
-    max-width: 169px;
+    gap: 5px;
+    max-width: 370px;
     width: 100%;
     padding: 6px 8px;
     border-radius: 8px;
@@ -34,6 +35,12 @@
     cursor: pointer;
 }
 
+.manage-patient-btn:hover {
+    background-color: #eefbf9;
+    color: #AAABBA;
+    transition: 0.2s ease-in-out;
+}
+
 .manage-patient-add-btn {
     background: #47C0C1;
     padding: 20px 25px;
@@ -44,6 +51,11 @@
     text-decoration: none;
     font-size: 16px;
     cursor: pointer;
+}
+
+.manage-patient-add-btn:hover {
+    transform: scale(1.05);
+    transition: 0.2s ease-in-out;
 }
 
 .active-btn {

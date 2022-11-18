@@ -2,7 +2,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #AAABBA;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.175);
     padding: 16px 30px;
 }
 
@@ -22,10 +22,15 @@ header {
     width: auto !important;
 }
 
-.header-dropdown a {
+.header-dropdown-item {
     text-decoration: none !important;
     color: #343760 !important;
     font-weight: 400;
+}
+
+.header-dropdown-item:hover {
+    transform: scale(1.02);
+    transition: 0.2s ease-in-out;
 }
 
 .header-avatar {
@@ -35,3 +40,7 @@ header {
     overflow: hidden;
 }
 
+.header-actions-item:hover, .header-avatar:hover {
+    transform: scale(1.05);
+    transition: 0.2s ease-in-out;
+}

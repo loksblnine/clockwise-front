@@ -31,6 +31,12 @@ form {
     gap: 25px;
 }
 
+label {
+    font-size: 13px;
+    font-weight: 400;
+    margin: 0 0 4px 8px;
+}
+
 .input-container {
     display: flex;
     flex-direction: column;
@@ -38,12 +44,6 @@ form {
     position: relative;
     max-width: 500px;
     width: 100%;
-}
-
-label {
-    font-size: 13px;
-    font-weight: 400;
-    margin: 0 0 4px 8px;
 }
 
 input {
@@ -68,6 +68,11 @@ input:focus-visible, select:focus-visible {
     font-size: 16px !important;
     font-weight: 400 !important;
     cursor: pointer;
+}
+
+.input-submit:hover {
+    transform: scale(1.05);
+    transition: 0.2s ease-in-out;
 }
 
 select {
@@ -133,6 +138,12 @@ a, .link {
 
 .link {
     margin: 0;
+}
+
+.link:hover {
+    transform: scale(1.2);
+    margin-left: 15px;
+    transition: 0.2s ease-in-out;
 }
 
 h1 {
@@ -204,6 +215,11 @@ button:focus:not(:focus-visible) {
     color: #C14847 !important;
 }
 
+.success-btn:hover, .warning-btn:hover {
+    transform: scale(1.05);
+    transition: 0.2s ease-in-out;
+}
+
 .form-btn {
     padding: 14px 0 !important;
     max-width: unset !important;
@@ -228,6 +244,7 @@ button:focus:not(:focus-visible) {
 
 .select-btn:hover {
     border-color: #47C0C1 !important;
+    transition: 0.2s ease-in-out;
 }
 
 .toggle-label {
@@ -247,7 +264,7 @@ button:focus:not(:focus-visible) {
 }
 
 
-.card:nth-child(even) {
+.card:nth-child(odd) {
     background-color: #eefbf9;
 }
 
@@ -266,7 +283,18 @@ button:focus:not(:focus-visible) {
     justify-content: center;
     align-self: center;
     gap: 10px;
+    margin-top: 35px;
     cursor: pointer;
+}
+
+.pagination:hover {
+    transform: scale(1.05);
+    transition: 0.2s ease-in-out;
+}
+
+.pagination:hover img {
+    transform: rotate(90deg);
+    transition: 0.2s ease-in-out;
 }
 
 #alert {

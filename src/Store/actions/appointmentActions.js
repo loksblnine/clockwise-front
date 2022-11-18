@@ -39,11 +39,22 @@ export const editNotice = (type, id, notice, userId = null) => {
             }
         })
             .then(({data}) => {
-                dispatch({
-                    type: ACTIONS.APPOINTMENT.CLEAR_ARRAY
-                });
                 if (userId) {
-                    dispatch(getPatientInfo(userId));
+                    dispatch({
+                        type: ACTIONS.APPOINTMENT.UPDATE_REQUEST_NOTICE,
+                        payload: {
+                            id,
+                            notice
+                        }
+                    });
+                } else {
+                    dispatch({
+                        type: ACTIONS.APPOINTMENT.UPDATE_NOTICE,
+                        payload: {
+                            id,
+                            notice
+                        }
+                    });
                 }
             })
             .catch((e) => {
@@ -55,7 +66,7 @@ export const editNotice = (type, id, notice, userId = null) => {
     };
 };
 
-export const editTime = (type, id, newDate) => {
+export const editTime = (type, id, newDate, userId = null) => {
     return async (dispatch) => {
         await apiPut({
             url: `/${type}/${id}/update-date`,
@@ -63,6 +74,11 @@ export const editTime = (type, id, newDate) => {
                 newDate
             }
         })
+            .then(({data}) => {
+                if (userId) {
+                    dispatch(getPatientInfo(userId));
+                }
+            })
             .catch((e) => {
                 toast.error("Something went wrong");
             });
@@ -79,11 +95,19 @@ export const editStatus = (type, id, statusId, userId = null) => {
             }
         })
             .then(({data}) => {
-                dispatch({
-                    type: ACTIONS.APPOINTMENT.CLEAR_ARRAY
-                });
                 if (userId) {
-                    dispatch(getPatientInfo(userId));
+                    dispatch({
+                        type: ACTIONS.APPOINTMENT.UPDATE_REQUEST_STATUS,
+                        payload: {
+                            id,
+                            statusId
+                        }
+                    });
+                } else {
+                    dispatch({
+                        type: ACTIONS.APPOINTMENT.REMOVE_FROM_LIST,
+                        payload: id
+                    });
                 }
             })
             .catch((e) => {

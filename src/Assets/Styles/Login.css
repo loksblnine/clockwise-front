@@ -73,11 +73,21 @@
     color: #ffffff !important;
 }
 
+.auth-btn:hover {
+    transform: scale(1.05);
+    transition: 0.2s ease-in-out;
+}
+
 .auth-password_img {
     position: absolute;
     bottom: 13px;
     right: 12px;
     cursor: pointer;
+}
+
+.auth-password_img:hover {
+    transform: scale(1.1);
+    transition: 0.2s ease-in-out;
 }
 
 .auth-link {
@@ -147,6 +157,11 @@
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+}
+
+.auth-checkbox:hover {
+    transform: scale(1.05);
+    transition: 0.2s ease-in-out;
 }
 
 .auth-agree {

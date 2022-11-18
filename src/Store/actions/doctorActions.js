@@ -1,4 +1,5 @@
 import {toast} from "react-toastify";
+import Moment from "moment";
 import {apiDelete, apiPost, apiPut} from "../../http/headerPlaceholder.instance";
 import {ACTIONS, calculateOffset, LIMIT_ITEM_PER_PAGE} from "../../Utils/constants";
 import {checkAuth} from "./userActions";
@@ -43,12 +44,14 @@ export const registerDoctor = (data) => {
     primarySpecialty,
     secondarySpecialty
   } = data;
+  const date = Moment(birthDate, "DD/MM/YYYY").toDate();
+
   return async (dispatch) => {
     await apiPost({
       url: "/manager/register-doctor",
       data: {
         email,
-        birthDate,
+        birthDate: Moment(date).format("MM/DD/YYYY"),
         firstName: first_name,
         lastName: last_name,
         location,
@@ -100,12 +103,14 @@ export const editDoctorInfo = (values, userId, prevPrimarySpecialty, prevSeconda
     primarySpecialty,
     secondarySpecialty = ""
   } = values;
+  const date = Moment(birthDate, "DD/MM/YYYY").toDate();
+
   return async (dispatch) => {
     await apiPut({
       url: `users/update-by-manager`,
       data: {
         userId,
-        birthDate,
+        birthDate: Moment(date).format("MM/DD/YYYY"),
         firstName: first_name,
         lastName: last_name,
         location,
@@ -164,11 +169,8 @@ export const updateDoctorPhoto = (userId, data) => {
       .then(({data}) => {
         dispatch({
           type: ACTIONS.DOCTOR.ADD_DOCTOR_PHOTO,
-          payload: {
-            data
-          }
+          payload: data
         });
-        dispatch(getDoctorById(userId));
       })
       .catch((e) => {
         if (e.response.status === 401) {

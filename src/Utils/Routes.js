@@ -13,6 +13,9 @@ import Feedback from "../Pages/Feedback/Feedback";
 import ResetPassword from "../Pages/ResetPassword/ResetPassword";
 import ResetPasswordSuccess from "../Pages/ResetPassword/ResetPasswordSuccess";
 import NewPassword from "../Pages/ResetPassword/NewPassword";
+import ManageManagers from "../Pages/ManageManagers/ManageManagers";
+import AddManager from "../Pages/AddManager/AddManager";
+import EditManagersInfo from "../Pages/EditManagersInfo/EditManagersInfo";
 
 export const GuestRoutes = [
     {
@@ -40,11 +43,15 @@ export const GuestRoutes = [
 export const AdminRoutes = [
     {
         path: '/',
-        Component: <ManageDoctors/>
+        Component: <ManageManagers/>
     },
     {
-        path: '/profile/edit',
-        Component: <ManageProfile/>
+        path: '/managers/add',
+        Component: <AddManager/>
+    },
+    {
+        path: '/managers/:id/edit',
+        Component: <EditManagersInfo/>
     },
     {
         path: '/doctors/add',
@@ -53,6 +60,14 @@ export const AdminRoutes = [
     {
         path: '/doctors/:id/edit',
         Component: <EditDoctorInfo/>
+    },
+    {
+        path: '/doctors',
+        Component: <ManageDoctors/>
+    },
+    {
+        path: '/profile/edit',
+        Component: <ManageProfile/>
     },
     {
         path: '/feedbacks',

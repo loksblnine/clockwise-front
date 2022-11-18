@@ -45,9 +45,14 @@
     width: 202px;
 }
 
+.table-col-user:hover img {
+    transform: scale(1.15);
+    transition: 0.2s ease-in-out;
+}
+
 .table-col-user img {
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     margin-right: 10px;
     border-radius: 50%;
 }
@@ -55,14 +60,6 @@
 .table-col-category, .table-col-date {
     position: relative;
 }
-
-/*.table-col-category::after {*/
-/*    content: url("https://res.cloudinary.com/loksblnine/image/upload/v1663757246/PatientApp/assets_front/arrow_down_vd5hmu.svg");*/
-/*    position: absolute;*/
-/*    width: 12px;*/
-/*    right: 55px;*/
-/*    cursor: pointer;*/
-/*}*/
 
 .table-col-date::after {
     content: url("https://res.cloudinary.com/loksblnine/image/upload/v1663757246/PatientApp/assets_front/arrow_down_vd5hmu.svg");
@@ -122,8 +119,4 @@
     text-decoration: none;
     color: #343760 !important;
     font-weight: 400 !important;
-}
-
-.accordion {
-    margin-bottom: 36px;
 }

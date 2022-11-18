@@ -2,6 +2,7 @@ import {toast} from "react-toastify";
 import {apiGet, apiPost, apiPut} from "../../http/headerPlaceholder.instance";
 import {ACTIONS} from "../../Utils/constants";
 import {addDoctorSpecialty, removeDoctorSpecialty} from "./doctorActions";
+import Moment from "moment";
 
 export const login = (email, password, navigate) => {
     return async (dispatch) => {
@@ -128,12 +129,14 @@ export const getUserInfo = (id) => {
 }
 
 export const updateUserInfo = (userId, first_name, last_name, birth_date, location, telephone, prevPrimarySpecialty, primarySpecialty, prevSecondarySpecialty, secondarySpecialty, role) => {
+    const date = Moment(birth_date, "DD/MM/YYYY").toDate();
+
     return async (dispatch) => {
         await apiPut({
             url: "/users/update-user-info",
             data: {
                 userId,
-                birthDate: birth_date,
+                birthDate: Moment(date).format("MM/DD/YYYY"),
                 firstName: first_name,
                 lastName: last_name,
                 location,

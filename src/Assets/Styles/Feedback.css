@@ -1,5 +1,4 @@
 .feedback-buttons {
-    max-width: 366px !important;
     margin-top: 0 !important;
 }
 
@@ -60,6 +59,11 @@
     cursor: pointer;
 }
 
+.feedback-btn:hover, .feedback-success-btn:hover {
+    transform: scale(1.05);
+    transition: 0.2s ease-in-out;
+}
+
 .feedback-success-sect {
     min-height: calc(100vh - 100px);
     justify-content: center !important;
@@ -103,7 +107,8 @@
 
 .on {
     color: #47C0C1;
-    font-size: 40px;
+    font-size: 36px;
+    transition: 0.2s ease-in-out;
 }
 
 .off {

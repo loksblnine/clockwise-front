@@ -79,10 +79,67 @@ const appointmentReducer = (state = initialState, action) => {
                 }
             }
         }
+        case ACTIONS.APPOINTMENT.UPDATE_NOTICE: {
+            const newArr = state.pending.items.map(obj => {
+                if (obj.id === action.payload.id) {
+                    return {...obj, notice: action.payload.notice};
+                }
+
+                return obj;
+            });
+
+            return {
+                ...state,
+                pending: {
+                    ...state.pending,
+                    items: newArr
+                }
+            };
+        }
         case ACTIONS.APPOINTMENT.SET_PATIENT: {
             return {
                 ...state,
                 patient: action.payload
+            }
+        }
+        case ACTIONS.APPOINTMENT.UPDATE_REQUEST_NOTICE: {
+            const newArr = state.patient.map(obj => {
+                if (obj.id === action.payload.id) {
+                    return {...obj, notice: action.payload.notice};
+                }
+
+                return obj;
+            });
+
+            return {
+                ...state,
+                patient: newArr
+            };
+        }
+        case ACTIONS.APPOINTMENT.UPDATE_REQUEST_STATUS: {
+            const newArr = state.patient.map(obj => {
+                if (obj.id === action.payload.id) {
+                    return {...obj, status_id: action.payload.statusId};
+                }
+
+                return obj;
+            });
+
+            return {
+                ...state,
+                patient: newArr
+            };
+        }
+        case ACTIONS.APPOINTMENT.REMOVE_FROM_LIST: {
+            const id = action.payload;
+            const newArr = state.pending.items.filter((item) => item.id !== id);
+
+            return {
+                ...state,
+                pending: {
+                    ...state.pending,
+                    items: newArr
+                }
             }
         }
         case ACTIONS.APPOINTMENT.CLEAR_ARRAY: {

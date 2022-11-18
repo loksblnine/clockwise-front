@@ -21,7 +21,7 @@ export const getFeedbackList = (type, order = "ASC", value = '', page = 0) => {
                 });
             }
         } catch (e) {
-            toast.error("Something went wrong");
+            // toast.error("Something went wrong");
         }
     };
 };

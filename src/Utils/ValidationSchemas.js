@@ -75,6 +75,30 @@ export const DoctorsSignInSchema = Yup.object().shape({
     ["secondarySpecialty", "secondarySpecialty"]
 );
 
+export const ManagerSignInSchema = Yup.object().shape({
+        first_name: Yup.string()
+            .min(2, 'Too Short!')
+            .max(30, 'Too Long!')
+            .required('Please, enter your First Name.'),
+        last_name: Yup.string()
+            .min(2, 'Too Short!')
+            .max(30, 'Too Long!')
+            .required('Please, enter your Last Name.'),
+        birthDate: Yup.string()
+            .required('Please, enter your birth date.'),
+        clinic: Yup.string()
+            .required('Please, enter your specialty.'),
+        location: Yup.string()
+            .min(2, 'Too Short!')
+            .max(40, 'Too Long!')
+            .required('Please, enter your postal code.'),
+        telephone: Yup.string()
+            .required('Please, enter your phone number.'),
+        email: Yup.string()
+            .email('Invalid email')
+            .required('Please, enter your email.'),
+    });
+
 export const SignupSchema = Yup.object().shape({
     email: Yup.string()
         .email('Invalid email')
