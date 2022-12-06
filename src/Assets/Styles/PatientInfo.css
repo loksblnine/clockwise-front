@@ -14,9 +14,7 @@
 }
 
 .manage-patient-detail img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
+    background: #eefbf9 !important;
 }
 
 .check_mark {

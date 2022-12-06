@@ -1,8 +1,9 @@
 import "../../Assets/Styles/ManagePatient.css";
 import "../../Assets/Styles/PatientInfo.css";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
+import ReactRoundedImage from "react-rounded-image";
 import {ThemeProvider} from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
@@ -28,9 +29,12 @@ export default function PatientInfo() {
     const formatDate = Moment(new Date(patientInfo?.birth_date)).format("DD MMM YYYY");
     const age = ((new Date().getTime() - new Date(patientInfo?.birth_date)) / (24 * 3600 * 365.25 * 1000)) | 0;
 
+    const toggleApproveRef = useRef(null);
+    const toggleRejectRef = useRef(null);
+    const toggleNoticeRef = useRef(null);
+
     const [rejectMessage, setRejectMessage] = useState("");
     const [notice, setNotice] = useState(null);
-    const [showDropdown, setShowDropdown] = useState(false);
     const [date, setDate] = useState(null);
     const [time, setTime] = useState(null);
 
@@ -49,12 +53,16 @@ export default function PatientInfo() {
                 <section className="sect manage-patient-sect">
                     <div className="manage-patient-heading patient-info-heading">
                         <div className="manage-patient-detail">
-                            <img alt="avatar"
-                                 src={!patientInfo?.photo_url ?
-                                     "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
-                                     :
-                                     patientInfo?.photo_url
-                                 }
+                            <ReactRoundedImage
+                                image={
+                                    !patientInfo.photo_url ?
+                                        "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
+                                        :
+                                        patientInfo.photo_url
+                                }
+                                imageWidth="150"
+                                imageHeight="150"
+                                roundedSize="-3"
                             />
                             <div>
                                 <div>{`${patientInfo?.firstName} ${patientInfo?.lastName}`}</div>
@@ -95,6 +103,8 @@ export default function PatientInfo() {
                                                 <>
                                                     <Dropdown className="table-dropdown"
                                                               autoClose="outside"
+                                                              ref={toggleNoticeRef}
+                                                              id={`notice-${item?.id}`}
                                                     >
                                                         <Dropdown.Toggle id="dropdown-basic">
                                                             <img alt="pencil"
@@ -112,7 +122,8 @@ export default function PatientInfo() {
                                                                     }}
                                                                 />
                                                                 <div className="select-btn" onClick={() => {
-                                                                    dispatch(editNotice(appointmentsTypes[item?.type], item?.id, notice, id))
+                                                                    dispatch(editNotice(appointmentsTypes[item?.type], item?.id, notice, id));
+                                                                    toggleNoticeRef.current.click();
                                                                 }}>
                                                                     Done
                                                                 </div>
@@ -158,19 +169,20 @@ export default function PatientInfo() {
                                                     <>
                                                         <Dropdown
                                                             className="table-dropdown"
-                                                            autoClose={showDropdown}
+                                                            autoClose={false}
                                                             drop="down"
                                                             onToggle={() => {
                                                                 setDate(new Date(item?.date));
                                                                 setTime(timeBlocks[item?.day_block_id].time);
-
-                                                                if (showDropdown === true) {
-                                                                    setShowDropdown(false);
-                                                                }
                                                             }}
                                                         >
                                                             <Dropdown.Toggle
-                                                                className="success-btn btn">Approve</Dropdown.Toggle>
+                                                                className="success-btn btn"
+                                                                ref={toggleApproveRef}
+                                                                id={`approve-${item?.id}`}
+                                                            >
+                                                                Approve
+                                                            </Dropdown.Toggle>
                                                             <Dropdown.Menu>
                                                                 <div className="dropdown-item">
                                                                     <label className="label-notice">
@@ -212,29 +224,46 @@ export default function PatientInfo() {
                                                                             }}
                                                                         />
                                                                     </ThemeProvider>
-                                                                    <button
-                                                                        className="success-btn btn dropdown-approve-btn"
-                                                                        onClick={(event) => {
-                                                                            event.preventDefault();
+                                                                    <div className="dropdown-btns">
+                                                                        <button
+                                                                            className="cancel-btn btn dropdown-approve-btn"
+                                                                            onClick={(event) => {
+                                                                                event.preventDefault();
 
-                                                                            const hours = time.slice(0, 2);
-                                                                            const min = time.slice(3);
+                                                                                toggleApproveRef.current.click();
+                                                                            }}
+                                                                        >
+                                                                            Cancel
+                                                                        </button>
+                                                                        <button
+                                                                            className="success-btn btn dropdown-approve-btn"
+                                                                            onClick={(event) => {
+                                                                                event.preventDefault();
 
-                                                                            const newDate = new Date(date);
-                                                                            newDate.setHours(hours, min);
+                                                                                const hours = time.slice(0, 2);
+                                                                                const min = time.slice(3);
 
-                                                                            dispatch(editTime(appointmentsTypes[item?.type], item?.id, newDate), id);
-                                                                            setTimeout(() => {
-                                                                                dispatch(editStatus(appointmentsTypes[item?.type], item?.id, 1, id));
-                                                                            }, 150);
-                                                                        }}
-                                                                    >
-                                                                        Approve
-                                                                    </button>
+                                                                                const newDate = new Date(date);
+                                                                                newDate.setHours(hours, min);
+
+                                                                                dispatch(editTime(appointmentsTypes[item?.type], item?.id, newDate, id));
+                                                                                setTimeout(() => {
+                                                                                    dispatch(editStatus(appointmentsTypes[item?.type], item?.id, 1, id));
+                                                                                }, 150);
+                                                                            }}
+                                                                        >
+                                                                            Approve
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
                                                             </Dropdown.Menu>
                                                         </Dropdown>
-                                                        <Dropdown className="table-dropdown" autoClose="outside">
+                                                        <Dropdown
+                                                            className="table-dropdown"
+                                                            autoClose="outside"
+                                                            ref={toggleRejectRef}
+                                                            id={`reject-${item?.id}`}
+                                                        >
                                                             <Dropdown.Toggle
                                                                 className="warning-btn btn">Reject</Dropdown.Toggle>
                                                             <Dropdown.Menu>
@@ -248,14 +277,24 @@ export default function PatientInfo() {
                                                                             setRejectMessage(event.target.value)
                                                                         }
                                                                     />
-                                                                    <div
-                                                                        className="btn dropdown-reject-btn"
-                                                                        onClick={() => {
-                                                                            dispatch(editStatus(appointmentsTypes[item?.type], item?.id, 2, id));
-                                                                            dispatch(editNotice(appointmentsTypes[item?.type], item?.id, rejectMessage, id))
-                                                                        }}
-                                                                    >
-                                                                        Confirm rejection
+                                                                    <div className="dropdown-btns">
+                                                                        <div
+                                                                            className="btn cancel-btn"
+                                                                            onClick={() => {
+                                                                                toggleRejectRef.current.click();
+                                                                            }}
+                                                                        >
+                                                                            Cancel
+                                                                        </div>
+                                                                        <div
+                                                                            className="btn dropdown-reject-btn"
+                                                                            onClick={() => {
+                                                                                dispatch(editStatus(appointmentsTypes[item?.type], item?.id, 2, id));
+                                                                                dispatch(editNotice(appointmentsTypes[item?.type], item?.id, rejectMessage, id))
+                                                                            }}
+                                                                        >
+                                                                            Confirm rejection
+                                                                        </div>
                                                                     </div>
                                                                     <div className="dropdown-message"
                                                                          onClick={() => setRejectMessage("Not the right medicine")}>

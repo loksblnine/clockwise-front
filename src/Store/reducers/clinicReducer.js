@@ -28,6 +28,12 @@ const clinicReducer = (state = initialState, action) => {
                 clinicAppointmentTypesList: action.payload,
             }
         }
+        case ACTIONS.CLINIC.CLEAR_CLINIC_APPOINTMENT_TYPES_LIST: {
+            return {
+                ...state,
+                clinicAppointmentTypesList: []
+            }
+        }
         case ACTIONS.CLINIC.ADD_TO_CLINIC_APPOINTMENT_TYPES_LIST: {
             return {
                 ...state,

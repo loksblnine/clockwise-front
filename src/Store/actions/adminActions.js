@@ -3,7 +3,6 @@ import {ACTIONS} from "../../Utils/constants";
 import {toast} from "react-toastify";
 import {checkAuth} from "./userActions";
 import Moment from "moment/moment";
-import {addDoctorSpecialty, removeDoctorSpecialty} from "./doctorActions";
 
 export const getManagersList = () => {
     return async (dispatch) => {
@@ -55,6 +54,7 @@ export const updateManagerPhoto = (userId, data) => {
                     type: ACTIONS.ADMIN.ADD_MANAGER_PHOTO,
                     payload: data
                 });
+                toast.success("Updated!");
             })
             .catch((e) => {
                 if (e.response.status === 401) {
@@ -107,11 +107,7 @@ export const editManagerInfo = (values, userId) => {
                 toast.success("Updated!")
                 dispatch(getManagerById(userId))
             })
-            .catch((e) => {
-                dispatch({
-                    type: ACTIONS.MESSAGE.SET_ERROR,
-                    payload: "Something went wrong"
-                });
+            .catch(() => {
                 toast.error("Something went wrong");
             });
     };
@@ -124,11 +120,8 @@ export const registerManager = (data) => {
             data
         })
             .then(() => {
-                dispatch({
-                    type: ACTIONS.MESSAGE.SET_MESSAGE,
-                    payload: "Success!"
-                });
-                dispatch(getManagersList())
+                toast.success("Manager successfully registered!");
+                dispatch(getManagersList());
             })
             .catch(() => {
                 toast.error("Something went wrong");

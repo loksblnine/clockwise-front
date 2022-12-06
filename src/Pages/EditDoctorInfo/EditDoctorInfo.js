@@ -4,8 +4,6 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import Modal from "react-bootstrap/Modal";
 import Moment from "moment";
-import Alert from '@mui/material/Alert';
-import {ThemeProvider} from '@mui/material/styles';
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import {EditUserSchema} from "../../Utils/ValidationSchemas";
 import {
@@ -16,7 +14,6 @@ import {
 } from "../../Store/actions/doctorActions";
 import {getClinicsList} from "../../Store/actions/clinicActions";
 import {getSpecialtiesList} from "../../Store/actions/specialtyActions";
-import {ACTIONS, theme} from "../../Utils/constants";
 import Header from "../../Layouts/Header/Header";
 import Loading from "../../Layouts/Loading/Loading";
 
@@ -34,9 +31,7 @@ export default function EditDoctorInfo() {
     const isClinicsReady = useSelector(state => state.clinicReducer.isReady);
     const isSpecialtiesReady = useSelector(state => state.specialtyReducer.isReady);
 
-    const {message} = useSelector(state => state.messageReducer);
-
-    const formatDate = Moment(new Date(doctorInfo?.user.birth_date)).format("DD/MM/YYYY");
+    const formatDate = Moment(new Date(doctorInfo?.user.birth_date)).format("DD.MM.YYYY");
 
     const primarySpecialty = doctorInfo?.specialtyToDoctors.find(item => item.is_main);
     const secondarySpecialty = doctorInfo?.specialtyToDoctors.filter(item => !item.is_main);
@@ -45,7 +40,6 @@ export default function EditDoctorInfo() {
         window.matchMedia("(max-width: 1200px)").matches
     );
     const [show, setShow] = useState(false);
-    const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
         window
@@ -58,20 +52,6 @@ export default function EditDoctorInfo() {
             dispatch(getSpecialtiesList());
         }
     }, []);
-
-    useEffect(() => {
-        if (message) {
-            setShowAlert(true);
-
-            setTimeout(() => {
-                setShowAlert(false);
-                dispatch({
-                    type: ACTIONS.MESSAGE.SET_MESSAGE,
-                    payload: null
-                })
-            }, 2000);
-        }
-    })
 
     useEffect(() => {
         dispatch(getDoctorById(id));
@@ -89,13 +69,6 @@ export default function EditDoctorInfo() {
             <Header/>
             <main>
                 <section className="sect">
-                    {showAlert ?
-                        <ThemeProvider theme={theme}>
-                            <Alert variant="outlined" severity="success" id="alert">{message}</Alert>
-                        </ThemeProvider>
-                        :
-                        null
-                    }
                     <h1>Doctor Profile</h1>
                     <div className="manage-img">
                         <img className="manage-avatar" alt="avatar"
@@ -172,7 +145,7 @@ export default function EditDoctorInfo() {
                                             type="text"
                                             name="birthDate"
                                             maxLength="10" required
-                                            placeholder="DD/MM/YYYY"
+                                            placeholder="DD.MM.YYYY"
                                             style={matches ? {maxWidth: "unset"} : {maxWidth: "500px"}}
                                         />
                                         <span className="error">
@@ -237,7 +210,7 @@ export default function EditDoctorInfo() {
                                         <Field
                                             type="text"
                                             name="location"
-                                            maxLength="10" required
+                                            maxLength="5" required
                                             style={matches ? {maxWidth: "unset"} : {maxWidth: "500px"}}
                                         />
                                         <span className="error">

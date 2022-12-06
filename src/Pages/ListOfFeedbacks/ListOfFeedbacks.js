@@ -2,6 +2,7 @@ import "../../Assets/Styles/ManagePatient.css";
 import "../../Assets/Styles/Feedback.css";
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
+import ReactRoundedImage from "react-rounded-image";
 import Card from "react-bootstrap/Card";
 import Moment from "moment";
 import debounce from "lodash.debounce";
@@ -16,42 +17,33 @@ export default function ListOfFeedbacks() {
     const {filteredItems, page, loadNext, isReady} = useSelector(state => state.feedbackReducer);
 
     const [query, setQuery] = useState("");
-    const [colHeading, setColHeading] = useState(null);
     const [order, setOrder] = useState("ASC");
-
-    useEffect(() => {
-        if (role === 1) {
-            setColHeading("feedbacks")
-        } else {
-            setColHeading("doctor-feedbacks")
-        }
-    }, []);
 
     useEffect(() => {
         if (query) {
             dispatch({
                 type: ACTIONS.FEEDBACK.CLEAR_ARRAY
             });
-            dispatch(getFeedbackList(colHeading, order, query, 0));
+            dispatch(getFeedbackList(role, order, query, 0));
             setTimeout(() => {
-                dispatch(getFeedbackList(colHeading, order, query, 1));
+                dispatch(getFeedbackList(role, order, query, 1));
             }, 150);
         }
-    }, [colHeading, order, query]);
+    }, [order, query]);
 
     useEffect(() => {
         if (!isReady && !query) {
-            dispatch(getFeedbackList(colHeading, order, query, 0));
+            dispatch(getFeedbackList(role, order, query, 0));
             setTimeout(() => {
-                dispatch(getFeedbackList(colHeading, order, query, 1));
+                dispatch(getFeedbackList(role, order, query, 1));
             }, 150);
         }
-    }, [colHeading, order, query]);
+    }, [order, query]);
 
     const changeHandler = (event) => {
         if (!event.target.value) {
             dispatch({
-                type: ACTIONS.FEEDBACK.SET_OLD_ITEMS
+                type: ACTIONS.FEEDBACK.CLEAR_ARRAY
             });
         } else {
             dispatch({
@@ -67,7 +59,7 @@ export default function ListOfFeedbacks() {
     }, []);
 
     const handleNextFeedbacks = useCallback(() => {
-        dispatch(getFeedbackList(colHeading, order, query, page));
+        dispatch(getFeedbackList(role, order, query, page));
     }, [query, order, page]);
 
     return (
@@ -106,26 +98,29 @@ export default function ListOfFeedbacks() {
                             filteredItems.map((item, i) =>
                                 <Card key={`${item.id} ${item?.date}`}>
                                     <Card.Header>
-                                        {/*<Link to={`/patients/${patient.id}`} className={"table-link"}>*/}
                                         <div className="table-col-user">
-                                            <img alt="avatar"
-                                                 src={!item?.user.photo_url ?
-                                                     "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
-                                                     :
-                                                     item?.user.photo_url
-                                                 }/>
-                                            <div className="table-col">
+                                            <ReactRoundedImage
+                                                image={
+                                                    !item?.user.photo_url?
+                                                        "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
+                                                        :
+                                                        item?.user.photo_url
+                                                }
+                                                imageWidth="50"
+                                                imageHeight="50"
+                                                roundedSize="-3"
+                                            />
+                                            <div className="table-col ml-10">
                                                 <div>{item.user?.firstName} {item.user?.lastName}</div>
                                             </div>
                                         </div>
-                                        {/*</Link>*/}
                                         <div className="table-col table-col-feedback">
                                             <div className="star-rating">
                                                 {[...Array(item?.stars)].map((star, index) => {
                                                     index += 1;
                                                     return (
                                                         <img alt="star" key={index}
-                                                             src={require("../../Assets/Images/filled_Star.svg").default}
+                                                             src="https://res.cloudinary.com/loksblnine/image/upload/v1668511100/PatientApp/assets_front/filled_Star_vt9skm.svg"
                                                         />
                                                     );
                                                 })}

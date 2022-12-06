@@ -105,10 +105,26 @@ const doctorReducer = (state = initialState, action) => {
             };
         }
         case ACTIONS.DOCTOR.SET_DOCTOR: {
-            return {
-                ...state,
-                doctorToEdit: action.payload
-            };
+            const arr = state.filteredItems?.map((item) => {
+                if (item.user_id === +action.payload.user_id) {
+                    return action.payload
+                } else {
+                    return item
+                }
+            });
+
+            if (state.filteredItems.length) {
+                return {
+                    ...state,
+                    filteredItems: arr,
+                    doctorToEdit: action.payload
+                };
+            } else {
+                return {
+                    ...state,
+                    doctorToEdit: action.payload
+                };
+            }
         }
         case ACTIONS.DOCTOR.EDIT_DOCTOR: {
             const arr = state.filteredItems.map((item) => {

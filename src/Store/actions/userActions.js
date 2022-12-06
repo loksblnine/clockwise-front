@@ -26,11 +26,7 @@ export const login = (email, password, navigate) => {
         }).then(() => {
             navigate("/");
         }).catch(() => {
-            dispatch({
-                type: ACTIONS.MESSAGE.SET_ERROR,
-                payload: "Invalid email or password"
-            });
-            // toast.error("Use correct credentials");
+            toast.error("Invalid email or password");
         });
     };
 };
@@ -128,8 +124,17 @@ export const getUserInfo = (id) => {
     }
 }
 
-export const updateUserInfo = (userId, first_name, last_name, birth_date, location, telephone, prevPrimarySpecialty, primarySpecialty, prevSecondarySpecialty, secondarySpecialty, role) => {
-    const date = Moment(birth_date, "DD/MM/YYYY").toDate();
+export const updateUserInfo = (userId, values, prevPrimarySpecialty, prevSecondarySpecialty, role) => {
+    const {
+        first_name,
+        last_name,
+        birthDate,
+        location,
+        telephone,
+        primarySpecialty,
+        secondarySpecialty
+    } = values;
+    const date = Moment(birthDate, "DD/MM/YYYY").toDate();
 
     return async (dispatch) => {
         await apiPut({
@@ -140,43 +145,39 @@ export const updateUserInfo = (userId, first_name, last_name, birth_date, locati
                 firstName: first_name,
                 lastName: last_name,
                 location,
-                telephone
+                telephone,
             }
         })
-          .then(() => {
-              if (role === 3 && prevPrimarySpecialty && Number(prevPrimarySpecialty) !== Number(primarySpecialty)) {
-                  dispatch(removeDoctorSpecialty(userId, prevPrimarySpecialty));
-              }
-          })
-          .then(() => {
-              if (role === 3 && prevSecondarySpecialty && Number(prevSecondarySpecialty) !== Number(secondarySpecialty)) {
-                  dispatch(removeDoctorSpecialty(userId, prevSecondarySpecialty));
-              }
-          })
-          .then(() => {
-              if (role === 3 && primarySpecialty && Number(prevPrimarySpecialty) !== Number(primarySpecialty))  {
-                  dispatch(addDoctorSpecialty(userId, Number(primarySpecialty), true));
-              }
-          })
-          .then(() => {
-              if (role === 3 && secondarySpecialty !== "-1" && Number(prevSecondarySpecialty) !== Number(secondarySpecialty)) {
-                  dispatch(addDoctorSpecialty(userId, Number(secondarySpecialty), false));
-              }
-          })
-          .then(() => {
-              toast.success("Updated!")
-              dispatch(getUserInfo(userId))
-          })
+            .then(() => {
+                if (role === 3 && Number(prevPrimarySpecialty) !== Number(primarySpecialty)) {
+                    dispatch(removeDoctorSpecialty(userId, prevPrimarySpecialty));
+                    setTimeout(() => {
+                        dispatch(addDoctorSpecialty(userId, Number(primarySpecialty), true));
+                    }, 300);
+                }
+            })
+            .then(() => {
+                if (role === 3 && Number(prevSecondarySpecialty) !== Number(secondarySpecialty)) {
+                    dispatch(removeDoctorSpecialty(userId, prevSecondarySpecialty));
+                    if (secondarySpecialty !== "-1") {
+                        setTimeout(() => {
+                            dispatch(addDoctorSpecialty(userId, Number(secondarySpecialty), false));
+                        }, 300);
+                    }
+                }
+            })
+            .then(() => {
+                toast.success("Updated!");
+                setTimeout(() => {
+                    dispatch(getUserInfo(userId))
+                }, 500);
+            })
             .catch((e) => {
                 if (e.response.status === 401) {
                     dispatch(checkAuth())
                 } else {
-                    dispatch({
-                        type: ACTIONS.MESSAGE.SET_ERROR,
-                        payload: "Something went wrong"
-                    });
+                    toast.error("Something went wrong");
                 }
-                toast.error("Something went wrong");
             })
     }
 }
@@ -192,21 +193,14 @@ export const updateUserPhoto = (data) => {
                     type: ACTIONS.USER.ADD_PHOTO,
                     payload: data.photo_url
                 });
-                dispatch({
-                    type: ACTIONS.MESSAGE.SET_MESSAGE,
-                    payload: "Success!"
-                });
+                toast.success("Updated!");
             })
             .catch((e) => {
                 if (e.response.status === 401) {
                     dispatch(checkAuth())
                 } else {
-                    dispatch({
-                        type: ACTIONS.MESSAGE.SET_ERROR,
-                        payload: "Something went wrong"
-                    });
+                    toast.error("Something went wrong");
                 }
-                toast.error("Something went wrong");
             })
     }
 }
@@ -222,7 +216,7 @@ export const sendRecoverPwEmail = (data, navigate) => {
             .then(({}) => {
                 navigate("/reset/password/success")
             })
-            .catch((e) => {
+            .catch(() => {
                 toast.error("Something went wrong");
             })
     }
@@ -236,11 +230,11 @@ export const updatePassword = (newPassword, navigate) => {
                 newPassword
             }
         })
-            .then(({data}) => {
+            .then(() => {
                 navigate("/login");
                 toast.success("Your password was updated!")
             })
-            .catch((e) => {
+            .catch(() => {
                 toast.error("Something went wrong");
             })
     }

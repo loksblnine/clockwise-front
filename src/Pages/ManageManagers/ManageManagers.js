@@ -2,6 +2,7 @@ import "../../Assets/Styles/ManagePatient.css";
 import {useEffect} from "react";
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
+import ReactRoundedImage from "react-rounded-image";
 import Card from "react-bootstrap/Card";
 import Header from "../../Layouts/Header/Header";
 import NoFound from "../../Layouts/NoFound/NoFound";
@@ -44,14 +45,18 @@ export default function ManageManagers() {
                                         <Card.Header>
                                             <Link to={`managers/${manager?.manager_id}/edit`} className="table-link">
                                                 <div className="table-col-user">
-                                                    <img alt="avatar"
-                                                         src={!manager.user.photo_url ?
-                                                             "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
-                                                             :
-                                                             manager.user.photo_url
-                                                         }
+                                                    <ReactRoundedImage
+                                                        image={
+                                                            !manager.user.photo_url?
+                                                                "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
+                                                                :
+                                                                manager.user.photo_url
+                                                        }
+                                                        imageWidth="50"
+                                                        imageHeight="50"
+                                                        roundedSize="-3"
                                                     />
-                                                    <div className={"table-col"}>
+                                                    <div className="table-col ml-10">
                                                         <div>{`${manager?.user.firstName} ${manager?.user.lastName}`}</div>
                                                     </div>
                                                 </div>

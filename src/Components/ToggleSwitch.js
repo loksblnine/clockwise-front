@@ -23,6 +23,7 @@ export default function ToggleSwitch(props) {
             <label className="toggle-label">
                 <div>{props.element.description}</div>
                 <Switch onChange={(e) => handleChange(e)} checked={props.checked}
+                        width={44} height={23}
                         onColor={"#47C0C1"} offColor={"#fff"}
                         offHandleColor={"#47C0C1"}
                         checkedIcon={false} uncheckedIcon={false}

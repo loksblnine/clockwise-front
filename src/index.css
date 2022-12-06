@@ -63,7 +63,7 @@ input:focus-visible, select:focus-visible {
     width: 100% !important;
     border: none !important;
     border-radius: 8px !important;
-    padding: 10px !important;
+    padding: 8px !important;
     color: #343760 !important;
     font-size: 16px !important;
     font-weight: 400 !important;
@@ -100,14 +100,15 @@ select {
     width: 100%;
     border: none;
     border-radius: 8px;
-    padding: 10px 10px 10px 40px;
+    padding: 8px 40px 8px;
     margin-bottom: 10px;
     cursor: pointer;
+    font-size: 14px !important;
 }
 
 textarea {
     box-sizing: border-box;
-    padding: 10px;
+    padding: 8px;
     width: 430px;
     height: 110px;
     resize: none !important;
@@ -147,16 +148,16 @@ a, .link {
 }
 
 h1 {
-    font-size: 22px;
+    font-size: 22px !important;
 }
 
 h2 {
-    font-size: 20px;
+    font-size: 20px !important;
     margin-top: 0;
 }
 
 h3 {
-    font-size: 18px;
+    font-size: 18px !important;
     font-weight: 700;
 }
 
@@ -179,6 +180,11 @@ button:focus:not(:focus-visible) {
     box-shadow: none !important;
 }
 
+.cancel-btn {
+    background-color: #AAABBA !important;
+    color: #FFFFFF !important;
+}
+
 .empty_bg-btn {
     text-align: center;
     max-width: 498px;
@@ -188,7 +194,7 @@ button:focus:not(:focus-visible) {
     color: #47C0C1;
     padding: 12px 0;
     font-weight: 400;
-    font-size: 18px;
+    font-size: 10px;
     background: none;
     cursor: pointer;
 }
@@ -196,32 +202,34 @@ button:focus:not(:focus-visible) {
 .success-btn {
     max-width: 111px !important;
     width: 100%;
-    padding: 7px 0;
+    padding: 6px 0;
     text-align: center;
     border: 1px solid #36B37E !important;
     border-radius: 4px;
     background: #36B37E !important;
     color: #ffffff !important;
+    font-size: 14px!important;
 }
 
 .warning-btn {
     max-width: 111px !important;
     width: 100%;
-    padding: 7px 0;
+    padding: 6px 0;
     text-align: center;
     border: 1px solid #C14847 !important;
     border-radius: 4px;
     background: none !important;
     color: #C14847 !important;
+    font-size: 14px!important;
 }
 
-.success-btn:hover, .warning-btn:hover {
+.success-btn:hover, .warning-btn:hover, .cancel-btn {
     transform: scale(1.05);
     transition: 0.2s ease-in-out;
 }
 
 .form-btn {
-    padding: 14px 0 !important;
+    padding: 11px 0 !important;
     max-width: unset !important;
     font-weight: 400;
     font-size: 18px;
@@ -233,7 +241,7 @@ button:focus:not(:focus-visible) {
     align-self: flex-end;
     text-align: center;
     width: 110px;
-    padding: 7px 0 !important;
+    padding: 6px 0 !important;
     margin-top: 20px;
     color: #ffffff !important;
     font-weight: 400 !important;
@@ -252,7 +260,7 @@ button:focus:not(:focus-visible) {
     justify-content: space-between;
     background: #FFFFFF;
     border-radius: 8px;
-    padding: 15px 10px;
+    padding: 12px 8px;
     max-width: 500px;
     width: 100%;
     margin: 0 !important;
@@ -261,11 +269,21 @@ button:focus:not(:focus-visible) {
 
 .react-switch-bg {
     border: 1px solid #47C0C1 !important;
+    margin: 1.25px !important;
 }
 
+.react-switch-handle {
+    width: 24px !important;
+    height: 25px !important;
+    top: 0 !important;
+}
 
 .card:nth-child(odd) {
     background-color: #eefbf9;
+}
+
+.card:nth-child(odd) .table-col-user img {
+    background: #eefbf9 !important
 }
 
 .card-header {
@@ -310,4 +328,8 @@ button:focus:not(:focus-visible) {
 
 .status-rejected {
     color: #C14847;
+}
+
+.ml-10 {
+    margin-left: 10px;
 }

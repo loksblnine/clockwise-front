@@ -2,6 +2,7 @@ import "../../Assets/Styles/ManagePatient.css";
 import {useCallback, useEffect} from "react";
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
+import ReactRoundedImage from "react-rounded-image";
 import Card from "react-bootstrap/Card";
 import Moment from "moment";
 import {getAppointmentsList} from "../../Store/actions/appointmentActions";
@@ -53,12 +54,15 @@ export default function ManagePatientDone(props) {
                         <Card.Header>
                             <Link to={`/patients/${item?.user_id}`} className="table-link">
                                 <div className="table-col-user">
-                                    <img alt="avatar"
-                                         src={!item?.user.photo_url ?
-                                             "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
-                                             :
-                                             item?.user.photo_url
-                                         }
+                                    <ReactRoundedImage
+                                        image={!item?.user.photo_url ?
+                                            "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
+                                            :
+                                            item?.user.photo_url
+                                        }
+                                        imageWidth="50"
+                                        imageHeight="50"
+                                        roundedSize="-2"
                                     />
                                     <div className="table-col">
                                         <div>{`${item?.user.firstName} ${item?.user.lastName}`}</div>

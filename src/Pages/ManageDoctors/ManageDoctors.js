@@ -9,6 +9,7 @@ import NoFound from "../../Layouts/NoFound/NoFound";
 import Loading from "../../Layouts/Loading/Loading";
 import {getDoctorsList} from "../../Store/actions/doctorActions";
 import {ACTIONS} from "../../Utils/constants";
+import ReactRoundedImage from "react-rounded-image";
 
 export default function ManageDoctors() {
     const dispatch = useDispatch();
@@ -90,14 +91,18 @@ export default function ManageDoctors() {
                                         <Card.Header>
                                             <Link to={`/doctors/${doctor?.user_id}/edit`} className="table-link">
                                                 <div className="table-col-user">
-                                                    <img alt="avatar"
-                                                         src={!doctor.user.photo_url ?
-                                                             "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
-                                                             :
-                                                             doctor.user.photo_url
-                                                         }
+                                                    <ReactRoundedImage
+                                                        image={
+                                                            !doctor.user.photo_url?
+                                                                "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
+                                                                :
+                                                                doctor.user.photo_url
+                                                        }
+                                                        imageWidth="50"
+                                                        imageHeight="50"
+                                                        roundedSize="-3"
                                                     />
-                                                    <div className={"table-col"}>
+                                                    <div className="table-col ml-10">
                                                         <div>{`${doctor?.user.firstName} ${doctor?.user.lastName}`}</div>
                                                         <div>{`${doctor?.publicName}`}</div>
                                                     </div>

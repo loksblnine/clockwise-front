@@ -21,7 +21,7 @@ export default function ManagePatient() {
             <main>
                 <section className="sect manage-patient-sect">
                     <div className="manage-patient-heading">
-                        <div className="manage-patient-buttons">
+                        <div className="manage-patient-buttons manage-patient-request-btns">
                             <div
                                 id="pending"
                                 className="manage-patient-btn active-btn"

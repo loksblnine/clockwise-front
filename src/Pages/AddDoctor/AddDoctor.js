@@ -2,9 +2,6 @@ import "../../Assets/Styles/ManageProfile.css";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Formik, Form, Field, ErrorMessage} from "formik";
-import {ThemeProvider} from "@mui/material/styles";
-import Alert from "@mui/material/Alert";
-import {ACTIONS, theme} from "../../Utils/constants";
 import {DoctorsSignInSchema} from "../../Utils/ValidationSchemas";
 import Header from "../../Layouts/Header/Header";
 import Loading from "../../Layouts/Loading/Loading";
@@ -19,12 +16,10 @@ export default function AddDoctor() {
     const clinicsList = useSelector(state => state.clinicReducer.items);
     const specialtiesList = useSelector(state => state.specialtyReducer.items);
     const managerClinic = useSelector(state => state.userReducer.user?.clinic_id_clinics_managerToClinics);
-    const {message} = useSelector(state => state.messageReducer);
 
     const [matches, setMatches] = useState(
         window.matchMedia("(max-width: 1200px)").matches
     );
-    const [showAlert, setShowAlert] = useState(false);
     const [disableClinic, setDisableClinic] = useState(true);
 
     useEffect(() => {
@@ -35,20 +30,6 @@ export default function AddDoctor() {
         dispatch(getClinicsList());
         dispatch(getSpecialtiesList());
     }, []);
-
-    useEffect(() => {
-        if (message) {
-            setShowAlert(true);
-
-            setTimeout(() => {
-                setShowAlert(false);
-                dispatch({
-                    type: ACTIONS.MESSAGE.SET_MESSAGE,
-                    payload: null
-                })
-            }, 2000);
-        }
-    });
 
     useEffect(() => {
         if (role === 1) {
@@ -67,13 +48,6 @@ export default function AddDoctor() {
             <Header/>
             <main>
                 <section className={"sect"}>
-                    {showAlert ?
-                        <ThemeProvider theme={theme}>
-                            <Alert variant="outlined" severity="success" id="alert">{message}</Alert>
-                        </ThemeProvider>
-                        :
-                        null
-                    }
                     <h1>Add Doctor</h1>
                     <div className="manage-form">
                         <Formik
@@ -140,7 +114,7 @@ export default function AddDoctor() {
                                             type="text"
                                             name="birthDate"
                                             maxLength="10" required
-                                            placeholder="DD/MM/YYYY"
+                                            placeholder="DD.MM.YYYY"
                                             style={matches ? {maxWidth: "unset"} : {maxWidth: "500px"}}
                                         />
                                         <span className="error">
@@ -203,7 +177,7 @@ export default function AddDoctor() {
                                         <Field
                                             type="text"
                                             name="location"
-                                            maxLength="10" required
+                                            maxLength="5" required
                                             style={matches ? {maxWidth: "unset"} : {maxWidth: "500px"}}
                                         />
                                         <span className="error">

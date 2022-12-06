@@ -4,15 +4,13 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import Modal from "react-bootstrap/Modal";
 import Moment from "moment";
-import Alert from '@mui/material/Alert';
-import {ThemeProvider} from '@mui/material/styles';
 import {Formik, Form, Field, ErrorMessage} from "formik";
 import {ManagerSignInSchema} from "../../Utils/ValidationSchemas";
 import {getClinicsList} from "../../Store/actions/clinicActions";
-import {ACTIONS, theme} from "../../Utils/constants";
 import Header from "../../Layouts/Header/Header";
 import Loading from "../../Layouts/Loading/Loading";
 import {deleteUser, editManagerInfo, getManagerById, updateManagerPhoto} from "../../Store/actions/adminActions";
+import ReactRoundedImage from "react-rounded-image";
 
 export default function EditManagersInfo() {
     const {id} = useParams();
@@ -22,15 +20,13 @@ export default function EditManagersInfo() {
     const managerInfo = useSelector(state => state.adminReducer.managerToEdit);
     const clinicsList = useSelector(state => state.clinicReducer.items);
     const isClinicsReady = useSelector(state => state.clinicReducer.isReady);
-    const {message} = useSelector(state => state.messageReducer);
 
-    const formatDate = Moment(new Date(managerInfo?.birth_date)).format("DD/MM/YYYY");
+    const formatDate = Moment(new Date(managerInfo?.birth_date)).format("DD.MM.YYYY");
 
     const [matches, setMatches] = useState(
         window.matchMedia("(max-width: 1200px)").matches
     );
     const [show, setShow] = useState(false);
-    const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
         window
@@ -40,20 +36,6 @@ export default function EditManagersInfo() {
             dispatch(getClinicsList());
         }
     }, []);
-
-    useEffect(() => {
-        if (message) {
-            setShowAlert(true);
-
-            setTimeout(() => {
-                setShowAlert(false);
-                dispatch({
-                    type: ACTIONS.MESSAGE.SET_MESSAGE,
-                    payload: null
-                })
-            }, 2000);
-        }
-    })
 
     useEffect(() => {
         dispatch(getManagerById(id));
@@ -71,21 +53,18 @@ export default function EditManagersInfo() {
             <Header/>
             <main>
                 <section className="sect">
-                    {showAlert ?
-                        <ThemeProvider theme={theme}>
-                            <Alert variant="outlined" severity="success" id="alert">{message}</Alert>
-                        </ThemeProvider>
-                        :
-                        null
-                    }
                     <h1>Manager Profile</h1>
                     <div className="manage-img">
-                        <img className="manage-avatar" alt="avatar"
-                             src={!managerInfo?.photo_url ?
-                                 "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
-                                 :
-                                 managerInfo?.photo_url
-                             }
+                        <ReactRoundedImage
+                            image={
+                                !managerInfo?.photo_url ?
+                                    "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
+                                    :
+                                    managerInfo?.photo_url
+                            }
+                            imageWidth="150"
+                            imageHeight="150"
+                            roundedSize="-3"
                         />
                         <label htmlFor="files" className="manage-upload_file"/>
                         <input
@@ -152,7 +131,7 @@ export default function EditManagersInfo() {
                                             type="text"
                                             name="birthDate"
                                             maxLength="10" required
-                                            placeholder="DD/MM/YYYY"
+                                            placeholder="DD.MM.YYYY"
                                             style={matches ? {maxWidth: "unset"} : {maxWidth: "500px"}}
                                         />
                                         <span className="error">
@@ -180,7 +159,7 @@ export default function EditManagersInfo() {
                                         <Field
                                             type="text"
                                             name="location"
-                                            maxLength="10" required
+                                            maxLength="5" required
                                             style={matches ? {maxWidth: "unset"} : {maxWidth: "500px"}}
                                         />
                                         <span className="error">

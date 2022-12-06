@@ -51,7 +51,7 @@
 
 .feedback-btn {
     width: 100%;
-    padding: 13px 0;
+    padding: 11px 0;
     background: #47C0C1;
     border: 1px solid #47C0C1;
     border-radius: 4px;
@@ -78,17 +78,17 @@
     text-align: center;
     gap: 80px;
     width: 100%;
-    padding: 50px 0 115px;
+    padding: 40px 0 115px;
     background: #FFFFFF;
     border-radius: 16px;
-    font-size: 32px;
+    font-size: 24px;
     font-weight: 700;
 }
 
 .feedback-success-btn {
     max-width: 612px;
     width: 100%;
-    padding: 13px 0;
+    padding: 11px 0;
     background: #47C0C1;
     border-radius: 4px;
     text-align: center;

@@ -6,7 +6,6 @@ import clinicReducer from "./clinicReducer";
 import specialtyReducer from "./specialtyReducer";
 import feedbackReducer from "./feedbackReducer";
 import appointmentReducer from "./appointmentReduser";
-import messageReducer from "./messageReducer";
 
 const appReducer = combineReducers({
     userReducer,
@@ -16,7 +15,6 @@ const appReducer = combineReducers({
     specialtyReducer,
     feedbackReducer,
     appointmentReducer,
-    messageReducer
 });
 
 const rootReducer = (state, action) => {

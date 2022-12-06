@@ -29,6 +29,42 @@ export const getAppointmentsList = (page = 0, status) => {
     };
 };
 
+export const getUsersHavingPending = (name, page) => {
+    return async (dispatch) => {
+        try {
+            const {data} = await apiGet({
+                url: `/manager/clinic-patients?name=${name}&limit=${LIMIT_ITEM_PER_PAGE}&offset=${calculateOffset(page)}&hasPending=true`
+            })
+            dispatch({
+                type: ACTIONS.APPOINTMENT.SET_USERS_HAVING_PENDING,
+                payload: {data}
+            })
+        } catch (e) {
+            if (e.response.status === 401) {
+                dispatch(checkAuth());
+            }
+            toast.error("Something went wrong");
+        }
+    };
+};
+
+export const getUserPendingAppointmentsList = (userId, setItems) => {
+    return async (dispatch) => {
+        try {
+            const {data} = await apiGet({
+                url: `/notifications/all?userId=${userId}&statusIds=3`
+            });
+            setItems(data)
+        } catch (e) {
+            if (e.response.status === 401) {
+                dispatch(checkAuth());
+            }
+            toast.error("Something went wrong");
+        }
+    };
+};
+
+
 export const editNotice = (type, id, notice, userId = null) => {
     return async (dispatch) => {
         await apiPut({
@@ -38,7 +74,7 @@ export const editNotice = (type, id, notice, userId = null) => {
                 notice
             }
         })
-            .then(({data}) => {
+            .then(() => {
                 if (userId) {
                     dispatch({
                         type: ACTIONS.APPOINTMENT.UPDATE_REQUEST_NOTICE,
@@ -74,12 +110,18 @@ export const editTime = (type, id, newDate, userId = null) => {
                 newDate
             }
         })
-            .then(({data}) => {
+            .then(() => {
                 if (userId) {
-                    dispatch(getPatientInfo(userId));
+                    dispatch({
+                        type: ACTIONS.APPOINTMENT.UPDATE_REQUEST_TIME,
+                        payload: {
+                            id,
+                            date: newDate
+                        }
+                    });
                 }
             })
-            .catch((e) => {
+            .catch(() => {
                 toast.error("Something went wrong");
             });
     };
@@ -94,7 +136,7 @@ export const editStatus = (type, id, statusId, userId = null) => {
                 statusId
             }
         })
-            .then(({data}) => {
+            .then(() => {
                 if (userId) {
                     dispatch({
                         type: ACTIONS.APPOINTMENT.UPDATE_REQUEST_STATUS,

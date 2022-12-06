@@ -13,7 +13,7 @@ export const getClinicsList = () => {
                     payload: data
                 });
             })
-            .catch((e) => {
+            .catch(() => {
                 toast.error("Something went wrong");
             });
     };
@@ -30,7 +30,7 @@ export const getAppointmentTypesList = () => {
                     payload: data
                 });
             })
-            .catch((e) => {
+            .catch(() => {
                 toast.error("Something went wrong");
             });
     };
@@ -47,7 +47,7 @@ export const getClinicAppointmentTypesList = (clinicId) => {
                     payload: data
                 });
             })
-            .catch((e) => {
+            .catch(() => {
                 toast.error("Something went wrong");
             });
     };
@@ -64,10 +64,10 @@ export const updateClinicAppointmentTypesList = (clinicId, data) => {
         })
             .then((res) => {
                 if (res) {
-                    toast.success("Changes updated!");
+                    toast.success("Updated!");
                 }
             })
-            .catch((e) => {
+            .catch(() => {
                 toast.error("Something went wrong");
             });
     };

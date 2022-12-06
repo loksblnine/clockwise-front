@@ -1,6 +1,12 @@
 import {ACTIONS, LIMIT_ITEM_PER_PAGE} from "../../Utils/constants";
 
 const initialState = {
+    users: {
+        items: [],
+        page: 0,
+        loadNext: true,
+        isReady: false,
+    },
     pending: {
         items: [],
         page: 0,
@@ -19,11 +25,44 @@ const initialState = {
 
 const appointmentReducer = (state = initialState, action) => {
     switch (action.type) {
+        case ACTIONS.APPOINTMENT.SET_USERS_HAVING_PENDING: {
+            if (action.payload.data.length < LIMIT_ITEM_PER_PAGE) {
+                return {
+                    ...state,
+                    users: {
+                        ...state.users,
+                        items: state.users.items.concat(action.payload.data),
+                        isReady: true,
+                        loadNext: false
+                    }
+                }
+            }
+            return {
+                ...state,
+                users: {
+                    ...state.users,
+                    items: state.users.items.concat(action.payload.data),
+                    isReady: true,
+                    loadNext: true,
+                    page: state.users.page + 1
+                }
+            }
+        }
+        case ACTIONS.APPOINTMENT.DELETE_USER_WITHOUT_PENDING: {
+            return {
+                ...state,
+                users: {
+                    ...state.users,
+                    items: state.users.items.filter((el) => el.user_id !== action.payload.id)
+                }
+            }
+        }
         case ACTIONS.APPOINTMENT.SET_PENDING_APPOINTMENTS: {
             if (action.payload.length < LIMIT_ITEM_PER_PAGE) {
                 return {
                     ...state,
                     pending: {
+                        ...state.pending,
                         items: state.pending.items.concat(action.payload),
                         isReady: true,
                         loadNext: false
@@ -33,6 +72,7 @@ const appointmentReducer = (state = initialState, action) => {
             return {
                 ...state,
                 pending: {
+                    ...state.pending,
                     items: state.pending.items.concat(action.payload),
                     isReady: true,
                     loadNext: true,
@@ -45,6 +85,7 @@ const appointmentReducer = (state = initialState, action) => {
                 return {
                     ...state,
                     done: {
+                        ...state.done,
                         items: state.done.items.concat(action.payload),
                         isReady: true,
                         loadNext: false
@@ -54,6 +95,7 @@ const appointmentReducer = (state = initialState, action) => {
             return {
                 ...state,
                 done: {
+                    ...state.done,
                     items: state.done.items.concat(action.payload),
                     isReady: true,
                     loadNext: true,
@@ -116,6 +158,20 @@ const appointmentReducer = (state = initialState, action) => {
                 patient: newArr
             };
         }
+        case ACTIONS.APPOINTMENT.UPDATE_REQUEST_TIME: {
+            const newArr = state.patient.map(obj => {
+                if (obj.id === action.payload.id) {
+                    return {...obj, date: action.payload.date};
+                }
+
+                return obj;
+            });
+
+            return {
+                ...state,
+                patient: newArr
+            };
+        }
         case ACTIONS.APPOINTMENT.UPDATE_REQUEST_STATUS: {
             const newArr = state.patient.map(obj => {
                 if (obj.id === action.payload.id) {
@@ -160,7 +216,17 @@ const appointmentReducer = (state = initialState, action) => {
                 patient: null,
             }
         }
-
+        case ACTIONS.APPOINTMENT.CLEAR_USERS: {
+            return {
+                ...state,
+                users: {
+                    items: [],
+                    page: 0,
+                    loadNext: true,
+                    isReady: false
+                }
+            }
+        }
         default:
             return state;
     }

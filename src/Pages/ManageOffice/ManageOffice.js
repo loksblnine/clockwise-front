@@ -1,7 +1,8 @@
 import "../../Assets/Styles/ManagePatient.css";
 import "../../Assets/Styles/ManageOffice.css";
+import {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
 import Header from "../../Layouts/Header/Header";
 import ToggleSwitch from "../../Components/ToggleSwitch";
 import {
@@ -9,24 +10,52 @@ import {
     getClinicAppointmentTypesList,
     updateClinicAppointmentTypesList
 } from "../../Store/actions/clinicActions";
+import {ACTIONS} from "../../Utils/constants";
 
 export default function ManageOffice() {
+    const {id} = useParams();
+
     const dispatch = useDispatch();
-    const clinicId = useSelector((state) => state.userReducer.user.clinic_id_clinics_managerToClinics[0].id);
+
+    const user = useSelector(state => state.userReducer.user);
+    const userClinic = useSelector((state) => state.userReducer.user?.clinic_id_clinics_managerToClinics);
     const appointmentTypesList = useSelector((state) => state.clinicReducer.appointmentTypesList);
+    const clinicsList = useSelector((state) => state.clinicReducer.items);
     const clinicAppointmentTypesList = useSelector((state) => state.clinicReducer.clinicAppointmentTypesList);
+
+    const [clinicNameById, setClinicNameById] = useState(null);
 
     useEffect(() => {
         if (!appointmentTypesList.length) {
             dispatch(getAppointmentTypesList());
         }
-        if (!clinicAppointmentTypesList.length) {
-            dispatch(getClinicAppointmentTypesList(clinicId));
+
+        if (!clinicAppointmentTypesList.length && user.role !== 1) {
+            dispatch(getClinicAppointmentTypesList(userClinic[0].id));
         }
     }, []);
 
+    useEffect(() => {
+        if (id && user.role === 1) {
+            dispatch({
+                type: ACTIONS.CLINIC.CLEAR_CLINIC_APPOINTMENT_TYPES_LIST
+            });
+
+            dispatch(getClinicAppointmentTypesList(id));
+        }
+
+        if (clinicsList.length && id) {
+            const clinic = clinicsList.find(el => el.id === parseInt(id))
+            setClinicNameById(clinic?.name);
+        }
+    }, [id]);
+
     const saveChanges = () => {
-        dispatch(updateClinicAppointmentTypesList(clinicId, clinicAppointmentTypesList));
+        if (user.role === 1) {
+            dispatch(updateClinicAppointmentTypesList(id, clinicAppointmentTypesList));
+        } else if (user.role !== 1) {
+            dispatch(updateClinicAppointmentTypesList(userClinic[0].id, clinicAppointmentTypesList));
+        }
     };
 
     return (
@@ -35,7 +64,13 @@ export default function ManageOffice() {
             <main>
                 <section className="sect manage-patient-sect">
                     <div className="manage-patient-heading manage-office-heading">
-                        <h1>Manage Office</h1>
+                        <h1>
+                            {user.role === 1 ?
+                                `Manage ${clinicNameById} Office`
+                                :
+                                "Manage Office"
+                            }
+                        </h1>
                         {/*<h3>On holiday</h3>*/}
                     </div>
                     {/*<div className="manage-patient-buttons">*/}
@@ -63,8 +98,11 @@ export default function ManageOffice() {
                         <div className="manage-office-col">
                             {appointmentTypesList.map((el) => {
                                 return (
-                                    <ToggleSwitch key={`manage-appointment-type-${el.id}`} element={el}
-                                                  checked={Boolean(clinicAppointmentTypesList.find(appT => appT.id === el.id))}/>
+                                    <ToggleSwitch
+                                        key={`manage-appointment-type-${el.id}`}
+                                        element={el}
+                                        checked={Boolean(clinicAppointmentTypesList.find(appT => appT.id === el.id))}
+                                    />
                                 );
                             })}
                         </div>

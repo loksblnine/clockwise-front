@@ -26,7 +26,7 @@
 
 .modal-approve-btn {
     width: 110px !important;
-    padding: 9px 0;
+    padding: 7px 0;
     border: 1px solid #47C0C1;
     border-radius: 4px;
     color: #47C0C1;
@@ -42,7 +42,7 @@
 
 .modal-delete-btn {
     width: 110px !important;
-    padding: 9px 0;
+    padding: 7px 0;
     border: 1px solid #C14847;
     border-radius: 4px;
     background: #C14847;

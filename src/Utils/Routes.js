@@ -73,6 +73,10 @@ export const AdminRoutes = [
         path: '/feedbacks',
         Component: <ListOfFeedbacks/>
     },
+    {
+        path: '/office/:id/edit',
+        Component: <ManageOffice/>
+    },
 ]
 
 export const ManagerRoutes = [

@@ -2,14 +2,10 @@ import "../../Assets/Styles/ManageProfile.css";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Formik, Form, Field, ErrorMessage} from "formik";
-import {ThemeProvider} from "@mui/material/styles";
-import Alert from "@mui/material/Alert";
-import {ACTIONS, theme} from "../../Utils/constants";
 import {ManagerSignInSchema} from "../../Utils/ValidationSchemas";
 import Header from "../../Layouts/Header/Header";
 import Loading from "../../Layouts/Loading/Loading";
 import {getClinicsList} from "../../Store/actions/clinicActions";
-import {registerDoctor} from "../../Store/actions/doctorActions";
 import {registerManager} from "../../Store/actions/adminActions";
 
 export default function AddManager() {
@@ -18,12 +14,10 @@ export default function AddManager() {
     const {role} = useSelector(state => state.userReducer.user);
     const clinicsList = useSelector(state => state.clinicReducer.items);
     const managerClinic = useSelector(state => state.userReducer.user?.clinic_id_clinics_managerToClinics);
-    const {message} = useSelector(state => state.messageReducer);
 
     const [matches, setMatches] = useState(
         window.matchMedia("(max-width: 1200px)").matches
     );
-    const [showAlert, setShowAlert] = useState(false);
     const [disableClinic, setDisableClinic] = useState(true);
 
     useEffect(() => {
@@ -33,20 +27,6 @@ export default function AddManager() {
 
         dispatch(getClinicsList());
     }, []);
-
-    useEffect(() => {
-        if (message) {
-            setShowAlert(true);
-
-            setTimeout(() => {
-                setShowAlert(false);
-                dispatch({
-                    type: ACTIONS.MESSAGE.SET_MESSAGE,
-                    payload: null
-                })
-            }, 2000);
-        }
-    });
 
     useEffect(() => {
         if (role === 1) {
@@ -65,13 +45,6 @@ export default function AddManager() {
             <Header/>
             <main>
                 <section className={"sect"}>
-                    {showAlert ?
-                        <ThemeProvider theme={theme}>
-                            <Alert variant="outlined" severity="success" id="alert">{message}</Alert>
-                        </ThemeProvider>
-                        :
-                        null
-                    }
                     <h1>Add Manager</h1>
                     <div className="manage-form">
                         <Formik
@@ -99,7 +72,7 @@ export default function AddManager() {
                                 dispatch(registerManager(data))
                             }}
                         >
-                            {({values}) => (
+                            {() => (
                                 <Form className="manage-form-col">
                                     <div className="input-container">
                                         <label>First Name</label>
@@ -131,7 +104,7 @@ export default function AddManager() {
                                             type="text"
                                             name="birthDate"
                                             maxLength="10" required
-                                            placeholder="DD/MM/YYYY"
+                                            placeholder="DD.MM.YYYY"
                                             style={matches ? {maxWidth: "unset"} : {maxWidth: "500px"}}
                                         />
                                         <span className="error">
@@ -168,7 +141,7 @@ export default function AddManager() {
                                         <Field
                                             type="text"
                                             name="location"
-                                            maxLength="10" required
+                                            maxLength="5" required
                                             style={matches ? {maxWidth: "unset"} : {maxWidth: "500px"}}
                                         />
                                         <span className="error">

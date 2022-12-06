@@ -3,29 +3,26 @@ import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import Moment from "moment";
-import Alert from '@mui/material/Alert';
-import {ThemeProvider} from '@mui/material/styles';
+import ReactRoundedImage from "react-rounded-image";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import {EditUserSchema} from "../../Utils/ValidationSchemas";
-import {ACTIONS, theme} from "../../Utils/constants";
+import {ACTIONS} from "../../Utils/constants";
 import Header from "../../Layouts/Header/Header";
 import Loading from "../../Layouts/Loading/Loading";
 import {updateUserInfo, updateUserPhoto} from "../../Store/actions/userActions";
 import {getClinicsList} from "../../Store/actions/clinicActions";
 import {getSpecialtiesList} from "../../Store/actions/specialtyActions";
-import {addDoctorSpecialty, removeDoctorSpecialty} from "../../Store/actions/doctorActions";
 
 export default function ManageProfile() {
     const [matches, setMatches] = useState(
         window.matchMedia("(max-width: 1200px)").matches
     );
-    const [showAlert, setShowAlert] = useState(false);
 
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
+
     const userInfo = useSelector(state => state.userReducer.user);
-    const {message} = useSelector(state => state.messageReducer);
     const clinicsList = useSelector(state => state.clinicReducer.items);
     const specialtiesList = useSelector(state => state.specialtyReducer.items);
     const isClinicsReady = useSelector(state => state.clinicReducer.isReady);
@@ -34,24 +31,12 @@ export default function ManageProfile() {
     const {firstName, lastName, location, telephone, email, birth_date, photo_url, role} = userInfo;
     const primarySpecialty = userInfo?.doctor?.specialty_id_specialties.find(item => item?.SpecialtyToDoctor?.is_main);
     const secondarySpecialty = userInfo?.doctor?.specialty_id_specialties.find(item => !item?.SpecialtyToDoctor?.is_main);
-    const formatDate = Moment(new Date(birth_date)).format("DD/MM/YYYY");
+    const formatDate = Moment(new Date(birth_date)).format("DD.MM.YYYY");
 
     useEffect(() => {
         window
             .matchMedia("(max-width: 1200px)")
             .addEventListener('change', e => setMatches(e.matches));
-
-        if (message) {
-            setShowAlert(true);
-
-            setTimeout(() => {
-                setShowAlert(false);
-                dispatch({
-                    type: ACTIONS.MESSAGE.SET_MESSAGE,
-                    payload: null
-                })
-            }, 2000);
-        }
     });
 
     useEffect(() => {
@@ -77,21 +62,18 @@ export default function ManageProfile() {
             <Header/>
             <main>
                 <section className="sect">
-                    {showAlert ?
-                        <ThemeProvider theme={theme}>
-                            <Alert variant="outlined" severity="success" id="alert">{message}</Alert>
-                        </ThemeProvider>
-                        :
-                        null
-                    }
                     <h1>Manage Profile</h1>
                     <div className="manage-img">
-                        <img className="manage-avatar" alt="avatar"
-                             src={!photo_url ?
-                                 "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
-                                 :
-                                 photo_url
-                             }
+                        <ReactRoundedImage
+                            image={
+                                !photo_url ?
+                                    "https://res.cloudinary.com/loksblnine/image/upload/v1663757535/PatientApp/assets_front/default_avatar_l8zadl.svg"
+                                    :
+                                    photo_url
+                            }
+                            imageWidth="100"
+                            imageHeight="100"
+                            roundedSize="-3"
                         />
                         <label htmlFor="files" className={"manage-upload_file"}/>
                         <input
@@ -124,24 +106,11 @@ export default function ManageProfile() {
                             }}
                             validationSchema={EditUserSchema}
                             onSubmit={(values) => {
-                                const {
-                                    first_name,
-                                    last_name,
-                                    birthDate,
-                                    location,
-                                    telephone
-                                } = values;
                                 dispatch(updateUserInfo(
                                     userInfo.id,
-                                    first_name,
-                                    last_name,
-                                    birthDate,
-                                    location,
-                                    telephone,
+                                    values,
                                     primarySpecialty?.id,
-                                    values.primarySpecialty,
                                     secondarySpecialty?.id,
-                                    values.secondarySpecialty,
                                     role
                                 ));
                             }}
@@ -179,7 +148,7 @@ export default function ManageProfile() {
                                             type="text"
                                             name="birthDate"
                                             maxLength="10" required
-                                            placeholder="DD/MM/YYYY"
+                                            placeholder="DD.MM.YYYY"
                                             style={matches ? {maxWidth: "unset"} : {maxWidth: "500px"}}
                                         />
                                         <span className="error">
@@ -250,7 +219,7 @@ export default function ManageProfile() {
                                         <Field
                                             type="text"
                                             name="location"
-                                            maxLength="10" required
+                                            maxLength="5" required
                                             style={matches ? {maxWidth: "unset"} : {maxWidth: "500px"}}
                                         />
                                         <span className="error">

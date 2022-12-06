@@ -17,8 +17,8 @@
 }
 
 .manage-avatar {
-    width: 124px;
-    height: 124px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     overflow: hidden;
 }
@@ -45,7 +45,7 @@
 .manage-upload_file::after {
     content: url("https://res.cloudinary.com/loksblnine/image/upload/v1663757696/PatientApp/assets_front/upload_photo_b1uqfs.svg");
     position: absolute;
-    right: 0;
+    right: -10px;
     bottom: 12px;
     cursor: pointer;
 }

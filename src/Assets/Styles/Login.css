@@ -29,7 +29,7 @@
 
 .auth-heading {
     margin-bottom: 50px;
-    font-size: 34px;
+    font-size: 28px;
     font-weight: 700;
     text-align: center;
 }
@@ -42,7 +42,7 @@
 
 .button-container input, .auth-btn {
     width: 100%;
-    padding: 14px 0 !important;
+    padding: 11px 0 !important;
     border: 1px solid #47C0C1;
     border-radius: 4px;
     background-color: #47C0C1;
@@ -54,7 +54,7 @@
 .auth-subtitle {
     margin-top: 0;
     text-align: center;
-    font-size: 30px;
+    font-size: 24px;
     font-weight: 300;
     font-style: normal;
 }

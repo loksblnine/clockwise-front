@@ -1,7 +1,6 @@
 import {toast} from "react-toastify";
 import {apiGet} from "../../http/headerPlaceholder.instance";
 import {ACTIONS} from "../../Utils/constants";
-import {checkAuth} from "./userActions";
 
 export const getSpecialtiesList = () => {
     return async (dispatch) => {
@@ -14,10 +13,7 @@ export const getSpecialtiesList = () => {
                     payload: data
                 })
             })
-            .catch((e) => {
-                // if (e.response.status === 401) {
-                //     dispatch(checkAuth())
-                // }
+            .catch(() => {
                 toast("Something went wrong");
             })
     }

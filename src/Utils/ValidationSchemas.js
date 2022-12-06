@@ -21,8 +21,8 @@ export const SignInSchema = Yup.object().shape({
     clinic: Yup.string()
         .required('Please, enter your specialty.'),
     location: Yup.string()
-        .min(2, 'Too Short!')
-        .max(40, 'Too Long!')
+        .typeError('You should use only numbers from 0 to 9.')
+        .test('len', 'Must be exactly 5 characters', val => val.length === 5)
         .required('Please, enter your postal code.'),
     telephone: Yup.string()
         .required('Please, enter your phone number.'),
@@ -53,7 +53,7 @@ export const DoctorsSignInSchema = Yup.object().shape({
     primarySpecialty: Yup.string()
         .required(),
     secondarySpecialty: Yup.string()
-        .when("secondarySpecialty", (val, schema) => {
+        .when("secondarySpecialty", (val) => {
             if(val?.length > 0) {
                 return Yup.string().notOneOf([Yup.ref('primarySpecialty'), null], 'The two specialties should not be equal');
             } else {
@@ -63,8 +63,8 @@ export const DoctorsSignInSchema = Yup.object().shape({
     clinic: Yup.string()
         .required('Please, enter your specialty.'),
     location: Yup.string()
-        .min(2, 'Too Short!')
-        .max(40, 'Too Long!')
+        .typeError('You should use only numbers from 0 to 9.')
+        .test('len', 'Must be exactly 5 characters', val => val.length === 5)
         .required('Please, enter your postal code.'),
     telephone: Yup.string()
         .required('Please, enter your phone number.'),
@@ -89,8 +89,8 @@ export const ManagerSignInSchema = Yup.object().shape({
         clinic: Yup.string()
             .required('Please, enter your specialty.'),
         location: Yup.string()
-            .min(2, 'Too Short!')
-            .max(40, 'Too Long!')
+            .typeError('You should use only numbers from 0 to 9.')
+            .test('len', 'Must be exactly 5 characters', val => val.length === 5)
             .required('Please, enter your postal code.'),
         telephone: Yup.string()
             .required('Please, enter your phone number.'),
@@ -121,7 +121,7 @@ export const EditUserSchema = Yup.object().shape({
     primarySpecialty: Yup.string()
         .notRequired(),
     secondarySpecialty: Yup.string()
-        .when("secondarySpecialty", (val, schema) => {
+        .when("secondarySpecialty", (val) => {
             if(val?.length > 0) {
                 return Yup.string().notOneOf([Yup.ref('primarySpecialty'), null], 'The two specialties should not be equal');
             } else {
@@ -129,8 +129,8 @@ export const EditUserSchema = Yup.object().shape({
             }
         }),
     location: Yup.string()
-        .min(2, 'Too Short!')
-        .max(40, 'Too Long!')
+        .typeError('You should use only numbers from 0 to 9.')
+        .test('len', 'Must be exactly 5 characters', val => val.length === 5)
         .required('Please, enter your postal code.'),
     telephone: Yup.string()
         // .matches(new RegExp('^[+]{1}[0-9]{2} [0-9]{3} [0-9]{3} [0-9]{2} [0-9]{2}$'), 'Please enter your phone number matches to +49 888 888 88 88')

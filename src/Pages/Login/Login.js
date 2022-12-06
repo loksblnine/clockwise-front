@@ -2,10 +2,7 @@ import "../../Assets/Styles/Login.css";
 import {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import Alert from '@mui/material/Alert';
-import {ThemeProvider} from '@mui/material/styles';
 import {Formik, Form, Field, ErrorMessage} from "formik";
-import {ACTIONS, theme} from "../../Utils/constants";
 import {SignupSchema} from "../../Utils/ValidationSchemas";
 import {login} from "../../Store/actions/userActions";
 
@@ -14,7 +11,6 @@ export default function Login() {
 
     const dispatch = useDispatch();
     const user_id = useSelector(state => state.userReducer.user.id);
-    const {error} = useSelector(state => state.messageReducer);
 
     const [passwordType, setPasswordType] = useState("password");
     const [matches, setMatches] = useState(
@@ -30,19 +26,7 @@ export default function Login() {
         window
             .matchMedia("(max-width: 980px)")
             .addEventListener('change', e => setMatches(e.matches));
-
-        if (error) {
-            setShowAlert(true);
-
-            setTimeout(() => {
-                setShowAlert(false);
-                dispatch({
-                    type: ACTIONS.MESSAGE.SET_ERROR,
-                    payload: null
-                });
-            }, 2000);
-        }
-    });
+    }, []);
 
     const togglePassword = () => {
         if (passwordType === "password") {
@@ -112,13 +96,7 @@ export default function Login() {
                                     <ErrorMessage name="password"/>
                                 </span>
                             </div>
-                            {showAlert ?
-                                <ThemeProvider theme={theme}>
-                                    <Alert variant="outlined" severity="error" id="alert">{error}</Alert>
-                                </ThemeProvider>
-                                :
-                                null
-                            }
+
                             <div className="input-container auth-items">
                                 <label className="auth-checkbox">
                                     Remember me
